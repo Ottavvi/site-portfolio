@@ -1,0 +1,167 @@
+/* CONFIGURAÇÕES GLOBAIS E TEMA CLARO */
+
+body {
+    background-color: #e0f2fe; /* Define a cor de fundo inicial como azul bem claro */
+    color: #1e293b; /* Define a cor do texto padrão como um cinza escuro quase preto */
+    font-family: Arial, sans-serif; /* Define a fonte do texto */
+    text-align: center; /* Alinha todos os textos e blocos internos no centro da página */
+    padding: 40px 20px; /* Cria um espaçamento interno de 40px no topo/base e 20px nas laterais */
+    /* Cria uma animação suave de 0.4 segundos quando a cor de fundo ou a cor do texto mudarem */
+    transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+h1 {
+    color: #0369a1; /* Define a cor azul do título principal */
+    transition: color 0.4s ease; /* Cria uma transição suave para a mudança de cor do título */
+}
+
+img {
+    width: 180px; /* Ajusta a largura da imagem para 180 pixels */
+    height: 180px; /* Ajusta a altura da imagem para 180 pixels */
+    border-radius: 50%; /* Corta as bordas em 50%, transformando a foto quadrada em um círculo perfeito */
+    object-fit: cover; /* Garante que a foto preencha o círculo sem ficar esticada ou amassada */
+    margin: 20px 0; /* Coloca 20px de espaço vazio acima e abaixo da foto */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Adiciona uma sombra leve e moderna embaixo da foto */
+}
+
+ul {
+    display: inline-block; /* Faz a lista se comportar como um bloco centrado, mas mantendo seu tamanho real */
+    text-align: left; /* Alinha o texto interno da lista para a esquerda, deixando os marcadores alinhados */
+    margin-bottom: 30px; /* Coloca um espaço de 30px abaixo da lista antes do próximo elemento */
+}
+
+.controles {
+    margin-bottom: 30px; /* Coloca um espaço de 30px abaixo da caixa de botões do topo */
+}
+
+/* ESTILIZAÇÃO DOS BOTÕES MODERNOS */
+
+button {
+    background-color: #0369a1; /* Cor de fundo azul dos botões */
+    color: white; /* Cor do texto interna do botão */
+    border: none; /* Remove aquela borda cinza padrão e feia do navegador */
+    padding: 12px 24px; /* Espaçamento interno: 12px acima/abaixo e 24px nas laterais do texto */
+    font-size: 15px; /* Tamanho da letra dentro do botão */
+    font-weight: bold; /* Deixa o texto em negrito */
+    cursor: pointer; /* Transforma a seta do mouse naquela 'mãozinha' quando passa em cima */
+    border-radius: 8px; /* Arredonda os cantos do botão em 8 pixels */
+    margin: 5px; /* Coloca um pequeno espaçamento de 5px ao redor de cada botão */
+    /* Cria uma animação rápida se o botão mudar de cor ou se mover (transform) */
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+button:hover {
+    background-color: #0284c7; /* Muda o azul para um tom mais claro quando o mouse passa por cima */
+    transform: translateY(-2px); /* Move o botão levemente 2 pixels para cima, dando efeito de flutuação */
+}
+
+button:active {
+    transform: translateY(0); /* Faz o botão voltar à posição normal no momento exato em que for clicado */
+}
+
+/* ESTILIZAÇÃO DO LINK DO GOOGLE */
+
+.link-moderno {
+    color: #0369a1; /* Define a cor inicial do link */
+    text-decoration: none; /* Remove o sublinhado padrão que vem nos links */
+    font-weight: bold; /* Deixa o texto do link em negrito */
+    border-bottom: 2px solid transparent; /* Cria uma linha de baixo invisível (para não tremer na animação) */
+    transition: all 0.3s ease; /* Faz qualquer mudança visual no link acontecer de forma suave */
+}
+
+.link-moderno:hover {
+    color: #0284c7; /* Altera a cor do link quando o mouse passa por cima */
+    border-bottom: 2px solid #0284c7; /* Faz surgir a linha sublinhada de forma suave abaixo dele */
+}
+
+/* SEÇÃO DO FORMULÁRIO DE CONTATO */
+
+.secao-contato {
+    max-width: 400px; /* Define a largura máxima que a caixinha do formulário pode ter */
+    margin: 40px auto; /* Coloca 40px de espaço fora da caixa e o 'auto' centraliza ela na tela horizontalmente */
+    padding: 20px; /* Espaçamento interno entre as bordas da caixa e as caixas de texto */
+    background-color: rgba(255, 255, 255, 0.7); /* Fundo branco com 70% de opacidade (levemente transparente) */
+    border-radius: 12px; /* Arredonda os cantos da caixinha de contato */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); /* Aplica uma sombra bem sutil ao redor da caixinha */
+    transition: background-color 0.4s ease; /* Faz a cor da caixinha mudar suavemente no Modo Noturno */
+}
+
+form {
+    display: flex; /* Ativa o modo de layout Flexbox */
+    flex-direction: column; /* Organiza os campos do formulário um embaixo do outro, em coluna */
+    gap: 12px; /* Cria um espaçamento automático de 12px entre cada campo do formulário */
+}
+
+input, textarea {
+    padding: 12px; /* Espaçamento interno para o texto digitado não ficar colado nas bordas do campo */
+    border: 1px solid #cbd5e1; /* Cria uma borda cinza bem fininha e discreta */
+    border-radius: 6px; /* Arredonda os cantos das caixas de texto */
+    font-size: 14px; /* Define o tamanho do texto digitado */
+    outline: none; /* Remove aquela borda preta grossa padrão que aparece quando clicamos para digitar */
+    transition: border-color 0.2s; /* Faz a bordinha mudar de cor de maneira suave */
+}
+
+input:focus, textarea:focus {
+    border-color: #0369a1; /* Quando o usuário clica no campo para digitar, a borda ganha a cor azul */
+}
+
+/* REGRAS EXCLUSIVAS PARA O MODO NOTURNO REAL */
+
+/* Essas regras só entram em ação quando a classe 'modo-noturno' é adicionada ao body pelo JavaScript */
+
+body.modo-noturno {
+    background-color: #0f172a; /* Muda o fundo do site inteiro para um tom grafite escuro */
+    color: #f1f5f9; /* Altera a cor de todas as letras padrões para um branco suave */
+}
+
+body.modo-noturno h1 {
+    color: #38bdf8; /* Altera o título principal para um azul claro neon, que destaca no escuro */
+}
+
+body.modo-noturno .secao-contato {
+    background-color: rgba(30, 41, 59, 0.7); /* Deixa a caixinha do formulário escura com transparência */
+}
+
+body.modo-noturno .link-moderno {
+    color: #38bdf8; /* Deixa o link do Google com o azul neon destacado no tema escuro */
+}
+
+/* Estilização da área do contador */
+.container-contador {
+    margin: 30px auto; /* Dá um espaço acima/abaixo e centraliza nas laterais */
+    padding: 15px; /* Espaço interno para não sufocar o conteúdo */
+}
+
+/* Destaca o número de cliques deixando-o em negrito e um pouco maior */
+#numero-cliques {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+/* Estilização específica para o botão de zerar */
+#botao-zerar {
+    background-color: #ef4444; /* Cor vermelha para indicar um reset/alerta */
+}
+
+#botao-zerar:hover {
+    background-color: #dc2626; /* Vermelho um pouco mais escuro ao passar o mouse */
+}
+
+/* Adiciona uma transição suave para quando a cor do número mudar pelo JavaScript */
+#numero-cliques {
+    transition: color 0.2s ease;
+}
+
+/* Estilização do Rodapé */
+footer {
+    margin-top: 60px; /* Cria um espaçamento seguro para isolar o rodapé do resto do site */
+    padding: 20px;
+    font-size: 14px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1); /* Cria uma linha divisória bem sutil */
+    opacity: 0.7; /* Deixa o texto levemente mais discreto */
+}
+
+/* Ajuste da linha divisória para o Modo Noturno */
+body.modo-noturno footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}

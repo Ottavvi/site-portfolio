@@ -1,0 +1,92 @@
+<!-- Define que este documento é um arquivo HTML5 moderno -->
+<!DOCTYPE html>
+<!-- Define o idioma principal da página como Português do Brasil -->
+<html lang="pt-BR">
+<head>
+    <!-- Configura os caracteres para aceitar acentos (como á, é, ç) corretamente -->
+    <meta charset="UTF-8">
+    <!-- Faz o site se ajustar automaticamente ao tamanho da tela (celular, tablet e PC) -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Define o título que aparece na aba do navegador -->
+    <title>Meu Primeiro Site</title>
+    <!-- Conecta este arquivo HTML ao seu arquivo de estilos (CSS) -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Adicione esta linha no seu index.html para criar o botão de navegação -->
+<a href="sobre.html" class="link-moderno">Conheça mais Sobre Mim →</a>
+<br><br>
+
+    <!-- Cria uma caixa invisível (div) para organizar os botões do topo -->
+    <div class="controles">
+        <!-- Botão com ID único para podermos controlar o Modo Noturno pelo JavaScript -->
+        <button id="botao-tema">Alternar Modo Noturno</button>
+        <!-- Botão com ID único para acionar a mensagem de boas-vindas pelo JavaScript -->
+        <button id="botao-boas-vindas">Mensagem Especial</button>
+    </div>
+
+    <!-- Título principal da página -->
+    <h1>Bem-vindo ao Meu Site!</h1>
+
+    <!-- Exibe a foto de perfil. O 'src' indica o arquivo e o 'alt' é o texto alternativo caso a imagem suma -->
+    <img src="imagens/perfil.png" alt="Foto de perfil do Otávio">
+
+    <!-- Parágrafo simples de texto -->
+    <p>Me chamo Otávio. Este é o meu primeiro projeto usando HTML. Estou aprendendo a criar páginas web.</p>
+
+    <!-- Subtítulo da seção de objetivos -->
+    <h2>Meus Objetivos:</h2>
+    <!-- Cria uma lista com marcadores (lista não ordenada) -->
+    <ul>
+        <!-- Cada 'li' representa um item dentro da lista -->
+        <li>Aprender a estruturar páginas com HTML</li>
+        <li>Aprender a deixar tudo bonito com CSS</li>
+        <li>Criar projetos incríveis</li>
+        <li>Integrando com JavaScript</li>
+    </ul>
+
+<!-- Container do nosso contador atualizado -->
+<div class="container-contador">
+    <button id="botao-contador">Me clique!</button>
+    <!-- Novo botão para resetar o contador -->
+    <button id="botao-zerar">Zerar</button>
+    <p>Você clicou <span id="numero-cliques">0</span> vezes</p>
+</div>
+
+    <!-- Cria uma caixa (div) dedicada para agrupar o conteúdo da seção de contato -->
+    <div class="secao-contato">
+        <!-- Subtítulo do contato -->
+        <h2>Entre em Contato</h2>
+        <!-- Cria o formulário e dá um ID a ele para podermos ler seus dados no JavaScript -->
+        <form id="formulario-contato">
+            <!-- Campo de texto para o nome. O 'placeholder' é a dica interna e 'required' torna o campo obrigatório -->
+            <input type="text" placeholder="Seu Nome" required>
+            <!-- Campo específico para e-mail (valida se o usuário digitou o símbolo @) -->
+            <input type="email" placeholder="Seu E-mail" required>
+            <!-- Caixa de texto maior para mensagens. O 'rows' define a altura inicial em linhas -->
+            <textarea placeholder="Sua Mensagem" rows="4" required></textarea>
+            <!-- Botão do tipo 'submit', que serve especificamente para disparar o envio do formulário -->
+            <button type="submit">Enviar Mensagem</button>
+        </form>
+    </div>
+
+    <!-- Pula uma linha no site -->
+    <br>
+    <!-- Cria um link para o Google. O 'target="_blank"' faz o link abrir em uma nova aba do navegador -->
+    <a href="https://google.com" target="_blank" class="link-moderno">Clique aqui para visitar o Google</a>
+
+    <!-- Conecta este arquivo HTML ao seu arquivo de lógica (JavaScript) -->
+    <script src="script.js"></script>
+</body>
+</html>
+
+    <!-- Nova Seção de Rodapé com direitos autorais -->
+    <footer>
+        <p>© 2026 - Desenvolvido por Otávio com muito código e café! ☕</p>
+    </footer>
+
+    <!-- O seu script deve continuar sendo a última coisa antes de fechar o corpo -->
+    <script src="script.js"></script>
+</body>
+</html>
