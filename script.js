@@ -1,5 +1,5 @@
 // ==========================================
-// 1. LÓGICA DO MODO NOTURNO COM MEMÓRIA (LOCALSTORAGE)
+// 1. MODO NOTURNO COM MEMÓRIA (LOCALSTORAGE)
 // ==========================================
 const botaoTema = document.getElementById("botao-tema");
 const temaSalvo = localStorage.getItem("modoNoturnoAtivado");
@@ -30,7 +30,37 @@ if (botaoBoasVindas) {
 }
 
 // ==========================================
-// 3. CONTADOR DE CARACTERES EM TEMPO REAL
+// 3. BARRA DE PROGRESSO DE LEITURA (CORRIGIDO)
+// ==========================================
+const barraProgresso = document.getElementById("barra-progresso");
+if (barraProgresso) {
+    window.addEventListener("scroll", function() {
+        const pixelScrolled = window.scrollY;
+        const viewportHeight = window.innerHeight;
+        const totalHeight = document.documentElement.scrollHeight;
+        
+        const porcentagem = (pixelScrolled / (totalHeight - viewportHeight)) * 100;
+        barraProgresso.style.width = porcentagem + "%";
+    });
+}
+
+// ==========================================
+// 4. EFEITO GLOW DINÂMICO NOS CARDS (CORRIGIDO)
+// ==========================================
+const cards = document.querySelectorAll(".card-projeto");
+cards.forEach(card => {
+    card.addEventListener("mousemove", function(e) {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        card.style.setProperty("--x", `${x}px`);
+        card.style.setProperty("--y", `${y}px`);
+    });
+});
+
+// ==========================================
+// 5. CONTADOR DE CARACTERES EM TEMPO REAL
 // ==========================================
 const campoMensagem = document.getElementById("campo-mensagem");
 const indicadorContador = document.getElementById("contador-caracteres");
@@ -49,7 +79,7 @@ if (campoMensagem && indicadorContador) {
 }
 
 // ==========================================
-// 4. FORMULÁRIO DE CONTATO REAL (BLINDADO)
+// 6. FORMULÁRIO DE CONTATO REAL (WEB3FORMS VIA FETCH)
 // ==========================================
 const formulario = document.getElementById("formulario-contato");
 if (formulario) {
@@ -80,7 +110,7 @@ if (formulario) {
         })
         .catch(error => {
             console.error("Erro no fetch:", error);
-            mostrarNotificacao("Enviando pelo método alternativo...");
+            mostrarNotificacao("Erro de conexão. Enviando de forma nativa...");
             formulario.submit();
         })
         .finally(() => {
@@ -93,7 +123,7 @@ if (formulario) {
 }
 
 // ==========================================
-// 5. LÓGICA DO CONTADOR DE CLIQUES ALEATÓRIO
+// 7. LÓGICA DO CONTADOR DE CLIQUES
 // ==========================================
 let quantidadeCliques = 0;
 const botaoContador = document.getElementById("botao-contador");
@@ -126,7 +156,7 @@ if (botaoZerar && textoNumero) {
 }
 
 // ==========================================
-// 6. BOTÃO VOLTAR AO TOPO
+// 8. BOTÃO VOLTAR AO TOPO
 // ==========================================
 const botaoTopo = document.getElementById("botao-topo");
 if (botaoTopo) {
@@ -144,7 +174,7 @@ if (botaoTopo) {
 }
 
 // ==========================================
-// 7. MENU RESPONSIVO (HAMBÚRGUER)
+// 9. MENU RESPONSIVO (HAMBÚRGUER)
 // ==========================================
 const botaoMenu = document.getElementById("botao-menu-celular");
 const linksMenu = document.querySelector(".links-menu");
@@ -167,7 +197,7 @@ if (todosOsLinks) {
 }
 
 // ==========================================
-// 8. DESTAQUE DINÂMICO NO MENU AO ROLAR A TELA
+// 10. DESTAQUE DINÂMICO NO MENU AO ROLAR A TELA
 // ==========================================
 if (todosOsLinks && todosOsLinks.length > 0) {
     const sensorDeSecoes = new IntersectionObserver((entradas) => {
@@ -198,7 +228,7 @@ if (todosOsLinks && todosOsLinks.length > 0) {
 function mostrarNotificacao(mensagem) {
     const container = document.getElementById("container-toast");
     if (!container) {
-        alert(mensagem); // Fallback caso a div container-toast não exista no HTML
+        alert(mensagem);
         return;
     }
     
