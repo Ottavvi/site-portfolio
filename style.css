@@ -1,14 +1,17 @@
 /* CONFIGURAÇÕES GLOBAIS E TEMA CLARO */
-
 body {
-    background-color: #e0f2fe; /* Define a cor de fundo inicial como azul bem claro */
-    color: #1e293b; /* Define a cor do texto padrão como um cinza escuro quase preto */
-    font-family: Arial, sans-serif; /* Define a fonte do texto */
-    text-align: center; /* Alinha todos os textos e blocos internos no centro da página */
-    padding: 40px 20px; /* Cria um espaçamento interno de 40px no topo/base e 20px nas laterais */
-    /* Cria uma animação suave de 0.4 segundos quando a cor de fundo ou a cor do texto mudarem */
+    background-color: #e0f2fe;
+    color: #1e293b;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 40px 20px;
+    padding-top: 80px; /* Compensação do menu fixo */
     transition: background-color 0.4s ease, color 0.4s ease;
+    
+    /* ADICIONE ESSA LINHA ABAIXO PARA ELIMINAR A ABA BRANCA: */
+    overflow-x: hidden; 
 }
+
 
 h1 {
     color: #0369a1; /* Define a cor azul do título principal */
