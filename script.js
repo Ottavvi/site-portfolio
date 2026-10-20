@@ -39,52 +39,48 @@ botaoBoasVindas.addEventListener("click", function() {
 }); // O parêntese fecha o addEventListener e o ponto e vírgula encerra a instrução.
 
 // ==========================================
-// 3. LÓGICA DO FORMULÁRIO DE CONTATO REAL (WEB3FORMS)
+// 3. LÓGICA DO FORMULÁRIO DE CONTATO REAL (CORRIGIDO)
 // ==========================================
 
 const formulario = document.getElementById("formulario-contato");
 
 formulario.addEventListener("submit", function(event) {
-    // Impede o navegador de recarregar a página e estragar a experiência
+    // Impede o navegador de atualizar a página ao clicar no botão
     event.preventDefault();
     
-    // Captura os dados digitados nos campos do formulário de forma automática
+    // Captura os dados digitados de forma nativa e automática
     const formData = new FormData(formulario);
-    
-    // Transforma os dados em um formato que o servidor web entende (JSON)
-    const objetoDados = Object.fromEntries(formData);
-    const json = JSON.stringify(objetoDados);
 
-    // Exibe um aviso temporário no botão para o usuário saber que está processando
+    // Seleciona o botão de envio para dar um feedback visual ao usuário
     const botaoEnvio = formulario.querySelector("button[type='submit']");
     botaoEnvio.innerText = "Enviando...";
-    botaoEnvio.disabled = true; // Desativa o botão para evitar cliques duplicados
+    botaoEnvio.disabled = true; // Trava o botão para evitar múltiplos cliques
 
-    // Faz uma requisição (Fetch) em segundo plano para o servidor do Web3Forms enviar o e-mail
-    fetch("https://web3forms.com", {
+    // Envia os dados diretamente ao servidor (Maneira nativa e segura que evita erros de conexão)
+    fetch("https://api.web3forms.com/submit", {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json"
-        },
-        body: json
+        body: formData // Enviando o formData puro, o navegador configura os cabeçalhos sozinho!
     })
     .then(async (response) => {
-        // Se o servidor aceitou e enviou o e-mail com sucesso...
-        if (response.status == 200) {
+        // Converte a resposta do servidor para conseguirmos ler o resultado
+        const resultado = await response.json();
+        
+        // Se o servidor do Web3Forms processou o envio com sucesso
+        if (response.status === 200 || resultado.success) {
             alert("Sua mensagem foi enviada com sucesso direto para o e-mail do Otávio! 🚀");
-            formulario.reset(); // Limpa os campos
+            formulario.reset(); // Deixa todos os campos em branco novamente
         } else {
-            // Caso aconteça algum erro de servidor
-            alert("Ops! Ocorreu um erro ao enviar. Verifique se configurou sua chave de acesso (Access Key).");
+            // Caso a sua Access Key esteja errada ou falte algum campo obrigatório
+            alert("Erro do servidor: " + (resultado.message || "Verifique sua Access Key no HTML."));
         }
     })
     .catch(error => {
-        // Caso o usuário esteja sem internet ou o servidor caia
-        alert("Erro de conexão. Não foi possível enviar a mensagem.");
+        // Trata erros reais de falta de internet do usuário
+        console.error("Erro técnico capturado:", error);
+        alert("Erro de rede. Verifique sua conexão com a internet.");
     })
     .finally(() => {
-        // Devolve o texto padrão ao botão após terminar todo o processo
+        // Devolve o comportamento e texto padrão ao botão ao finalizar o processo
         botaoEnvio.innerText = "Enviar Mensagem";
         botaoEnvio.disabled = false;
     });
