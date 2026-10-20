@@ -87,22 +87,25 @@
     </div>
 
     <!-- Seção de Contato Atualizada -->
+        <!-- SEÇÃO DE CONTATO ATUALIZADA (Procure por este bloco no seu index.html) -->
     <div id="contato" class="secao-contato animar-subir">
         <h2>Entre em Contato</h2>
-        
-<!-- Garanta que a action e o method estejam escritos desse jeito no HTML -->
-<form id="formulario-contato" action="https://web3forms.com" method="POST">
-    
-    <!-- Certifique-se de que a sua chave gratuita do Web3Forms esteja aqui dentro do value -->
-    <input type="hidden" name="access_key" value="b5073762-87a4-4744-8a09-1c2d826db33e">
-    
-    <input type="text" name="nome" placeholder="Seu Nome" required>
-    <input type="email" name="email" placeholder="Seu E-mail" required>
-    <textarea name="mensagem" placeholder="Sua Mensagem" rows="4" required></textarea>
-    
-    <button type="submit">Enviar Mensagem</button>
-</form>
+        <form id="formulario-contato" action="https://web3forms.com" method="POST">
+            <input type="hidden" name="access_key" value="SUA_CHAVE_AQUI">
+            
+            <input type="text" name="nome" placeholder="Seu Nome" required>
+            <input type="email" name="email" placeholder="Seu E-mail" required>
+            
+            <!-- Adicionamos o atributo maxlength="300" para travar o teclado no limite -->
+            <textarea id="campo-mensagem" name="mensagem" placeholder="Sua Mensagem" rows="4" maxlength="300" required></textarea>
+            
+            <!-- Pequeno texto indicador que vai mudar via JavaScript -->
+            <div id="contador-caracteres">0 / 300 caracteres</div>
+            
+            <button type="submit" id="botao-enviar-formulario">Enviar Mensagem</button>
+        </form>
     </div>
+
 
     <br>
     <a href="https://google.com" target="_blank" class="link-moderno animar-subir">Clique aqui para visitar o Google</a>

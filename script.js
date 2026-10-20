@@ -1,59 +1,73 @@
 // ==========================================
-// 1. LÓGICA DO MODO NOTURNO REAL
+// 1. LÓGICA DO MODO NOTURNO COM MEMÓRIA (LOCALSTORAGE)
 // ==========================================
-
-// Criamos uma caixa chamada 'botaoTema'. 
-// O sinal de igual (=) significa "recebe" ou "guarda".
-// Procura no HTML pelo botão que tem o ID 'botao-tema' e salva ele nessa variável estável
 const botaoTema = document.getElementById("botao-tema");
 
-// Como é uma 'const', eu não posso fazer isso logo abaixo:
-// botaoTema = "Agora sou um texto"; -> O navegador daria um erro porque uma const não pode ser reatribuída.
+// PASSO A: Sempre que a página carregar, verifica se o usuário já tinha escolhido o tema escuro antes
+const temaSalvo = localStorage.getItem("modoNoturnoAtivado");
 
-// Mas atenção: você pode mudar as propriedades do elemento que está dentro dela! 
-// O elemento em si continua guardado na mesma caixa, nós apenas alteramos um detalhe dele (a classe).
-// Escuta quando o usuário clicar no botão do tema
+// Se a resposta na memória for "sim", ativa o modo noturno imediatamente
+if (temaSalvo === "sim") {
+    document.body.classList.add("modo-noturno");
+}
+
+// PASSO B: Escuta o clique do botão para alternar e salvar a nova escolha
 botaoTema.addEventListener("click", function() {
-    // O '.toggle()' funciona como um interruptor: se o body não tiver a classe 'modo-noturno', ele coloca.
-    // Se o body já tiver a classe 'modo-noturno', ele retira. Isso alterna as cores do CSS automaticamente!
     document.body.classList.toggle("modo-noturno");
+    
+    // Se após o clique o body ficou com a classe modo-noturno, salva "sim" na memória do PC do usuário
+    if (document.body.classList.contains("modo-noturno")) {
+        localStorage.setItem("modoNoturnoAtivado", "sim");
+    } else {
+        // Se ficou claro, salva "nao"
+        localStorage.setItem("modoNoturnoAtivado", "nao");
+    }
 });
 
-// ==========================================
-// 2. LÓGICA DO BOTÃO DE BOAS-VINDAS
-// ==========================================
 
-// Pegamos a nossa variável (a caixa onde guardamos o botão de boas-vindas)
-// Procura no HTML pelo botão que tem o ID 'botao-boas-vindas' e guarda na variável
+// ==========================================
+// 2. MENSAGEM ESPECIAL DE BOAS-VINDAS
+// ==========================================
 const botaoBoasVindas = document.getElementById("botao-boas-vindas");
-
-// Chamamos o ouvinte. É como dizer: "Botão, fique atento!"
-// Primeiro parâmetro: "click" -> o gatilho será o clique do mouse.
-// Segundo parâmetro: function() { ... } -> a receita de código que deve ser executada.
-// Escuta quando o usuário clicar no botão de boas-vindas
 botaoBoasVindas.addEventListener("click", function() {
-    // Este bloco de código fica "dormindo". 
-    // Ele só vai acordar e rodar quando o gatilho (o clique) for acionado pelo usuário.
-    // Abre uma janelinha de alerta flutuante na tela com o texto escolhido
     alert("Olá, Otávio! Parabéns por estar evoluindo o seu código hoje! 🚀");
-}); // O parêntese fecha o addEventListener e o ponto e vírgula encerra a instrução.
+});
+
 
 // ==========================================
-// 3. LÓGICA DO FORMULÁRIO DE CONTATO (BLINDADO)
+// 3. CONTADOR DE CARACTERES EM TEMPO REAL
 // ==========================================
+const campoMensagem = document.getElementById("campo-mensagem");
+const indicadorContador = document.getElementById("contador-caracteres");
 
-const formulario = document.getElementById("formulario-contato");
-
-formulario.addEventListener("submit", function(event) {
-    // Impede o recarregamento padrão para tentarmos enviar via JavaScript primeiro
-    event.preventDefault();
+// O evento 'input' escuta cada letra digitada, apagada ou colada no campo
+campoMensagem.addEventListener("input", function() {
+    // Descobre quantas letras foram digitadas atualmente
+    const totalLetras = campoMensagem.value.length;
     
+    // Atualiza o texto na tela de forma dinâmica
+    indicadorContador.innerText = `${totalLetras} / 300 caracteres`;
+    
+    // Se chegar perto ou atingir o limite de 300...
+    if (totalLetras >= 300) {
+        indicadorContador.classList.add("limite-atingido"); // Adiciona a classe CSS que deixa vermelho
+    } else {
+        indicadorContador.classList.remove("limite-atingido"); // Remove o vermelho se ele apagar letras
+    }
+});
+
+
+// ==========================================
+// 4. FORMULÁRIO DE CONTATO REAL (BLINDADO)
+// ==========================================
+const formulario = document.getElementById("formulario-contato");
+formulario.addEventListener("submit", function(event) {
+    event.preventDefault();
     const formData = new FormData(formulario);
     const botaoEnvio = formulario.querySelector("button[type='submit']");
     botaoEnvio.innerText = "Enviando...";
     botaoEnvio.disabled = true;
 
-    // Enviando de forma simples para o Web3Forms
     fetch("https://web3forms.com", {
         method: "POST",
         body: formData
@@ -62,17 +76,16 @@ formulario.addEventListener("submit", function(event) {
         if (response.ok) {
             alert("Sua mensagem foi enviada com sucesso direto para o e-mail do Otávio! 🚀");
             formulario.reset();
+            indicadorContador.innerText = "0 / 300 caracteres"; // Reseta o contador visual também
+            indicadorContador.classList.remove("limite-atingido");
         } else {
-            alert("O servidor recusou o envio. Verifique se sua Access Key está correta.");
+            alert("O servidor recusou o envio. Verifique sua Access Key.");
         }
     })
     .catch(error => {
-        // Mostra o erro exato no painel de desenvolvedor do navegador
-        console.error("Erro detalhado do fetch:", error);
-        
-        // PLANO B: Se o JavaScript der erro de conexão/CORS, enviamos pelo método tradicional do HTML
-        alert("Enviando pelo servidor alternativo...");
-        formulario.submit(); // Dispara o envio nativo do HTML (a página vai atualizar, mas o e-mail vai chegar!)
+        console.error("Erro no fetch:", error);
+        alert("Enviando pelo método alternativo...");
+        formulario.submit();
     })
     .finally(() => {
         botaoEnvio.innerText = "Enviar Mensagem";
@@ -80,115 +93,102 @@ formulario.addEventListener("submit", function(event) {
     });
 });
 
-// ==========================================
-// 4. LÓGICA DO CONTADOR (MÓDULO UNIFICADO)
-// ==========================================
 
-/* 
-   NOTA DE APRENDIZADO: O código antigo da Seção 4 foi removido daqui! 
-   Agora combinamos a contagem simples com a evolução das cores em um único ouvinte abaixo 
-   para evitar que o navegador conte o mesmo clique duas vezes.
-*/
-
-// Criamos uma variável usando 'let' (e não 'const') porque esse número VAI mudar e sofrer cálculos.
-// Ela começa valendo 0.
+// ==========================================
+// 5. LÓGICA DO CONTADOR DE CLIQUES ALEATÓRIO
+// ==========================================
 let quantidadeCliques = 0;
-
-// Capturamos o botão do contador do HTML e guardamos em uma constante estável
 const botaoContador = document.getElementById("botao-contador");
-
-// Capturamos a tag <span> onde o número aparece, para podermos alterar o texto dela depois
 const textoNumero = document.getElementById("numero-cliques");
-
-// Captura o botão de zerar do HTML
 const botaoZerar = document.getElementById("botao-zerar");
 
-// FUNÇÃO AUXILIAR: Gera uma cor RGB totalmente aleatória
-// Uma cor RGB é formada por 3 números de 0 a 255 (Red, Green, Blue)
 function gerarCorAleatoria() {
-    // O Math.random() gera um número quebrado entre 0 e 1. Multiplicamos por 256 e o Math.floor() arredonda para inteiro.
     const r = Math.floor(Math.random() * 256);
     const g = Math.floor(Math.random() * 256);
     const b = Math.floor(Math.random() * 256);
-    
-    // Retorna o texto formatado como o CSS entende. Exemplo: "rgb(142, 45, 211)"
     return `rgb(${r}, ${g}, ${b})`;
 }
 
-// OUVINTE ÚNICO DO BOTÃO CONTADOR: Cuida de somar e aplicar as cores
 botaoContador.addEventListener("click", function() {
-    // Toda vez que o botão for clicado, somamos +1 ao valor atual da nossa variável
     quantidadeCliques = quantidadeCliques + 1;
-    
-    // Atualizamos o texto que está dentro do <span> no HTML com o novo valor da variável
     textoNumero.innerText = quantidadeCliques;
-    
-    // CONDIÇÃO: Se a quantidade de cliques for maior ou igual a 10
     if (quantidadeCliques >= 10) {
-        // Altera o estilo da cor do texto diretamente no HTML usando a nossa função de cor aleatória
         textoNumero.style.color = gerarCorAleatoria();
     }
 });
 
-// OUVINTE DO BOTÃO ZERAR
 botaoZerar.addEventListener("click", function() {
-    // 1. Reseta a nossa variável interna de contagem de volta para zero
     quantidadeCliques = 0;
-    
-    // 2. Atualiza o texto na tela para mostrar o número 0 novamente
     textoNumero.innerText = quantidadeCliques;
-    
-    // 3. Remove qualquer cor aleatória que tenha sido aplicada, voltando à cor padrão do CSS
     textoNumero.style.color = "";
 });
 
-// ==========================================
-// 6. LÓGICA DO BOTÃO VOLTAR AO TOPO
-// ==========================================
 
-// Captura o botão do topo através do ID
+// ==========================================
+// 6. BOTÃO VOLTAR AO TOPO
+// ==========================================
 const botaoTopo = document.getElementById("botao-topo");
-
-// Dizemos para a janela inteira do navegador (window) monitorar o ato de rolar a página (scroll)
 window.addEventListener("scroll", function() {
-    
-    // Se a quantidade de pixels rolados para baixo for maior que 300...
     if (window.scrollY > 300) {
-        // Adiciona a classe que deixa o botão visível
         botaoTopo.classList.add("visivel");
     } else {
-        // Se estiver perto do topo (menor que 300px), remove a classe e esconde o botão
         botaoTopo.classList.remove("visivel");
     }
 });
 
-// Adiciona a ação de clique no botão do topo
 botaoTopo.addEventListener("click", function() {
-    // Faz a janela deslizar de volta para a coordenada X=0, Y=0 (o topo absoluto do site)
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth" // Garante o movimento suave
-    });
+    window.scrollTo({ top: 0, behavior: "smooth" });
 });
 
-// ==========================================
-// 7. LÓGICA DO MENU RESPONSIVO (HAMBÚRGUER)
-// ==========================================
 
+// ==========================================
+// 7. MENU RESPONSIVO (HAMBÚRGUER)
+// ==========================================
 const botaoMenu = document.getElementById("botao-menu-celular");
 const linksMenu = document.querySelector(".links-menu");
 const todosOsLinks = document.querySelectorAll(".links-menu a");
 
-// Função para abrir ou fechar o menu ao clicar no botão hambúrguer
 botaoMenu.addEventListener("click", function() {
-    botaoMenu.classList.toggle("aberto");   // Faz as barrinhas virarem X
-    linksMenu.classList.toggle("aberto");   // Faz o menu lateral deslizar para dentro
+    botaoMenu.classList.toggle("aberto");
+    linksMenu.classList.toggle("aberto");
 });
 
-// Fechar o menu automaticamente se o usuário clicar em qualquer link (Scroll Suave)
 todosOsLinks.forEach(function(link) {
     link.addEventListener("click", function() {
         botaoMenu.classList.remove("aberto");
         linksMenu.classList.remove("aberto");
     });
+});
+
+
+// ==========================================
+// 8. DESTAQUE DINÂMICO NO MENU AO ROLAR A TELA
+// ==========================================
+
+// Criamos um 'Sensor de Tela' (IntersectionObserver)
+// Ele fica olhando se a seção correspondente está ocupando espaço visível na visão do usuário
+const sensorDeSecoes = new IntersectionObserver((entradas) => {
+    entradas.forEach(entrada => {
+        // Se a seção entrou de forma visível na tela...
+        if (entrada.isIntersecting) {
+            // Descobre o ID da seção atual (ex: 'projetos' ou 'contato')
+            const idSecao = entrada.target.getAttribute("id");
+            
+            // Procura no menu qual é o link <a> que aponta para o ID dessa seção
+            todosOsLinks.forEach(link => {
+                if (link.getAttribute("href") === `#${idSecao}`) {
+                    link.classList.add("link-ativo"); // Adiciona o destaque azul aceso
+                } else {
+                    link.classList.remove("link-ativo"); // Apaga o destaque dos outros links
+                }
+            });
+        }
+    });
+}, {
+    rootMargin: "-30% 0px -60% 0px" // Configura o sensor para disparar exatamente quando o bloco estiver no meio da tela
+});
+
+// Dizemos ao sensor para espionar os nossos blocos principais que possuem IDs configurados
+document.querySelectorAll("#inicio, #projetos, #contato").forEach(secao => {
+    sensorDeSecoes.observe(secao);
 });

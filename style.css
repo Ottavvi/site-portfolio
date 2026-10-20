@@ -507,3 +507,35 @@ body.modo-noturno .links-menu a {
         background-color: #38bdf8 !important; /* Barrinhas azul neon no escuro */
     }
 }
+
+/* ==========================================
+   11. MELHORIAS AVANÇADAS (MEMÓRIA, VALIDAÇÃO E MENUS)
+   ========================================== */
+
+/* Estilo do contador de letras embaixo da mensagem */
+#contador-caracteres {
+    font-size: 12px;
+    text-align: right;
+    color: #64748b;
+    margin-top: -5px;
+    margin-bottom: 10px;
+    transition: color 0.2s;
+}
+
+/* Classe especial que o JavaScript vai injetar se o usuário estourar o limite */
+#contador-caracteres.limite-atingido {
+    color: #ef4444; /* Fica vermelho */
+    font-weight: bold;
+}
+
+/* CLASSE DE DESTAQUE DO MENU: Acende o link da seção onde o usuário está lendo */
+.menu-navegacao a.link-ativo {
+    color: #0284c7 !important;
+    border-bottom: 2px solid #0284c7;
+}
+
+/* Destaque do menu adaptado para o Modo Noturno */
+body.modo-noturno .menu-navegacao a.link-ativo {
+    color: #38bdf8 !important;
+    border-bottom: 2px solid #38bdf8;
+}
