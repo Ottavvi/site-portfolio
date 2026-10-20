@@ -33,16 +33,29 @@ if (botaoBoasVindas) {
 // 3. BARRA DE PROGRESSO DE LEITURA (CORRIGIDO)
 // ==========================================
 const barraProgresso = document.getElementById("barra-progresso");
-if (barraProgresso) {
-    window.addEventListener("scroll", function() {
-        const pixelScrolled = window.scrollY;
-        const viewportHeight = window.innerHeight;
-        const totalHeight = document.documentElement.scrollHeight;
-        
-        const porcentagem = (pixelScrolled / (totalHeight - viewportHeight)) * 100;
-        barraProgresso.style.width = porcentagem + "%";
-    });
+
+function atualizarProgresso() {
+  if (!barraProgresso) return;
+
+  const documento = document.documentElement;
+  const distancia =
+    documento.scrollHeight - window.innerHeight;
+
+  const porcentagem = distancia > 0
+    ? (window.scrollY / distancia) * 100
+    : 0;
+
+  barraProgresso.style.width =
+    `${Math.min(100, Math.max(0, porcentagem))}%`;
 }
+
+window.addEventListener("scroll", atualizarProgresso, {
+  passive: true
+});
+
+window.addEventListener("resize", atualizarProgresso);
+
+atualizarProgresso();
 
 // ==========================================
 // 4. EFEITO GLOW DINÂMICO NOS CARDS (CORRIGIDO)
@@ -81,46 +94,73 @@ if (campoMensagem && indicadorContador) {
 // ==========================================
 // 6. FORMULÁRIO DE CONTATO REAL (WEB3FORMS VIA FETCH)
 // ==========================================
-const formulario = document.getElementById("formulario-contato");
-if (formulario) {
-    formulario.addEventListener("submit", function(event) {
-        event.preventDefault();
-        const formData = new FormData(formulario);
-        const botaoEnvio = formulario.querySelector("button[type='submit']");
-        if (botaoEnvio) {
-            botaoEnvio.innerText = "Enviando...";
-            botaoEnvio.disabled = true;
-        }
 
-        fetch("https://web3forms.com", {
-            method: "POST",
-            body: formData
-        })
-        .then(response => {
-            if (response.ok) {
-                mostrarNotificacao("Sua mensagem foi enviada com sucesso! 🚀");
-                formulario.reset();
-                if (indicadorContador) {
-                    indicadorContador.innerText = "0 / 300 caracteres";
-                    indicadorContador.classList.remove("limite-atingido");
-                }
-            } else {
-                mostrarNotificacao("O servidor recusou o envio. Verifique sua Access Key.");
-            }
-        })
-        .catch(error => {
-            console.error("Erro no fetch:", error);
-            mostrarNotificacao("Erro de conexão. Enviando de forma nativa...");
-            formulario.submit();
-        })
-        .finally(() => {
-            if (botaoEnvio) {
-                botaoEnvio.innerText = "Enviar Mensagem";
-                botaoEnvio.disabled = false;
-            }
-        });
-    });
+const formulario = document.getElementById("formulario-contato");
+
+if (formulario) {
+  formulario.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const botao = formulario.querySelector(
+      'button[type="submit"]'
+    );
+
+    if (!formulario.reportValidity()) return;
+
+    const textoOriginal = botao?.textContent;
+
+    if (botao) {
+      botao.disabled = true;
+      botao.textContent = "Enviando...";
+    }
+
+    try {
+      const resposta = await fetch(
+        "https://api.web3forms.com/submit",
+        {
+          method: "POST",
+          body: new FormData(formulario),
+          headers: {
+            Accept: "application/json"
+          }
+        }
+      );
+
+      const resultado = await resposta.json();
+
+      if (!resposta.ok || resultado.success !== true) {
+        throw new Error(
+          resultado.message || "Não foi possível enviar a mensagem."
+        );
+      }
+
+      mostrarNotificacao("Mensagem enviada com sucesso!");
+
+      formulario.reset();
+
+      const contador = document.getElementById(
+        "contador-caracteres"
+      );
+
+      if (contador) {
+        contador.textContent = "0 / 300 caracteres";
+        contador.classList.remove("limite-atingido");
+      }
+    } catch (erro) {
+      console.error("Erro ao enviar formulário:", erro);
+
+      mostrarNotificacao(
+        "Não foi possível confirmar o envio. Tente novamente."
+      );
+    } finally {
+      if (botao) {
+        botao.disabled = false;
+        botao.textContent = textoOriginal || "Enviar Mensagem";
+      }
+    }
+  });
 }
+
 
 // ==========================================
 // 7. LÓGICA DO CONTADOR DE CLIQUES
@@ -181,19 +221,25 @@ const linksMenu = document.querySelector(".links-menu");
 const todosOsLinks = document.querySelectorAll(".links-menu a");
 
 if (botaoMenu && linksMenu) {
-    botaoMenu.addEventListener("click", function() {
-        botaoMenu.classList.toggle("aberto");
-        linksMenu.classList.toggle("aberto");
-    });
-}
+  botaoMenu.addEventListener("click", () => {
+    const aberto = linksMenu.classList.toggle("aberto");
 
-if (todosOsLinks) {
-    todosOsLinks.forEach(function(link) {
-        link.addEventListener("click", function() {
-            if (botaoMenu) botaoMenu.classList.remove("aberto");
-            if (linksMenu) linksMenu.classList.remove("aberto");
-        });
+    botaoMenu.classList.toggle("aberto", aberto);
+    botaoMenu.setAttribute("aria-expanded", String(aberto));
+    botaoMenu.setAttribute(
+      "aria-label",
+      aberto ? "Fechar menu" : "Abrir menu"
+    );
+  });
+
+  linksMenu.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => {
+      linksMenu.classList.remove("aberto");
+      botaoMenu.classList.remove("aberto");
+      botaoMenu.setAttribute("aria-expanded", "false");
+      botaoMenu.setAttribute("aria-label", "Abrir menu");
     });
+  });
 }
 
 // ==========================================

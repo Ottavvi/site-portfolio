@@ -8,13 +8,20 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="links-menu" id="links-menu"></div>
     <div id="barra-progresso"></div>
 
 
         <!-- MENU DE NAVEGAÇÃO SUPERIOR -->
         <!-- 1. BUSQUE E SUBSTITUA O BLOCO NAV NO INÍCIO DO SEU INDEX.HTML -->
     <nav class="menu-navegacao">
-        <button id="botao-menu-celular" class="hamburguer">
+        <button 
+        id="botao-menu-celular"
+        class="hamburguer"
+        type="button"
+        aria-label="Abrir menu"
+        aria-expanded="false"
+        aria-controls="links-menu">
             <span class="barrinha"></span>
             <span class="barrinha"></span>
             <span class="barrinha"></span>
@@ -26,9 +33,6 @@
             <a href="#contato">Contato</a>
             <a href="sobre.html">Sobre Mim</a>
         </div>
-
-        <!-- Nova linha fininha que vai encher conforme você rola a página -->
-        <div id="barra-progresso"></div>
     </nav>
 
 
