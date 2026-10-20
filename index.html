@@ -10,22 +10,25 @@
 <body>
 
         <!-- MENU DE NAVEGAÇÃO SUPERIOR -->
+        <!-- 1. BUSQUE E SUBSTITUA O BLOCO NAV NO INÍCIO DO SEU INDEX.HTML -->
     <nav class="menu-navegacao">
-        <!-- O botão do celular fica aqui -->
         <button id="botao-menu-celular" class="hamburguer">
             <span class="barrinha"></span>
             <span class="barrinha"></span>
             <span class="barrinha"></span>
         </button>
 
-        <!-- OS LINKS DEVEM FICAR EXATAMENTE AQUI DENTRO DA DIV: -->
         <div class="links-menu">
             <a href="#inicio">Início</a>
             <a href="#projetos">Projetos</a>
             <a href="#contato">Contato</a>
             <a href="sobre.html">Sobre Mim</a>
         </div>
+
+        <!-- Nova linha fininha que vai encher conforme você rola a página -->
+        <div id="barra-progresso"></div>
     </nav>
+
 
 
 
@@ -113,6 +116,15 @@
     <footer>
         <p>© 2026 - Desenvolvido por Otávio com muito código e café! ☕</p>
     </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+    <!-- 2. VÁ ATÉ O FINAL DO SEU INDEX.HTML E ADICIONE ESTA DIV LOGO ACIMA DA TAG SCRIPT -->
+    
+    <!-- Container invisível que vai segurar e empilhar as notificações elegantes -->
+    <div id="container-toast"></div>
 
     <script src="script.js"></script>
 </body>

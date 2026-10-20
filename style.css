@@ -539,3 +539,105 @@ body.modo-noturno .menu-navegacao a.link-ativo {
     color: #38bdf8 !important;
     border-bottom: 2px solid #38bdf8;
 }
+
+/* ==========================================
+   12. MICROINTERAÇÕES VISUAIS PREMIUM (PROGRESSO, GLOW E TOASTS)
+   ========================================== */
+
+/* BARRA DE PROGRESSO DE LEITURA */
+#barra-progresso {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    width: 0%; /* Começa em 0% e o JavaScript vai alterando */
+    background-color: #0369a1;
+    transition: width 0.1s ease-out;
+}
+
+body.modo-noturno #barra-progresso {
+    background-color: #38bdf8;
+}
+
+/* EFEITO GLOW (BRILHO) NOS BENTO CARDS */
+.card-projeto {
+    position: relative;
+    overflow: hidden; /* Garante que o brilho não escape para fora das bordas arredondadas */
+}
+
+/* Criamos uma camada invisível em cima do card usando um gradiente que segue as variáveis do JS */
+.card-projeto::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Usa as variáveis dinâmicas --x e --y que o JavaScript calculará */
+    background: radial-gradient(80px circle at var(--x, 0px) var(--y, 0px), rgba(3, 105, 161, 0.15), transparent 80%);
+    transition: opacity 0.3s;
+    pointer-events: none; /* Permite clicar no texto do card normalmente */
+    opacity: 0; /* Fica apagado por padrão */
+}
+
+/* Acende o efeito luminoso apenas quando o mouse estiver em cima do card */
+.card-projeto:hover::before {
+    opacity: 1;
+}
+
+/* Ajuste do brilho para se destacar no Modo Noturno */
+body.modo-noturno .card-projeto::before {
+    background: radial-gradient(100px circle at var(--x, 0px) var(--y, 0px), rgba(56, 189, 248, 0.25), transparent 80%);
+}
+
+/* SISTEMA DE NOTIFICAÇÕES TOAST */
+#container-toast {
+    position: fixed;
+    top: 90px; /* Surge logo abaixo do menu fixo */
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 2000;
+}
+
+.toast {
+    background-color: #ffffff;
+    color: #1e293b;
+    padding: 14px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    border-left: 5px solid #0369a1; /* Linha azul de destaque */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    /* Animação: desliza da direita para a esquerda ao surgir */
+    animation: deslizarEntrada 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    transition: all 0.4s ease;
+}
+
+body.modo-noturno .toast {
+    background-color: #1e293b;
+    color: #f1f5f9;
+    border-left-color: #38bdf8;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+/* Classe invisível que o JS injetará antes de apagar a notificação */
+.toast.escondendo {
+    opacity: 0;
+    transform: scale(0.9) translateX(50px);
+}
+
+@keyframes deslizarEntrada {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
