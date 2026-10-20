@@ -39,31 +39,55 @@ botaoBoasVindas.addEventListener("click", function() {
 }); // O parêntese fecha o addEventListener e o ponto e vírgula encerra a instrução.
 
 // ==========================================
-// 3. LÓGICA DO FORMULÁRIO DE CONTATO
+// 3. LÓGICA DO FORMULÁRIO DE CONTATO REAL (WEB3FORMS)
 // ==========================================
 
-// Captura o formulário do HTML usando o ID único dele
-// Procura no HTML pelo formulário completo através do ID 'formulario-contato'
 const formulario = document.getElementById("formulario-contato");
 
-// Adiciona um ouvinte para o momento do envio (submit). 
-// Note que passamos a palavra 'event' dentro dos parênteses da função.
-// Esse 'event' é um objeto que o próprio navegador cria contendo todos os detalhes daquele envio.
-// Escuta o evento de 'submit' (quando o usuário tenta enviar o formulário clicando no botão)
 formulario.addEventListener("submit", function(event) {
-    // Traduzindo do inglês: "Previna o comportamento padrão".
-    // Esta linha diz ao navegador: "Não recarregue a página! Deixe que o JavaScript cuida do que vai acontecer agora."
-    // Por padrão, os navegadores recarregam a página inteira ao enviar um formulário.
-    // O comando abaixo impede esse comportamento padrão, permitindo que a nossa mensagem apareça sem sumir com os dados da tela
+    // Impede o navegador de recarregar a página e estragar a experiência
     event.preventDefault();
     
-    // Como a página não recarregou, o código continua executando normalmente nesta janela:
-    // Dispara um alerta avisando que funcionou (uma simulação de envio de dados)
-    alert("Mensagem enviada com sucesso! (Simulação de envio)");
+    // Captura os dados digitados nos campos do formulário de forma automática
+    const formData = new FormData(formulario);
     
-    // Limpa os campos de texto com segurança, sem precisar atualizar o site
-    // Limpa todos os campos digitados (nome, e-mail e mensagem), deixando o formulário em branco novamente
-    formulario.reset();
+    // Transforma os dados em um formato que o servidor web entende (JSON)
+    const objetoDados = Object.fromEntries(formData);
+    const json = JSON.stringify(objetoDados);
+
+    // Exibe um aviso temporário no botão para o usuário saber que está processando
+    const botaoEnvio = formulario.querySelector("button[type='submit']");
+    botaoEnvio.innerText = "Enviando...";
+    botaoEnvio.disabled = true; // Desativa o botão para evitar cliques duplicados
+
+    // Faz uma requisição (Fetch) em segundo plano para o servidor do Web3Forms enviar o e-mail
+    fetch("https://web3forms.com", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        body: json
+    })
+    .then(async (response) => {
+        // Se o servidor aceitou e enviou o e-mail com sucesso...
+        if (response.status == 200) {
+            alert("Sua mensagem foi enviada com sucesso direto para o e-mail do Otávio! 🚀");
+            formulario.reset(); // Limpa os campos
+        } else {
+            // Caso aconteça algum erro de servidor
+            alert("Ops! Ocorreu um erro ao enviar. Verifique se configurou sua chave de acesso (Access Key).");
+        }
+    })
+    .catch(error => {
+        // Caso o usuário esteja sem internet ou o servidor caia
+        alert("Erro de conexão. Não foi possível enviar a mensagem.");
+    })
+    .finally(() => {
+        // Devolve o texto padrão ao botão após terminar todo o processo
+        botaoEnvio.innerText = "Enviar Mensagem";
+        botaoEnvio.disabled = false;
+    });
 });
 
 // ==========================================

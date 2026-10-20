@@ -340,3 +340,38 @@ body.modo-noturno #botao-topo {
     background-color: #38bdf8;
     color: #0f172a;
 }
+
+/* ==========================================
+   9. ANIMAÇÕES DE ENTRADA SUAVES (KEYFRAMES)
+   ========================================== */
+
+/* Criamos a receita da animação chamada 'surgirESubir' */
+@keyframes surgirESubir {
+    from {
+        opacity: 0; /* Começa totalmente invisível */
+        transform: translateY(30px); /* Começa 30 pixels deslocado para baixo */
+    }
+    to {
+        opacity: 1; /* Termina totalmente visível */
+        transform: translateY(0); /* Termina na posição correta dele */
+    }
+}
+
+/* Aplicamos a receita na classe que colocamos no HTML */
+.animar-subir {
+    opacity: 0; /* Começa invisível para não dar um 'susto' na tela antes da animação rodar */
+    animation: surgirESubir 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    /* 
+       0.8s = Tempo que a animação demora para acontecer
+       cubic-bezier = É uma curva de velocidade que faz a animação começar rápida e frear suavemente (efeito premium)
+       forwards = Mantém o elemento visível após a animação terminar
+    */
+}
+
+/* DICA DE MESTRE: Cria um atraso (delay) para os elementos não surgirem todos idênticos ao mesmo tempo */
+h1.animar-subir { animation-delay: 0.1s; }
+img.animar-subir { animation-delay: 0.2s; }
+p.animar-subir { animation-delay: 0.3s; }
+.secao-projetos.animar-subir { animation-delay: 0.4s; }
+.container-contador.animar-subir { animation-delay: 0.5s; }
+.secao-contato.animar-subir { animation-delay: 0.6s; }
