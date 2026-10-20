@@ -382,21 +382,25 @@ p.animar-subir { animation-delay: 0.3s; }
 
 /* Por padrão, o botão hambúrguer fica escondido no computador */
 #botao-menu-celular {
-    display: none;
+    display: none; /* Continua escondido no computador */
     flex-direction: column;
     justify-content: space-between;
     width: 30px;
     height: 21px;
-    background: transparent;
-    border: none;
-    padding: 0;
+    background: transparent !important; /* Força o fundo a ficar transparente */
+    border: none !important; /* Remove qualquer borda antiga */
+    box-shadow: none !important; /* Remove qualquer sombra antiga */
+    padding: 0 !important; /* Limpa os espaços internos */
     cursor: pointer;
     z-index: 1001;
 }
 
+/* Garante que o botão não tente flutuar ou se mover no celular */
 #botao-menu-celular:hover {
-    transform: none; /* Remove o efeito de flutuar do botão padrão */
+    transform: none !important;
+    background: transparent !important;
 }
+
 
 /* Estilo das 3 barrinhas do botão */
 .barrinha {
