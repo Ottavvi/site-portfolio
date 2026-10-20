@@ -1,134 +1,279 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <!-- ESSA LINHA ABAIXO É OBRIGATÓRIA PARA O CELULAR FUNCIONAR: -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meu Primeiro Site</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Otávio | Desenvolvedor Web</title>
+<meta name="description" content="Portfólio de Otávio, desenvolvedor web em formação. Projetos, habilidades e contato.">
+<style>
+:root {
+  --site-primary: #a3e635;
+  --site-on-primary: #17220a;
+  --site-secondary: #171b24;
+  --site-on-secondary: #f3f4f6;
+  --site-background: #0b0d12;
+  --site-on-background: #f3f4f6;
+  --site-font-body: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --site-font-heading: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --site-heading-scale: 1;
+  --site-spacing-scale: 1;
+  --site-radius-scale: 1;
+  --site-decoration-opacity: 1;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--site-background); color: var(--site-on-background); font-family: var(--site-font-body); line-height: 1.6; }
+#app { min-height: 100vh; width: 100%; background-color: var(--site-background); color: var(--site-on-background); border-radius: 0; overflow: hidden; }
+a { color: inherit; text-decoration: none; }
+button, input, textarea { font: inherit; }
+.wrap { width: min(1120px, calc(100% - 40px)); margin: auto; }
+header { border-bottom: 1px solid #ffffff12; position: sticky; top: 0; z-index: 10; backdrop-filter: blur(18px); background: #0b0d12e8; }
+.nav { display:flex; align-items:center; justify-content:space-between; min-height:76px; gap:20px; }
+.logo { font-weight: 850; letter-spacing: -.06em; font-size: 1.3rem; }
+.logo span { color: var(--site-primary); }
+.links { display:flex; gap:28px; align-items:center; color:#b9bec8; font-size:.92rem; }
+.links a:hover, .text-link:hover { color:var(--site-primary); }
+.menu-btn { display:none; border:1px solid #ffffff22; background:transparent; color:inherit; padding:8px 12px; border-radius:10px; }
+.hero { padding: 92px 0 84px; position:relative; }
+.hero:before { content:""; position:absolute; width:450px; height:450px; border-radius:50%; background:radial-gradient(circle, #a3e63517, transparent 68%); right:-110px; top:0; opacity:var(--site-decoration-opacity); pointer-events:none; }
+.hero-grid { display:grid; grid-template-columns:1.25fr .75fr; gap:64px; align-items:center; position:relative; }
+.eyebrow { display:inline-flex; align-items:center; gap:9px; color:#d5f99a; background:#a3e63512; border:1px solid #a3e63530; padding:7px 12px; border-radius:999px; font-size:.82rem; font-weight:650; }
+.dot { width:7px; height:7px; background:var(--site-primary); border-radius:50%; box-shadow:0 0 0 4px #a3e63520; }
+h1,h2,h3,p { margin-top:0; }
+h1 { font-family:var(--site-font-heading); font-size:clamp(2.65rem, 6vw, 5rem); line-height:1.04; letter-spacing:-.065em; margin:22px 0; font-weight:850; }
+h1 em { color:var(--site-primary); font-style:normal; }
+.lead { color:#aeb4c0; font-size:1.12rem; max-width:610px; line-height:1.8; }
+.actions { display:flex; gap:12px; flex-wrap:wrap; margin:28px 0 26px; }
+.btn { display:inline-flex; align-items:center; justify-content:center; gap:9px; padding:12px 17px; border-radius:12px; font-weight:750; border:1px solid transparent; transition:transform .18s, border-color .18s; cursor:pointer; }
+.btn:hover { transform:translateY(-2px); }
+.btn-primary { background:var(--site-primary); color:var(--site-on-primary); }
+.btn-ghost { border-color:#ffffff25; color:#f4f5f7; background:#ffffff05; }
+.btn-ghost:hover { border-color:#a3e63570; }
+.stack { color:#858c99; font-size:.88rem; }
+.stack strong { color:#dce0e7; font-weight:600; }
+.profile-card { background:linear-gradient(145deg,#1a202a,#101319); border:1px solid #ffffff16; border-radius:24px; padding:28px; box-shadow:0 25px 80px #0005; position:relative; }
+.profile-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:30px; color:#a9b0bd; font-size:.82rem; }
+window, .window { border:1px solid #ffffff1b; border-radius:16px; overflow:hidden; background:#0d1016; }
+.window-bar { padding:12px 14px; border-bottom:1px solid #ffffff12; display:flex; gap:6px; }
+.window-bar i { display:block; width:8px; height:8px; border-radius:50%; background:#444b58; }
+.code { padding:22px 18px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.83rem; line-height:2; color:#b9c2d0; }
+.code .green { color:#b5ef62; } .code .purple { color:#c7a7ff; } .code .muted { color:#647080; }
+.stat-row { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:16px; }
+.stat { background:#ffffff06; border:1px solid #ffffff0d; border-radius:12px; padding:12px; }
+.stat b { display:block; font-size:.93rem; color:#f4f5f7; } .stat span { font-size:.72rem; color:#858d9a; }
+section { padding:78px 0; border-top:1px solid #ffffff0c; }
+.section-kicker { color:var(--site-primary); text-transform:uppercase; font-size:.75rem; font-weight:800; letter-spacing:.14em; }
+h2 { font-size:clamp(1.9rem,4vw,3rem); line-height:1.12; letter-spacing:-.05em; margin:12px 0 15px; }
+.section-intro { color:#9da5b2; max-width:650px; }
+.projects { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:32px; }
+.project { border:1px solid #ffffff15; background:#12151c; border-radius:18px; overflow:hidden; transition:transform .2s,border-color .2s; }
+.project:hover { transform:translateY(-4px); border-color:#a3e63560; }
+.project-art { min-height:174px; padding:20px; background:linear-gradient(145deg,#202b1c,#12171a); display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; }
+.project-art.purple-bg { background:linear-gradient(145deg,#29213c,#15131d); }
+.project-art.blue-bg { background:linear-gradient(145deg,#172a39,#11151c); }
+.mock-card { width:90%; border:1px solid #ffffff20; border-radius:12px; background:#0c0f14e8; padding:14px; box-shadow:0 12px 30px #0005; transform:rotate(-2deg); }
+.mock-line { height:6px; border-radius:10px; background:#ffffff22; margin:8px 0; width:85%; }
+.mock-line.short { width:48%; } .mock-button { margin-top:12px; height:20px; width:48%; border-radius:5px; background:var(--site-primary); }
+.project-body { padding:20px; }
+.tags { display:flex; flex-wrap:wrap; gap:7px; margin:14px 0 18px; }
+.tag { font-size:.72rem; border:1px solid #ffffff1a; border-radius:7px; padding:4px 8px; color:#aeb5c1; }
+.project h3 { font-size:1.1rem; margin-bottom:7px; }
+.project p { color:#9ca4b1; font-size:.9rem; margin-bottom:0; }
+.project-note { color:#777f8d; font-size:.78rem; margin-top:14px; }
+.project-links { display:flex; gap:15px; margin-top:18px; font-size:.84rem; font-weight:700; }
+.project-links a { color:#d4f6a0; }
+.skills-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:28px; }
+.skill-box { padding:22px; border:1px solid #ffffff14; background:#12151c; border-radius:16px; }
+.skill-box h3 { margin-bottom:10px; }
+.skill-box p { color:#9ca4b1; margin:0; font-size:.93rem; }
+.about-grid { display:grid; grid-template-columns:1fr 1fr; gap:42px; align-items:start; }
+.about-copy { color:#a6adba; }
+.availability { margin-top:20px; display:flex; align-items:center; gap:10px; color:#c4cbd5; font-size:.9rem; }
+.contact-box { border:1px solid #a3e63535; background:linear-gradient(135deg,#151b16,#12151c); border-radius:22px; padding:30px; display:flex; justify-content:space-between; align-items:center; gap:28px; }
+.contact-box p { color:#a8b0bc; margin:8px 0 0; }
+footer { border-top:1px solid #ffffff12; padding:24px 0; color:#777f8d; font-size:.84rem; }
+footer .foot { display:flex; align-items:center; justify-content:space-between; gap:20px; }
+.small-links { display:flex; gap:18px; }
+.small-links a:hover { color:var(--site-primary); }
+.notice { display:none; padding:10px 12px; background:#a3e63515; color:#d8f8a5; border-radius:10px; margin-top:12px; font-size:.86rem; }
+@media (max-width:800px) {
+ .hero { padding:64px 0; } .hero-grid { grid-template-columns:1fr; gap:34px; } .profile-card { max-width:540px; }
+ .projects { grid-template-columns:1fr 1fr; } .projects .project:last-child { grid-column:1/-1; }
+ .about-grid { grid-template-columns:1fr; gap:22px; } .contact-box { align-items:flex-start; flex-direction:column; }
+}
+@media (max-width:560px) {
+ .wrap { width:min(100% - 28px,1120px); } .nav { min-height:66px; } .menu-btn { display:block; }
+ .links { display:none; position:absolute; left:14px; right:14px; top:65px; padding:18px; border:1px solid #ffffff1b; border-radius:14px; background:#11151c; flex-direction:column; align-items:flex-start; gap:16px; }
+ .links.open { display:flex; } .hero { padding:54px 0; } .profile-card { padding:16px; } .code { font-size:.72rem; padding:16px 12px; }
+ section { padding:58px 0; } .projects { grid-template-columns:1fr; } .projects .project:last-child { grid-column:auto; }
+ .skills-grid { grid-template-columns:1fr; } footer .foot { align-items:flex-start; flex-direction:column; }
+}
+@media (prefers-reduced-motion: reduce) { html {scroll-behavior:auto} *,*::before,*::after {transition:none!important; animation:none!important} }
+</style>
 </head>
 <body>
-    <div class="links-menu" id="links-menu"></div>
-    <div id="barra-progresso"></div>
-
-
-        <!-- MENU DE NAVEGAÇÃO SUPERIOR -->
-        <!-- 1. BUSQUE E SUBSTITUA O BLOCO NAV NO INÍCIO DO SEU INDEX.HTML -->
-    <nav class="menu-navegacao">
-        <button 
-        id="botao-menu-celular"
-        class="hamburguer"
-        type="button"
-        aria-label="Abrir menu"
-        aria-expanded="false"
-        aria-controls="links-menu">
-            <span class="barrinha"></span>
-            <span class="barrinha"></span>
-            <span class="barrinha"></span>
-        </button>
-
-        <div class="links-menu">
-            <a href="#inicio">Início</a>
-            <a href="#projetos">Projetos</a>
-            <a href="#contato">Contato</a>
-            <a href="sobre.html">Sobre Mim</a>
-        </div>
+<div id="app">
+<header>
+  <div class="wrap nav">
+    <a class="logo" href="#inicio" aria-label="Otávio, início">ottavvi<span>.</span>dev</a>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="navLinks">Menu ☰</button>
+    <nav class="links" id="navLinks" aria-label="Navegação principal">
+      <a href="#projetos">Projetos</a><a href="#habilidades">Habilidades</a><a href="#sobre">Sobre mim</a><a href="#contato">Contato</a>
     </nav>
-
-
-
-
-    <!-- Botão voltar ao topo -->
-    <button id="botao-topo" title="Voltar ao topo">↑</button>
-
-    <!-- Adicionamos as classes 'animar-subir' nos blocos principais para disparar a animação -->
-    <div id="inicio" class="controles animar-subir">
-        <button id="botao-tema">Alternar Modo Noturno</button>
-        <button id="botao-boas-vindas">Mensagem Especial</button>
-
+  </div>
+</header>
+<main>
+<section class="hero" id="inicio" style="border-top:0">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow"><span class="dot"></span> Desenvolvedor web em formação</div>
+      <h1>Transformando ideias em <em>experiências digitais.</em></h1>
+      <p class="lead">Olá, sou Otávio. Estou desenvolvendo minhas habilidades em criação de sites e aplicações web, unindo visual moderno, funcionalidade e atenção à experiência de quem usa.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="#projetos">Explorar projetos <span aria-hidden="true">↘</span></a>
+        <a class="btn btn-ghost" href="#contato">Vamos conversar <span aria-hidden="true">↗</span></a>
+      </div>
+      <p class="stack">Trabalhando com <strong>HTML</strong> · <strong>CSS</strong> · <strong>JavaScript</strong></p>
     </div>
-
-    <!-- O h1 e a imagem também vão surgir de forma suave -->
-    <h1 class="animar-subir">Bem-vindo ao Meu Site!</h1>
-
-    <img src="imagens/perfil.png" alt="Foto de perfil do Otávio" class="animar-subir">
-
-    <p class="animar-subir">Me chamo Otávio. Este é o meu primeiro projeto usando HTML. Estou aprendendo a criar páginas web.</p>
-
-    <!-- Galeria de Projetos em estilo Bento Cards -->
-    <div id="projetos" class="secao-projetos animar-subir">
-        <h2>Meus Projetos Futuros</h2>
-        
-        <div class="grid-projetos">
-            <div class="card-projeto">
-                <h3>Este Portfólio</h3>
-                <p>Meu primeiro site oficial hospedado no GitHub Pages com modo noturno e interatividades.</p>
-                <div class="tags">
-                    <span class="tag html">HTML</span>
-                    <span class="tag css">CSS</span>
-                    <span class="tag js">JavaScript</span>
-                </div>
-            </div>
-
-            <div class="card-projeto">
-                <h3>Cronômetro Online</h3>
-                <p>Um aplicativo web para marcar tempo, voltas e treinos utilizando funções avançadas de tempo do JavaScript.</p>
-                <div class="tags">
-                    <span class="tag html">HTML</span>
-                    <span class="tag js">JavaScript</span>
-                </div>
-            </div>
-
-            <div class="card-projeto">
-                <h3>App de Tarefas</h3>
-                <p>Gerenciador de tarefas diárias onde o usuário pode adicionar, marcar como concluído e excluir itens.</p>
-                <div class="tags">
-                    <span class="tag css">CSS</span>
-                    <span class="tag js">JavaScript</span>
-                </div>
-            </div>
+    <aside class="profile-card" aria-label="Prévia ilustrativa de código">
+      <div class="profile-top"><span>✳ &nbsp; EM CONSTRUÇÃO</span><span>01 / 03</span></div>
+      <div class="window">
+        <div class="window-bar"><i></i><i></i><i></i></div>
+        <div class="code">
+          <div><span class="purple">const</span> developer = {</div>
+          <div>&nbsp;&nbsp;nome: <span class="green">'Otávio'</span>,</div>
+          <div>&nbsp;&nbsp;foco: <span class="green">'Desenvolvimento web'</span>,</div>
+          <div>&nbsp;&nbsp;aprendendo: [</div>
+          <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="green">'HTML'</span>, <span class="green">'CSS'</span>,</div>
+          <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="green">'JavaScript'</span></div>
+          <div>&nbsp;&nbsp;],</div>
+          <div>&nbsp;&nbsp;objetivo: <span class="green">'Criar soluções úteis'</span></div>
+          <div>};</div>
+          <div class="muted">// sempre evoluindo...</div>
         </div>
+      </div>
+      <div class="stat-row">
+        <div class="stat"><b>Web</b><span>Desenvolvimento</span></div>
+        <div class="stat"><b>UI</b><span>Interfaces</span></div>
+        <div class="stat"><b>∞</b><span>Aprendizado</span></div>
+      </div>
+    </aside>
+  </div>
+</section>
+<section id="projetos">
+  <div class="wrap">
+    <div class="section-kicker">Trabalhos selecionados</div>
+    <h2>Projetos que transformam prática em experiência.</h2>
+    <p class="section-intro">Cada projeto é uma oportunidade de aprender, resolver um problema e melhorar minhas habilidades. Os exemplos abaixo são a direção dos próximos trabalhos — substitua-os por projetos reais conforme forem concluídos.</p>
+    <div class="projects">
+      <article class="project">
+        <div class="project-art">
+          <div class="mock-card"><div style="font-weight:800;font-size:.8rem;color:#e5f7d0">PRIME BARBER</div><div class="mock-line"></div><div class="mock-line short"></div><div class="mock-button"></div></div>
+        </div>
+        <div class="project-body">
+          <h3>Landing page para barbearia</h3>
+          <p>Uma página de negócio com serviços, preços, localização e chamada para agendamento.</p>
+          <div class="tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span></div>
+          <div class="project-links"><a href="#contato">Projeto em desenvolvimento ↗</a></div>
+          <div class="project-note">Conceito de projeto — ainda não é um cliente real.</div>
+        </div>
+      </article>
+      <article class="project">
+        <div class="project-art purple-bg">
+          <div class="mock-card"><div style="font-weight:800;font-size:.8rem;color:#e5d9ff">MINHAS TAREFAS</div><div class="mock-line"></div><div class="mock-line"></div><div class="mock-line short"></div></div>
+        </div>
+        <div class="project-body">
+          <h3>Lista de tarefas</h3>
+          <p>Aplicativo para adicionar, concluir e remover tarefas com salvamento no navegador.</p>
+          <div class="tags"><span class="tag">JavaScript</span><span class="tag">DOM</span><span class="tag">LocalStorage</span></div>
+          <div class="project-links"><a href="#contato">Projeto em desenvolvimento ↗</a></div>
+          <div class="project-note">Conceito de projeto — demonstração ainda não disponível.</div>
+        </div>
+      </article>
+      <article class="project">
+        <div class="project-art blue-bg">
+          <div class="mock-card"><div style="font-weight:800;font-size:.8rem;color:#c4e8ff">00:24:58</div><div class="mock-line"></div><div style="display:flex;gap:7px;margin-top:12px"><div class="mock-button" style="margin:0;width:45%"></div><div style="height:20px;width:30%;border:1px solid #ffffff30;border-radius:5px"></div></div></div>
+        </div>
+        <div class="project-body">
+          <h3>Cronômetro online</h3>
+          <p>Temporizador com iniciar, pausar, zerar e registrar voltas.</p>
+          <div class="tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span></div>
+          <div class="project-links"><a href="#contato">Projeto em desenvolvimento ↗</a></div>
+          <div class="project-note">Conceito de projeto — demonstração ainda não disponível.</div>
+        </div>
+      </article>
     </div>
-
-    <div class="container-contador animar-subir">
-        <button id="botao-contador">Me clique!</button>
-        <button id="botao-zerar">Zerar</button>
-        <p>Você clicou <span id="numero-cliques">0</span> vezes</p>
-
+  </div>
+</section>
+<section id="habilidades">
+  <div class="wrap">
+    <div class="section-kicker">Base técnica</div>
+    <h2>Aprendendo a construir para a web.</h2>
+    <p class="section-intro">Esta seção deve refletir apenas o que você já estudou e consegue explicar. À medida que avançar, atualize as habilidades e mostre exemplos concretos nos projetos.</p>
+    <div class="skills-grid">
+      <div class="skill-box"><h3>01 / HTML</h3><p>Estrutura semântica de páginas, links, imagens, formulários e organização do conteúdo.</p></div>
+      <div class="skill-box"><h3>02 / CSS</h3><p>Estilos, cores, tipografia, layouts responsivos e adaptação para celular.</p></div>
+      <div class="skill-box"><h3>03 / JavaScript</h3><p>Interatividade, eventos e comportamento dinâmico — evoluindo com projetos práticos.</p></div>
+      <div class="skill-box"><h3>04 / Git e GitHub</h3><p>Organização do código, histórico de alterações e publicação de projetos.</p></div>
     </div>
-
-    <!-- Seção de Contato Atualizada -->
-        <!-- SEÇÃO DE CONTATO ATUALIZADA (Procure por este bloco no seu index.html) -->
-    <div id="contato" class="secao-contato animar-subir">
-        <h2>Entre em Contato</h2>
-        <form id="formulario-contato" action="https://web3forms.com" method="POST">
-            <input type="hidden" name="access_key" value="80980d1a-2869-447e-a5b7-ea09b71fa377">
-            
-            <input type="text" name="nome" placeholder="Seu Nome" required>
-            <input type="email" name="email" placeholder="Seu E-mail" required>
-            
-            <!-- Adicionamos o atributo maxlength="300" para travar o teclado no limite -->
-            <textarea id="campo-mensagem" name="mensagem" placeholder="Sua Mensagem" rows="4" maxlength="300" required></textarea>
-            
-            <!-- Pequeno texto indicador que vai mudar via JavaScript -->
-            <div id="contador-caracteres">0 / 300 caracteres</div>
-            
-            <button type="submit" id="botao-enviar-formulario">Enviar Mensagem</button>
-        </form>
+  </div>
+</section>
+<section id="sobre">
+  <div class="wrap about-grid">
+    <div>
+      <div class="section-kicker">Um pouco sobre mim</div>
+      <h2>Curiosidade, prática e evolução constante.</h2>
     </div>
-
-
-    <br>
-    <a href="https://google.com" target="_blank" class="link-moderno animar-subir">Clique aqui para visitar o Google</a>
-
-    <footer>
-        <p>© 2026 - Desenvolvido por Otávio com muito código e café! ☕</p>
-    </footer>
-
-    <!-- Container invisível que vai segurar e empilhar as notificações elegantes -->
-    <div id="container-toast"></div>
-
-    <!-- O script é chamado apenas UMA vez, no final de tudo -->
-    <script src="script.js"></script>
+    <div class="about-copy">
+      <p>Estou construindo minha trajetória no desenvolvimento web e usando projetos práticos para aprender a transformar ideias em páginas úteis e bem apresentadas.</p>
+      <p>Quero colaborar com equipes, aprender com pessoas mais experientes e também ajudar pequenos negócios a terem uma presença digital profissional.</p>
+      <div class="availability"><span class="dot"></span> Aberto a oportunidades e projetos freelance</div>
+    </div>
+  </div>
+</section>
+<section id="contato">
+  <div class="wrap">
+    <div class="contact-box">
+      <div>
+        <div class="section-kicker">Próximo passo</div>
+        <h2>Tem uma ideia? Vamos conversar.</h2>
+        <p>Estou aberto a oportunidades de trabalho, colaborações e projetos para sites.</p>
+      </div>
+      <a class="btn btn-primary" href="mailto:SEU-EMAIL@EXEMPLO.COM?subject=Contato%20pelo%20portf%C3%B3lio" id="emailLink">Entrar em contato ↗</a>
+    </div>
+    <p class="notice" id="emailNotice">Antes de publicar, troque SEU-EMAIL@EXEMPLO.COM pelo seu e-mail real.</p>
+  </div>
+</section>
+</main>
+<footer>
+  <div class="wrap foot">
+    <span>© <span id="year"></span> Otávio. Feito com HTML, CSS e JavaScript.</span>
+    <div class="small-links">
+      <a href="https://github.com/Ottavvi" target="_blank" rel="noreferrer">GitHub ↗</a>
+      <a href="#inicio">Voltar ao topo ↑</a>
+    </div>
+  </div>
+</footer>
+</div>
+<script>
+const menuBtn = document.getElementById('menuBtn');
+const navLinks = document.getElementById('navLinks');
+menuBtn.addEventListener('click', () => {
+  const isOpen = navLinks.classList.toggle('open');
+  menuBtn.setAttribute('aria-expanded', String(isOpen));
+});
+navLinks.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+  navLinks.classList.remove('open');
+  menuBtn.setAttribute('aria-expanded', 'false');
+}));
+document.getElementById('year').textContent = new Date().getFullYear();
+document.getElementById('emailLink').addEventListener('click', event => {
+  if (event.currentTarget.href.includes('SEU-EMAIL@EXEMPLO.COM')) {
+    event.preventDefault();
+    document.getElementById('emailNotice').style.display = 'block';
+  }
+});
+</script>
 </body>
 </html>
