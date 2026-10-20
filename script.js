@@ -39,48 +39,42 @@ botaoBoasVindas.addEventListener("click", function() {
 }); // O parêntese fecha o addEventListener e o ponto e vírgula encerra a instrução.
 
 // ==========================================
-// 3. LÓGICA DO FORMULÁRIO DE CONTATO REAL (CORRIGIDO)
+// 3. LÓGICA DO FORMULÁRIO DE CONTATO (BLINDADO)
 // ==========================================
 
 const formulario = document.getElementById("formulario-contato");
 
 formulario.addEventListener("submit", function(event) {
-    // Impede o navegador de atualizar a página ao clicar no botão
+    // Impede o recarregamento padrão para tentarmos enviar via JavaScript primeiro
     event.preventDefault();
     
-    // Captura os dados digitados de forma nativa e automática
     const formData = new FormData(formulario);
-
-    // Seleciona o botão de envio para dar um feedback visual ao usuário
     const botaoEnvio = formulario.querySelector("button[type='submit']");
     botaoEnvio.innerText = "Enviando...";
-    botaoEnvio.disabled = true; // Trava o botão para evitar múltiplos cliques
+    botaoEnvio.disabled = true;
 
-    // Envia os dados diretamente ao servidor (Maneira nativa e segura que evita erros de conexão)
-    fetch("https://api.web3forms.com/submit", {
+    // Enviando de forma simples para o Web3Forms
+    fetch("https://web3forms.com", {
         method: "POST",
-        body: formData // Enviando o formData puro, o navegador configura os cabeçalhos sozinho!
+        body: formData
     })
-    .then(async (response) => {
-        // Converte a resposta do servidor para conseguirmos ler o resultado
-        const resultado = await response.json();
-        
-        // Se o servidor do Web3Forms processou o envio com sucesso
-        if (response.status === 200 || resultado.success) {
+    .then(response => {
+        if (response.ok) {
             alert("Sua mensagem foi enviada com sucesso direto para o e-mail do Otávio! 🚀");
-            formulario.reset(); // Deixa todos os campos em branco novamente
+            formulario.reset();
         } else {
-            // Caso a sua Access Key esteja errada ou falte algum campo obrigatório
-            alert("Erro do servidor: " + (resultado.message || "Verifique sua Access Key no HTML."));
+            alert("O servidor recusou o envio. Verifique se sua Access Key está correta.");
         }
     })
     .catch(error => {
-        // Trata erros reais de falta de internet do usuário
-        console.error("Erro técnico capturado:", error);
-        alert("Erro de rede. Verifique sua conexão com a internet.");
+        // Mostra o erro exato no painel de desenvolvedor do navegador
+        console.error("Erro detalhado do fetch:", error);
+        
+        // PLANO B: Se o JavaScript der erro de conexão/CORS, enviamos pelo método tradicional do HTML
+        alert("Enviando pelo servidor alternativo...");
+        formulario.submit(); // Dispara o envio nativo do HTML (a página vai atualizar, mas o e-mail vai chegar!)
     })
     .finally(() => {
-        // Devolve o comportamento e texto padrão ao botão ao finalizar o processo
         botaoEnvio.innerText = "Enviar Mensagem";
         botaoEnvio.disabled = false;
     });
