@@ -431,32 +431,37 @@ p.animar-subir { animation-delay: 0.3s; }
 @media (max-width: 768px) {
     
     /* Ativa o botão no celular e força ele a exibir as barrinhas */
+        /* SUBSTITUA APENAS ESTES DOIS BLOCOS DENTRO DO @media (max-width: 768px) */
+
     #botao-menu-celular {
         display: flex !important;
         flex-direction: column;
         justify-content: space-between;
         width: 30px;
-        height: 20px; /* Altura necessária para dar espaço entre as 3 linhas */
+        height: 18px; /* Altura firme para distanciar as 3 linhas */
         background: transparent !important;
         border: none !important;
         box-shadow: none !important;
         padding: 0 !important;
         cursor: pointer;
         z-index: 1001;
-        position: absolute;
+        
+        /* CORREÇÃO DO LUGAR: Mudamos de absolute para fixed */
+        /* Isso trava o botão exatamente dentro da barra branca do menu fixo */
+        position: fixed; 
         right: 20px;
-        top: 25px;
+        top: 25px; 
     }
 
-    /* FORÇA as barrinhas de dentro do botão a existirem visualmente */
     .barrinha {
-        display: block;
+        display: block !important;
         width: 100%;
         height: 3px;
-        background-color: #0369a1 !important; /* Cor azul no modo claro */
+        background-color: #0369a1 !important; /* Força o azul escuro a aparecer no modo claro */
         border-radius: 2px;
         transition: all 0.3s ease;
     }
+
 
     /* Transforma o menu em um painel lateral no celular */
     .links-menu {
