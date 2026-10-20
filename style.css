@@ -375,3 +375,105 @@ p.animar-subir { animation-delay: 0.3s; }
 .secao-projetos.animar-subir { animation-delay: 0.4s; }
 .container-contador.animar-subir { animation-delay: 0.5s; }
 .secao-contato.animar-subir { animation-delay: 0.6s; }
+
+/* ==========================================
+   10. RESPONSIVIDADE E MENU HAMBÚRGUER
+   ========================================== */
+
+/* Por padrão, o botão hambúrguer fica escondido no computador */
+#botao-menu-celular {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 21px;
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    z-index: 1001;
+}
+
+#botao-menu-celular:hover {
+    transform: none; /* Remove o efeito de flutuar do botão padrão */
+}
+
+/* Estilo das 3 barrinhas do botão */
+.barrinha {
+    width: 100%;
+    height: 3px;
+    background-color: #0369a1;
+    border-radius: 2px;
+    transition: all 0.3s ease; /* Animação para quando virar um X */
+}
+
+body.modo-noturno .barrinha {
+    background-color: #38bdf8;
+}
+
+/* REGRAS EXCLUSIVAS PARA CELULARES (Telas até 768px) */
+@media (max-width: 768px) {
+    
+    /* Mostra o botão hambúrguer */
+    #botao-menu-celular {
+        display: flex;
+        position: absolute;
+        right: 20px;
+        top: 25px;
+    }
+
+    .menu-navegacao {
+        justify-content: flex-start;
+        padding: 20px;
+        height: 70px;
+    }
+
+    /* Transforma os links em um menu lateral escondido na direita */
+    .links-menu {
+        position: fixed;
+        right: -100%; /* Começa totalmente escondido para fora da tela */
+        top: 0;
+        width: 70%; /* Ocupa 70% da largura da tela do celular */
+        height: 100vh; /* Ocupa toda a altura da tela */
+        background-color: #e0f2fe;
+        display: flex;
+        flex-direction: column; /* Alinha os links um embaixo do outro */
+        justify-content: center;
+        align-items: center;
+        gap: 30px;
+        transition: right 0.4s ease; /* Desliza suavemente ao abrir */
+        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.05);
+    }
+
+    body.modo-noturno .links-menu {
+        background-color: #0f172a;
+    }
+
+    .links-menu a {
+        font-size: 20px; /* Letras maiores no celular para facilitar o clique com o dedo */
+    }
+
+    /* CLASSE DE ATIVAÇÃO: Injetada pelo JavaScript ao clicar no botão */
+    .links-menu.aberto {
+        right: 0; /* Traz o menu para dentro da tela */
+    }
+
+    /* ANIMAÇÃO DO BOTÃO VIRANDO "X" */
+    #botao-menu-celular.aberto .barrinha:nth-child(1) {
+        transform: translateY(9px) rotate(45deg);
+    }
+
+    #botao-menu-celular.aberto .barrinha:nth-child(2) {
+        opacity: 0; /* Esconde a linha do meio */
+    }
+
+    #botao-menu-celular.aberto .barrinha:nth-child(3) {
+        transform: translateY(-9px) rotate(-45deg);
+    }
+
+    /* Ajuste responsivo para a Galeria de Bento Cards no celular */
+    .card-projeto {
+        width: 100%; /* Os cards passam a ocupar a largura inteira da tela no celular */
+        max-width: 340px;
+    }
+}

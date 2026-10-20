@@ -8,12 +8,22 @@
 </head>
 <body>
 
-    <!-- Menu de Navegação Superior Fixo -->
+     <!-- Menu de Navegação Superior Fixo e Responsivo -->
     <nav class="menu-navegacao">
-        <a href="#inicio">Início</a>
-        <a href="#projetos">Projetos</a>
-        <a href="#contato">Contato</a>
-        <a href="sobre.html">Sobre Mim</a>
+        <!-- Novo botão do menu hambúrguer (visível apenas no celular) -->
+        <button id="botao-menu-celular" class="hamburguer">
+            <span class="barrinha"></span>
+            <span class="barrinha"></span>
+            <span class="barrinha"></span>
+        </button>
+
+        <!-- Caixa que agrupa os links para podermos esconder/mostrar no celular -->
+        <div class="links-menu">
+            <a href="#inicio">Início</a>
+            <a href="#projetos">Projetos</a>
+            <a href="#contato">Contato</a>
+            <a href="sobre.html">Sobre Mim</a>
+        </div>
     </nav>
 
     <!-- Botão voltar ao topo -->

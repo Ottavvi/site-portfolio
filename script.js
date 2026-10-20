@@ -170,3 +170,25 @@ botaoTopo.addEventListener("click", function() {
         behavior: "smooth" // Garante o movimento suave
     });
 });
+
+// ==========================================
+// 7. LÓGICA DO MENU RESPONSIVO (HAMBÚRGUER)
+// ==========================================
+
+const botaoMenu = document.getElementById("botao-menu-celular");
+const linksMenu = document.querySelector(".links-menu");
+const todosOsLinks = document.querySelectorAll(".links-menu a");
+
+// Função para abrir ou fechar o menu ao clicar no botão hambúrguer
+botaoMenu.addEventListener("click", function() {
+    botaoMenu.classList.toggle("aberto");   // Faz as barrinhas virarem X
+    linksMenu.classList.toggle("aberto");   // Faz o menu lateral deslizar para dentro
+});
+
+// Fechar o menu automaticamente se o usuário clicar em qualquer link (Scroll Suave)
+todosOsLinks.forEach(function(link) {
+    link.addEventListener("click", function() {
+        botaoMenu.classList.remove("aberto");
+        linksMenu.classList.remove("aberto");
+    });
+});
