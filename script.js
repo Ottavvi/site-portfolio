@@ -40,21 +40,19 @@ botaoBoasVindas.addEventListener("click", function() {
 const campoMensagem = document.getElementById("campo-mensagem");
 const indicadorContador = document.getElementById("contador-caracteres");
 
-// O evento 'input' escuta cada letra digitada, apagada ou colada no campo
-campoMensagem.addEventListener("input", function() {
-    // Descobre quantas letras foram digitadas atualmente
-    const totalLetras = campoMensagem.value.length;
-    
-    // Atualiza o texto na tela de forma dinâmica
-    indicadorContador.innerText = `${totalLetras} / 300 caracteres`;
-    
-    // Se chegar perto ou atingir o limite de 300...
-    if (totalLetras >= 300) {
-        indicadorContador.classList.add("limite-atingido"); // Adiciona a classe CSS que deixa vermelho
-    } else {
-        indicadorContador.classList.remove("limite-atingido"); // Remove o vermelho se ele apagar letras
-    }
-});
+// Trava de segurança: só roda o código se o campo realmente existir na página
+if (campoMensagem && indicadorContador) {
+    campoMensagem.addEventListener("input", function() {
+        const totalLetras = campoMensagem.value.length;
+        indicadorContador.innerText = `${totalLetras} / 300 caracteres`;
+        
+        if (totalLetras >= 300) {
+            indicadorContador.classList.add("limite-atingido");
+        } else {
+            indicadorContador.classList.remove("limite-atingido");
+        }
+    });
+}
 
 
 // ==========================================
