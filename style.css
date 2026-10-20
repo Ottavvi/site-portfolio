@@ -165,3 +165,178 @@ footer {
 body.modo-noturno footer {
     border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
+
+/* ==========================================
+   6. MENU SUPERIOR E SCROLL SUAVE
+   ========================================== */
+
+/* Faz com que qualquer rolagem de tela disparada por links deslize suavemente */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Estilização da barra de navegação no topo */
+.menu-navegacao {
+    position: fixed; /* Fixa o menu no topo da tela, ele não some ao rolar a página */
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.9); /* Fundo branco com leve transparência */
+    backdrop-filter: blur(5px); /* Efeito de vidro fosco moderno atrás do menu */
+    padding: 15px 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    z-index: 1000; /* Garante que o menu passe por cima de todos os outros elementos */
+    display: flex;
+    justify-content: center; /* Centraliza os links do menu */
+    gap: 25px; /* Espaço entre cada link */
+}
+
+.menu-navegacao a {
+    color: #0369a1;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+    transition: color 0.2s;
+}
+
+.menu-navegacao a:hover {
+    color: #0284c7;
+}
+
+/* Compensação para o site não começar escondido atrás do menu fixo */
+body {
+    padding-top: 80px;
+}
+
+/* BOTÃO VOLTAR AO TOPO */
+#botao-topo {
+    position: fixed; /* Deixa o botão preso em uma posição específica da tela */
+    bottom: 20px; /* 20px de distância do fundo */
+    right: 20px; /* 20px de distância da direita */
+    background-color: #0369a1;
+    color: white;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%; /* Transforma em um círculo perfeito */
+    font-size: 20px;
+    padding: 0; /* Limpa o padding padrão dos botões */
+    z-index: 999;
+    opacity: 0; /* Começa invisível */
+    visibility: hidden; /* Começa totalmente desativado para cliques */
+    transition: all 0.3s ease; /* Animação suave para surgir e sumir */
+}
+
+/* Classe que o JavaScript vai injetar no botão quando o usuário rolar a tela para baixo */
+#botao-topo.visivel {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+/* ==========================================
+   7. LAYOUT DOS BENTO CARDS (PROJETOS)
+   ========================================== */
+
+.secao-projetos {
+    max-width: 900px;
+    margin: 50px auto;
+    padding: 0 20px;
+}
+
+.secao-projetos h2 {
+    color: #0369a1;
+    margin-bottom: 25px;
+}
+
+/* Container flexível que organiza os cards */
+.grid-projetos {
+    display: flex;
+    flex-wrap: wrap; /* Se não couber na linha (como no celular), joga o card para baixo */
+    justify-content: center;
+    gap: 20px; /* Espaço entre os cards */
+}
+
+/* Estilização individual de cada Bento Card */
+.card-projeto {
+    background-color: rgba(255, 255, 255, 0.7);
+    border: 1px solid #cbd5e1;
+    border-radius: 12px;
+    padding: 20px;
+    width: 260px; /* Largura fixa de cada bloco */
+    text-align: left; /* Texto do card alinhado à esquerda para visual profissional */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.4s ease;
+}
+
+/* Efeito de hover moderno: flutua o card e aumenta a sombra */
+.card-projeto:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+}
+
+.card-projeto h3 {
+    margin-top: 0;
+    color: #0f172a;
+    font-size: 18px;
+}
+
+.card-projeto p {
+    font-size: 14px;
+    color: #475569;
+    line-height: 1.5;
+}
+
+/* Alinhamento das pequenas tags de tecnologia */
+.tags {
+    display: flex;
+    gap: 6px;
+    margin-top: 15px;
+}
+
+.tag {
+    font-size: 11px;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+/* Cores específicas de cada tag de tecnologia */
+.tag.html { background-color: #ffedd5; color: #ea580c; }
+.tag.css { background-color: #e0f2fe; color: #0284c7; }
+.tag.js { background-color: #fef9c3; color: #ca8a04; }
+
+
+/* ==========================================
+   8. ADAPTAÇÕES DO MODO NOTURNO PARA AS NOVIDADES
+   ========================================== */
+
+body.modo-noturno .menu-navegacao {
+    background-color: rgba(15, 23, 42, 0.9); /* Menu escuro transparente no modo noturno */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+body.modo-noturno .menu-navegacao a {
+    color: #38bdf8;
+}
+
+body.modo-noturno .card-projeto {
+    background-color: rgba(30, 41, 59, 0.7); /* Cards escuros */
+    border-color: #334155;
+}
+
+body.modo-noturno .card-projeto h3 {
+    color: #f1f5f9;
+}
+
+body.modo-noturno .card-projeto p {
+    color: #94a3b8;
+}
+
+body.modo-noturno .secao-projetos h2 {
+    color: #38bdf8;
+}
+
+body.modo-noturno #botao-topo {
+    background-color: #38bdf8;
+    color: #0f172a;
+}

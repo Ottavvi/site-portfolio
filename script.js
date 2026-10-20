@@ -127,3 +127,32 @@ botaoZerar.addEventListener("click", function() {
     // 3. Remove qualquer cor aleatória que tenha sido aplicada, voltando à cor padrão do CSS
     textoNumero.style.color = "";
 });
+
+// ==========================================
+// 6. LÓGICA DO BOTÃO VOLTAR AO TOPO
+// ==========================================
+
+// Captura o botão do topo através do ID
+const botaoTopo = document.getElementById("botao-topo");
+
+// Dizemos para a janela inteira do navegador (window) monitorar o ato de rolar a página (scroll)
+window.addEventListener("scroll", function() {
+    
+    // Se a quantidade de pixels rolados para baixo for maior que 300...
+    if (window.scrollY > 300) {
+        // Adiciona a classe que deixa o botão visível
+        botaoTopo.classList.add("visivel");
+    } else {
+        // Se estiver perto do topo (menor que 300px), remove a classe e esconde o botão
+        botaoTopo.classList.remove("visivel");
+    }
+});
+
+// Adiciona a ação de clique no botão do topo
+botaoTopo.addEventListener("click", function() {
+    // Faz a janela deslizar de volta para a coordenada X=0, Y=0 (o topo absoluto do site)
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth" // Garante o movimento suave
+    });
+});
