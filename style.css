@@ -385,21 +385,15 @@ p.animar-subir { animation-delay: 0.3s; }
 
 /* 1. REGRAS PARA COMPUTADOR (Padrão) */
 
-.menu-navegacao {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background-color: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(5px);
-    padding: 20px 0;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    z-index: 1000;
-    /* Garante que o menu sempre alinhe os itens em linha horizontal */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+    .menu-navegacao {
+        display: flex !important;
+        justify-content: flex-end; /* Joga o conteúdo do menu para a direita no celular */
+        align-items: center; /* Centraliza verticalmente e perfeitamente tudo dentro da barra branca */
+        height: 60px; /* Define uma altura fixa e elegante para a barra branca */
+        padding: 0 20px !important; /* Cria um espaçamento seguro nas laterais internas */
+        box-sizing: border-box;
+    }
+
 
 .links-menu {
     display: flex;
@@ -438,7 +432,7 @@ p.animar-subir { animation-delay: 0.3s; }
         flex-direction: column;
         justify-content: space-between;
         width: 30px;
-        height: 18px; /* Altura firme para distanciar as 3 linhas */
+        height: 18px; /* Altura firme das 3 barrinhas */
         background: transparent !important;
         border: none !important;
         box-shadow: none !important;
@@ -446,11 +440,11 @@ p.animar-subir { animation-delay: 0.3s; }
         cursor: pointer;
         z-index: 1001;
         
-        /* CORREÇÃO DO LUGAR: Mudamos de absolute para fixed */
-        /* Isso trava o botão exatamente dentro da barra branca do menu fixo */
-        position: fixed; 
-        right: 20px;
-        top: 25px; 
+        /* CORREÇÃO DO ALINHAMENTO: Tiramos as posições fixas com números mágicos */
+        /* Deixamos o próprio Flexbox da .menu-navegacao cuidar do alinhamento perfeito */
+        position: relative; 
+        top: 0; 
+        right: 0;
     }
 
     .barrinha {
