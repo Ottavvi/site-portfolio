@@ -23,8 +23,18 @@
     <div class="auth-card">
       <div class="section-kicker">Área de membros</div>
       <h1>Olá, <span id="memberName"></span>!</h1>
-      <p class="auth-alt">Você entrou como <strong id="memberEmail"></strong>.</p>
-      <p class="auth-alt">Este é o espaço exclusivo para membros. Em breve, novidades por aqui.</p>
+      <div id="verifyBox" hidden>
+        <p class="auth-alt">Falta só confirmar seu e-mail. Enviamos um link para <strong class="member-email"></strong> — clique nele para liberar sua área (confira também o spam).</p>
+        <div class="actions">
+          <button class="btn btn-primary" type="button" id="checkBtn">Já confirmei</button>
+          <button class="btn btn-ghost" type="button" id="resendBtn">Reenviar e-mail</button>
+        </div>
+        <p class="notice" id="authNotice" role="status"></p>
+      </div>
+      <div id="memberContent" hidden>
+        <p class="auth-alt">Você entrou como <strong class="member-email"></strong>.</p>
+        <p class="auth-alt">Este é o espaço exclusivo para membros. Em breve, novidades por aqui.</p>
+      </div>
       <div class="actions">
         <a class="btn btn-primary" href="admin.html" id="adminLink" hidden>Painel de admin ↗</a>
         <button class="btn btn-ghost" type="button" id="logoutBtn">Sair da conta</button>

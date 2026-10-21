@@ -105,6 +105,19 @@ h2 { font-size:clamp(1.9rem,4vw,3rem); line-height:1.12; letter-spacing:-.05em; 
 .users-table th, .users-table td { text-align:left; padding:12px 16px; border-bottom:1px solid #ffffff0d; white-space:nowrap; }
 .users-table th { background:#12151c; color:#9ca4b1; font-size:.75rem; text-transform:uppercase; letter-spacing:.1em; }
 .users-table tbody tr:last-child td { border-bottom:0; }
+.admin-subtitle { margin-top:56px; }
+.messages { display:grid; gap:14px; margin-top:24px; color:#9ca4b1; }
+.message-card { border:1px solid #ffffff14; background:#12151c; border-radius:16px; padding:20px; }
+.message-head { display:flex; flex-wrap:wrap; align-items:baseline; gap:6px 14px; margin-bottom:10px; font-size:.88rem; }
+.message-head strong { color:#f4f5f7; font-size:1rem; }
+.message-head a { color:#d4f6a0; }
+.message-head span { color:#777f8d; margin-left:auto; }
+.message-card p { color:#c4cbd5; white-space:pre-wrap; overflow-wrap:anywhere; margin-bottom:14px; }
+.password-field { position:relative; display:block; }
+.password-field input { width:100%; padding-right:46px; }
+.toggle-password { position:absolute; right:6px; top:50%; transform:translateY(-50%); display:flex; padding:7px; background:none; border:0; border-radius:8px; color:#858c99; cursor:pointer; }
+.toggle-password:hover, .toggle-password[aria-pressed="true"] { color:var(--site-primary); }
+.toggle-password svg { width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
 footer { border-top:1px solid #ffffff12; padding:24px 0; color:#777f8d; font-size:.84rem; }
 footer .foot { display:flex; align-items:center; justify-content:space-between; gap:20px; }
 .small-links { display:flex; gap:18px; }
