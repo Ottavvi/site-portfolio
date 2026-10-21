@@ -9,7 +9,8 @@ navLinks.querySelectorAll('a').forEach(link => link.addEventListener('click', ()
   menuBtn.setAttribute('aria-expanded', 'false');
 }));
 document.getElementById('year').textContent = new Date().getFullYear();
-document.getElementById('emailLink').addEventListener('click', event => {
+const emailLink = document.getElementById('emailLink');
+if (emailLink) emailLink.addEventListener('click', event => {
   if (event.currentTarget.href.includes('SEU-EMAIL@EXEMPLO.COM')) {
     event.preventDefault();
     document.getElementById('emailNotice').style.display = 'block';

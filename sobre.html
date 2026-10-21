@@ -1,29 +1,54 @@
-<!-- Arquivo: sobre.html -->
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sobre Mim - Meu Site</title>
-    <!-- Usamos o mesmo arquivo CSS para manter o visual padronizado! -->
-    <link rel="stylesheet" href="style.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sobre mim | Otávio</title>
+<meta name="description" content="Conheça a jornada de Otávio no desenvolvimento web e as tecnologias que está estudando.">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-    <!-- Link para voltar para a página principal -->
-    <!-- O href="index.html" indica ao navegador para abrir o arquivo principal -->
-    <a href="index.html" class="link-moderno">← Voltar para a Página Inicial</a>
-
-    <h1>Sobre Mim</h1>
-    <p>Esta é uma nova página dedicada a contar um pouco mais sobre a minha jornada e os projetos que pretendo criar no futuro.</p>
-    
-    <h2>Tecnologias que estou estudando:</h2>
-    <ul>
-        <li>HTML5 (Estrutura)</li>
-        <li>CSS3 (Estilização)</li>
-        <li>JavaScript (Lógica e Dinamismo)</li>
-        <li>Git e GitHub (Controle de versão e Hospedagem)</li>
-    </ul>
-
+<div id="app">
+<header>
+  <div class="wrap nav">
+    <a class="logo" href="index.html#inicio" aria-label="Otávio, início">ottavvi<span>.</span>dev</a>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="navLinks">Menu ☰</button>
+    <nav class="links" id="navLinks" aria-label="Navegação principal">
+      <a href="index.html#projetos">Projetos</a><a href="index.html#habilidades">Habilidades</a><a href="sobre.html" aria-current="page">Sobre mim</a><a href="index.html#contato">Contato</a>
+    </nav>
+  </div>
+</header>
+<main>
+<section class="hero" id="inicio" style="border-top:0">
+  <div class="wrap">
+    <a class="text-link" href="index.html">← Voltar para a página inicial</a>
+    <h1>Sobre <em>mim.</em></h1>
+    <p class="lead">Esta página conta um pouco mais sobre a minha jornada e os projetos que pretendo criar no futuro.</p>
+  </div>
+</section>
+<section id="tecnologias">
+  <div class="wrap">
+    <div class="section-kicker">Em estudo</div>
+    <h2>Tecnologias que estou estudando.</h2>
+    <div class="skills-grid">
+      <div class="skill-box"><h3>01 / HTML5</h3><p>Estrutura das páginas.</p></div>
+      <div class="skill-box"><h3>02 / CSS3</h3><p>Estilização e layouts responsivos.</p></div>
+      <div class="skill-box"><h3>03 / JavaScript</h3><p>Lógica e dinamismo.</p></div>
+      <div class="skill-box"><h3>04 / Git e GitHub</h3><p>Controle de versão e hospedagem.</p></div>
+    </div>
+  </div>
+</section>
+</main>
+<footer>
+  <div class="wrap foot">
+    <span>© <span id="year"></span> Otávio. Feito com HTML, CSS e JavaScript.</span>
+    <div class="small-links">
+      <a href="https://github.com/Ottavvi" target="_blank" rel="noreferrer">GitHub ↗</a>
+      <a href="#inicio">Voltar ao topo ↑</a>
+    </div>
+  </div>
+</footer>
+</div>
+<script src="script.js"></script>
 </body>
 </html>
