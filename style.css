@@ -118,6 +118,30 @@ h2 { font-size:clamp(1.9rem,4vw,3rem); line-height:1.12; letter-spacing:-.05em; 
 .toggle-password { position:absolute; right:6px; top:50%; transform:translateY(-50%); display:flex; padding:7px; background:none; border:0; border-radius:8px; color:#858c99; cursor:pointer; }
 .toggle-password:hover, .toggle-password[aria-pressed="true"] { color:var(--site-primary); }
 .toggle-password svg { width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+.forgot-link { align-self:flex-start; color:var(--site-primary); font-size:.86rem; font-weight:650; }
+.forgot-link:hover { text-decoration:underline; }
+.profile { display:grid; gap:10px; margin-top:24px; }
+.profile-section { border:1px solid #ffffff14; border-radius:14px; background:#0d1016; }
+.profile-section summary { padding:14px 16px; cursor:pointer; font-weight:700; color:#dce0e7; list-style:none; display:flex; justify-content:space-between; align-items:center; }
+.profile-section summary::-webkit-details-marker { display:none; }
+.profile-section summary::after { content:"+"; color:var(--site-primary); font-size:1.2rem; line-height:1; }
+.profile-section[open] summary::after { content:"−"; }
+.profile-section .auth-form { width:100%; margin:0; padding:0 16px 16px; }
+.profile-section .auth-alt { margin:0; }
+.profile-section.danger summary { color:#fca5a5; }
+.profile-section.danger summary::after { color:#fca5a5; }
+.btn-danger { background:#f8717120; color:#fca5a5; border-color:#f8717150; }
+.btn-danger:hover { border-color:#f87171; }
+/* Animações: o conteúdo aparece suavemente ao rolar a página (classes adicionadas pelo script.js) */
+.reveal { opacity:0; transform:translateY(24px); transition:opacity .7s ease, transform .7s ease; }
+.reveal.visible { opacity:1; transform:none; }
+@keyframes fade-up { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:none; } }
+.hero-grid > div > *, .hero .profile-card { animation:fade-up .8s ease both; }
+.hero-grid > div > :nth-child(2) { animation-delay:.1s; }
+.hero-grid > div > :nth-child(3) { animation-delay:.2s; }
+.hero-grid > div > :nth-child(4) { animation-delay:.3s; }
+.hero-grid > div > :nth-child(5) { animation-delay:.4s; }
+.hero .profile-card { animation-delay:.35s; }
 footer { border-top:1px solid #ffffff12; padding:24px 0; color:#777f8d; font-size:.84rem; }
 footer .foot { display:flex; align-items:center; justify-content:space-between; gap:20px; }
 .small-links { display:flex; gap:18px; }

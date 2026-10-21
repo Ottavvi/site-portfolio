@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Recuperar senha | Otávio</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+<header>
+  <div class="wrap nav">
+    <a class="logo" href="index.html#inicio" aria-label="Otávio, início">ottavvi<span>.</span>dev</a>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="navLinks">Menu ☰</button>
+    <nav class="links" id="navLinks" aria-label="Navegação principal">
+      <a href="index.html#projetos">Projetos</a><a href="index.html#habilidades">Habilidades</a><a href="sobre.html">Sobre mim</a><a href="index.html#contato">Contato</a><a href="login.html" id="authLink">Entrar</a>
+    </nav>
+  </div>
+</header>
+<main>
+<section class="auth-page" style="border-top:0">
+  <div class="wrap">
+    <div class="auth-card">
+      <div class="section-kicker">Área de membros</div>
+      <h1>Recuperar senha</h1>
+      <p class="auth-alt">Digite o e-mail da sua conta. Vamos enviar um link para você criar uma nova senha.</p>
+      <form class="auth-form" id="recoverForm">
+        <label>E-mail<input type="email" name="email" required autocomplete="email" autocapitalize="off" autocorrect="off" spellcheck="false"></label>
+        <button class="btn btn-primary" type="submit">Enviar link</button>
+        <p class="notice" id="authNotice" role="status"></p>
+      </form>
+      <p class="auth-alt">Lembrou a senha? <a href="login.html">Entrar</a></p>
+    </div>
+  </div>
+</section>
+</main>
+<footer>
+  <div class="wrap foot">
+    <span>© <span id="year"></span> Otávio. Feito com HTML, CSS e JavaScript.</span>
+    <div class="small-links">
+      <a href="https://github.com/Ottavvi" target="_blank" rel="noreferrer">GitHub ↗</a>
+      <a href="index.html">Página inicial</a>
+    </div>
+  </div>
+</footer>
+</div>
+<script src="script.js"></script>
+<script type="module" src="auth.js"></script>
+</body>
+</html>

@@ -5,6 +5,13 @@ import {
   sendPasswordResetEmail,
   sendEmailVerification,
   updateProfile,
+  updatePassword,
+  deleteUser,
+  reauthenticateWithCredential,
+  EmailAuthProvider,
+  verifyPasswordResetCode,
+  confirmPasswordReset,
+  applyActionCode,
   onAuthStateChanged,
   signOut
 } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
@@ -45,18 +52,22 @@ const errorMessages = {
   'auth/invalid-credential': 'E-mail ou senha incorretos.',
   'auth/missing-email': 'Digite seu e-mail.',
   'auth/too-many-requests': 'Muitas tentativas. Aguarde um pouco e tente de novo.',
-  'auth/network-request-failed': 'Sem conexão. Verifique sua internet.'
+  'auth/network-request-failed': 'Sem conexão. Verifique sua internet.',
+  'auth/expired-action-code': 'Este link expirou. Peça um novo.',
+  'auth/invalid-action-code': 'Este link é inválido ou já foi usado. Peça um novo.',
+  'auth/requires-recent-login': 'Por segurança, saia e entre de novo antes de fazer isso.',
+  'senha-atual': 'A senha atual está incorreta.'
 };
 
-function showNotice(message, isError) {
-  const notice = document.getElementById('authNotice');
+function showNotice(message, isError, noticeId = 'authNotice') {
+  const notice = document.getElementById(noticeId);
   notice.textContent = message;
   notice.classList.toggle('error', isError);
   notice.style.display = 'block';
 }
 
-function showError(error) {
-  showNotice(errorMessages[error.code] || 'Algo deu errado. Tente novamente.', true);
+function showError(error, noticeId) {
+  showNotice(errorMessages[error.code] || 'Algo deu errado. Tente novamente.', true, noticeId);
 }
 
 async function handleSubmit(form, action) {
@@ -96,14 +107,87 @@ if (loginForm) {
     event.preventDefault();
     handleSubmit(loginForm, data => signInWithEmailAndPassword(auth, data.get('email').trim(), data.get('senha')));
   });
-  document.getElementById('resetBtn').addEventListener('click', async () => {
+  // Leva o e-mail já digitado para a página de recuperação
+  document.getElementById('resetLink').addEventListener('click', event => {
+    const email = loginForm.email.value.trim();
+    if (email) event.currentTarget.href = `recuperar.html?email=${encodeURIComponent(email)}`;
+  });
+}
+
+// Recuperar senha: envia o link de redefinição para o e-mail
+const recoverForm = document.getElementById('recoverForm');
+if (recoverForm) {
+  recoverForm.email.value = new URLSearchParams(window.location.search).get('email') || '';
+  recoverForm.addEventListener('submit', async event => {
+    event.preventDefault();
+    const submitBtn = recoverForm.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
     try {
-      await sendPasswordResetEmail(auth, loginForm.email.value.trim());
-      showNotice('Enviamos um link para redefinir sua senha. Confira seu e-mail (e o spam).', false);
+      await sendPasswordResetEmail(auth, recoverForm.email.value.trim());
+      showNotice('Pronto! Se este e-mail estiver cadastrado, você vai receber um link para criar uma nova senha. Confira também o spam.', false);
     } catch (error) {
       showError(error);
     }
+    submitBtn.disabled = false;
   });
+}
+
+// Página de ação: abre os links enviados por e-mail (nova senha e confirmação de e-mail)
+const actionArea = document.getElementById('actionArea');
+if (actionArea) {
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get('oobCode');
+  const title = document.getElementById('actionTitle');
+  const text = document.getElementById('actionText');
+  const nextLink = document.getElementById('actionNext');
+
+  function finish(heading, message, linkText, linkHref) {
+    title.textContent = heading;
+    text.textContent = message;
+    nextLink.textContent = linkText;
+    nextLink.href = linkHref;
+    nextLink.hidden = false;
+  }
+
+  function fail(error) {
+    finish('Link inválido', errorMessages[error.code] || 'Não foi possível abrir este link. Peça um novo.', 'Pedir novo link', 'recuperar.html');
+  }
+
+  const mode = params.get('mode');
+  if (mode === 'resetPassword') {
+    const resetForm = document.getElementById('resetForm');
+    verifyPasswordResetCode(auth, code).then(email => {
+      title.textContent = 'Criar nova senha';
+      text.textContent = `Escolha uma nova senha para ${email}.`;
+      resetForm.hidden = false;
+      resetForm.addEventListener('submit', async event => {
+        event.preventDefault();
+        const data = new FormData(resetForm);
+        if (data.get('senha') !== data.get('confirmar')) {
+          showNotice('As senhas não são iguais.', true);
+          return;
+        }
+        try {
+          await confirmPasswordReset(auth, code, data.get('senha'));
+          resetForm.hidden = true;
+          finish('Senha alterada!', 'Sua nova senha já está valendo. Agora é só entrar.', 'Entrar', 'login.html');
+        } catch (error) {
+          showError(error);
+        }
+      });
+    }).catch(fail);
+  } else if (mode === 'verifyEmail') {
+    applyActionCode(auth, code).then(async () => {
+      if (auth.currentUser) await auth.currentUser.reload();
+      finish('E-mail confirmado!', 'Tudo certo. Sua área de membros já está liberada.', 'Ir para minha área', 'area.html');
+    }).catch(fail);
+  } else if (mode === 'recoverEmail') {
+    applyActionCode(auth, code).then(() => {
+      finish('E-mail restaurado', 'O e-mail da sua conta voltou a ser o anterior. Por segurança, crie uma nova senha.', 'Criar nova senha', 'recuperar.html');
+    }).catch(fail);
+  } else {
+    finish('Link inválido', 'Este endereço não contém nenhuma ação.', 'Página inicial', 'index.html');
+  }
 }
 
 // Área de membros: só mostra o conteúdo para quem está logado e confirmou o e-mail
@@ -114,6 +198,7 @@ if (memberArea) {
 
   function showMember(user) {
     document.getElementById('memberName').textContent = user.displayName || user.email;
+    document.getElementById('nameForm').nome.value = user.displayName || '';
     document.querySelectorAll('.member-email').forEach(item => { item.textContent = user.email; });
     document.getElementById('adminLink').hidden = user.uid !== ADMIN_UID;
     verifyBox.hidden = user.emailVerified;
@@ -145,6 +230,69 @@ if (memberArea) {
     showMember(auth.currentUser);
     if (!auth.currentUser.emailVerified) {
       showNotice('Ainda não identificamos a confirmação. Clique no link do e-mail e tente de novo.', true);
+    }
+  });
+
+  // Confirma a senha atual antes de ações sensíveis (trocar senha, excluir conta)
+  function confirmCurrentPassword(password) {
+    const credential = EmailAuthProvider.credential(auth.currentUser.email, password);
+    return reauthenticateWithCredential(auth.currentUser, credential).catch(error => {
+      throw error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password'
+        ? { code: 'senha-atual' }
+        : error;
+    });
+  }
+
+  const nameForm = document.getElementById('nameForm');
+  nameForm.addEventListener('submit', async event => {
+    event.preventDefault();
+    try {
+      await updateProfile(auth.currentUser, { displayName: nameForm.nome.value.trim() });
+      await saveProfile(auth.currentUser);
+      document.getElementById('memberName').textContent = auth.currentUser.displayName;
+      showNotice('Nome atualizado!', false, 'nameNotice');
+    } catch (error) {
+      showError(error, 'nameNotice');
+    }
+  });
+
+  const passwordForm = document.getElementById('passwordForm');
+  passwordForm.addEventListener('submit', async event => {
+    event.preventDefault();
+    const data = new FormData(passwordForm);
+    if (data.get('nova') !== data.get('confirmar')) {
+      showNotice('As senhas novas não são iguais.', true, 'passwordNotice');
+      return;
+    }
+    try {
+      await confirmCurrentPassword(data.get('atual'));
+      await updatePassword(auth.currentUser, data.get('nova'));
+      passwordForm.reset();
+      showNotice('Senha alterada!', false, 'passwordNotice');
+    } catch (error) {
+      showError(error, 'passwordNotice');
+    }
+  });
+
+  const deleteForm = document.getElementById('deleteForm');
+  deleteForm.addEventListener('submit', async event => {
+    event.preventDefault();
+    const submitBtn = deleteForm.querySelector('button[type="submit"]');
+    if (submitBtn.dataset.confirm !== 'sim') {
+      submitBtn.dataset.confirm = 'sim';
+      submitBtn.textContent = 'Tem certeza? Clique de novo para excluir';
+      return;
+    }
+    submitBtn.disabled = true;
+    try {
+      const user = auth.currentUser;
+      await confirmCurrentPassword(deleteForm.atual.value);
+      await deleteDoc(doc(db, 'usuarios', user.uid)).catch(() => {});
+      await deleteUser(user);
+      window.location.href = 'index.html';
+    } catch (error) {
+      showError(error, 'deleteNotice');
+      submitBtn.disabled = false;
     }
   });
 }
