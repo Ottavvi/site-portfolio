@@ -83,7 +83,7 @@ if (signupForm) signupForm.addEventListener('submit', event => {
     return;
   }
   handleSubmit(signupForm, async data => {
-    const { user } = await createUserWithEmailAndPassword(auth, data.get('email'), data.get('senha'));
+    const { user } = await createUserWithEmailAndPassword(auth, data.get('email').trim(), data.get('senha'));
     await updateProfile(user, { displayName: data.get('nome').trim() });
     await sendEmailVerification(user, verifySettings).catch(() => {});
     await saveProfile(user).catch(() => {});
@@ -94,11 +94,11 @@ const loginForm = document.getElementById('loginForm');
 if (loginForm) {
   loginForm.addEventListener('submit', event => {
     event.preventDefault();
-    handleSubmit(loginForm, data => signInWithEmailAndPassword(auth, data.get('email'), data.get('senha')));
+    handleSubmit(loginForm, data => signInWithEmailAndPassword(auth, data.get('email').trim(), data.get('senha')));
   });
   document.getElementById('resetBtn').addEventListener('click', async () => {
     try {
-      await sendPasswordResetEmail(auth, loginForm.email.value);
+      await sendPasswordResetEmail(auth, loginForm.email.value.trim());
       showNotice('Enviamos um link para redefinir sua senha. Confira seu e-mail (e o spam).', false);
     } catch (error) {
       showError(error);
