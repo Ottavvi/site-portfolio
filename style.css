@@ -1,643 +1,104 @@
-/* CONFIGURAÇÕES GLOBAIS E TEMA CLARO */
-body {
-    background-color: #e0f2fe;
-    color: #1e293b;
-    font-family: Arial, sans-serif;
-    text-align: center;
-    padding: 40px 20px;
-    padding-top: 80px; /* Compensação do menu fixo */
-    transition: background-color 0.4s ease, color 0.4s ease;
-    
-    /* ADICIONE ESSA LINHA ABAIXO PARA ELIMINAR A ABA BRANCA: */
-    overflow-x: hidden; 
+:root {
+  --site-primary: #a3e635;
+  --site-on-primary: #17220a;
+  --site-secondary: #171b24;
+  --site-on-secondary: #f3f4f6;
+  --site-background: #0b0d12;
+  --site-on-background: #f3f4f6;
+  --site-font-body: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --site-font-heading: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --site-heading-scale: 1;
+  --site-spacing-scale: 1;
+  --site-radius-scale: 1;
+  --site-decoration-opacity: 1;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--site-background); color: var(--site-on-background); font-family: var(--site-font-body); line-height: 1.6; }
+#app { min-height: 100vh; width: 100%; background-color: var(--site-background); color: var(--site-on-background); border-radius: 0; overflow: hidden; }
+a { color: inherit; text-decoration: none; }
+button, input, textarea { font: inherit; }
+.wrap { width: min(1120px, calc(100% - 40px)); margin: auto; }
+header { border-bottom: 1px solid #ffffff12; position: sticky; top: 0; z-index: 10; backdrop-filter: blur(18px); background: #0b0d12e8; }
+.nav { display:flex; align-items:center; justify-content:space-between; min-height:76px; gap:20px; }
+.logo { font-weight: 850; letter-spacing: -.06em; font-size: 1.3rem; }
+.logo span { color: var(--site-primary); }
+.links { display:flex; gap:28px; align-items:center; color:#b9bec8; font-size:.92rem; }
+.links a:hover, .text-link:hover { color:var(--site-primary); }
+.menu-btn { display:none; border:1px solid #ffffff22; background:transparent; color:inherit; padding:8px 12px; border-radius:10px; }
+.hero { padding: 92px 0 84px; position:relative; }
+.hero:before { content:""; position:absolute; width:450px; height:450px; border-radius:50%; background:radial-gradient(circle, #a3e63517, transparent 68%); right:-110px; top:0; opacity:var(--site-decoration-opacity); pointer-events:none; }
+.hero-grid { display:grid; grid-template-columns:1.25fr .75fr; gap:64px; align-items:center; position:relative; }
+.eyebrow { display:inline-flex; align-items:center; gap:9px; color:#d5f99a; background:#a3e63512; border:1px solid #a3e63530; padding:7px 12px; border-radius:999px; font-size:.82rem; font-weight:650; }
+.dot { width:7px; height:7px; background:var(--site-primary); border-radius:50%; box-shadow:0 0 0 4px #a3e63520; }
+h1,h2,h3,p { margin-top:0; }
+h1 { font-family:var(--site-font-heading); font-size:clamp(2.65rem, 6vw, 5rem); line-height:1.04; letter-spacing:-.065em; margin:22px 0; font-weight:850; }
+h1 em { color:var(--site-primary); font-style:normal; }
+.lead { color:#aeb4c0; font-size:1.12rem; max-width:610px; line-height:1.8; }
+.actions { display:flex; gap:12px; flex-wrap:wrap; margin:28px 0 26px; }
+.btn { display:inline-flex; align-items:center; justify-content:center; gap:9px; padding:12px 17px; border-radius:12px; font-weight:750; border:1px solid transparent; transition:transform .18s, border-color .18s; cursor:pointer; }
+.btn:hover { transform:translateY(-2px); }
+.btn-primary { background:var(--site-primary); color:var(--site-on-primary); }
+.btn-ghost { border-color:#ffffff25; color:#f4f5f7; background:#ffffff05; }
+.btn-ghost:hover { border-color:#a3e63570; }
+.stack { color:#858c99; font-size:.88rem; }
+.stack strong { color:#dce0e7; font-weight:600; }
+.profile-card { background:linear-gradient(145deg,#1a202a,#101319); border:1px solid #ffffff16; border-radius:24px; padding:28px; box-shadow:0 25px 80px #0005; position:relative; }
+.profile-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:30px; color:#a9b0bd; font-size:.82rem; }
+window, .window { border:1px solid #ffffff1b; border-radius:16px; overflow:hidden; background:#0d1016; }
+.window-bar { padding:12px 14px; border-bottom:1px solid #ffffff12; display:flex; gap:6px; }
+.window-bar i { display:block; width:8px; height:8px; border-radius:50%; background:#444b58; }
+.code { padding:22px 18px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.83rem; line-height:2; color:#b9c2d0; }
+.code .green { color:#b5ef62; } .code .purple { color:#c7a7ff; } .code .muted { color:#647080; }
+.stat-row { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:16px; }
+.stat { background:#ffffff06; border:1px solid #ffffff0d; border-radius:12px; padding:12px; }
+.stat b { display:block; font-size:.93rem; color:#f4f5f7; } .stat span { font-size:.72rem; color:#858d9a; }
+section { padding:78px 0; border-top:1px solid #ffffff0c; }
+.section-kicker { color:var(--site-primary); text-transform:uppercase; font-size:.75rem; font-weight:800; letter-spacing:.14em; }
+h2 { font-size:clamp(1.9rem,4vw,3rem); line-height:1.12; letter-spacing:-.05em; margin:12px 0 15px; }
+.section-intro { color:#9da5b2; max-width:650px; }
+.projects { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:32px; }
+.project { border:1px solid #ffffff15; background:#12151c; border-radius:18px; overflow:hidden; transition:transform .2s,border-color .2s; }
+.project:hover { transform:translateY(-4px); border-color:#a3e63560; }
+.project-art { min-height:174px; padding:20px; background:linear-gradient(145deg,#202b1c,#12171a); display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; }
+.project-art.purple-bg { background:linear-gradient(145deg,#29213c,#15131d); }
+.project-art.blue-bg { background:linear-gradient(145deg,#172a39,#11151c); }
+.mock-card { width:90%; border:1px solid #ffffff20; border-radius:12px; background:#0c0f14e8; padding:14px; box-shadow:0 12px 30px #0005; transform:rotate(-2deg); }
+.mock-line { height:6px; border-radius:10px; background:#ffffff22; margin:8px 0; width:85%; }
+.mock-line.short { width:48%; } .mock-button { margin-top:12px; height:20px; width:48%; border-radius:5px; background:var(--site-primary); }
+.project-body { padding:20px; }
+.tags { display:flex; flex-wrap:wrap; gap:7px; margin:14px 0 18px; }
+.tag { font-size:.72rem; border:1px solid #ffffff1a; border-radius:7px; padding:4px 8px; color:#aeb5c1; }
+.project h3 { font-size:1.1rem; margin-bottom:7px; }
+.project p { color:#9ca4b1; font-size:.9rem; margin-bottom:0; }
+.project-note { color:#777f8d; font-size:.78rem; margin-top:14px; }
+.project-links { display:flex; gap:15px; margin-top:18px; font-size:.84rem; font-weight:700; }
+.project-links a { color:#d4f6a0; }
+.skills-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:28px; }
+.skill-box { padding:22px; border:1px solid #ffffff14; background:#12151c; border-radius:16px; }
+.skill-box h3 { margin-bottom:10px; }
+.skill-box p { color:#9ca4b1; margin:0; font-size:.93rem; }
+.about-grid { display:grid; grid-template-columns:1fr 1fr; gap:42px; align-items:start; }
+.about-copy { color:#a6adba; }
+.availability { margin-top:20px; display:flex; align-items:center; gap:10px; color:#c4cbd5; font-size:.9rem; }
+.contact-box { border:1px solid #a3e63535; background:linear-gradient(135deg,#151b16,#12151c); border-radius:22px; padding:30px; display:flex; justify-content:space-between; align-items:center; gap:28px; }
+.contact-box p { color:#a8b0bc; margin:8px 0 0; }
+footer { border-top:1px solid #ffffff12; padding:24px 0; color:#777f8d; font-size:.84rem; }
+footer .foot { display:flex; align-items:center; justify-content:space-between; gap:20px; }
+.small-links { display:flex; gap:18px; }
+.small-links a:hover { color:var(--site-primary); }
+.notice { display:none; padding:10px 12px; background:#a3e63515; color:#d8f8a5; border-radius:10px; margin-top:12px; font-size:.86rem; }
+@media (max-width:800px) {
+ .hero { padding:64px 0; } .hero-grid { grid-template-columns:1fr; gap:34px; } .profile-card { max-width:540px; }
+ .projects { grid-template-columns:1fr 1fr; } .projects .project:last-child { grid-column:1/-1; }
+ .about-grid { grid-template-columns:1fr; gap:22px; } .contact-box { align-items:flex-start; flex-direction:column; }
+}
+@media (max-width:560px) {
+ .wrap { width:min(100% - 28px,1120px); } .nav { min-height:66px; } .menu-btn { display:block; }
+ .links { display:none; position:absolute; left:14px; right:14px; top:65px; padding:18px; border:1px solid #ffffff1b; border-radius:14px; background:#11151c; flex-direction:column; align-items:flex-start; gap:16px; }
+ .links.open { display:flex; } .hero { padding:54px 0; } .profile-card { padding:16px; } .code { font-size:.72rem; padding:16px 12px; }
+ section { padding:58px 0; } .projects { grid-template-columns:1fr; } .projects .project:last-child { grid-column:auto; }
+ .skills-grid { grid-template-columns:1fr; } footer .foot { align-items:flex-start; flex-direction:column; }
 }
-
-
-h1 {
-    color: #0369a1; /* Define a cor azul do título principal */
-    transition: color 0.4s ease; /* Cria uma transição suave para a mudança de cor do título */
-}
-
-img {
-    width: 180px; /* Ajusta a largura da imagem para 180 pixels */
-    height: 180px; /* Ajusta a altura da imagem para 180 pixels */
-    border-radius: 50%; /* Corta as bordas em 50%, transformando a foto quadrada em um círculo perfeito */
-    object-fit: cover; /* Garante que a foto preencha o círculo sem ficar esticada ou amassada */
-    margin: 20px 0; /* Coloca 20px de espaço vazio acima e abaixo da foto */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Adiciona uma sombra leve e moderna embaixo da foto */
-}
-
-ul {
-    display: inline-block; /* Faz a lista se comportar como um bloco centrado, mas mantendo seu tamanho real */
-    text-align: left; /* Alinha o texto interno da lista para a esquerda, deixando os marcadores alinhados */
-    margin-bottom: 30px; /* Coloca um espaço de 30px abaixo da lista antes do próximo elemento */
-}
-
-.controles {
-    margin-bottom: 30px; /* Coloca um espaço de 30px abaixo da caixa de botões do topo */
-}
-
-/* ESTILIZAÇÃO DOS BOTÕES MODERNOS */
-
-button {
-    background-color: #0369a1; /* Cor de fundo azul dos botões */
-    color: white; /* Cor do texto interna do botão */
-    border: none; /* Remove aquela borda cinza padrão e feia do navegador */
-    padding: 12px 24px; /* Espaçamento interno: 12px acima/abaixo e 24px nas laterais do texto */
-    font-size: 15px; /* Tamanho da letra dentro do botão */
-    font-weight: bold; /* Deixa o texto em negrito */
-    cursor: pointer; /* Transforma a seta do mouse naquela 'mãozinha' quando passa em cima */
-    border-radius: 8px; /* Arredonda os cantos do botão em 8 pixels */
-    margin: 5px; /* Coloca um pequeno espaçamento de 5px ao redor de cada botão */
-    /* Cria uma animação rápida se o botão mudar de cor ou se mover (transform) */
-    transition: background-color 0.2s, transform 0.1s;
-}
-
-button:hover {
-    background-color: #0284c7; /* Muda o azul para um tom mais claro quando o mouse passa por cima */
-    transform: translateY(-2px); /* Move o botão levemente 2 pixels para cima, dando efeito de flutuação */
-}
-
-button:active {
-    transform: translateY(0); /* Faz o botão voltar à posição normal no momento exato em que for clicado */
-}
-
-/* ESTILIZAÇÃO DO LINK DO GOOGLE */
-
-.link-moderno {
-    color: #0369a1; /* Define a cor inicial do link */
-    text-decoration: none; /* Remove o sublinhado padrão que vem nos links */
-    font-weight: bold; /* Deixa o texto do link em negrito */
-    border-bottom: 2px solid transparent; /* Cria uma linha de baixo invisível (para não tremer na animação) */
-    transition: all 0.3s ease; /* Faz qualquer mudança visual no link acontecer de forma suave */
-}
-
-.link-moderno:hover {
-    color: #0284c7; /* Altera a cor do link quando o mouse passa por cima */
-    border-bottom: 2px solid #0284c7; /* Faz surgir a linha sublinhada de forma suave abaixo dele */
-}
-
-/* SEÇÃO DO FORMULÁRIO DE CONTATO */
-
-.secao-contato {
-    max-width: 400px; /* Define a largura máxima que a caixinha do formulário pode ter */
-    margin: 40px auto; /* Coloca 40px de espaço fora da caixa e o 'auto' centraliza ela na tela horizontalmente */
-    padding: 20px; /* Espaçamento interno entre as bordas da caixa e as caixas de texto */
-    background-color: rgba(255, 255, 255, 0.7); /* Fundo branco com 70% de opacidade (levemente transparente) */
-    border-radius: 12px; /* Arredonda os cantos da caixinha de contato */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); /* Aplica uma sombra bem sutil ao redor da caixinha */
-    transition: background-color 0.4s ease; /* Faz a cor da caixinha mudar suavemente no Modo Noturno */
-}
-
-form {
-    display: flex; /* Ativa o modo de layout Flexbox */
-    flex-direction: column; /* Organiza os campos do formulário um embaixo do outro, em coluna */
-    gap: 12px; /* Cria um espaçamento automático de 12px entre cada campo do formulário */
-}
-
-input, textarea {
-    padding: 12px; /* Espaçamento interno para o texto digitado não ficar colado nas bordas do campo */
-    border: 1px solid #cbd5e1; /* Cria uma borda cinza bem fininha e discreta */
-    border-radius: 6px; /* Arredonda os cantos das caixas de texto */
-    font-size: 14px; /* Define o tamanho do texto digitado */
-    outline: none; /* Remove aquela borda preta grossa padrão que aparece quando clicamos para digitar */
-    transition: border-color 0.2s; /* Faz a bordinha mudar de cor de maneira suave */
-}
-
-input:focus, textarea:focus {
-    border-color: #0369a1; /* Quando o usuário clica no campo para digitar, a borda ganha a cor azul */
-}
-
-/* REGRAS EXCLUSIVAS PARA O MODO NOTURNO REAL */
-
-/* Essas regras só entram em ação quando a classe 'modo-noturno' é adicionada ao body pelo JavaScript */
-
-body.modo-noturno {
-    background-color: #0f172a; /* Muda o fundo do site inteiro para um tom grafite escuro */
-    color: #f1f5f9; /* Altera a cor de todas as letras padrões para um branco suave */
-}
-
-body.modo-noturno h1 {
-    color: #38bdf8; /* Altera o título principal para um azul claro neon, que destaca no escuro */
-}
-
-body.modo-noturno .secao-contato {
-    background-color: rgba(30, 41, 59, 0.7); /* Deixa a caixinha do formulário escura com transparência */
-}
-
-body.modo-noturno .link-moderno {
-    color: #38bdf8; /* Deixa o link do Google com o azul neon destacado no tema escuro */
-}
-
-/* Estilização da área do contador */
-.container-contador {
-    margin: 30px auto; /* Dá um espaço acima/abaixo e centraliza nas laterais */
-    padding: 15px; /* Espaço interno para não sufocar o conteúdo */
-}
-
-/* Destaca o número de cliques deixando-o em negrito e um pouco maior */
-#numero-cliques {
-    font-weight: bold;
-    font-size: 18px;
-}
-
-/* Estilização específica para o botão de zerar */
-#botao-zerar {
-    background-color: #ef4444; /* Cor vermelha para indicar um reset/alerta */
-}
-
-#botao-zerar:hover {
-    background-color: #dc2626; /* Vermelho um pouco mais escuro ao passar o mouse */
-}
-
-/* Adiciona uma transição suave para quando a cor do número mudar pelo JavaScript */
-#numero-cliques {
-    transition: color 0.2s ease;
-}
-
-/* Estilização do Rodapé */
-footer {
-    margin-top: 60px; /* Cria um espaçamento seguro para isolar o rodapé do resto do site */
-    padding: 20px;
-    font-size: 14px;
-    border-top: 1px solid rgba(0, 0, 0, 0.1); /* Cria uma linha divisória bem sutil */
-    opacity: 0.7; /* Deixa o texto levemente mais discreto */
-}
-
-/* Ajuste da linha divisória para o Modo Noturno */
-body.modo-noturno footer {
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* ==========================================
-   6. MENU SUPERIOR E SCROLL SUAVE
-   ========================================== */
-
-/* Faz com que qualquer rolagem de tela disparada por links deslize suavemente */
-html {
-    scroll-behavior: smooth;
-}
-
-/* Estilização da barra de navegação no topo */
-.menu-navegacao {
-    position: fixed; /* Fixa o menu no topo da tela, ele não some ao rolar a página */
-    top: 0;
-    left: 0;
-    width: 100%;
-    background-color: rgba(255, 255, 255, 0.9); /* Fundo branco com leve transparência */
-    backdrop-filter: blur(5px); /* Efeito de vidro fosco moderno atrás do menu */
-    padding: 15px 0;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    z-index: 1000; /* Garante que o menu passe por cima de todos os outros elementos */
-    display: flex;
-    justify-content: center; /* Centraliza os links do menu */
-    gap: 25px; /* Espaço entre cada link */
-}
-
-.menu-navegacao a {
-    color: #0369a1;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 14px;
-    transition: color 0.2s;
-}
-
-.menu-navegacao a:hover {
-    color: #0284c7;
-}
-
-/* Compensação para o site não começar escondido atrás do menu fixo */
-body {
-    padding-top: 80px;
-}
-
-/* BOTÃO VOLTAR AO TOPO */
-#botao-topo {
-    position: fixed; /* Deixa o botão preso em uma posição específica da tela */
-    bottom: 20px; /* 20px de distância do fundo */
-    right: 20px; /* 20px de distância da direita */
-    background-color: #0369a1;
-    color: white;
-    width: 45px;
-    height: 45px;
-    border-radius: 50%; /* Transforma em um círculo perfeito */
-    font-size: 20px;
-    padding: 0; /* Limpa o padding padrão dos botões */
-    z-index: 999;
-    opacity: 0; /* Começa invisível */
-    visibility: hidden; /* Começa totalmente desativado para cliques */
-    transition: all 0.3s ease; /* Animação suave para surgir e sumir */
-}
-
-/* Classe que o JavaScript vai injetar no botão quando o usuário rolar a tela para baixo */
-#botao-topo.visivel {
-    opacity: 1;
-    visibility: visible;
-}
-
-
-/* ==========================================
-   7. LAYOUT DOS BENTO CARDS (PROJETOS)
-   ========================================== */
-
-.secao-projetos {
-    max-width: 900px;
-    margin: 50px auto;
-    padding: 0 20px;
-}
-
-.secao-projetos h2 {
-    color: #0369a1;
-    margin-bottom: 25px;
-}
-
-/* Container flexível que organiza os cards */
-.grid-projetos {
-    display: flex;
-    flex-wrap: wrap; /* Se não couber na linha (como no celular), joga o card para baixo */
-    justify-content: center;
-    gap: 20px; /* Espaço entre os cards */
-}
-
-/* Estilização individual de cada Bento Card */
-.card-projeto {
-    background-color: rgba(255, 255, 255, 0.7);
-    border: 1px solid #cbd5e1;
-    border-radius: 12px;
-    padding: 20px;
-    width: 260px; /* Largura fixa de cada bloco */
-    text-align: left; /* Texto do card alinhado à esquerda para visual profissional */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
-    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.4s ease;
-}
-
-/* Efeito de hover moderno: flutua o card e aumenta a sombra */
-.card-projeto:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
-}
-
-.card-projeto h3 {
-    margin-top: 0;
-    color: #0f172a;
-    font-size: 18px;
-}
-
-.card-projeto p {
-    font-size: 14px;
-    color: #475569;
-    line-height: 1.5;
-}
-
-/* Alinhamento das pequenas tags de tecnologia */
-.tags {
-    display: flex;
-    gap: 6px;
-    margin-top: 15px;
-}
-
-.tag {
-    font-size: 11px;
-    font-weight: bold;
-    padding: 4px 8px;
-    border-radius: 4px;
-}
-
-/* Cores específicas de cada tag de tecnologia */
-.tag.html { background-color: #ffedd5; color: #ea580c; }
-.tag.css { background-color: #e0f2fe; color: #0284c7; }
-.tag.js { background-color: #fef9c3; color: #ca8a04; }
-
-
-/* ==========================================
-   8. ADAPTAÇÕES DO MODO NOTURNO PARA AS NOVIDADES
-   ========================================== */
-
-body.modo-noturno .menu-navegacao {
-    background-color: rgba(15, 23, 42, 0.9); /* Menu escuro transparente no modo noturno */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-}
-
-body.modo-noturno .menu-navegacao a {
-    color: #38bdf8;
-}
-
-body.modo-noturno .card-projeto {
-    background-color: rgba(30, 41, 59, 0.7); /* Cards escuros */
-    border-color: #334155;
-}
-
-body.modo-noturno .card-projeto h3 {
-    color: #f1f5f9;
-}
-
-body.modo-noturno .card-projeto p {
-    color: #94a3b8;
-}
-
-body.modo-noturno .secao-projetos h2 {
-    color: #38bdf8;
-}
-
-body.modo-noturno #botao-topo {
-    background-color: #38bdf8;
-    color: #0f172a;
-}
-
-/* ==========================================
-   9. ANIMAÇÕES DE ENTRADA SUAVES (KEYFRAMES)
-   ========================================== */
-
-/* Criamos a receita da animação chamada 'surgirESubir' */
-@keyframes surgirESubir {
-    from {
-        opacity: 0; /* Começa totalmente invisível */
-        transform: translateY(30px); /* Começa 30 pixels deslocado para baixo */
-    }
-    to {
-        opacity: 1; /* Termina totalmente visível */
-        transform: translateY(0); /* Termina na posição correta dele */
-    }
-}
-
-/* Aplicamos a receita na classe que colocamos no HTML */
-.animar-subir {
-    opacity: 0; /* Começa invisível para não dar um 'susto' na tela antes da animação rodar */
-    animation: surgirESubir 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    /* 
-       0.8s = Tempo que a animação demora para acontecer
-       cubic-bezier = É uma curva de velocidade que faz a animação começar rápida e frear suavemente (efeito premium)
-       forwards = Mantém o elemento visível após a animação terminar
-    */
-}
-
-/* DICA DE MESTRE: Cria um atraso (delay) para os elementos não surgirem todos idênticos ao mesmo tempo */
-h1.animar-subir { animation-delay: 0.1s; }
-img.animar-subir { animation-delay: 0.2s; }
-p.animar-subir { animation-delay: 0.3s; }
-.secao-projetos.animar-subir { animation-delay: 0.4s; }
-.container-contador.animar-subir { animation-delay: 0.5s; }
-.secao-contato.animar-subir { animation-delay: 0.6s; }
-
-/* ==========================================
-   10. RESPONSIVIDADE E MENU HAMBÚRGUER (AJUSTADO)
-   ========================================== */
-
-/* 1. REGRAS PARA COMPUTADOR (Padrão) */
-
-    .menu-navegacao {
-        display: flex !important;
-        justify-content: flex-end; /* Joga o conteúdo do menu para a direita no celular */
-        align-items: center; /* Centraliza verticalmente e perfeitamente tudo dentro da barra branca */
-        height: 60px; /* Define uma altura fixa e elegante para a barra branca */
-        padding: 0 20px !important; /* Cria um espaçamento seguro nas laterais internas */
-        box-sizing: border-box;
-    }
-
-
-.links-menu {
-    display: flex;
-    justify-content: center;
-    gap: 25px; /* Espaço entre os links */
-    flex-wrap: nowrap; /* PROÍBE os links de quebrarem linha ou irem para baixo no PC */
-}
-
-.links-menu a {
-    color: #0369a1;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 14px;
-    transition: color 0.2s;
-    white-space: nowrap; /* Impede que o texto de um link se divida em dois */
-}
-
-.links-menu a:hover { 
-    color: #0284c7; 
-}
-
-/* O botão hambúrguer fica COMPLETAMENTE invisível no computador */
-#botao-menu-celular { 
-    display: none !important; 
-}
-
-
-/* 2. REGRAS EXCLUSIVAS PARA CELULAR (Telas até 768px) */
-@media (max-width: 768px) {
-    
-    /* Ativa o botão no celular e força ele a exibir as barrinhas */
-        /* SUBSTITUA APENAS ESTES DOIS BLOCOS DENTRO DO @media (max-width: 768px) */
-
-    #botao-menu-celular {
-        display: flex !important;
-        flex-direction: column;
-        justify-content: space-between;
-        width: 30px;
-        height: 18px; /* Altura firme das 3 barrinhas */
-        background: transparent !important;
-        border: none !important;
-        box-shadow: none !important;
-        padding: 0 !important;
-        cursor: pointer;
-        z-index: 1001;
-        
-        /* CORREÇÃO DO ALINHAMENTO: Tiramos as posições fixas com números mágicos */
-        /* Deixamos o próprio Flexbox da .menu-navegacao cuidar do alinhamento perfeito */
-        position: relative; 
-        top: 0; 
-        right: 0;
-    }
-
-    .barrinha {
-        display: block !important;
-        width: 100%;
-        height: 3px;
-        background-color: #0369a1 !important; /* Força o azul escuro a aparecer no modo claro */
-        border-radius: 2px;
-        transition: all 0.3s ease;
-    }
-
-
-    /* Transforma o menu em um painel lateral no celular */
-    .links-menu {
-        position: fixed;
-        right: -100%; 
-        top: 0;
-        width: 70%;
-        height: 100vh;
-        background-color: #e0f2fe;
-        flex-direction: column; /* Alinha um embaixo do outro no celular */
-        justify-content: center;
-        align-items: center;
-        gap: 30px;
-        transition: right 0.4s ease;
-        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
-        z-index: 1000;
-    }
-
-    /* Quando clicar, o menu entra na tela */
-    .links-menu.aberto {
-        right: 0;
-    }
-
-    .links-menu a { 
-        font-size: 20px; 
-    }
-
-    /* Animação do botão virando X quando aberto */
-    #botao-menu-celular.aberto .barrinha:nth-child(1) { transform: translateY(8px) rotate(45deg); }
-    #botao-menu-celular.aberto .barrinha:nth-child(2) { opacity: 0; }
-    #botao-menu-celular.aberto .barrinha:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
-}
-
-/* 3. AJUSTES DO MODO NOTURNO PARA O MENU */
-body.modo-noturno .menu-navegacao { 
-    background-color: rgba(15, 23, 42, 0.9); 
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); 
-}
-
-body.modo-noturno .links-menu a { 
-    color: #38bdf8; 
-}
-
-@media (max-width: 768px) {
-    body.modo-noturno .links-menu { 
-        background-color: #0f172a; 
-    }
-    body.modo-noturno .barrinha { 
-        background-color: #38bdf8 !important; /* Barrinhas azul neon no escuro */
-    }
-}
-
-/* ==========================================
-   11. MELHORIAS AVANÇADAS (MEMÓRIA, VALIDAÇÃO E MENUS)
-   ========================================== */
-
-/* Estilo do contador de letras embaixo da mensagem */
-#contador-caracteres {
-    font-size: 12px;
-    text-align: right;
-    color: #64748b;
-    margin-top: -5px;
-    margin-bottom: 10px;
-    transition: color 0.2s;
-}
-
-/* Classe especial que o JavaScript vai injetar se o usuário estourar o limite */
-#contador-caracteres.limite-atingido {
-    color: #ef4444; /* Fica vermelho */
-    font-weight: bold;
-}
-
-/* CLASSE DE DESTAQUE DO MENU: Acende o link da seção onde o usuário está lendo */
-.menu-navegacao a.link-ativo {
-    color: #0284c7 !important;
-    border-bottom: 2px solid #0284c7;
-}
-
-/* Destaque do menu adaptado para o Modo Noturno */
-body.modo-noturno .menu-navegacao a.link-ativo {
-    color: #38bdf8 !important;
-    border-bottom: 2px solid #38bdf8;
-}
-
-/* ==========================================
-   12. MICROINTERAÇÕES VISUAIS PREMIUM (PROGRESSO, GLOW E TOASTS)
-   ========================================== */
-
-/* BARRA DE PROGRESSO DE LEITURA */
-#barra-progresso {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    height: 3px;
-    width: 0%; /* Começa em 0% e o JavaScript vai alterando */
-    background-color: #0369a1;
-    transition: width 0.1s ease-out;
-}
-
-body.modo-noturno #barra-progresso {
-    background-color: #38bdf8;
-}
-
-/* EFEITO GLOW (BRILHO) NOS BENTO CARDS */
-.card-projeto {
-    position: relative;
-    overflow: hidden; /* Garante que o brilho não escape para fora das bordas arredondadas */
-}
-
-/* Criamos uma camada invisível em cima do card usando um gradiente que segue as variáveis do JS */
-.card-projeto::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    /* Usa as variáveis dinâmicas --x e --y que o JavaScript calculará */
-    background: radial-gradient(80px circle at var(--x, 0px) var(--y, 0px), rgba(3, 105, 161, 0.15), transparent 80%);
-    transition: opacity 0.3s;
-    pointer-events: none; /* Permite clicar no texto do card normalmente */
-    opacity: 0; /* Fica apagado por padrão */
-}
-
-/* Acende o efeito luminoso apenas quando o mouse estiver em cima do card */
-.card-projeto:hover::before {
-    opacity: 1;
-}
-
-/* Ajuste do brilho para se destacar no Modo Noturno */
-body.modo-noturno .card-projeto::before {
-    background: radial-gradient(100px circle at var(--x, 0px) var(--y, 0px), rgba(56, 189, 248, 0.25), transparent 80%);
-}
-
-/* SISTEMA DE NOTIFICAÇÕES TOAST */
-#container-toast {
-    position: fixed;
-    top: 90px; /* Surge logo abaixo do menu fixo */
-    right: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    z-index: 2000;
-}
-
-.toast {
-    background-color: #ffffff;
-    color: #1e293b;
-    padding: 14px 24px;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: bold;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-    border-left: 5px solid #0369a1; /* Linha azul de destaque */
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    /* Animação: desliza da direita para a esquerda ao surgir */
-    animation: deslizarEntrada 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-    transition: all 0.4s ease;
-}
-
-body.modo-noturno .toast {
-    background-color: #1e293b;
-    color: #f1f5f9;
-    border-left-color: #38bdf8;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-}
-
-/* Classe invisível que o JS injetará antes de apagar a notificação */
-.toast.escondendo {
-    opacity: 0;
-    transform: scale(0.9) translateX(50px);
-}
-
-@keyframes deslizarEntrada {
-    from {
-        opacity: 0;
-        transform: translateX(100%);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
+@media (prefers-reduced-motion: reduce) { html {scroll-behavior:auto} *,*::before,*::after {transition:none!important; animation:none!important} }
