@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prime Barber | Projeto de Otávio</title>
+<meta name="description" content="Landing page de uma barbearia fictícia, feita por Otávio como projeto de portfólio.">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="portfolio-bar">
+  <a href="../../index.html#projetos">← Voltar ao portfólio</a>
+  <span>Projeto fictício de portfólio</span>
+</div>
+
+<header class="header">
+  <div class="container nav">
+    <a class="brand" href="#topo">PRIME <span>BARBER</span></a>
+    <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="menu">☰</button>
+    <nav class="menu" id="menu" aria-label="Navegação da barbearia">
+      <a href="#servicos">Serviços</a>
+      <a href="#horarios">Horários</a>
+      <a href="#local">Onde estamos</a>
+      <a class="menu-cta" href="#agendar">Agendar</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<section class="hero" id="topo">
+  <div class="container hero-content">
+    <p class="hero-kicker">Desde 2015 · Barbearia clássica</p>
+    <h1>Seu estilo,<br>feito com <em>precisão.</em></h1>
+    <p class="hero-text">Cortes, barba e cuidados masculinos com atendimento sem pressa, café passado na hora e profissionais que entendem o que você quer.</p>
+    <div class="hero-actions">
+      <a class="button" href="#agendar">Agendar horário</a>
+      <a class="button button-outline" href="#servicos">Ver serviços</a>
+    </div>
+    <ul class="hero-stats">
+      <li><strong>4.9★</strong><span>avaliação média</span></li>
+      <li><strong>+8 mil</strong><span>cortes realizados</span></li>
+      <li><strong>3</strong><span>barbeiros</span></li>
+    </ul>
+  </div>
+</section>
+
+<section class="section" id="servicos">
+  <div class="container">
+    <p class="section-kicker">Serviços</p>
+    <h2>Escolha o seu cuidado</h2>
+    <div class="services">
+      <article class="service">
+        <div class="service-head"><h3>Corte clássico</h3><span class="price">R$ 45</span></div>
+        <p>Tesoura e máquina, finalizado com lavagem e pomada.</p>
+        <span class="duration">40 min</span>
+      </article>
+      <article class="service">
+        <div class="service-head"><h3>Barba completa</h3><span class="price">R$ 35</span></div>
+        <p>Toalha quente, navalha e hidratação com óleo de barba.</p>
+        <span class="duration">30 min</span>
+      </article>
+      <article class="service featured">
+        <span class="badge">Mais pedido</span>
+        <div class="service-head"><h3>Corte + barba</h3><span class="price">R$ 70</span></div>
+        <p>O combo completo com desconto. Inclui toalha quente.</p>
+        <span class="duration">1h10</span>
+      </article>
+      <article class="service">
+        <div class="service-head"><h3>Degradê</h3><span class="price">R$ 50</span></div>
+        <p>Transição suave na máquina, do zero ao comprimento que você quiser.</p>
+        <span class="duration">45 min</span>
+      </article>
+      <article class="service">
+        <div class="service-head"><h3>Sobrancelha</h3><span class="price">R$ 15</span></div>
+        <p>Limpeza e alinhamento na navalha.</p>
+        <span class="duration">10 min</span>
+      </article>
+      <article class="service">
+        <div class="service-head"><h3>Corte infantil</h3><span class="price">R$ 35</span></div>
+        <p>Para crianças de até 12 anos, com toda a paciência do mundo.</p>
+        <span class="duration">30 min</span>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section section-dark" id="horarios">
+  <div class="container split">
+    <div>
+      <p class="section-kicker">Horários</p>
+      <h2>Quando estamos abertos</h2>
+      <p class="status" id="openStatus"></p>
+    </div>
+    <table class="hours">
+      <tbody>
+        <tr data-days="1,2,3,4,5"><th>Segunda a sexta</th><td>9h às 20h</td></tr>
+        <tr data-days="6"><th>Sábado</th><td>8h às 18h</td></tr>
+        <tr data-days="0"><th>Domingo</th><td>Fechado</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="section" id="local">
+  <div class="container split">
+    <div>
+      <p class="section-kicker">Onde estamos</p>
+      <h2>Fácil de chegar</h2>
+      <p class="address">Rua das Navalhas, 123 — Centro<br>Cidade Exemplo — SP</p>
+      <p class="muted">Estacionamento conveniado ao lado. A 2 minutos da estação central.</p>
+    </div>
+    <div class="map" aria-hidden="true">
+      <div class="map-road road-h"></div>
+      <div class="map-road road-v"></div>
+      <div class="map-pin">✂</div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-dark" id="agendar">
+  <div class="container booking">
+    <div>
+      <p class="section-kicker">Agendamento</p>
+      <h2>Reserve seu horário</h2>
+      <p class="muted">Escolha o serviço, o dia e o horário. Confirmamos em seguida.</p>
+    </div>
+    <form class="booking-form" id="bookingForm">
+      <label>Seu nome<input type="text" name="nome" required autocomplete="name"></label>
+      <label>Serviço
+        <select name="servico" id="serviceSelect" required></select>
+      </label>
+      <div class="form-row">
+        <label>Dia<input type="date" name="dia" id="dateInput" required></label>
+        <label>Horário<select name="hora" id="timeSelect" required></select></label>
+      </div>
+      <button class="button" type="submit">Confirmar agendamento</button>
+      <p class="booking-result" id="bookingResult" role="status"></p>
+    </form>
+  </div>
+</section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <p><strong>PRIME BARBER</strong> — barbearia fictícia criada por <a href="../../index.html">Otávio</a> como projeto de portfólio.</p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cronômetro | Projeto de Otávio</title>
+<meta name="description" content="Cronômetro online com voltas e atalhos de teclado, feito por Otávio como projeto de portfólio.">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="portfolio-bar">
+  <a href="../../index.html#projetos">← Voltar ao portfólio</a>
+  <span>Projeto de portfólio · JavaScript</span>
+</div>
+
+<main class="app">
+  <h1 class="sr-only">Cronômetro</h1>
+  <div class="dial" id="dial">
+    <svg class="ring" viewBox="0 0 200 200" aria-hidden="true">
+      <circle class="ring-track" cx="100" cy="100" r="90"/>
+      <circle class="ring-progress" id="ringProgress" cx="100" cy="100" r="90"/>
+    </svg>
+    <div class="time" id="display" role="timer" aria-live="off">00:00<small>,00</small></div>
+    <div class="lap-time" id="currentLap">Volta 1 · 00:00,00</div>
+  </div>
+
+  <div class="controls">
+    <button type="button" class="control secondary" id="lapResetBtn" disabled>Volta</button>
+    <button type="button" class="control primary" id="startBtn">Iniciar</button>
+  </div>
+  <p class="shortcuts"><kbd>Espaço</kbd> iniciar/pausar · <kbd>V</kbd> volta · <kbd>Z</kbd> zerar</p>
+
+  <section class="laps" aria-label="Voltas registradas">
+    <table>
+      <thead><tr><th>Volta</th><th>Tempo da volta</th><th>Tempo total</th></tr></thead>
+      <tbody id="lapList"></tbody>
+    </table>
+    <p class="laps-empty" id="lapsEmpty">As voltas aparecem aqui.</p>
+  </section>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
