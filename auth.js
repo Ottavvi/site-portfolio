@@ -136,7 +136,7 @@ if (adminArea) {
         return row;
       }));
     } catch (error) {
-      showNotice('Não foi possível carregar os usuários. Confira as regras do Firestore.', true);
+      showNotice(`Não foi possível carregar os usuários. Confira as regras do Firestore. (${error.code || error.message})`, true);
     }
   });
 }
