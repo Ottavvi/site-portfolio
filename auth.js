@@ -1,4 +1,4 @@
-import { auth } from './firebase.js';
+import { auth, db, ADMIN_UID } from './firebase.js';
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -7,6 +7,21 @@ import {
   onAuthStateChanged,
   signOut
 } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+import {
+  doc,
+  setDoc,
+  collection,
+  getDocs
+} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+
+// Salva (ou atualiza) os dados do usuário na coleção "usuarios", usada pelo painel de admin
+function saveProfile(user) {
+  return setDoc(doc(db, 'usuarios', user.uid), {
+    nome: user.displayName || '',
+    email: user.email,
+    criadoEm: user.metadata.creationTime
+  }, { merge: true });
+}
 
 const errorMessages = {
   'auth/email-already-in-use': 'Este e-mail já está cadastrado. Tente entrar.',
@@ -55,6 +70,7 @@ if (signupForm) signupForm.addEventListener('submit', event => {
   handleSubmit(signupForm, async data => {
     const { user } = await createUserWithEmailAndPassword(auth, data.get('email'), data.get('senha'));
     await updateProfile(user, { displayName: data.get('nome').trim() });
+    await saveProfile(user).catch(() => {});
   });
 });
 
@@ -84,10 +100,49 @@ if (memberArea) {
     }
     document.getElementById('memberName').textContent = user.displayName || user.email;
     document.getElementById('memberEmail').textContent = user.email;
+    document.getElementById('adminLink').hidden = user.uid !== ADMIN_UID;
     memberArea.hidden = false;
-  });
-  document.getElementById('logoutBtn').addEventListener('click', async () => {
-    await signOut(auth);
-    window.location.href = 'index.html';
+    // Garante que contas criadas antes do painel de admin também apareçam na lista
+    saveProfile(user).catch(() => {});
   });
 }
+
+// Painel de admin: a lista só é liberada pelas regras do Firestore para o ADMIN_UID
+const adminArea = document.getElementById('adminArea');
+if (adminArea) {
+  onAuthStateChanged(auth, async user => {
+    if (!user) {
+      window.location.replace('login.html');
+      return;
+    }
+    if (user.uid !== ADMIN_UID) {
+      window.location.replace('area.html');
+      return;
+    }
+    adminArea.hidden = false;
+    const tableBody = document.getElementById('usersTable');
+    try {
+      const snapshot = await getDocs(collection(db, 'usuarios'));
+      const users = snapshot.docs.map(item => item.data())
+        .sort((a, b) => new Date(b.criadoEm) - new Date(a.criadoEm));
+      document.getElementById('usersCount').textContent = users.length;
+      tableBody.replaceChildren(...users.map(item => {
+        const row = document.createElement('tr');
+        [item.nome || '—', item.email, new Date(item.criadoEm).toLocaleDateString('pt-BR')].forEach(value => {
+          const cell = document.createElement('td');
+          cell.textContent = value;
+          row.append(cell);
+        });
+        return row;
+      }));
+    } catch (error) {
+      showNotice('Não foi possível carregar os usuários. Confira as regras do Firestore.', true);
+    }
+  });
+}
+
+const logoutBtn = document.getElementById('logoutBtn');
+if (logoutBtn) logoutBtn.addEventListener('click', async () => {
+  await signOut(auth);
+  window.location.href = 'index.html';
+});
