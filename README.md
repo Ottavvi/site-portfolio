@@ -30,6 +30,13 @@ O código do sistema é privado; aqui fica só a página de apresentação. Quan
 `rota-municipal/vitrine/index.html` e `vitrine/imagens/` para `projetos/rota-municipal/`, mantendo a
 barra "Voltar ao portfólio" e o ícone que foram adicionados no topo da cópia.
 
+## Gerenciador de tarefas (projetos/tarefas)
+
+JavaScript puro em módulos (`js/`), um arquivo por responsabilidade: `estado.js` (dados e desfazer),
+`render.js` (tela), `detalhes.js` (painel da tarefa), `entrada.js` (atalhos ao digitar) e os demais recursos.
+Funciona offline pelo `sw.js`: **ao mudar qualquer arquivo do app, troque a `VERSAO` no `sw.js`**, senão quem
+já abriu o app pode continuar vendo a versão antiga guardada no navegador.
+
 ## Rodar localmente
 
 Os módulos JavaScript não funcionam abrindo o arquivo direto (`file://`). Use um servidor local, por exemplo:

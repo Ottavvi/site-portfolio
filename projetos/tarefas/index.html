@@ -6,55 +6,315 @@
     <title>Minhas Tarefas | Projeto de Otávio</title>
     <meta
       name="description"
-      content="Lista de tarefas com salvamento no navegador, feita por Otávio como projeto de portfólio."
+      content="Gerenciador de tarefas com listas, prazos, prioridades, subtarefas, repetição, lembretes e modo offline, feito por Otávio como projeto de portfólio."
     />
-    <link rel="icon" href="../../favicon.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="style.css" />
+    <meta name="theme-color" content="#15131d" />
+    <link rel="icon" href="icones/icone.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="icones/icone-192.png" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="css/style.css" />
+    <!-- Aplica o tema salvo antes de desenhar a página, para não piscar a cor errada -->
+    <script>
+      try {
+        const tema = JSON.parse(localStorage.getItem('tarefas-v2'))?.prefs?.tema;
+        if (tema === 'claro' || tema === 'escuro') document.documentElement.dataset.tema = tema;
+      } catch {}
+    </script>
   </head>
   <body>
     <div class="portfolio-bar">
       <a href="../../index.html#projetos">← Voltar ao portfólio</a>
-      <span>Projeto de portfólio · JavaScript + LocalStorage</span>
+      <span>Projeto de portfólio · JavaScript puro, sem frameworks</span>
     </div>
 
-    <main class="app">
-      <header class="app-header">
-        <h1>Minhas tarefas</h1>
-        <p class="today" id="today"></p>
-      </header>
-
-      <form class="new-task" id="newTaskForm">
-        <label class="sr-only" for="newTaskInput">Nova tarefa</label>
-        <input
-          id="newTaskInput"
-          type="text"
-          placeholder="O que você precisa fazer?"
-          maxlength="120"
-          autocomplete="off"
-          required
-        />
-        <button type="submit" aria-label="Adicionar tarefa">+</button>
-      </form>
-
-      <div class="toolbar">
-        <div class="filters" role="group" aria-label="Filtrar tarefas">
-          <button type="button" class="filter active" data-filter="todas" aria-pressed="true">Todas</button>
-          <button type="button" class="filter" data-filter="pendentes" aria-pressed="false">Pendentes</button>
-          <button type="button" class="filter" data-filter="concluidas" aria-pressed="false">Concluídas</button>
+    <div class="app">
+      <!-- Menu lateral: visões, listas, categorias e ferramentas -->
+      <aside class="lateral" id="lateral" aria-label="Menu">
+        <div class="marca">
+          <span class="marca-icone" aria-hidden="true">✓</span>
+          <div>
+            <strong>Minhas tarefas</strong>
+            <span id="hojeTexto"></span>
+          </div>
+          <button type="button" class="icone-btn so-celular" id="fecharMenu" aria-label="Fechar menu">✕</button>
         </div>
-        <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
-      </div>
 
-      <ul class="task-list" id="taskList" aria-live="polite"></ul>
-      <p class="empty" id="emptyMessage" hidden></p>
+        <nav class="visoes" aria-label="Visões">
+          <button type="button" class="nav-item" data-visao="hoje">
+            <span class="nav-icone" aria-hidden="true">☀</span>
+            Hoje
+            <span class="nav-cont" data-cont="hoje"></span>
+          </button>
+          <button type="button" class="nav-item" data-visao="proximos">
+            <span class="nav-icone" aria-hidden="true">📅</span>
+            Próximos dias
+            <span class="nav-cont" data-cont="proximos"></span>
+          </button>
+          <button type="button" class="nav-item" data-visao="estatisticas">
+            <span class="nav-icone" aria-hidden="true">📊</span>
+            Estatísticas
+          </button>
+        </nav>
 
-      <footer class="app-footer">
-        <span id="counter"></span>
-        <button type="button" class="clear" id="clearDone">Limpar concluídas</button>
-      </footer>
-      <p class="hint">Dica: clique duas vezes numa tarefa para editar.</p>
-    </main>
+        <section class="secao-lateral" aria-labelledby="tituloListas">
+          <div class="secao-titulo">
+            <h2 id="tituloListas">Listas</h2>
+            <button type="button" class="icone-btn" id="novaLista" aria-label="Nova lista" title="Nova lista">+</button>
+          </div>
+          <ul class="listas" id="listas"></ul>
+        </section>
 
-    <script src="script.js"></script>
+        <section class="secao-lateral" aria-labelledby="tituloCategorias">
+          <div class="secao-titulo">
+            <h2 id="tituloCategorias">Categorias</h2>
+            <button
+              type="button"
+              class="icone-btn"
+              id="novaCategoria"
+              aria-label="Nova categoria"
+              title="Nova categoria"
+            >
+              +
+            </button>
+          </div>
+          <ul class="categorias" id="categorias"></ul>
+        </section>
+
+        <section class="secao-lateral ferramentas" aria-label="Ferramentas">
+          <button type="button" class="ferramenta" id="botaoTema"></button>
+          <button type="button" class="ferramenta" id="botaoLembretes"></button>
+          <button type="button" class="ferramenta" id="botaoInstalar" hidden>⬇ Instalar como app</button>
+          <button type="button" class="ferramenta" id="botaoExportar">⤓ Exportar tarefas</button>
+          <button type="button" class="ferramenta" id="botaoImportar">⤒ Importar tarefas</button>
+          <input type="file" id="arquivoImportar" accept="application/json,.json" hidden />
+          <button type="button" class="ferramenta" id="botaoAtalhos">⌨ Atalhos de teclado</button>
+          <button type="button" class="ferramenta" id="botaoExemplos">↺ Restaurar exemplos</button>
+          <button type="button" class="ferramenta perigo" id="botaoZerar">🗑 Começar do zero</button>
+        </section>
+      </aside>
+      <div class="fundo-menu" id="fundoMenu" hidden></div>
+
+      <main class="principal" id="principal">
+        <header class="topo">
+          <button type="button" class="icone-btn so-celular" id="abrirMenu" aria-label="Abrir menu">☰</button>
+          <div class="topo-texto">
+            <h1 id="tituloVisao">Hoje</h1>
+            <p id="subtituloVisao"></p>
+          </div>
+          <div class="topo-acoes" id="acoesLista" hidden>
+            <button type="button" class="texto-btn" id="renomearLista">Renomear</button>
+            <button type="button" class="texto-btn perigo" id="excluirLista">Excluir lista</button>
+          </div>
+        </header>
+
+        <div id="areaTarefas">
+          <form class="nova-tarefa" id="formNova" autocomplete="off">
+            <label class="sr-only" for="entradaNova">Nova tarefa</label>
+            <input id="entradaNova" type="text" placeholder="Adicionar tarefa…  (atalho: N)" maxlength="160" />
+            <button type="submit" aria-label="Adicionar tarefa">+</button>
+          </form>
+          <div class="previa" id="previa" aria-live="polite"></div>
+          <p class="dica">
+            Ao digitar:
+            <code>hoje</code>
+            <code>amanhã</code>
+            <code>sexta</code>
+            <code>25/12</code>
+            <code>14:00</code>
+            <code>!alta</code>
+            <code>#categoria</code>
+            <code>*semanal</code>
+          </p>
+
+          <div class="barra">
+            <label class="busca">
+              <span class="sr-only">Buscar</span>
+              <input id="busca" type="search" placeholder="Buscar…  (atalho: /)" />
+            </label>
+            <div class="filtros" role="group" aria-label="Mostrar">
+              <button type="button" class="filtro" data-filtro="pendentes">Pendentes</button>
+              <button type="button" class="filtro" data-filtro="todas">Todas</button>
+              <button type="button" class="filtro" data-filtro="concluidas">Concluídas</button>
+            </div>
+            <label class="ordenar">
+              <span class="sr-only">Ordenar por</span>
+              <select id="ordenar">
+                <option value="manual">Minha ordem</option>
+                <option value="prazo">Prazo</option>
+                <option value="prioridade">Prioridade</option>
+                <option value="criacao">Mais recentes</option>
+                <option value="alfabetica">A–Z</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="chips" id="chipsCategorias" role="group" aria-label="Filtrar por categoria"></div>
+
+          <div class="resumo">
+            <div class="progresso" aria-hidden="true"><span id="barraProgresso"></span></div>
+            <span id="contador"></span>
+          </div>
+
+          <div id="conteudo"></div>
+          <p class="vazio" id="vazio" hidden></p>
+
+          <footer class="rodape">
+            <span id="dicaArrastar"></span>
+            <button type="button" class="texto-btn" id="limparConcluidas">Limpar concluídas</button>
+          </footer>
+        </div>
+
+        <div id="areaEstatisticas" hidden></div>
+      </main>
+    </div>
+
+    <!-- Detalhes da tarefa -->
+    <dialog class="detalhes" id="detalhes" aria-labelledby="detalhesTitulo">
+      <form method="dialog" class="detalhes-form" id="formDetalhes">
+        <div class="detalhes-topo">
+          <label class="check grande">
+            <input type="checkbox" id="detFeita" />
+            <span class="sr-only">Concluída</span>
+          </label>
+          <h2 class="sr-only" id="detalhesTitulo">Detalhes da tarefa</h2>
+          <textarea id="detTexto" rows="1" maxlength="160" aria-label="Título da tarefa"></textarea>
+          <button type="submit" class="icone-btn" aria-label="Fechar">✕</button>
+        </div>
+
+        <div class="campos">
+          <label>
+            Prazo
+            <input type="date" id="detPrazo" />
+          </label>
+          <label>
+            Hora
+            <input type="time" id="detHora" />
+          </label>
+          <label>
+            Prioridade
+            <select id="detPrioridade">
+              <option value="0">Nenhuma</option>
+              <option value="1">Baixa</option>
+              <option value="2">Média</option>
+              <option value="3">Alta</option>
+            </select>
+          </label>
+          <label>
+            Repetir
+            <select id="detRepetir">
+              <option value="">Não repete</option>
+              <option value="diaria">Todo dia</option>
+              <option value="dias-uteis">Dias úteis</option>
+              <option value="semanal">Toda semana</option>
+              <option value="mensal">Todo mês</option>
+            </select>
+          </label>
+          <label>
+            Lista
+            <select id="detLista"></select>
+          </label>
+          <label>
+            Categoria
+            <select id="detCategoria"></select>
+          </label>
+        </div>
+
+        <div class="bloco">
+          <h3>
+            Subtarefas
+            <span id="detSubContador"></span>
+          </h3>
+          <ul class="subtarefas" id="detSubtarefas"></ul>
+          <div class="nova-sub">
+            <input id="detNovaSub" type="text" placeholder="Adicionar subtarefa e apertar Enter" maxlength="120" />
+          </div>
+        </div>
+
+        <div class="bloco">
+          <h3><label for="detNotas">Notas</label></h3>
+          <textarea id="detNotas" rows="4" placeholder="Detalhes, links, o que for útil…"></textarea>
+        </div>
+
+        <p class="detalhes-info" id="detInfo"></p>
+        <div class="detalhes-rodape">
+          <button type="button" class="texto-btn perigo" id="detExcluir">Excluir tarefa</button>
+          <button type="submit" class="botao">Pronto</button>
+        </div>
+      </form>
+    </dialog>
+
+    <!-- Nome de lista ou categoria -->
+    <dialog class="pequeno" id="dialogoNome">
+      <form method="dialog" id="formNome">
+        <h2 id="dialogoNomeTitulo">Nova lista</h2>
+        <input id="dialogoNomeEntrada" maxlength="40" required />
+        <div class="dialogo-botoes">
+          <button type="button" class="texto-btn" id="dialogoNomeCancelar">Cancelar</button>
+          <button type="submit" class="botao" value="ok">Salvar</button>
+        </div>
+      </form>
+    </dialog>
+
+    <!-- Atalhos de teclado -->
+    <dialog class="pequeno" id="dialogoAtalhos" aria-labelledby="tituloAtalhos">
+      <form method="dialog">
+        <h2 id="tituloAtalhos">Atalhos de teclado</h2>
+        <dl class="lista-atalhos">
+          <dt><kbd>N</kbd></dt>
+          <dd>Nova tarefa</dd>
+          <dt><kbd>/</kbd></dt>
+          <dd>Buscar</dd>
+          <dt>
+            <kbd>↑</kbd>
+            <kbd>↓</kbd>
+            ou
+            <kbd>K</kbd>
+            <kbd>J</kbd>
+          </dt>
+          <dd>Andar pelas tarefas</dd>
+          <dt>
+            <kbd>Espaço</kbd>
+            ou
+            <kbd>X</kbd>
+          </dt>
+          <dd>Concluir / desmarcar</dd>
+          <dt><kbd>Enter</kbd></dt>
+          <dd>Abrir detalhes</dd>
+          <dt>
+            <kbd>Alt</kbd>
+            +
+            <kbd>↑</kbd>
+            <kbd>↓</kbd>
+          </dt>
+          <dd>Mover na lista</dd>
+          <dt><kbd>Delete</kbd></dt>
+          <dd>Excluir</dd>
+          <dt>
+            <kbd>Ctrl</kbd>
+            +
+            <kbd>Z</kbd>
+          </dt>
+          <dd>Desfazer</dd>
+          <dt>
+            <kbd>1</kbd>
+            <kbd>2</kbd>
+            <kbd>3</kbd>
+          </dt>
+          <dd>Hoje, Próximos dias, Estatísticas</dd>
+          <dt><kbd>T</kbd></dt>
+          <dd>Trocar o tema</dd>
+          <dt><kbd>?</kbd></dt>
+          <dd>Mostrar esta ajuda</dd>
+        </dl>
+        <div class="dialogo-botoes"><button class="botao">Entendi</button></div>
+      </form>
+    </dialog>
+
+    <div class="aviso" id="aviso" role="status" hidden>
+      <span id="avisoTexto"></span>
+      <button type="button" id="avisoDesfazer">Desfazer</button>
+    </div>
+
+    <script type="module" src="js/main.js"></script>
   </body>
 </html>
