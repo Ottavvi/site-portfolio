@@ -1,6 +1,7 @@
 // Desenha a tela a partir do estado: menu lateral, título, filtros e as tarefas da visão escolhida.
 import { buscarCategoria, buscarLista, estado, normalizar } from './estado.js';
 import { GRUPOS, grupoDoPrazo, hojeISO, rotuloPrazo } from './datas.js';
+import { focosPorTarefa } from './focos.js';
 
 const $ = id => document.getElementById(id);
 export const ui = { busca: '' }; // o texto da busca não fica salvo
@@ -195,9 +196,12 @@ function desenharChips() {
   $('chipsCategorias').hidden = !estado.categorias.length;
 }
 
+let focos = new Map(); // sessões do Pomodoro por tarefa, lidas uma vez por desenho
+
 function desenharTarefas() {
   const lista = secoes();
   const arrastavel = podeArrastar();
+  focos = focosPorTarefa();
   $('conteudo').replaceChildren(
     ...lista.map(secao => {
       const bloco = elemento('section', `grupo ${secao.classe || ''}`);
@@ -278,6 +282,12 @@ function desenharTarefa(t, arrastavel) {
     );
   }
   if (t.notas.trim()) meta.append(elemento('span', 'selo', '📝', { title: 'Tem notas' }));
+  const foco = focos.get(t.id);
+  if (foco) {
+    meta.append(
+      elemento('span', 'selo', `🍅 ${foco.focos}`, { title: `${foco.focos} foco(s) no Pomodoro, ${foco.minutos} min` })
+    );
+  }
   if (estado.prefs.visao.tipo !== 'lista' && estado.listas.length > 1) {
     const lista = buscarLista(t.listaId);
     if (lista) meta.append(elemento('span', 'selo lista', lista.nome));

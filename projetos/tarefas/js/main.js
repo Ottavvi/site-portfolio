@@ -43,6 +43,10 @@ function atualizar() {
   if (foco) focarTarefa(foco);
 }
 assinar(atualizar);
+// Um foco terminado no Pomodoro (em outra aba) atualiza o selo 🍅 das tarefas
+window.addEventListener('storage', e => {
+  if (e.key === 'tempo-v1') atualizar();
+});
 
 /* ---------- Menu lateral ---------- */
 

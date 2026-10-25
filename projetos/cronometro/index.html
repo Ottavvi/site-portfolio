@@ -3,62 +3,206 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Cronômetro | Projeto de Otávio</title>
+    <title>Central de tempo | Projeto de Otávio</title>
     <meta
       name="description"
-      content="Cronômetro online com voltas e atalhos de teclado, feito por Otávio como projeto de portfólio."
+      content="Cronômetro com voltas, temporizador com alarme e Pomodoro integrado a uma lista de tarefas, feito por Otávio como projeto de portfólio."
     />
+    <meta name="theme-color" content="#11151c" />
     <link rel="icon" href="../../favicon.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
     <div class="portfolio-bar">
       <a href="../../index.html#projetos">← Voltar ao portfólio</a>
-      <span>Projeto de portfólio · JavaScript</span>
+      <span>Projeto de portfólio · JavaScript puro</span>
     </div>
 
     <main class="app">
-      <h1 class="sr-only">Cronômetro</h1>
-      <div class="dial" id="dial">
-        <svg class="ring" viewBox="0 0 200 200" aria-hidden="true">
-          <circle class="ring-track" cx="100" cy="100" r="90" />
-          <circle class="ring-progress" id="ringProgress" cx="100" cy="100" r="90" />
-        </svg>
-        <div class="time" id="display" role="timer" aria-live="off">
-          00:00
-          <small>,00</small>
+      <h1>Central de tempo</h1>
+
+      <div class="abas" role="tablist" aria-label="Ferramentas">
+        <button type="button" role="tab" id="aba-cronometro" aria-controls="painel-cronometro">⏱ Cronômetro</button>
+        <button type="button" role="tab" id="aba-temporizador" aria-controls="painel-temporizador">
+          ⏳ Temporizador
+        </button>
+        <button type="button" role="tab" id="aba-pomodoro" aria-controls="painel-pomodoro">🍅 Pomodoro</button>
+      </div>
+
+      <!-- Cronômetro -->
+      <section class="painel" id="painel-cronometro" role="tabpanel" aria-labelledby="aba-cronometro">
+        <div class="mostrador">
+          <svg class="anel" viewBox="0 0 200 200" aria-hidden="true">
+            <circle class="anel-trilho" cx="100" cy="100" r="90" />
+            <circle class="anel-progresso" id="crAnel" cx="100" cy="100" r="90" />
+          </svg>
+          <div class="tempo" id="crTempo" role="timer" aria-live="off">
+            00:00
+            <small>,00</small>
+          </div>
+          <div class="sub-tempo" id="crVolta">Volta 1 · 00:00,00</div>
         </div>
-        <div class="lap-time" id="currentLap">Volta 1 · 00:00,00</div>
-      </div>
+        <div class="controles">
+          <button type="button" class="controle secundario" id="crVoltaZerar" disabled>Volta</button>
+          <button type="button" class="controle principal" id="crIniciar">Iniciar</button>
+        </div>
+        <p class="atalhos">
+          <kbd>Espaço</kbd>
+          iniciar/pausar ·
+          <kbd>V</kbd>
+          volta ·
+          <kbd>Z</kbd>
+          zerar
+        </p>
+        <div class="voltas">
+          <table>
+            <caption class="sr-only">Voltas registradas</caption>
+            <thead>
+              <tr>
+                <th>Volta</th>
+                <th>Tempo da volta</th>
+                <th>Tempo total</th>
+              </tr>
+            </thead>
+            <tbody id="crVoltas"></tbody>
+          </table>
+          <p class="vazio" id="crSemVoltas">
+            As voltas aparecem aqui. O cronômetro continua contando mesmo se você fechar a aba.
+          </p>
+        </div>
+      </section>
 
-      <div class="controls">
-        <button type="button" class="control secondary" id="lapResetBtn" disabled>Volta</button>
-        <button type="button" class="control primary" id="startBtn">Iniciar</button>
-      </div>
-      <p class="shortcuts">
-        <kbd>Espaço</kbd>
-        iniciar/pausar ·
-        <kbd>V</kbd>
-        volta ·
-        <kbd>Z</kbd>
-        zerar
-      </p>
+      <!-- Temporizador -->
+      <section class="painel" id="painel-temporizador" role="tabpanel" aria-labelledby="aba-temporizador" hidden>
+        <div class="tm-painel" id="tmPainel">
+          <div class="mostrador">
+            <svg class="anel" viewBox="0 0 200 200" aria-hidden="true">
+              <circle class="anel-trilho" cx="100" cy="100" r="90" />
+              <circle class="anel-progresso" id="tmAnel" cx="100" cy="100" r="90" />
+            </svg>
+            <div class="tempo" id="tmTempo" role="timer" aria-live="off">05:00</div>
+            <div class="sub-tempo" id="tmStatus" aria-live="polite"></div>
+          </div>
+        </div>
+        <div class="controles">
+          <button type="button" class="controle secundario" id="tmZerar">Zerar</button>
+          <button type="button" class="controle principal" id="tmIniciar">Iniciar</button>
+          <button type="button" class="controle secundario" id="tmMais">+1 min</button>
+        </div>
+        <div class="predefinidos" role="group" aria-label="Tempos prontos">
+          <button type="button" class="pilula" data-minutos="1">1 min</button>
+          <button type="button" class="pilula" data-minutos="5">5 min</button>
+          <button type="button" class="pilula" data-minutos="10">10 min</button>
+          <button type="button" class="pilula" data-minutos="15">15 min</button>
+          <button type="button" class="pilula" data-minutos="30">30 min</button>
+        </div>
+        <form class="tempo-livre" id="tmLivre">
+          <label>
+            Min
+            <input id="tmMinutos" type="number" min="0" max="999" placeholder="0" inputmode="numeric" />
+          </label>
+          <span aria-hidden="true">:</span>
+          <label>
+            Seg
+            <input id="tmSegundos" type="number" min="0" max="59" placeholder="00" inputmode="numeric" />
+          </label>
+          <button type="submit" class="pilula">Definir</button>
+        </form>
+        <p class="atalhos">
+          <kbd>Espaço</kbd>
+          iniciar/pausar ·
+          <kbd>Z</kbd>
+          zerar
+        </p>
+      </section>
 
-      <section class="laps" aria-label="Voltas registradas">
-        <table>
-          <thead>
-            <tr>
-              <th>Volta</th>
-              <th>Tempo da volta</th>
-              <th>Tempo total</th>
-            </tr>
-          </thead>
-          <tbody id="lapList"></tbody>
-        </table>
-        <p class="laps-empty" id="lapsEmpty">As voltas aparecem aqui.</p>
+      <!-- Pomodoro -->
+      <section class="painel" id="painel-pomodoro" role="tabpanel" aria-labelledby="aba-pomodoro" hidden>
+        <div class="fases" role="group" aria-label="Fase">
+          <button type="button" class="pilula" data-fase="foco">Foco</button>
+          <button type="button" class="pilula" data-fase="curta">Pausa curta</button>
+          <button type="button" class="pilula" data-fase="longa">Pausa longa</button>
+        </div>
+        <div class="pm-painel" id="pmPainel" data-fase="foco">
+          <div class="mostrador">
+            <svg class="anel" viewBox="0 0 200 200" aria-hidden="true">
+              <circle class="anel-trilho" cx="100" cy="100" r="90" />
+              <circle class="anel-progresso" id="pmAnel" cx="100" cy="100" r="90" />
+            </svg>
+            <div class="tempo" id="pmTempo" role="timer" aria-live="off">25:00</div>
+            <div class="sub-tempo" id="pmFase">Foco</div>
+            <div class="ciclo" id="pmCiclo" role="img"></div>
+          </div>
+        </div>
+        <div class="controles">
+          <button type="button" class="controle secundario" id="pmZerar">Recomeçar</button>
+          <button type="button" class="controle principal" id="pmIniciar">Focar</button>
+          <button type="button" class="controle secundario" id="pmPular">Pular</button>
+        </div>
+
+        <div class="cartao">
+          <label class="campo">
+            Focando em
+            <select id="pmTarefa"></select>
+          </label>
+          <input
+            id="pmOutra"
+            class="campo-texto"
+            type="text"
+            maxlength="100"
+            placeholder="No que você vai focar?"
+            hidden
+          />
+          <p class="dica" id="pmSemTarefas" hidden>
+            Dica: as tarefas do
+            <a href="../tarefas/">Gerenciador de tarefas</a>
+            aparecem aqui para você escolher.
+          </p>
+        </div>
+
+        <div class="cartao">
+          <p class="resumo" id="pmHoje"></p>
+          <ul class="por-tarefa" id="pmPorTarefa"></ul>
+        </div>
+
+        <details class="cartao config">
+          <summary>Ajustar tempos</summary>
+          <div class="config-campos">
+            <label>
+              Foco (min)
+              <input id="pmConfig-foco" type="number" min="1" max="120" />
+            </label>
+            <label>
+              Pausa curta (min)
+              <input id="pmConfig-curta" type="number" min="1" max="60" />
+            </label>
+            <label>
+              Pausa longa (min)
+              <input id="pmConfig-longa" type="number" min="1" max="90" />
+            </label>
+            <label>
+              Focos até a pausa longa
+              <input id="pmConfig-ciclos" type="number" min="2" max="8" />
+            </label>
+          </div>
+          <label class="interruptor">
+            <input id="pmConfig-automatico" type="checkbox" />
+            Começar a próxima fase sozinho
+          </label>
+        </details>
+        <p class="atalhos">
+          <kbd>Espaço</kbd>
+          focar/pausar ·
+          <kbd>Z</kbd>
+          recomeçar ·
+          <kbd>1</kbd>
+          <kbd>2</kbd>
+          <kbd>3</kbd>
+          trocar de ferramenta
+        </p>
       </section>
     </main>
 
-    <script src="script.js"></script>
+    <script type="module" src="js/main.js"></script>
   </body>
 </html>

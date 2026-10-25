@@ -1,0 +1,472 @@
+/* ========== Cores ========== */
+:root {
+  --bg: #11151c;
+  --cartao: #161b24;
+  --line: #ffffff14;
+  --text: #e8f1f8;
+  --muted: #7f93a5;
+  --blue: #5cc8ff;
+  --amber: #ffb454;
+  --tomate: #ff6b6b;
+  --green: #a3e635;
+  --red: #ff7a7a;
+  --cor: var(--blue); /* cor da ferramenta aberta (muda em cada painel) */
+  color-scheme: dark;
+}
+
+/* ========== Base ========== */
+* {
+  box-sizing: border-box;
+}
+[hidden] {
+  display: none !important;
+}
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(circle at 50% 0%, #17324a, transparent 60%), var(--bg);
+  color: var(--text);
+  font-family:
+    'Segoe UI',
+    system-ui,
+    -apple-system,
+    sans-serif;
+}
+button,
+input,
+select {
+  font: inherit;
+  color: inherit;
+}
+button {
+  cursor: pointer;
+}
+:focus-visible {
+  outline: 2px solid var(--cor);
+  outline-offset: 3px;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+a {
+  color: var(--cor);
+}
+
+.portfolio-bar {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 20px;
+  background: #0b0d12;
+  color: #9aa1ad;
+  font-size: 0.8rem;
+}
+.portfolio-bar a {
+  color: #a3e635;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.app {
+  width: min(480px, 100% - 32px);
+  margin: 32px auto 60px;
+  text-align: center;
+}
+.app h1 {
+  margin: 0 0 18px;
+  font-size: 1.5rem;
+  letter-spacing: -0.02em;
+}
+
+/* ========== Abas ========== */
+.abas {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  margin-bottom: 26px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #ffffff06;
+}
+.abas [role='tab'] {
+  position: relative;
+  flex: 1;
+  padding: 9px 6px;
+  border: 0;
+  border-radius: 10px;
+  background: none;
+  color: var(--muted);
+  font-size: 0.92rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.abas [role='tab'][aria-selected='true'] {
+  background: #ffffff12;
+  color: var(--text);
+}
+/* Bolinha na aba quando a ferramenta está rodando */
+.abas [role='tab'].ativo::after {
+  content: '';
+  position: absolute;
+  top: 7px;
+  right: 9px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--green);
+  animation: piscar 1.6s infinite;
+}
+@keyframes piscar {
+  50% {
+    opacity: 0.25;
+  }
+}
+#painel-temporizador {
+  --cor: var(--amber);
+}
+#painel-pomodoro {
+  --cor: var(--tomate);
+}
+#painel-pomodoro:has([data-fase='curta'][aria-pressed='true']),
+#painel-pomodoro:has([data-fase='longa'][aria-pressed='true']) {
+  --cor: var(--green);
+}
+
+/* ========== Mostrador com anel ========== */
+.mostrador {
+  position: relative;
+  width: min(300px, 100%);
+  aspect-ratio: 1;
+  margin: 0 auto;
+  display: grid;
+  place-content: center;
+}
+.anel {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+.anel circle {
+  fill: none;
+  stroke-width: 6;
+}
+.anel-trilho {
+  stroke: var(--line);
+}
+.anel-progresso {
+  stroke: var(--cor);
+  stroke-linecap: round;
+  transition: stroke 0.3s;
+}
+.tempo {
+  position: relative;
+  font-size: clamp(3rem, 15vw, 4.2rem);
+  font-weight: 300;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+.tempo small {
+  font-size: 0.5em;
+  color: var(--muted);
+}
+.sub-tempo {
+  position: relative;
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+}
+.tm-painel.terminou .tempo {
+  color: var(--amber);
+  animation: piscar 1s 6;
+}
+.tm-painel.terminou .sub-tempo {
+  color: var(--amber);
+  font-weight: 600;
+}
+.ciclo {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 10px;
+}
+.ciclo-bolinha {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1.5px solid var(--muted);
+}
+.ciclo-bolinha.feito {
+  background: var(--tomate);
+  border-color: var(--tomate);
+}
+
+/* ========== Botões ========== */
+.controles {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 26px;
+}
+.controle {
+  min-width: 108px;
+  padding: 13px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  font-weight: 700;
+  transition:
+    transform 0.15s,
+    background 0.2s;
+}
+.controle:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+.controle:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.principal {
+  background: var(--cor);
+  color: #08141c;
+  border-color: var(--cor);
+}
+.principal.rodando {
+  background: transparent;
+  color: var(--red);
+  border-color: var(--red);
+}
+.secundario {
+  background: #ffffff0d;
+}
+.pilula {
+  padding: 6px 13px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: none;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.pilula:hover {
+  color: var(--text);
+  border-color: var(--cor);
+}
+.pilula[aria-pressed='true'] {
+  background: var(--cor);
+  border-color: var(--cor);
+  color: #08141c;
+  font-weight: 700;
+}
+.predefinidos,
+.fases {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 22px;
+}
+.fases {
+  margin: 0 0 18px;
+}
+.tempo-livre {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 8px;
+  margin-top: 14px;
+}
+.tempo-livre label {
+  display: grid;
+  gap: 3px;
+  font-size: 0.72rem;
+  color: var(--muted);
+  text-align: left;
+}
+.tempo-livre input {
+  width: 74px;
+  padding: 7px 10px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: #ffffff08;
+  font-variant-numeric: tabular-nums;
+}
+.tempo-livre span {
+  padding-bottom: 8px;
+  color: var(--muted);
+}
+.atalhos {
+  margin: 18px 0 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+kbd {
+  background: #ffffff10;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  padding: 1px 6px;
+  font-family: inherit;
+  font-size: 0.75rem;
+}
+
+/* ========== Voltas ========== */
+.voltas {
+  margin-top: 30px;
+  text-align: left;
+}
+.voltas table {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+.voltas th {
+  padding: 8px 6px;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.voltas td {
+  padding: 11px 6px;
+  border-bottom: 1px solid var(--line);
+}
+.voltas th:not(:first-child),
+.voltas td:not(:first-child) {
+  text-align: right;
+}
+.voltas tr.melhor td {
+  color: var(--green);
+}
+.voltas tr.pior td {
+  color: var(--red);
+}
+.voltas tr.melhor td:first-child::after {
+  content: ' · melhor';
+  font-size: 0.75rem;
+}
+.voltas tr.pior td:first-child::after {
+  content: ' · pior';
+  font-size: 0.75rem;
+}
+.vazio {
+  color: var(--muted);
+  text-align: center;
+  font-size: 0.88rem;
+}
+
+/* ========== Pomodoro: tarefa, resumo e ajustes ========== */
+.cartao {
+  margin-top: 18px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--cartao);
+  text-align: left;
+}
+.campo {
+  display: grid;
+  gap: 6px;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+.campo select,
+.campo-texto,
+.config-campos input {
+  width: 100%;
+  padding: 9px 11px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: #0f131a;
+  color: var(--text);
+  font-size: 0.92rem;
+}
+.campo-texto {
+  margin-top: 8px;
+}
+.dica {
+  margin: 8px 0 0;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.resumo {
+  margin: 0;
+  font-weight: 600;
+}
+.por-tarefa {
+  display: grid;
+  gap: 6px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.86rem;
+  color: var(--muted);
+}
+.por-tarefa li {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+.por-tarefa span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text);
+}
+.config summary {
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+.config-campos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 12px 0;
+}
+.config-campos label {
+  display: grid;
+  gap: 4px;
+  font-size: 0.76rem;
+  color: var(--muted);
+}
+.interruptor {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.88rem;
+}
+.interruptor input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--tomate);
+}
+
+@media (max-width: 480px) {
+  .portfolio-bar span,
+  .atalhos {
+    display: none;
+  }
+  .abas [role='tab'] {
+    padding: 9px 4px;
+    font-size: 0.78rem;
+  }
+  .controle {
+    min-width: 0;
+    flex: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

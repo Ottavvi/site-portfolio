@@ -1,7 +1,7 @@
 // Service worker: guarda os arquivos do app para ele abrir sem internet.
 // Estratégia: responde na hora com o que está guardado e busca a versão nova em segundo plano.
 // Ao mudar a lista de arquivos, troque a VERSAO para descartar o cache antigo.
-const VERSAO = 'tarefas-v1';
+const VERSAO = 'tarefas-v2';
 const ARQUIVOS = [
   './',
   'index.html',
@@ -20,6 +20,7 @@ const ARQUIVOS = [
   'js/arquivo.js',
   'js/estatisticas.js',
   'js/lembretes.js',
+  'js/focos.js',
   'icones/icone.svg',
   'icones/icone-192.png',
   'icones/icone-512.png'

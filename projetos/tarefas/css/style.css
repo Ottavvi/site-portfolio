@@ -854,6 +854,19 @@ dialog::backdrop {
   text-decoration: line-through;
   color: var(--muted);
 }
+.focar {
+  align-self: flex-start;
+  padding: 8px 14px;
+  border: 1px solid #ff6b6b55;
+  border-radius: 10px;
+  color: #ff6b6b;
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+.focar:hover {
+  background: #ff6b6b1a;
+}
 .detalhes-info {
   margin: auto 0 0;
   font-size: 0.78rem;

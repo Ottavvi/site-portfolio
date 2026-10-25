@@ -3,6 +3,7 @@
 import { alterar, alternarFeita, buscarTarefa, estado, excluirTarefa, novoId } from './estado.js';
 import { elemento } from './render.js';
 import { hojeISO } from './datas.js';
+import { focosPorTarefa, linkFocar } from './focos.js';
 
 const $ = id => document.getElementById(id);
 const dialogo = $('detalhes');
@@ -142,9 +143,13 @@ function preencher() {
   $('detCategoria').value = t.categoriaId ?? '';
 
   const data = iso => new Date(iso).toLocaleDateString('pt-BR');
+  const focos = focosPorTarefa().get(t.id);
   $('detInfo').textContent =
     `Criada em ${data(t.criadaEm)}` +
-    (t.concluidaEm ? ` · concluída em ${t.concluidaEm.split('-').reverse().join('/')}` : '');
+    (t.concluidaEm ? ` · concluída em ${t.concluidaEm.split('-').reverse().join('/')}` : '') +
+    (focos ? ` · ${focos.focos} foco${focos.focos > 1 ? 's' : ''} no Pomodoro (${focos.minutos} min)` : '');
+  $('detFocar').href = linkFocar(t.id);
+  $('detFocar').hidden = t.feita;
   dialogo.classList.toggle('feita', t.feita);
   desenharSubtarefas();
   requestAnimationFrame(ajustarAltura);

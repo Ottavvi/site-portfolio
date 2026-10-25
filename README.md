@@ -8,6 +8,8 @@ HTML, CSS e JavaScript puros, sem etapa de build. Login, área de membros e form
 
 ```
 index.html, sobre.html          páginas principais
+rota-municipal.html             estudo de caso do Rota Municipal
+en/                             versão em inglês (index, about e o estudo de caso)
 login.html, cadastro.html,      páginas de conta
 recuperar.html, acao.html,
 area.html, admin.html
@@ -20,7 +22,7 @@ js/auth/shared.js               funções comuns das páginas de conta
 js/auth/<página>.js             código de cada página de conta (login.js, area.js...)
 firestore.rules                 regras de segurança do Firestore
 imagens/                        imagens do portfólio
-projetos/                       projetos de exemplo (barbearia, tarefas, cronômetro)
+projetos/                       projetos de exemplo (barbearia, gerenciador de tarefas, central de tempo)
 projetos/rota-municipal/        apresentação do Rota Municipal (cópia da pasta vitrine/ daquele repositório)
 ```
 
@@ -36,6 +38,18 @@ JavaScript puro em módulos (`js/`), um arquivo por responsabilidade: `estado.js
 `render.js` (tela), `detalhes.js` (painel da tarefa), `entrada.js` (atalhos ao digitar) e os demais recursos.
 Funciona offline pelo `sw.js`: **ao mudar qualquer arquivo do app, troque a `VERSAO` no `sw.js`**, senão quem
 já abriu o app pode continuar vendo a versão antiga guardada no navegador.
+
+## Versão em inglês (en/)
+
+As páginas em `en/` são cópias traduzidas de `index.html`, `sobre.html` e `rota-municipal.html`. Ao mudar o
+texto de uma delas, mude também a outra. As duas se ligam pelo botão PT/EN do menu e pelas marcações
+`hreflang`, e os scripts (`contact.js`, `session.js`) escolhem os textos pelo idioma da página.
+
+## Central de tempo (projetos/cronometro)
+
+Cronômetro, temporizador e Pomodoro em módulos (`js/`). O Pomodoro lê as tarefas pendentes do gerenciador
+(`tarefas-v2` no armazenamento do navegador) e grava as sessões de foco em `tempo-v1`, que o gerenciador lê para
+mostrar o selo 🍅 em cada tarefa.
 
 ## Rodar localmente
 

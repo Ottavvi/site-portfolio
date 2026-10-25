@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Rota Municipal: estudo de caso | Otávio</title>
+    <meta
+      name="description"
+      content="Como foi construído o Rota Municipal, sistema de gestão de transportes para prefeituras: o problema, as decisões técnicas, o app que funciona sem internet, a proteção de dados e os testes."
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="ottavvi.dev" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:title" content="Rota Municipal: estudo de caso" />
+    <meta
+      property="og:description"
+      content="Sistema de gestão de transportes para prefeituras: decisões técnicas, app offline, LGPD e testes."
+    />
+    <meta property="og:url" content="https://ottavvi.github.io/site-portfolio/rota-municipal.html" />
+    <meta
+      property="og:image"
+      content="https://ottavvi.github.io/site-portfolio/projetos/rota-municipal/imagens/painel.jpg"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#0b0d12" />
+    <link rel="alternate" hreflang="pt-BR" href="https://ottavvi.github.io/site-portfolio/rota-municipal.html" />
+    <link rel="alternate" hreflang="en" href="https://ottavvi.github.io/site-portfolio/en/rota-municipal.html" />
+    <link rel="alternate" hreflang="x-default" href="https://ottavvi.github.io/site-portfolio/rota-municipal.html" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400..900&display=swap" />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <header>
+        <div class="wrap nav">
+          <!-- prettier-ignore -->
+          <a class="logo" href="index.html#inicio" aria-label="Otávio, início">ottavvi<span>.</span>dev</a>
+          <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="navLinks">Menu ☰</button>
+          <nav class="links" id="navLinks" aria-label="Navegação principal">
+            <a href="index.html#projetos">Projetos</a>
+            <a href="index.html#habilidades">Habilidades</a>
+            <a href="sobre.html">Sobre mim</a>
+            <a href="index.html#contato">Contato</a>
+            <a href="en/rota-municipal.html" lang="en" hreflang="en" class="lang-link">EN</a>
+            <a href="login.html" id="authLink">Entrar</a>
+          </nav>
+        </div>
+      </header>
+      <main>
+        <section class="hero case-hero" id="inicio">
+          <div class="wrap">
+            <a class="text-link" href="index.html#projetos">← Voltar para os projetos</a>
+            <div class="section-kicker case-kicker">Estudo de caso</div>
+            <h1>
+              Rota
+              <em>Municipal.</em>
+            </h1>
+            <p class="lead">
+              Um sistema para a prefeitura controlar toda a frota num só lugar: veículos, motoristas, transporte
+              escolar, transporte de pacientes, combustível e manutenção, com um app para o motorista que funciona mesmo
+              sem sinal na zona rural.
+            </p>
+            <dl class="case-meta">
+              <div>
+                <dt>Tipo</dt>
+                <dd>Projeto pessoal, 2026</dd>
+              </div>
+              <div>
+                <dt>Stack</dt>
+                <dd>React, Node.js, Express, SQLite</dd>
+              </div>
+              <div>
+                <dt>Testes</dt>
+                <dd>135 de API · 30 de tela</dd>
+              </div>
+              <div>
+                <dt>Situação</dt>
+                <dd>Pronto para piloto</dd>
+              </div>
+            </dl>
+            <div class="actions">
+              <a class="btn btn-primary" href="projetos/rota-municipal/">Ver a apresentação ↗</a>
+              <a class="btn btn-ghost" href="#decisoes">Ir para as decisões técnicas ↓</a>
+            </div>
+            <figure class="case-shot case-shot--hero">
+              <img
+                src="projetos/rota-municipal/imagens/painel.jpg"
+                alt="Painel do sistema: veículos em operação, alunos transportados, pacientes em viagem, gasto com combustível, saídas do dia e pendências"
+                width="1440"
+                height="900"
+              />
+            </figure>
+          </div>
+        </section>
+
+        <section id="problema">
+          <div class="wrap case-split">
+            <div>
+              <div class="section-kicker">O problema</div>
+              <h2>Frota pública controlada em planilha e caderno.</h2>
+            </div>
+            <div class="case-text">
+              <p>
+                Em muitas prefeituras pequenas, cada secretaria cuida dos próprios veículos do seu jeito. O resultado
+                aparece em problemas concretos: veículo rodando com documento vencido, combustível sem controle, rota
+                escolar sem motorista no dia, dificuldade para prestar contas ao PNATE e ao Tribunal de Contas e nenhuma
+                informação sobre onde cada veículo está.
+              </p>
+              <p>
+                O desafio não era só técnico. Quem usa o sistema vai do gestor de transportes, no computador, ao
+                motorista de ônibus escolar, no celular, numa estrada de terra sem sinal. E parte dos dados é sensível:
+                quem viaja para tratamento de saúde e quais crianças usam o transporte escolar.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section id="usuarios">
+          <div class="wrap">
+            <div class="section-kicker">Para quem</div>
+            <h2>Cinco perfis, cada um vendo só o que precisa.</h2>
+            <div class="tbl case-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Perfil</th>
+                    <th>O que faz</th>
+                    <th>O que não vê</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Gestor de transportes</td>
+                    <td>Cadastros, aprovação de pedidos, ordens de serviço, multas, auditoria</td>
+                    <td>Nome de pacientes e de alunos (só contagens)</td>
+                  </tr>
+                  <tr>
+                    <td>Secretaria de Saúde</td>
+                    <td>Transporte de pacientes (TFD), lista de espera, confirmação pelo WhatsApp</td>
+                    <td>Veículos de outras secretarias</td>
+                  </tr>
+                  <tr>
+                    <td>Secretaria de Educação</td>
+                    <td>Rotas escolares, alunos, chamada no ônibus, frequência</td>
+                    <td>Dados de pacientes</td>
+                  </tr>
+                  <tr>
+                    <td>Outras secretarias</td>
+                    <td>Pedidos de veículo, saídas e abastecimentos da própria secretaria</td>
+                    <td>Dados das outras secretarias</td>
+                  </tr>
+                  <tr>
+                    <td>Motorista</td>
+                    <td>App no celular: checklist, viagens, abastecimento com foto, ocorrências</td>
+                    <td>Especialidade médica e telefone dos passageiros</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="section-intro case-note">
+              Essas regras valem no servidor, não só na tela: uma chamada direta à API com o perfil errado é recusada.
+            </p>
+          </div>
+        </section>
+
+        <section id="decisoes">
+          <div class="wrap">
+            <div class="section-kicker">Decisões técnicas</div>
+            <h2>Escolhas pensadas para uma prefeitura pequena.</h2>
+            <p class="section-intro">
+              Quem vai instalar e manter o sistema é, muitas vezes, o técnico de informática da própria prefeitura. Cada
+              decisão abaixo tenta deixar esse trabalho simples e seguro.
+            </p>
+            <div class="case-cards">
+              <article class="case-card">
+                <h3>Banco SQLite embutido no Node</h3>
+                <p>
+                  Nada de servidor de banco para instalar e manter: o banco é um arquivo. O backup diário copia esse
+                  arquivo e as fotos, com uma cópia criptografada fora do servidor, e toda segunda-feira o sistema
+                  <strong>ensaia uma restauração</strong>
+                  e avisa no painel se algo der errado.
+                </p>
+              </article>
+              <article class="case-card">
+                <h3>Migrações numeradas</h3>
+                <p>
+                  O banco nasce e evolui por 33 arquivos SQL aplicados em ordem quando o servidor sobe. Uma prefeitura
+                  que já usa o sistema recebe só o que falta, sem perder dados.
+                </p>
+              </article>
+              <article class="case-card">
+                <h3>Regras de negócio no servidor</h3>
+                <p>
+                  Veículo com licenciamento vencido ou checklist reprovado não sai. Motorista com CNH ou exame
+                  toxicológico vencido fica bloqueado. Rota escolar exige CNH D e curso específico. Nenhum veículo ou
+                  motorista pode ter dois compromissos no mesmo horário.
+                </p>
+              </article>
+              <article class="case-card">
+                <h3>Telas em React, carregadas sob demanda</h3>
+                <p>
+                  São 30 telas, mas cada uma só é baixada quando aberta. O celular do motorista não carrega as telas da
+                  garagem, e o mapa, a parte mais pesada, só chega para quem usa.
+                </p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section id="offline">
+          <div class="wrap case-split case-split--media">
+            <div>
+              <div class="section-kicker">O maior desafio</div>
+              <h2>Um app que funciona sem sinal.</h2>
+              <div class="case-text">
+                <p>
+                  Na zona rural, o motorista começa a rota escolar onde não há internet. Se o app dependesse da conexão,
+                  o checklist e o início da viagem não seriam registrados.
+                </p>
+                <ol class="case-steps">
+                  <li>
+                    <strong>Grava no aparelho, na hora.</strong>
+                    Cada ação (checklist, início, abastecimento) vai para uma fila no celular, com a data e a hora reais
+                    em que aconteceu.
+                  </li>
+                  <li>
+                    <strong>Fotos no IndexedDB.</strong>
+                    O armazenamento comum do navegador é pequeno demais para as fotos do cupom e do painel.
+                  </li>
+                  <li>
+                    <strong>Envia quando a conexão volta.</strong>
+                    Vai em lotes, sem que o motorista precise fazer nada.
+                  </li>
+                  <li>
+                    <strong>Nunca duplica.</strong>
+                    Cada ação tem um identificador único; se o envio cair no meio e for repetido, o servidor reconhece e
+                    não registra duas vezes.
+                  </li>
+                </ol>
+                <p>
+                  Esse fluxo é testado automaticamente: um teste de tela simula o celular sem sinal, faz o checklist e
+                  inicia a viagem, devolve a conexão e confere que tudo chegou ao servidor.
+                </p>
+              </div>
+            </div>
+            <figure class="case-shot case-shot--phone">
+              <video
+                src="projetos/rota-municipal/imagens/teste-sem-sinal.webm"
+                autoplay
+                muted
+                loop
+                playsinline
+                aria-label="Gravação do teste automático: o app registra o checklist e a viagem sem internet e envia tudo quando a conexão volta"
+              ></video>
+              <figcaption>Gravação do teste automático de uso sem sinal.</figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section id="lgpd">
+          <div class="wrap case-split">
+            <div>
+              <div class="section-kicker">Proteção de dados</div>
+              <h2>LGPD desde o primeiro dia.</h2>
+            </div>
+            <div class="case-text">
+              <p>
+                O sistema guarda dados de saúde (a especialidade de cada viagem de tratamento) e dados de crianças. Por
+                isso, a proteção foi parte do projeto, não um ajuste no fim:
+              </p>
+              <ul class="case-list">
+                <li>Dados de pacientes aparecem só para a Secretaria de Saúde; o gestor vê apenas quantos viajam.</li>
+                <li>
+                  O sistema não guarda CPF, cartão SUS, diagnóstico nem resultado de exame toxicológico, só o que é
+                  necessário.
+                </li>
+                <li>
+                  Auditoria de quem fez o quê e quando, inclusive cada consulta a dados de pacientes, sem registrar o
+                  nome nem a especialidade.
+                </li>
+                <li>Exportação dos dados de um paciente ou aluno e anonimização de quem saiu do serviço.</li>
+                <li>
+                  Senhas com hash scrypt, bloqueio após 5 tentativas erradas, cookies HttpOnly, política de conteúdo
+                  (CSP) e fontes servidas pelo próprio sistema, sem repassar o IP de quem usa a terceiros.
+                </li>
+                <li>A localização do motorista só é registrada durante a viagem e é apagada depois de 90 dias.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section id="qualidade">
+          <div class="wrap">
+            <div class="section-kicker">Qualidade</div>
+            <h2>Testado a cada alteração.</h2>
+            <div class="case-numbers">
+              <div>
+                <strong>135</strong>
+                <span>testes da API (regras, permissões, segurança)</span>
+              </div>
+              <div>
+                <strong>30</strong>
+                <span>testes de tela, no computador e no celular</span>
+              </div>
+              <div>
+                <strong>27</strong>
+                <span>módulos de API</span>
+              </div>
+              <div>
+                <strong>5 anos</strong>
+                <span>de dados simulados no teste de desempenho</span>
+              </div>
+            </div>
+            <div class="case-text case-text--wide">
+              <p>
+                A cada envio para o GitHub, um robô roda o ESLint, confere a formatação, executa os testes da API, monta
+                as telas e abre o sistema num navegador de verdade para usá-lo como um usuário. Um dos testes confere
+                que as consultas mais pesadas usam índices no banco: sem eles, com 5 anos de histórico e 80 veículos,
+                telas como a de custo por veículo passavam de meio segundo.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section id="telas">
+          <div class="wrap">
+            <div class="section-kicker">Algumas telas</div>
+            <h2>Do escritório ao celular do motorista.</h2>
+            <div class="case-gallery">
+              <figure class="case-shot">
+                <img
+                  src="projetos/rota-municipal/imagens/combustivel.jpg"
+                  alt="Controle de combustível com abastecimentos suspeitos"
+                  width="1440"
+                  height="900"
+                  loading="lazy"
+                />
+                <figcaption>
+                  Abastecimentos suspeitos: acima do tanque, preço fora do contrato, hodômetro que volta.
+                </figcaption>
+              </figure>
+              <figure class="case-shot">
+                <img
+                  src="projetos/rota-municipal/imagens/renovacao.jpg"
+                  alt="Renovação da frota: quais veículos substituir"
+                  width="1440"
+                  height="900"
+                  loading="lazy"
+                />
+                <figcaption>Renovação da frota: quais veículos substituir, por cinco critérios.</figcaption>
+              </figure>
+              <figure class="case-shot">
+                <img
+                  src="projetos/rota-municipal/imagens/escala.jpg"
+                  alt="Escala dos motoristas na semana"
+                  width="1440"
+                  height="900"
+                  loading="lazy"
+                />
+                <figcaption>Escala da semana, com bloqueio de quem está com CNH vencida.</figcaption>
+              </figure>
+              <figure class="case-shot">
+                <img
+                  src="projetos/rota-municipal/imagens/mapa.jpg"
+                  alt="Mapa das viagens em andamento"
+                  width="1440"
+                  height="900"
+                  loading="lazy"
+                />
+                <figcaption>Mapa das viagens em andamento e histórico de trajetos.</figcaption>
+              </figure>
+            </div>
+          </div>
+        </section>
+
+        <section id="aprendizados">
+          <div class="wrap case-split">
+            <div>
+              <div class="section-kicker">O que aprendi</div>
+              <h2>Software público é sobre confiança.</h2>
+            </div>
+            <div class="case-text">
+              <p>
+                O mais importante não foi uma tecnologia, e sim pensar em quem usa: uma regra que só existe na tela pode
+                ser contornada; um backup que nunca foi restaurado pode não funcionar; um app que precisa de internet
+                falha justamente onde é mais necessário.
+              </p>
+              <p>
+                O próximo passo é o piloto: o sistema tem um roteiro de implantação de seis semanas, começando por uma
+                secretaria, com treinamento por perfil e importação dos cadastros por planilha.
+              </p>
+              <div class="actions">
+                <a class="btn btn-primary" href="projetos/rota-municipal/">Ver a apresentação completa ↗</a>
+                <a class="btn btn-ghost" href="index.html#contato">Falar comigo ↗</a>
+              </div>
+              <p class="project-note">O código é privado. As telas e o vídeo usam dados fictícios.</p>
+            </div>
+          </div>
+        </section>
+      </main>
+      <footer>
+        <div class="wrap foot">
+          <span>
+            ©
+            <span id="year"></span>
+            Otávio. Feito com HTML, CSS e JavaScript.
+          </span>
+          <div class="small-links">
+            <a href="https://github.com/Ottavvi" target="_blank" rel="noreferrer">GitHub ↗</a>
+            <a href="#inicio">Voltar ao topo ↑</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+    <script src="js/main.js"></script>
+    <script type="module" src="js/auth/session.js"></script>
+  </body>
+</html>

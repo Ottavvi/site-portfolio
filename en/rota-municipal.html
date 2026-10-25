@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Rota Municipal: case study | Otávio</title>
+    <meta
+      name="description"
+      content="How Rota Municipal, a transportation management system for city halls, was built: the problem, the technical decisions, the offline app, data protection and testing."
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="ottavvi.dev" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="Rota Municipal: case study" />
+    <meta
+      property="og:description"
+      content="Transportation management for city halls: technical decisions, offline app, privacy and testing."
+    />
+    <meta property="og:url" content="https://ottavvi.github.io/site-portfolio/en/rota-municipal.html" />
+    <meta
+      property="og:image"
+      content="https://ottavvi.github.io/site-portfolio/projetos/rota-municipal/imagens/painel.jpg"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#0b0d12" />
+    <link rel="alternate" hreflang="pt-BR" href="https://ottavvi.github.io/site-portfolio/rota-municipal.html" />
+    <link rel="alternate" hreflang="en" href="https://ottavvi.github.io/site-portfolio/en/rota-municipal.html" />
+    <link rel="alternate" hreflang="x-default" href="https://ottavvi.github.io/site-portfolio/rota-municipal.html" />
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400..900&display=swap" />
+    <link rel="stylesheet" href="../css/style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <header>
+        <div class="wrap nav">
+          <!-- prettier-ignore -->
+          <a class="logo" href="index.html#inicio" aria-label="Otávio, home">ottavvi<span>.</span>dev</a>
+          <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="navLinks">Menu ☰</button>
+          <nav class="links" id="navLinks" aria-label="Main navigation">
+            <a href="index.html#projetos">Projects</a>
+            <a href="index.html#habilidades">Skills</a>
+            <a href="about.html">About me</a>
+            <a href="index.html#contato">Contact</a>
+            <a href="../rota-municipal.html" lang="pt-BR" hreflang="pt-BR" class="lang-link">PT</a>
+            <a
+              href="../login.html"
+              id="authLink"
+              data-entrar="Sign in"
+              data-area="My area"
+              data-url-entrar="../login.html"
+              data-url-area="../area.html"
+            >
+              Sign in
+            </a>
+          </nav>
+        </div>
+      </header>
+      <main>
+        <section class="hero case-hero" id="inicio">
+          <div class="wrap">
+            <a class="text-link" href="index.html#projetos">← Back to projects</a>
+            <div class="section-kicker case-kicker">Case study</div>
+            <h1>
+              Rota
+              <em>Municipal.</em>
+            </h1>
+            <p class="lead">
+              A system for Brazilian city halls to manage their whole fleet in one place: vehicles, drivers, school
+              buses, patient transport, fuel and maintenance, with a driver app that works even without signal in rural
+              areas.
+            </p>
+            <dl class="case-meta">
+              <div>
+                <dt>Type</dt>
+                <dd>Personal project, 2026</dd>
+              </div>
+              <div>
+                <dt>Stack</dt>
+                <dd>React, Node.js, Express, SQLite</dd>
+              </div>
+              <div>
+                <dt>Tests</dt>
+                <dd>135 API · 30 end-to-end</dd>
+              </div>
+              <div>
+                <dt>Status</dt>
+                <dd>Ready for a pilot</dd>
+              </div>
+            </dl>
+            <div class="actions">
+              <a class="btn btn-primary" href="../projetos/rota-municipal/">See the presentation ↗</a>
+              <a class="btn btn-ghost" href="#decisoes">Jump to technical decisions ↓</a>
+            </div>
+            <figure class="case-shot case-shot--hero">
+              <img
+                src="../projetos/rota-municipal/imagens/painel.jpg"
+                alt="System dashboard: vehicles in operation, students transported, patients traveling, fuel spending, today's trips and pending items (in Portuguese)"
+                width="1440"
+                height="900"
+              />
+            </figure>
+          </div>
+        </section>
+
+        <section id="problema">
+          <div class="wrap case-split">
+            <div>
+              <div class="section-kicker">The problem</div>
+              <h2>Public fleets run on spreadsheets and notebooks.</h2>
+            </div>
+            <div class="case-text">
+              <p>
+                In many small Brazilian towns, each department manages its own vehicles its own way. That shows up as
+                concrete problems: vehicles driving with expired documents, uncontrolled fuel spending, school routes
+                with no driver on the day, trouble reporting to federal school-transport programs and audit courts, and
+                no idea where each vehicle is.
+              </p>
+              <p>
+                The challenge wasn't only technical. Users range from the transportation manager at a desk to the school
+                bus driver on a phone, on a dirt road with no signal. And some of the data is sensitive: who travels for
+                medical treatment and which children ride the school bus.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section id="usuarios">
+          <div class="wrap">
+            <div class="section-kicker">Who it is for</div>
+            <h2>Five roles, each seeing only what it needs.</h2>
+            <div class="tbl case-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Role</th>
+                    <th>What they do</th>
+                    <th>What they can't see</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Transportation manager</td>
+                    <td>Records, request approvals, work orders, traffic fines, audit log</td>
+                    <td>Names of patients and students (counts only)</td>
+                  </tr>
+                  <tr>
+                    <td>Health department</td>
+                    <td>Patient transport for out-of-town treatment, waiting list, WhatsApp confirmation</td>
+                    <td>Other departments' vehicles</td>
+                  </tr>
+                  <tr>
+                    <td>Education department</td>
+                    <td>School routes, students, bus roll call, attendance</td>
+                    <td>Patient data</td>
+                  </tr>
+                  <tr>
+                    <td>Other departments</td>
+                    <td>Vehicle requests, trips and refueling for their own department</td>
+                    <td>Other departments' data</td>
+                  </tr>
+                  <tr>
+                    <td>Driver</td>
+                    <td>Phone app: pre-trip checklist, trips, refueling with photo, incident reports</td>
+                    <td>Passengers' medical specialty and phone number</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="section-intro case-note">
+              These rules are enforced on the server, not just in the UI: a direct API call with the wrong role is
+              rejected.
+            </p>
+          </div>
+        </section>
+
+        <section id="decisoes">
+          <div class="wrap">
+            <div class="section-kicker">Technical decisions</div>
+            <h2>Choices designed for a small city hall.</h2>
+            <p class="section-intro">
+              The person installing and maintaining the system is often the city hall's own IT technician. Every
+              decision below aims to keep that job simple and safe.
+            </p>
+            <div class="case-cards">
+              <article class="case-card">
+                <h3>SQLite built into Node</h3>
+                <p>
+                  No database server to install or maintain: the database is a file. The daily backup copies it along
+                  with the photos, with an encrypted copy off the server, and every Monday the system
+                  <strong>rehearses a restore</strong>
+                  and flags the dashboard if anything fails.
+                </p>
+              </article>
+              <article class="case-card">
+                <h3>Numbered migrations</h3>
+                <p>
+                  The database is created and evolves through 33 SQL files applied in order at startup. A city hall
+                  already using the system only receives what is missing, without losing data.
+                </p>
+              </article>
+              <article class="case-card">
+                <h3>Business rules on the server</h3>
+                <p>
+                  A vehicle with expired registration or a failed checklist can't leave. A driver with an expired
+                  license or drug test is blocked. School routes require a bus license and specific training. No vehicle
+                  or driver can be booked twice at the same time.
+                </p>
+              </article>
+              <article class="case-card">
+                <h3>React screens, loaded on demand</h3>
+                <p>
+                  There are 30 screens, but each one is only downloaded when opened. The driver's phone never loads the
+                  back-office screens, and the map, the heaviest part, only reaches people who use it.
+                </p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section id="offline">
+          <div class="wrap case-split case-split--media">
+            <div>
+              <div class="section-kicker">The biggest challenge</div>
+              <h2>An app that works without signal.</h2>
+              <div class="case-text">
+                <p>
+                  In rural areas, drivers start the school route where there's no internet. If the app depended on a
+                  connection, the checklist and trip start would never be recorded.
+                </p>
+                <ol class="case-steps">
+                  <li>
+                    <strong>Saves on the device, right away.</strong>
+                    Every action (checklist, trip start, refueling) goes into a queue on the phone, with the real date
+                    and time it happened.
+                  </li>
+                  <li>
+                    <strong>Photos in IndexedDB.</strong>
+                    The browser's regular storage is too small for receipt and dashboard photos.
+                  </li>
+                  <li>
+                    <strong>Syncs when the connection returns.</strong>
+                    It goes in batches, without the driver doing anything.
+                  </li>
+                  <li>
+                    <strong>Never duplicates.</strong>
+                    Each action has a unique ID; if a sync drops halfway and is retried, the server recognizes it and
+                    does not record it twice.
+                  </li>
+                </ol>
+                <p>
+                  This flow is tested automatically: an end-to-end test simulates a phone with no signal, does the
+                  checklist and starts the trip, restores the connection and checks that everything reached the server.
+                </p>
+              </div>
+            </div>
+            <figure class="case-shot case-shot--phone">
+              <video
+                src="../projetos/rota-municipal/imagens/teste-sem-sinal.webm"
+                autoplay
+                muted
+                loop
+                playsinline
+                aria-label="Recording of the automated test: the app records the checklist and trip offline and syncs everything when the connection returns"
+              ></video>
+              <figcaption>Recording of the automated offline test.</figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section id="lgpd">
+          <div class="wrap case-split">
+            <div>
+              <div class="section-kicker">Data protection</div>
+              <h2>Privacy from day one.</h2>
+            </div>
+            <div class="case-text">
+              <p>
+                The system stores health data (the medical specialty for each treatment trip) and children's data. So
+                protection under LGPD, Brazil's data protection law, was part of the design, not an afterthought:
+              </p>
+              <ul class="case-list">
+                <li>Patient data is visible only to the Health department; the manager only sees how many travel.</li>
+                <li>
+                  The system doesn't store national ID or health card numbers, diagnoses or drug test results, only what
+                  is necessary.
+                </li>
+                <li>
+                  An audit log of who did what and when, including every lookup of patient data, without recording names
+                  or specialties.
+                </li>
+                <li>Data export for a patient or student, and anonymization for those who left the service.</li>
+                <li>
+                  Passwords hashed with scrypt, lockout after 5 failed attempts, HttpOnly cookies, a Content Security
+                  Policy and self-hosted fonts, so users' IPs aren't shared with third parties.
+                </li>
+                <li>The driver's location is only recorded during trips and is deleted after 90 days.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section id="qualidade">
+          <div class="wrap">
+            <div class="section-kicker">Quality</div>
+            <h2>Tested on every change.</h2>
+            <div class="case-numbers">
+              <div>
+                <strong>135</strong>
+                <span>API tests (rules, permissions, security)</span>
+              </div>
+              <div>
+                <strong>30</strong>
+                <span>end-to-end tests, on desktop and mobile</span>
+              </div>
+              <div>
+                <strong>27</strong>
+                <span>API modules</span>
+              </div>
+              <div>
+                <strong>5 years</strong>
+                <span>of simulated data in the performance test</span>
+              </div>
+            </div>
+            <div class="case-text case-text--wide">
+              <p>
+                On every push to GitHub, CI runs ESLint, checks formatting, runs the API tests, builds the frontend and
+                opens the system in a real browser to use it like a person would. One test checks that the heaviest
+                queries use database indexes: without them, with 5 years of history and 80 vehicles, screens like cost
+                per vehicle took over half a second.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section id="telas">
+          <div class="wrap">
+            <div class="section-kicker">Some screens</div>
+            <h2>From the office to the driver's phone.</h2>
+            <div class="case-gallery">
+              <figure class="case-shot">
+                <img
+                  src="../projetos/rota-municipal/imagens/combustivel.jpg"
+                  alt="Fuel control with suspicious refuelings"
+                  width="1440"
+                  height="900"
+                  loading="lazy"
+                />
+                <figcaption>
+                  Suspicious refuelings: more than the tank holds, price above contract, odometer going backwards.
+                </figcaption>
+              </figure>
+              <figure class="case-shot">
+                <img
+                  src="../projetos/rota-municipal/imagens/renovacao.jpg"
+                  alt="Fleet renewal: which vehicles to replace"
+                  width="1440"
+                  height="900"
+                  loading="lazy"
+                />
+                <figcaption>Fleet renewal: which vehicles to replace, based on five criteria.</figcaption>
+              </figure>
+              <figure class="case-shot">
+                <img
+                  src="../projetos/rota-municipal/imagens/escala.jpg"
+                  alt="Weekly driver schedule"
+                  width="1440"
+                  height="900"
+                  loading="lazy"
+                />
+                <figcaption>Weekly schedule, blocking drivers with an expired license.</figcaption>
+              </figure>
+              <figure class="case-shot">
+                <img
+                  src="../projetos/rota-municipal/imagens/mapa.jpg"
+                  alt="Map of trips in progress"
+                  width="1440"
+                  height="900"
+                  loading="lazy"
+                />
+                <figcaption>Map of trips in progress and route history.</figcaption>
+              </figure>
+            </div>
+          </div>
+        </section>
+
+        <section id="aprendizados">
+          <div class="wrap case-split">
+            <div>
+              <div class="section-kicker">What I learned</div>
+              <h2>Public software is about trust.</h2>
+            </div>
+            <div class="case-text">
+              <p>
+                The most important lesson wasn't a technology, but thinking about the people who use it: a rule that
+                only exists in the UI can be bypassed; a backup that was never restored may not work; an app that needs
+                internet fails exactly where it's needed most.
+              </p>
+              <p>
+                The next step is a pilot: the system has a six-week rollout plan, starting with one department, with
+                role-based training and spreadsheet import of existing records.
+              </p>
+              <div class="actions">
+                <a class="btn btn-primary" href="../projetos/rota-municipal/">
+                  See the full presentation (in Portuguese) ↗
+                </a>
+                <a class="btn btn-ghost" href="index.html#contato">Get in touch ↗</a>
+              </div>
+              <p class="project-note">The code is private. Screens and video use fictional data.</p>
+            </div>
+          </div>
+        </section>
+      </main>
+      <footer>
+        <div class="wrap foot">
+          <span>
+            ©
+            <span id="year"></span>
+            Otávio. Built with HTML, CSS and JavaScript.
+          </span>
+          <div class="small-links">
+            <a href="https://github.com/Ottavvi" target="_blank" rel="noreferrer">GitHub ↗</a>
+            <a href="#inicio">Back to top ↑</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+    <script src="../js/main.js"></script>
+    <script type="module" src="../js/auth/session.js"></script>
+  </body>
+</html>
