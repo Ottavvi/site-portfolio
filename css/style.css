@@ -1,8 +1,8 @@
 /* ========== Variáveis e base ========== */
 :root {
-  --site-primary: #a3e635;
-  --site-on-primary: #17220a;
-  --site-background: #0b0d12;
+  --site-primary: #6fd6c8;
+  --site-on-primary: #06262a;
+  --site-background: #08141a;
   --site-on-background: #f3f4f6;
   --site-font-body: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --site-font-heading: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -54,7 +54,7 @@ header {
   top: 0;
   z-index: 10;
   backdrop-filter: blur(18px);
-  background: #0b0d12e8;
+  background: #08141ae8;
 }
 .nav {
   display: flex;
@@ -102,7 +102,7 @@ header {
   width: 450px;
   height: 450px;
   border-radius: 50%;
-  background: radial-gradient(circle, #a3e63517, transparent 68%);
+  background: radial-gradient(circle, #6fd6c817, transparent 68%);
   right: -110px;
   top: 0;
   opacity: var(--site-decoration-opacity);
@@ -119,9 +119,9 @@ header {
   display: inline-flex;
   align-items: center;
   gap: 9px;
-  color: #d5f99a;
-  background: #a3e63512;
-  border: 1px solid #a3e63530;
+  color: #c6f2ec;
+  background: #6fd6c812;
+  border: 1px solid #6fd6c830;
   padding: 7px 12px;
   border-radius: 999px;
   font-size: 0.82rem;
@@ -132,7 +132,7 @@ header {
   height: 7px;
   background: var(--site-primary);
   border-radius: 50%;
-  box-shadow: 0 0 0 4px #a3e63520;
+  box-shadow: 0 0 0 4px #6fd6c820;
 }
 h1,
 h2,
@@ -191,7 +191,7 @@ h1 em {
   background: #ffffff05;
 }
 .btn-ghost:hover {
-  border-color: #a3e63570;
+  border-color: #6fd6c870;
 }
 .stack {
   color: #858c99;
@@ -202,7 +202,7 @@ h1 em {
   font-weight: 600;
 }
 .profile-card {
-  background: linear-gradient(145deg, #1a202a, #101319);
+  background: linear-gradient(145deg, #15262d, #0d191f);
   border: 1px solid #ffffff16;
   border-radius: 24px;
   padding: 28px;
@@ -221,7 +221,7 @@ h1 em {
   border: 1px solid #ffffff1b;
   border-radius: 16px;
   overflow: hidden;
-  background: #0d1016;
+  background: #0b171d;
 }
 .window-bar {
   padding: 12px 14px;
@@ -244,7 +244,7 @@ h1 em {
   color: #b9c2d0;
 }
 .code .green {
-  color: #b5ef62;
+  color: #9ae6dc;
 }
 .code .purple {
   color: #c7a7ff;
@@ -307,7 +307,7 @@ h2 {
 }
 .project {
   border: 1px solid #ffffff15;
-  background: #12151c;
+  background: #0f1d24;
   border-radius: 18px;
   overflow: hidden;
   transition:
@@ -316,12 +316,12 @@ h2 {
 }
 .project:hover {
   transform: translateY(-4px);
-  border-color: #a3e63560;
+  border-color: #6fd6c860;
 }
 .project-art {
   min-height: 174px;
   padding: 20px;
-  background: linear-gradient(145deg, #202b1c, #12171a);
+  background: linear-gradient(145deg, #16302f, #0e1c21);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -346,7 +346,7 @@ h2 {
 }
 .project-art--shot {
   padding: 0;
-  background: #0c0f14;
+  background: #0a151b;
 }
 .project-art--shot img {
   width: 100%;
@@ -372,8 +372,8 @@ h2 {
   margin-bottom: 10px;
   padding: 3px 9px;
   border-radius: 20px;
-  background: #a3e63518;
-  color: #d4f6a0;
+  background: #6fd6c818;
+  color: #c6f2ec;
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -414,7 +414,7 @@ h2 {
   font-weight: 700;
 }
 .project-links a {
-  color: #d4f6a0;
+  color: #c6f2ec;
 }
 
 /* ========== Habilidades e sobre ========== */
@@ -427,7 +427,7 @@ h2 {
 .skill-box {
   padding: 22px;
   border: 1px solid #ffffff14;
-  background: #12151c;
+  background: #0f1d24;
   border-radius: 16px;
 }
 .skill-box h3 {
@@ -440,8 +440,8 @@ h2 {
   height: 40px;
   margin-bottom: 14px;
   border-radius: 11px;
-  background: #a3e63514;
-  border: 1px solid #a3e63530;
+  background: #6fd6c814;
+  border: 1px solid #6fd6c830;
   color: var(--site-primary);
 }
 .skill-icon svg {
@@ -478,8 +478,8 @@ h2 {
 
 /* ========== Contato e formulários ========== */
 .contact-box {
-  border: 1px solid #a3e63535;
-  background: linear-gradient(135deg, #151b16, #12151c);
+  border: 1px solid #6fd6c835;
+  background: linear-gradient(135deg, #0f2227, #0f1d24);
   border-radius: 22px;
   padding: 30px;
   display: flex;
@@ -511,7 +511,7 @@ h2 {
 .contact-form input,
 .contact-form textarea,
 .auth-form input {
-  background: #0d1016;
+  background: #0b171d;
   border: 1px solid #ffffff1b;
   border-radius: 10px;
   padding: 11px 13px;
@@ -536,8 +536,8 @@ h2 {
 .notice {
   display: none;
   padding: 10px 12px;
-  background: #a3e63515;
-  color: #d8f8a5;
+  background: #6fd6c815;
+  color: #cdf5ef;
   border-radius: 10px;
   margin-top: 12px;
   font-size: 0.86rem;
@@ -557,7 +557,7 @@ h2 {
   width: min(460px, 100%);
   margin: auto;
   border: 1px solid #ffffff16;
-  background: linear-gradient(145deg, #1a202a, #101319);
+  background: linear-gradient(145deg, #15262d, #0d191f);
   border-radius: 22px;
   padding: 30px;
 }
@@ -611,7 +611,7 @@ h2 {
   white-space: nowrap;
 }
 .users-table th {
-  background: #12151c;
+  background: #0f1d24;
   color: #9ca4b1;
   font-size: 0.75rem;
   text-transform: uppercase;
@@ -631,7 +631,7 @@ h2 {
 }
 .message-card {
   border: 1px solid #ffffff14;
-  background: #12151c;
+  background: #0f1d24;
   border-radius: 16px;
   padding: 20px;
 }
@@ -648,7 +648,7 @@ h2 {
   font-size: 1rem;
 }
 .message-head a {
-  color: #d4f6a0;
+  color: #c6f2ec;
 }
 .message-head span {
   color: #777f8d;
@@ -713,7 +713,7 @@ h2 {
 .profile-section {
   border: 1px solid #ffffff14;
   border-radius: 14px;
-  background: #0d1016;
+  background: #0b171d;
 }
 .profile-section summary {
   padding: 14px 16px;
@@ -820,7 +820,7 @@ h2 {
   padding: 14px 16px;
   border: 1px solid #ffffff14;
   border-radius: 14px;
-  background: #12151c;
+  background: #0f1d24;
 }
 .case-meta dt {
   font-size: 0.72rem;
@@ -843,7 +843,7 @@ h2 {
   height: auto;
   border: 1px solid #ffffff16;
   border-radius: 16px;
-  background: #0c0f14;
+  background: #0a151b;
 }
 .case-shot--hero {
   margin-top: 40px;
@@ -900,7 +900,7 @@ h2 {
   vertical-align: top;
 }
 .case-table th {
-  background: #12151c;
+  background: #0f1d24;
   color: #9ca4b1;
   font-size: 0.75rem;
   text-transform: uppercase;
@@ -927,7 +927,7 @@ h2 {
   padding: 22px;
   border: 1px solid #ffffff14;
   border-radius: 16px;
-  background: #12151c;
+  background: #0f1d24;
 }
 .case-card h3 {
   margin-bottom: 8px;
@@ -939,7 +939,7 @@ h2 {
   line-height: 1.7;
 }
 .case-card strong {
-  color: #d4f6a0;
+  color: #c6f2ec;
 }
 .case-steps {
   display: grid;
@@ -964,8 +964,8 @@ h2 {
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background: #a3e63518;
-  border: 1px solid #a3e63540;
+  background: #6fd6c818;
+  border: 1px solid #6fd6c840;
   color: var(--site-primary);
   font-size: 0.82rem;
   font-weight: 800;
@@ -1003,9 +1003,9 @@ h2 {
 }
 .case-numbers div {
   padding: 20px;
-  border: 1px solid #a3e63530;
+  border: 1px solid #6fd6c830;
   border-radius: 16px;
-  background: linear-gradient(145deg, #151b16, #12151c);
+  background: linear-gradient(145deg, #0f2227, #0f1d24);
 }
 .case-numbers strong {
   display: block;
@@ -1127,7 +1127,7 @@ footer .foot {
     padding: 18px;
     border: 1px solid #ffffff1b;
     border-radius: 14px;
-    background: #11151c;
+    background: #0f1c22;
     flex-direction: column;
     align-items: flex-start;
     gap: 16px;

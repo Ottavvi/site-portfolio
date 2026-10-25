@@ -8,7 +8,7 @@
   --blue: #5cc8ff;
   --amber: #ffb454;
   --tomate: #ff6b6b;
-  --green: #a3e635;
+  --green: #6fd6c8;
   --red: #ff7a7a;
   --cor: var(--blue); /* cor da ferramenta aberta (muda em cada painel) */
   color-scheme: dark;
@@ -61,12 +61,12 @@ a {
   justify-content: space-between;
   gap: 12px;
   padding: 8px 20px;
-  background: #0b0d12;
+  background: #08141a;
   color: #9aa1ad;
   font-size: 0.8rem;
 }
 .portfolio-bar a {
-  color: #a3e635;
+  color: #6fd6c8;
   font-weight: 600;
   text-decoration: none;
 }

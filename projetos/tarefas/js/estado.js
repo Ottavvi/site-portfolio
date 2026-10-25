@@ -6,7 +6,7 @@ import { formatarCurta, hojeISO, proximaData, somarDias } from './datas.js';
 const CHAVE = 'tarefas-v2';
 const CHAVE_ANTIGA = 'minhas-tarefas'; // versão anterior: [{ id, text, done }]
 
-export const CORES = ['#b18cff', '#5cc8ff', '#a3e635', '#ffb454', '#ff7a9a', '#4fd1c5', '#f6e05e', '#9aa1ad'];
+export const CORES = ['#b18cff', '#5cc8ff', '#6fd6c8', '#ffb454', '#ff7a9a', '#4fd1c5', '#f6e05e', '#9aa1ad'];
 
 export const novoId = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
 

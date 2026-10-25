@@ -15,7 +15,7 @@
   --purple-texto: #1a1426;
   --danger: #ff8a8a;
   --danger-soft: #ff8a8a1f;
-  --ok: #a3e635;
+  --ok: #6fd6c8;
   --alta: #ff7a9a;
   --media: #ffb454;
   --baixa: #5cc8ff;
@@ -39,7 +39,7 @@
     --purple-texto: #ffffff;
     --danger: #d6455d;
     --danger-soft: #d6455d14;
-    --ok: #3f8f00;
+    --ok: #1a7d72;
     --alta: #d6455d;
     --media: #c97a00;
     --baixa: #1f84c4;
@@ -63,7 +63,7 @@
   --purple-texto: #ffffff;
   --danger: #d6455d;
   --danger-soft: #d6455d14;
-  --ok: #3f8f00;
+  --ok: #1a7d72;
   --alta: #d6455d;
   --media: #c97a00;
   --baixa: #1f84c4;
@@ -134,12 +134,12 @@ kbd {
   justify-content: space-between;
   gap: 12px;
   padding: 8px 20px;
-  background: #0b0d12;
+  background: #08141a;
   color: #9aa1ad;
   font-size: 0.8rem;
 }
 .portfolio-bar a {
-  color: #a3e635;
+  color: #6fd6c8;
   font-weight: 600;
   text-decoration: none;
 }

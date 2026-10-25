@@ -86,12 +86,12 @@ img {
   justify-content: space-between;
   gap: 12px;
   padding: 8px 20px;
-  background: #0b0d12;
+  background: #08141a;
   color: #9aa1ad;
   font-size: 0.8rem;
 }
 .portfolio-bar a {
-  color: #a3e635;
+  color: #6fd6c8;
   font-weight: 600;
 }
 
@@ -570,7 +570,7 @@ img {
   background: var(--dot, #b3a694);
 }
 .status.open {
-  --dot: #7fd47f;
+  --dot: #6fd6c8;
 }
 .status.open::before {
   animation: pulse 2s infinite;
@@ -580,10 +580,10 @@ img {
 }
 @keyframes pulse {
   50% {
-    box-shadow: 0 0 0 6px #7fd47f00;
+    box-shadow: 0 0 0 6px #6fd6c800;
   }
   0% {
-    box-shadow: 0 0 0 0 #7fd47f88;
+    box-shadow: 0 0 0 0 #6fd6c888;
   }
 }
 .hours {
@@ -644,7 +644,7 @@ img {
   fill: #ddcfba;
 }
 .map-park {
-  fill: #c9d3a8;
+  fill: #a8d5cf;
 }
 .map-roads rect {
   fill: #fffaf2;
