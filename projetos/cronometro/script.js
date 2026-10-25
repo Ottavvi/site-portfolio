@@ -86,17 +86,21 @@ function renderLaps() {
   const times = laps.map(lap => lap.time);
   const best = Math.min(...times);
   const worst = Math.max(...times);
-  lapList.replaceChildren(...laps.map((lap, index) => {
-    const row = document.createElement('tr');
-    if (laps.length > 1 && lap.time === best) row.className = 'best';
-    if (laps.length > 1 && lap.time === worst) row.className = 'worst';
-    [`#${index + 1}`, formatText(lap.time), formatText(lap.total)].forEach(value => {
-      const cell = document.createElement('td');
-      cell.textContent = value;
-      row.append(cell);
-    });
-    return row;
-  }).reverse());
+  lapList.replaceChildren(
+    ...laps
+      .map((lap, index) => {
+        const row = document.createElement('tr');
+        if (laps.length > 1 && lap.time === best) row.className = 'best';
+        if (laps.length > 1 && lap.time === worst) row.className = 'worst';
+        [`#${index + 1}`, formatText(lap.time), formatText(lap.total)].forEach(value => {
+          const cell = document.createElement('td');
+          cell.textContent = value;
+          row.append(cell);
+        });
+        return row;
+      })
+      .reverse()
+  );
   lapsEmpty.hidden = laps.length > 0;
 }
 

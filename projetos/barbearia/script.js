@@ -29,11 +29,15 @@ document.addEventListener('keydown', event => {
 // Elementos aparecem suavemente ao entrar na tela
 const revealItems = document.querySelectorAll('.reveal');
 if ('IntersectionObserver' in window) {
-  const observer = new IntersectionObserver(entries => entries.forEach(entry => {
-    if (!entry.isIntersecting) return;
-    entry.target.classList.add('visible');
-    observer.unobserve(entry.target);
-  }), { threshold: .15 });
+  const observer = new IntersectionObserver(
+    entries =>
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }),
+    { threshold: 0.15 }
+  );
   revealItems.forEach((item, i) => {
     item.style.transitionDelay = `${(i % 3) * 90}ms`;
     observer.observe(item);
@@ -70,14 +74,18 @@ function showPhoto(index) {
   lightboxImg.alt = img.alt;
   lightboxCaption.textContent = galleryItems[currentPhoto].querySelector('span').textContent;
 }
-galleryItems.forEach((item, i) => item.addEventListener('click', () => {
-  showPhoto(i);
-  lightbox.showModal();
-}));
+galleryItems.forEach((item, i) =>
+  item.addEventListener('click', () => {
+    showPhoto(i);
+    lightbox.showModal();
+  })
+);
 document.getElementById('lightboxPrev').addEventListener('click', () => showPhoto(currentPhoto - 1));
 document.getElementById('lightboxNext').addEventListener('click', () => showPhoto(currentPhoto + 1));
 document.getElementById('lightboxClose').addEventListener('click', () => lightbox.close());
-lightbox.addEventListener('click', event => { if (event.target === lightbox) lightbox.close(); });
+lightbox.addEventListener('click', event => {
+  if (event.target === lightbox) lightbox.close();
+});
 lightbox.addEventListener('keydown', event => {
   if (event.key === 'ArrowLeft') showPhoto(currentPhoto - 1);
   if (event.key === 'ArrowRight') showPhoto(currentPhoto + 1);
@@ -92,7 +100,10 @@ const barbers = {
 };
 const barberOptions = document.getElementById('barberOptions');
 Object.entries(barbers).forEach(([id, barber]) => {
-  barberOptions.insertAdjacentHTML('beforeend', `<label class="chip"><input type="radio" name="barbeiro" value="${id}"><span>${barber.name}</span></label>`);
+  barberOptions.insertAdjacentHTML(
+    'beforeend',
+    `<label class="chip"><input type="radio" name="barbeiro" value="${id}"><span>${barber.name}</span></label>`
+  );
 });
 
 // Agendamento: os serviços vêm dos cartões da página
@@ -126,24 +137,30 @@ window.addEventListener('scroll', onScroll, { passive: true });
 onScroll();
 if ('IntersectionObserver' in window) {
   const menuLinks = [...menu.querySelectorAll('a:not(.menu-cta)')];
-  const sectionObserver = new IntersectionObserver(entries => entries.forEach(entry => {
-    if (!entry.isIntersecting) return;
-    menuLinks.forEach(link => link.classList.toggle('active', link.hash === `#${entry.target.id}`));
-  }), { rootMargin: '-45% 0px -50% 0px' });
+  const sectionObserver = new IntersectionObserver(
+    entries =>
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        menuLinks.forEach(link => link.classList.toggle('active', link.hash === `#${entry.target.id}`));
+      }),
+    { rootMargin: '-45% 0px -50% 0px' }
+  );
   document.querySelectorAll('main section[id]').forEach(section => sectionObserver.observe(section));
 }
 
 const bookingForm = document.getElementById('bookingForm');
 const dateInput = document.getElementById('dateInput');
 const slots = document.getElementById('slots');
-const toInputDate = date => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+const toInputDate = date =>
+  `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 const timeLabel = time => `${Math.floor(time)}h${time % 1 ? '30' : '00'}`;
 const selectedBarber = () => bookingForm.elements.barbeiro.value;
 
 // Só permite datas a partir de hoje e já começa no próximo dia aberto
 dateInput.min = toInputDate(now);
 const firstDay = new Date(now);
-while (!openingHours[firstDay.getDay()] || (toInputDate(firstDay) === toInputDate(now) && hour >= today[1] - .5)) firstDay.setDate(firstDay.getDate() + 1);
+while (!openingHours[firstDay.getDay()] || (toInputDate(firstDay) === toInputDate(now) && hour >= today[1] - 0.5))
+  firstDay.setDate(firstDay.getDate() + 1);
 dateInput.value = toInputDate(firstDay);
 
 // Simula horários já ocupados. O "sorteio" depende do dia, do barbeiro e da hora,
@@ -159,8 +176,9 @@ function isBusy(date, barberId, time) {
 function freeBarbers(date, time) {
   const weekday = new Date(`${date}T00:00`).getDay();
   const chosen = selectedBarber();
-  return Object.keys(barbers).filter(id =>
-    (!chosen || id === chosen) && barbers[id].days.includes(weekday) && !isBusy(date, id, time));
+  return Object.keys(barbers).filter(
+    id => (!chosen || id === chosen) && barbers[id].days.includes(weekday) && !isBusy(date, id, time)
+  );
 }
 
 // Monta os botões de horário (de 30 em 30 minutos) conforme o dia e o barbeiro
@@ -172,14 +190,18 @@ function updateSlots() {
   const hours = openingHours[weekday];
   if (!hours) return empty('Fechado neste dia. Que tal outro?');
   const chosen = selectedBarber();
-  if (chosen && !barbers[chosen].days.includes(weekday)) return empty(`${barbers[chosen].name} não atende neste dia da semana.`);
+  if (chosen && !barbers[chosen].days.includes(weekday))
+    return empty(`${barbers[chosen].name} não atende neste dia da semana.`);
 
   const isToday = dateInput.value === toInputDate(new Date());
   const nowHour = new Date().getHours() + new Date().getMinutes() / 60;
   for (let time = hours[0]; time < hours[1]; time += 0.5) {
     if (isToday && time <= nowHour) continue;
     const busy = freeBarbers(dateInput.value, time).length === 0;
-    slots.insertAdjacentHTML('beforeend', `<label class="slot"><input type="radio" name="hora" value="${time}" ${busy ? 'disabled' : ''}><span>${timeLabel(time)}</span></label>`);
+    slots.insertAdjacentHTML(
+      'beforeend',
+      `<label class="slot"><input type="radio" name="hora" value="${time}" ${busy ? 'disabled' : ''}><span>${timeLabel(time)}</span></label>`
+    );
   }
   if (!slots.children.length) empty('Não há mais horários hoje.');
 }
@@ -188,14 +210,16 @@ barberOptions.addEventListener('change', updateSlots);
 updateSlots();
 
 // Botões "Agendar com..." da seção Equipe já escolhem o barbeiro (e um dia em que ele atende)
-document.querySelectorAll('[data-pick-barber]').forEach(link => link.addEventListener('click', () => {
-  const id = link.dataset.pickBarber;
-  bookingForm.querySelector(`input[name="barbeiro"][value="${id}"]`).checked = true;
-  const day = new Date(`${dateInput.value || dateInput.min}T00:00`);
-  while (!barbers[id].days.includes(day.getDay())) day.setDate(day.getDate() + 1);
-  dateInput.value = toInputDate(day);
-  updateSlots();
-}));
+document.querySelectorAll('[data-pick-barber]').forEach(link =>
+  link.addEventListener('click', () => {
+    const id = link.dataset.pickBarber;
+    bookingForm.querySelector(`input[name="barbeiro"][value="${id}"]`).checked = true;
+    const day = new Date(`${dateInput.value || dateInput.min}T00:00`);
+    while (!barbers[id].days.includes(day.getDay())) day.setDate(day.getDate() + 1);
+    dateInput.value = toInputDate(day);
+    updateSlots();
+  })
+);
 
 // Como é um projeto de portfólio, o agendamento só mostra um resumo (não envia para lugar nenhum)
 const formError = document.getElementById('formError');
@@ -204,7 +228,13 @@ bookingForm.addEventListener('submit', event => {
   event.preventDefault();
   const data = new FormData(bookingForm);
   const name = data.get('nome').trim();
-  const missing = !name ? 'Digite seu nome.' : !data.get('dia') ? 'Escolha o dia.' : !data.get('hora') ? 'Escolha um horário livre.' : '';
+  const missing = !name
+    ? 'Digite seu nome.'
+    : !data.get('dia')
+      ? 'Escolha o dia.'
+      : !data.get('hora')
+        ? 'Escolha um horário livre.'
+        : '';
   formError.textContent = missing;
   formError.classList.toggle('visible', Boolean(missing));
   if (missing) return;

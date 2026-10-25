@@ -33,10 +33,12 @@ function saveTasks() {
 }
 
 function render() {
-  const visible = tasks.filter(task =>
-    currentFilter === 'todas' ||
-    (currentFilter === 'pendentes' && !task.done) ||
-    (currentFilter === 'concluidas' && task.done));
+  const visible = tasks.filter(
+    task =>
+      currentFilter === 'todas' ||
+      (currentFilter === 'pendentes' && !task.done) ||
+      (currentFilter === 'concluidas' && task.done)
+  );
 
   list.replaceChildren(...visible.map(createTaskElement));
 

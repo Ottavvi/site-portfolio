@@ -1,50 +1,60 @@
 <!doctype html>
 <html lang="pt-BR">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Minhas Tarefas | Projeto de Otávio</title>
-<meta name="description" content="Lista de tarefas com salvamento no navegador, feita por Otávio como projeto de portfólio.">
-<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="style.css">
-</head>
-<body>
-<div class="portfolio-bar">
-  <a href="../../index.html#projetos">← Voltar ao portfólio</a>
-  <span>Projeto de portfólio · JavaScript + LocalStorage</span>
-</div>
-
-<main class="app">
-  <header class="app-header">
-    <h1>Minhas tarefas</h1>
-    <p class="today" id="today"></p>
-  </header>
-
-  <form class="new-task" id="newTaskForm">
-    <label class="sr-only" for="newTaskInput">Nova tarefa</label>
-    <input id="newTaskInput" type="text" placeholder="O que você precisa fazer?" maxlength="120" autocomplete="off" required>
-    <button type="submit" aria-label="Adicionar tarefa">+</button>
-  </form>
-
-  <div class="toolbar">
-    <div class="filters" role="group" aria-label="Filtrar tarefas">
-      <button type="button" class="filter active" data-filter="todas" aria-pressed="true">Todas</button>
-      <button type="button" class="filter" data-filter="pendentes" aria-pressed="false">Pendentes</button>
-      <button type="button" class="filter" data-filter="concluidas" aria-pressed="false">Concluídas</button>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Minhas Tarefas | Projeto de Otávio</title>
+    <meta
+      name="description"
+      content="Lista de tarefas com salvamento no navegador, feita por Otávio como projeto de portfólio."
+    />
+    <link rel="icon" href="../../favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="portfolio-bar">
+      <a href="../../index.html#projetos">← Voltar ao portfólio</a>
+      <span>Projeto de portfólio · JavaScript + LocalStorage</span>
     </div>
-    <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
-  </div>
 
-  <ul class="task-list" id="taskList" aria-live="polite"></ul>
-  <p class="empty" id="emptyMessage" hidden></p>
+    <main class="app">
+      <header class="app-header">
+        <h1>Minhas tarefas</h1>
+        <p class="today" id="today"></p>
+      </header>
 
-  <footer class="app-footer">
-    <span id="counter"></span>
-    <button type="button" class="clear" id="clearDone">Limpar concluídas</button>
-  </footer>
-  <p class="hint">Dica: clique duas vezes numa tarefa para editar.</p>
-</main>
+      <form class="new-task" id="newTaskForm">
+        <label class="sr-only" for="newTaskInput">Nova tarefa</label>
+        <input
+          id="newTaskInput"
+          type="text"
+          placeholder="O que você precisa fazer?"
+          maxlength="120"
+          autocomplete="off"
+          required
+        />
+        <button type="submit" aria-label="Adicionar tarefa">+</button>
+      </form>
 
-<script src="script.js"></script>
-</body>
+      <div class="toolbar">
+        <div class="filters" role="group" aria-label="Filtrar tarefas">
+          <button type="button" class="filter active" data-filter="todas" aria-pressed="true">Todas</button>
+          <button type="button" class="filter" data-filter="pendentes" aria-pressed="false">Pendentes</button>
+          <button type="button" class="filter" data-filter="concluidas" aria-pressed="false">Concluídas</button>
+        </div>
+        <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
+      </div>
+
+      <ul class="task-list" id="taskList" aria-live="polite"></ul>
+      <p class="empty" id="emptyMessage" hidden></p>
+
+      <footer class="app-footer">
+        <span id="counter"></span>
+        <button type="button" class="clear" id="clearDone">Limpar concluídas</button>
+      </footer>
+      <p class="hint">Dica: clique duas vezes numa tarefa para editar.</p>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
 </html>

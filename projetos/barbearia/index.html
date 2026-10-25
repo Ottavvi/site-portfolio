@@ -1,307 +1,558 @@
 <!doctype html>
 <html lang="pt-BR">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Prime Barber | Projeto de Otávio</title>
-<meta name="description" content="Landing page de uma barbearia fictícia, feita por Otávio como projeto de portfólio: serviços, equipe, galeria, horário em tempo real e agendamento.">
-<meta name="theme-color" content="#1c1712">
-<link rel="canonical" href="https://ottavvi.github.io/site-portfolio/projetos/barbearia/">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="ottavvi.dev">
-<meta property="og:locale" content="pt_BR">
-<meta property="og:title" content="Prime Barber · Barbearia clássica">
-<meta property="og:description" content="Cortes, barba e cuidados masculinos com hora marcada. Projeto fictício de portfólio de Otávio.">
-<meta property="og:url" content="https://ottavvi.github.io/site-portfolio/projetos/barbearia/">
-<meta property="og:image" content="https://ottavvi.github.io/site-portfolio/projetos/barbearia/img/og-barbearia.jpg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap">
-<link rel="preload" as="image" href="img/capa.webp" type="image/webp">
-<link rel="stylesheet" href="style.css">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BarberShop",
-  "name": "Prime Barber",
-  "description": "Barbearia fictícia criada como projeto de portfólio.",
-  "image": "https://ottavvi.github.io/site-portfolio/projetos/barbearia/img/og-barbearia.jpg",
-  "priceRange": "R$ 15 – R$ 70",
-  "address": { "@type": "PostalAddress", "streetAddress": "Rua das Navalhas, 123", "addressLocality": "Cidade Exemplo", "addressRegion": "SP", "addressCountry": "BR" },
-  "openingHoursSpecification": [
-    { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], "opens": "09:00", "closes": "20:00" },
-    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "08:00", "closes": "18:00" }
-  ]
-}
-</script>
-</head>
-<body>
-<a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Prime Barber | Projeto de Otávio</title>
+    <meta
+      name="description"
+      content="Landing page de uma barbearia fictícia, feita por Otávio como projeto de portfólio: serviços, equipe, galeria, horário em tempo real e agendamento."
+    />
+    <meta name="theme-color" content="#1c1712" />
+    <link rel="canonical" href="https://ottavvi.github.io/site-portfolio/projetos/barbearia/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="ottavvi.dev" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:title" content="Prime Barber · Barbearia clássica" />
+    <meta
+      property="og:description"
+      content="Cortes, barba e cuidados masculinos com hora marcada. Projeto fictício de portfólio de Otávio."
+    />
+    <meta property="og:url" content="https://ottavvi.github.io/site-portfolio/projetos/barbearia/" />
+    <meta
+      property="og:image"
+      content="https://ottavvi.github.io/site-portfolio/projetos/barbearia/img/og-barbearia.jpg"
+    />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="../../favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap"
+    />
+    <link rel="preload" as="image" href="img/capa.webp" type="image/webp" />
+    <link rel="stylesheet" href="style.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BarberShop",
+        "name": "Prime Barber",
+        "description": "Barbearia fictícia criada como projeto de portfólio.",
+        "image": "https://ottavvi.github.io/site-portfolio/projetos/barbearia/img/og-barbearia.jpg",
+        "priceRange": "R$ 15 – R$ 70",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Rua das Navalhas, 123",
+          "addressLocality": "Cidade Exemplo",
+          "addressRegion": "SP",
+          "addressCountry": "BR"
+        },
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+            "opens": "09:00",
+            "closes": "20:00"
+          },
+          { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "08:00", "closes": "18:00" }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
 
-<!-- Ícones usados na página -->
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <symbol id="i-scissors" viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4 8.1 15.9M14.5 14.5 20 20M8.1 8.1 12 12"/></symbol>
-  <symbol id="i-razor" viewBox="0 0 24 24"><path d="M3 15 15 3l3 3L6 18z"/><path d="m6 18 3 3h4M12 12l3 3"/></symbol>
-  <symbol id="i-combo" viewBox="0 0 24 24"><path d="m12 3 2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/></symbol>
-  <symbol id="i-clipper" viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="14" rx="3"/><path d="M7 4h10M8 4V2M12 4V2M16 4V2M7 7V4M17 7V4M12 12v4"/></symbol>
-  <symbol id="i-brow" viewBox="0 0 24 24"><path d="M3 12c4-5 13-5 18-1"/><path d="M6 17c2 1.3 4 1.3 6 0"/></symbol>
-  <symbol id="i-kid" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9 10h.01M15 10h.01M8.5 14.5c2 2 5 2 7 0"/></symbol>
-  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.1 7-11.5a7 7 0 1 0-14 0C5 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></symbol>
-  <symbol id="i-instagram" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></symbol>
-  <symbol id="i-whatsapp" viewBox="0 0 24 24"><path d="M3.5 20.5 5 16a8.5 8.5 0 1 1 3.1 3z"/><path d="M9 8.5c0 3.5 3 6.5 6.5 6.5l1-1.6-2-1-1 .9c-1-.4-2.3-1.7-2.7-2.7l.9-1-1-2z"/></symbol>
-</svg>
-
-<div class="portfolio-bar">
-  <a href="../../index.html#projetos">← Voltar ao portfólio</a>
-  <span>Projeto fictício de portfólio</span>
-</div>
-
-<header class="header">
-  <div class="container nav">
-    <a class="brand" href="#topo">PRIME <span>BARBER</span></a>
-    <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="menu" aria-label="Abrir menu">☰</button>
-    <nav class="menu" id="menu" aria-label="Navegação da barbearia">
-      <a href="#servicos">Serviços</a>
-      <a href="#equipe">Equipe</a>
-      <a href="#galeria">Galeria</a>
-      <a href="#horarios">Horários</a>
-      <a href="#local">Onde estamos</a>
-      <a class="menu-cta" href="#agendar">Agendar</a>
-    </nav>
-  </div>
-</header>
-
-<main id="conteudo">
-<section class="hero" id="topo">
-  <div class="container hero-content">
-    <p class="hero-kicker">Desde 2015 · Barbearia clássica</p>
-    <h1>Seu estilo,<br>feito com <em>precisão.</em></h1>
-    <p class="hero-text">Cortes, barba e cuidados masculinos com atendimento sem pressa, café passado na hora e profissionais que entendem o que você quer.</p>
-    <div class="hero-actions">
-      <a class="button" href="#agendar">Agendar horário</a>
-      <a class="button button-outline" href="#servicos">Ver serviços</a>
-    </div>
-    <ul class="hero-stats">
-      <li><strong>4.9★</strong><span>avaliação média</span></li>
-      <li><strong>+8 mil</strong><span>cortes realizados</span></li>
-      <li><strong>3</strong><span>barbeiros</span></li>
-    </ul>
-  </div>
-</section>
-
-<section class="section" id="servicos">
-  <div class="container">
-    <p class="section-kicker">Serviços</p>
-    <h2>Escolha o seu cuidado</h2>
-    <div class="services">
-      <article class="service reveal">
-        <svg class="service-icon" aria-hidden="true"><use href="#i-scissors"/></svg>
-        <div class="service-head"><h3>Corte clássico</h3><span class="price">R$ 45</span></div>
-        <p>Tesoura e máquina, finalizado com lavagem e pomada.</p>
-        <span class="duration">40 min</span>
-      </article>
-      <article class="service reveal">
-        <svg class="service-icon" aria-hidden="true"><use href="#i-razor"/></svg>
-        <div class="service-head"><h3>Barba completa</h3><span class="price">R$ 35</span></div>
-        <p>Toalha quente, navalha e hidratação com óleo de barba.</p>
-        <span class="duration">30 min</span>
-      </article>
-      <article class="service featured reveal">
-        <span class="badge">Mais pedido</span>
-        <svg class="service-icon" aria-hidden="true"><use href="#i-combo"/></svg>
-        <div class="service-head"><h3>Corte + barba</h3><span class="price">R$ 70</span></div>
-        <p>O combo completo com desconto. Inclui toalha quente.</p>
-        <span class="duration">1h10</span>
-      </article>
-      <article class="service reveal">
-        <svg class="service-icon" aria-hidden="true"><use href="#i-clipper"/></svg>
-        <div class="service-head"><h3>Degradê</h3><span class="price">R$ 50</span></div>
-        <p>Transição suave na máquina, do zero ao comprimento que você quiser.</p>
-        <span class="duration">45 min</span>
-      </article>
-      <article class="service reveal">
-        <svg class="service-icon" aria-hidden="true"><use href="#i-brow"/></svg>
-        <div class="service-head"><h3>Sobrancelha</h3><span class="price">R$ 15</span></div>
-        <p>Limpeza e alinhamento na navalha.</p>
-        <span class="duration">10 min</span>
-      </article>
-      <article class="service reveal">
-        <svg class="service-icon" aria-hidden="true"><use href="#i-kid"/></svg>
-        <div class="service-head"><h3>Corte infantil</h3><span class="price">R$ 35</span></div>
-        <p>Para crianças de até 12 anos, com toda a paciência do mundo.</p>
-        <span class="duration">30 min</span>
-      </article>
-    </div>
-  </div>
-</section>
-
-<section class="section section-dark" id="equipe">
-  <div class="container">
-    <p class="section-kicker">Equipe</p>
-    <h2>Quem cuida de você</h2>
-    <p class="muted section-lead">Três barbeiros, três estilos. Escolha o seu na hora de agendar ou deixe com a gente.</p>
-    <div class="team">
-      <article class="barber reveal" data-barber="rafael">
-        <div class="avatar" aria-hidden="true">RM</div>
-        <h3>Rafael Moura</h3>
-        <p class="barber-role">Fundador · 12 anos de navalha</p>
-        <ul class="tags"><li>Degradê</li><li>Freestyle</li></ul>
-        <p class="barber-days">Atende de segunda a sexta</p>
-        <a class="button button-small" href="#agendar" data-pick-barber="rafael">Agendar com Rafael</a>
-      </article>
-      <article class="barber reveal" data-barber="bruno">
-        <div class="avatar" aria-hidden="true">BL</div>
-        <h3>Bruno Lima</h3>
-        <p class="barber-role">Especialista em barba</p>
-        <ul class="tags"><li>Barba</li><li>Toalha quente</li></ul>
-        <p class="barber-days">Atende de terça a sábado</p>
-        <a class="button button-small" href="#agendar" data-pick-barber="bruno">Agendar com Bruno</a>
-      </article>
-      <article class="barber reveal" data-barber="diego">
-        <div class="avatar" aria-hidden="true">DS</div>
-        <h3>Diego Santos</h3>
-        <p class="barber-role">Cortes clássicos e infantis</p>
-        <ul class="tags"><li>Tesoura</li><li>Infantil</li></ul>
-        <p class="barber-days">Atende segunda e de quarta a sábado</p>
-        <a class="button button-small" href="#agendar" data-pick-barber="diego">Agendar com Diego</a>
-      </article>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="galeria">
-  <div class="container">
-    <p class="section-kicker">Galeria</p>
-    <h2>Nosso trabalho</h2>
-    <div class="gallery">
-      <button class="gallery-item reveal" type="button"><img src="img/degrade-maquina.webp" alt="Barbeiro fazendo degradê com pente e máquina" width="720" height="900" loading="lazy"><span>Degradê na máquina</span></button>
-      <button class="gallery-item reveal" type="button"><img src="img/corte-salao.webp" alt="Barbeiro cortando o cabelo de um cliente em frente ao espelho" width="720" height="900" loading="lazy"><span>Corte social</span></button>
-      <button class="gallery-item reveal" type="button"><img src="img/acabamento-navalha.webp" alt="Acabamento do pezinho com navalha" width="720" height="900" loading="lazy"><span>Acabamento na navalha</span></button>
-      <button class="gallery-item reveal" type="button"><img src="img/cadeira-classica.webp" alt="Cadeira de barbeiro clássica de couro preto ao lado de espelhos com moldura de madeira" width="720" height="900" loading="lazy"><span>Nosso espaço</span></button>
-      <button class="gallery-item reveal" type="button"><img src="img/corte-tesoura.webp" alt="Corte na tesoura em cabelo grisalho" width="720" height="900" loading="lazy"><span>Corte na tesoura</span></button>
-      <button class="gallery-item reveal" type="button"><img src="img/barba-tesoura.webp" alt="Cliente de barba cheia durante o corte na tesoura" width="720" height="900" loading="lazy"><span>Corte + barba</span></button>
-    </div>
-  </div>
-</section>
-
-<dialog class="lightbox" id="lightbox" aria-label="Foto ampliada">
-  <img id="lightboxImg" alt="">
-  <p id="lightboxCaption"></p>
-  <button class="lightbox-nav prev" type="button" id="lightboxPrev" aria-label="Foto anterior">‹</button>
-  <button class="lightbox-nav next" type="button" id="lightboxNext" aria-label="Próxima foto">›</button>
-  <button class="lightbox-close" type="button" id="lightboxClose" aria-label="Fechar">×</button>
-</dialog>
-
-<section class="section section-dark" id="horarios">
-  <div class="container split">
-    <div>
-      <p class="section-kicker">Horários</p>
-      <h2>Quando estamos abertos</h2>
-      <p class="status" id="openStatus"></p>
-    </div>
-    <table class="hours">
-      <caption class="sr-only">Horário de funcionamento</caption>
-      <tbody>
-        <tr data-days="1,2,3,4,5"><th scope="row">Segunda a sexta</th><td>9h às 20h</td></tr>
-        <tr data-days="6"><th scope="row">Sábado</th><td>8h às 18h</td></tr>
-        <tr data-days="0"><th scope="row">Domingo</th><td>Fechado</td></tr>
-      </tbody>
-    </table>
-  </div>
-</section>
-
-<section class="section" id="local">
-  <div class="container split">
-    <div>
-      <p class="section-kicker">Onde estamos</p>
-      <h2>Fácil de chegar</h2>
-      <p class="address">Rua das Navalhas, 123 — Centro<br>Cidade Exemplo — SP</p>
-      <ul class="directions">
-        <li><strong>Metrô</strong> 2 minutos a pé da estação Central</li>
-        <li><strong>Carro</strong> estacionamento conveniado ao lado (1h grátis)</li>
-        <li><strong>Bike</strong> paraciclo na porta</li>
-      </ul>
-    </div>
-    <svg class="map" viewBox="0 0 480 300" role="img" aria-label="Mapa ilustrado: a barbearia fica na esquina da Rua das Navalhas com a Avenida Central, ao lado da estação">
-      <rect width="480" height="300" class="map-bg"/>
-      <g class="map-blocks">
-        <rect x="16" y="16" width="140" height="120" rx="8"/><rect x="200" y="16" width="120" height="120" rx="8"/><rect x="364" y="16" width="100" height="120" rx="8"/>
-        <rect x="16" y="180" width="140" height="104" rx="8"/><rect x="364" y="180" width="100" height="104" rx="8"/>
-      </g>
-      <rect class="map-park" x="200" y="180" width="120" height="104" rx="8"/>
-      <g class="map-roads">
-        <rect x="0" y="146" width="480" height="24"/><rect x="166" y="0" width="24" height="300"/><rect x="330" y="0" width="24" height="300"/>
-      </g>
-      <text class="map-label" x="24" y="162">RUA DAS NAVALHAS</text>
-      <text class="map-label" x="183" y="290" transform="rotate(-90 183 290)">AV. CENTRAL</text>
-      <text class="map-label map-label-dark" x="260" y="236" text-anchor="middle">Praça</text>
-      <g class="map-station"><rect x="372" y="196" width="84" height="30" rx="6"/><text x="414" y="216" text-anchor="middle">Ⓜ Central</text></g>
-      <g class="map-pin-group">
-        <circle cx="140" cy="128" r="26" class="map-pulse"/>
-        <path class="map-pin" d="M140 136s-16-14-16-26a16 16 0 1 1 32 0c0 12-16 26-16 26z"/>
-        <circle cx="140" cy="110" r="5" class="map-pin-dot"/>
-      </g>
+    <!-- Ícones usados na página -->
+    <svg class="icon-sprite" aria-hidden="true">
+      <symbol id="i-scissors" viewBox="0 0 24 24">
+        <circle cx="6" cy="6" r="3" />
+        <circle cx="6" cy="18" r="3" />
+        <path d="M20 4 8.1 15.9M14.5 14.5 20 20M8.1 8.1 12 12" />
+      </symbol>
+      <symbol id="i-razor" viewBox="0 0 24 24">
+        <path d="M3 15 15 3l3 3L6 18z" />
+        <path d="m6 18 3 3h4M12 12l3 3" />
+      </symbol>
+      <symbol id="i-combo" viewBox="0 0 24 24">
+        <path d="m12 3 2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z" />
+      </symbol>
+      <symbol id="i-clipper" viewBox="0 0 24 24">
+        <rect x="7" y="7" width="10" height="14" rx="3" />
+        <path d="M7 4h10M8 4V2M12 4V2M16 4V2M7 7V4M17 7V4M12 12v4" />
+      </symbol>
+      <symbol id="i-brow" viewBox="0 0 24 24">
+        <path d="M3 12c4-5 13-5 18-1" />
+        <path d="M6 17c2 1.3 4 1.3 6 0" />
+      </symbol>
+      <symbol id="i-kid" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="9" />
+        <path d="M9 10h.01M15 10h.01M8.5 14.5c2 2 5 2 7 0" />
+      </symbol>
+      <symbol id="i-pin" viewBox="0 0 24 24">
+        <path d="M12 21s7-6.1 7-11.5a7 7 0 1 0-14 0C5 14.9 12 21 12 21z" />
+        <circle cx="12" cy="9.5" r="2.5" />
+      </symbol>
+      <symbol id="i-instagram" viewBox="0 0 24 24">
+        <rect x="3" y="3" width="18" height="18" rx="5" />
+        <circle cx="12" cy="12" r="4" />
+        <path d="M17.5 6.5h.01" />
+      </symbol>
+      <symbol id="i-whatsapp" viewBox="0 0 24 24">
+        <path d="M3.5 20.5 5 16a8.5 8.5 0 1 1 3.1 3z" />
+        <path d="M9 8.5c0 3.5 3 6.5 6.5 6.5l1-1.6-2-1-1 .9c-1-.4-2.3-1.7-2.7-2.7l.9-1-1-2z" />
+      </symbol>
     </svg>
-  </div>
-</section>
 
-<section class="section section-dark" id="agendar">
-  <div class="container booking">
-    <div>
-      <p class="section-kicker">Agendamento</p>
-      <h2>Reserve seu horário</h2>
-      <p class="muted">Escolha o serviço, o barbeiro, o dia e o horário. Os horários riscados já estão ocupados.</p>
+    <div class="portfolio-bar">
+      <a href="../../index.html#projetos">← Voltar ao portfólio</a>
+      <span>Projeto fictício de portfólio</span>
     </div>
-    <form class="booking-form" id="bookingForm" novalidate>
-      <label>Seu nome<input type="text" name="nome" required autocomplete="name"></label>
-      <label>Serviço
-        <select name="servico" id="serviceSelect" required></select>
-        <span class="service-info" id="serviceInfo"></span>
-      </label>
-      <fieldset class="barber-picker">
-        <legend>Barbeiro</legend>
-        <div class="barber-options" id="barberOptions">
-          <label class="chip"><input type="radio" name="barbeiro" value="" checked><span>Sem preferência</span></label>
+
+    <header class="header">
+      <div class="container nav">
+        <a class="brand" href="#topo">
+          PRIME
+          <span>BARBER</span>
+        </a>
+        <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="menu" aria-label="Abrir menu">
+          ☰
+        </button>
+        <nav class="menu" id="menu" aria-label="Navegação da barbearia">
+          <a href="#servicos">Serviços</a>
+          <a href="#equipe">Equipe</a>
+          <a href="#galeria">Galeria</a>
+          <a href="#horarios">Horários</a>
+          <a href="#local">Onde estamos</a>
+          <a class="menu-cta" href="#agendar">Agendar</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="conteudo">
+      <section class="hero" id="topo">
+        <div class="container hero-content">
+          <p class="hero-kicker">Desde 2015 · Barbearia clássica</p>
+          <h1>
+            Seu estilo,
+            <br />
+            feito com
+            <em>precisão.</em>
+          </h1>
+          <p class="hero-text">
+            Cortes, barba e cuidados masculinos com atendimento sem pressa, café passado na hora e profissionais que
+            entendem o que você quer.
+          </p>
+          <div class="hero-actions">
+            <a class="button" href="#agendar">Agendar horário</a>
+            <a class="button button-outline" href="#servicos">Ver serviços</a>
+          </div>
+          <ul class="hero-stats">
+            <li>
+              <strong>4.9★</strong>
+              <span>avaliação média</span>
+            </li>
+            <li>
+              <strong>+8 mil</strong>
+              <span>cortes realizados</span>
+            </li>
+            <li>
+              <strong>3</strong>
+              <span>barbeiros</span>
+            </li>
+          </ul>
         </div>
-      </fieldset>
-      <label>Dia<input type="date" name="dia" id="dateInput" required></label>
-      <fieldset class="slots-field">
-        <legend>Horário</legend>
-        <div class="slots" id="slots" aria-live="polite"></div>
-      </fieldset>
-      <p class="form-error" id="formError" role="alert"></p>
-      <button class="button" type="submit">Confirmar agendamento</button>
-      <div class="booking-result" id="bookingResult" role="status"></div>
-    </form>
-  </div>
-</section>
-</main>
+      </section>
 
-<footer class="footer">
-  <div class="container">
-    <p><strong>PRIME BARBER</strong> — barbearia fictícia criada por <a href="../../index.html">Otávio</a> como projeto de portfólio.</p>
-    <p class="credits">Fotos do Wikimedia Commons:
-      <a href="https://commons.wikimedia.org/wiki/File:Barber_cutting_hair_with_comb._Back_view_of_man_in_barber_shop.jpg" target="_blank" rel="noreferrer">Nenad Stojkovic</a> (capa, galeria; CC BY 2.0),
-      <a href="https://commons.wikimedia.org/wiki/File:Barber_brings_a_haircut_and_beard_to_his_client.jpg" target="_blank" rel="noreferrer">Shixart1985</a> (CC BY 2.0),
-      <a href="https://commons.wikimedia.org/wiki/File:Barbershop_In_Iran_-_Barber,_Hairdresser_18.jpg" target="_blank" rel="noreferrer">Mostafa Meraji</a> (CC0) e
-      <a href="https://commons.wikimedia.org/wiki/File:Valhalla_Cave_Davie_Barbershop_Classic_Barber_Chairs.jpg" target="_blank" rel="noreferrer">Leverageroi</a> (CC0).
-    </p>
-  </div>
-</footer>
+      <section class="section" id="servicos">
+        <div class="container">
+          <p class="section-kicker">Serviços</p>
+          <h2>Escolha o seu cuidado</h2>
+          <div class="services">
+            <article class="service reveal">
+              <svg class="service-icon" aria-hidden="true"><use href="#i-scissors" /></svg>
+              <div class="service-head">
+                <h3>Corte clássico</h3>
+                <span class="price">R$ 45</span>
+              </div>
+              <p>Tesoura e máquina, finalizado com lavagem e pomada.</p>
+              <span class="duration">40 min</span>
+            </article>
+            <article class="service reveal">
+              <svg class="service-icon" aria-hidden="true"><use href="#i-razor" /></svg>
+              <div class="service-head">
+                <h3>Barba completa</h3>
+                <span class="price">R$ 35</span>
+              </div>
+              <p>Toalha quente, navalha e hidratação com óleo de barba.</p>
+              <span class="duration">30 min</span>
+            </article>
+            <article class="service featured reveal">
+              <span class="badge">Mais pedido</span>
+              <svg class="service-icon" aria-hidden="true"><use href="#i-combo" /></svg>
+              <div class="service-head">
+                <h3>Corte + barba</h3>
+                <span class="price">R$ 70</span>
+              </div>
+              <p>O combo completo com desconto. Inclui toalha quente.</p>
+              <span class="duration">1h10</span>
+            </article>
+            <article class="service reveal">
+              <svg class="service-icon" aria-hidden="true"><use href="#i-clipper" /></svg>
+              <div class="service-head">
+                <h3>Degradê</h3>
+                <span class="price">R$ 50</span>
+              </div>
+              <p>Transição suave na máquina, do zero ao comprimento que você quiser.</p>
+              <span class="duration">45 min</span>
+            </article>
+            <article class="service reveal">
+              <svg class="service-icon" aria-hidden="true"><use href="#i-brow" /></svg>
+              <div class="service-head">
+                <h3>Sobrancelha</h3>
+                <span class="price">R$ 15</span>
+              </div>
+              <p>Limpeza e alinhamento na navalha.</p>
+              <span class="duration">10 min</span>
+            </article>
+            <article class="service reveal">
+              <svg class="service-icon" aria-hidden="true"><use href="#i-kid" /></svg>
+              <div class="service-head">
+                <h3>Corte infantil</h3>
+                <span class="price">R$ 35</span>
+              </div>
+              <p>Para crianças de até 12 anos, com toda a paciência do mundo.</p>
+              <span class="duration">30 min</span>
+            </article>
+          </div>
+        </div>
+      </section>
 
-<div class="float-buttons">
-  <a class="float-button instagram-float" id="instagramFloat" href="https://www.instagram.com/" target="_blank" rel="noreferrer" aria-label="Ver o Instagram">
-    <svg aria-hidden="true"><use href="#i-instagram"/></svg>
-  </a>
-  <a class="float-button whatsapp-float" id="whatsappFloat" href="https://wa.me/" target="_blank" rel="noreferrer" aria-label="Falar pelo WhatsApp">
-    <svg aria-hidden="true"><use href="#i-whatsapp"/></svg>
-  </a>
-</div>
+      <section class="section section-dark" id="equipe">
+        <div class="container">
+          <p class="section-kicker">Equipe</p>
+          <h2>Quem cuida de você</h2>
+          <p class="muted section-lead">
+            Três barbeiros, três estilos. Escolha o seu na hora de agendar ou deixe com a gente.
+          </p>
+          <div class="team">
+            <article class="barber reveal" data-barber="rafael">
+              <div class="avatar" aria-hidden="true">RM</div>
+              <h3>Rafael Moura</h3>
+              <p class="barber-role">Fundador · 12 anos de navalha</p>
+              <ul class="tags">
+                <li>Degradê</li>
+                <li>Freestyle</li>
+              </ul>
+              <p class="barber-days">Atende de segunda a sexta</p>
+              <a class="button button-small" href="#agendar" data-pick-barber="rafael">Agendar com Rafael</a>
+            </article>
+            <article class="barber reveal" data-barber="bruno">
+              <div class="avatar" aria-hidden="true">BL</div>
+              <h3>Bruno Lima</h3>
+              <p class="barber-role">Especialista em barba</p>
+              <ul class="tags">
+                <li>Barba</li>
+                <li>Toalha quente</li>
+              </ul>
+              <p class="barber-days">Atende de terça a sábado</p>
+              <a class="button button-small" href="#agendar" data-pick-barber="bruno">Agendar com Bruno</a>
+            </article>
+            <article class="barber reveal" data-barber="diego">
+              <div class="avatar" aria-hidden="true">DS</div>
+              <h3>Diego Santos</h3>
+              <p class="barber-role">Cortes clássicos e infantis</p>
+              <ul class="tags">
+                <li>Tesoura</li>
+                <li>Infantil</li>
+              </ul>
+              <p class="barber-days">Atende segunda e de quarta a sábado</p>
+              <a class="button button-small" href="#agendar" data-pick-barber="diego">Agendar com Diego</a>
+            </article>
+          </div>
+        </div>
+      </section>
 
-<script src="script.js"></script>
-</body>
+      <section class="section" id="galeria">
+        <div class="container">
+          <p class="section-kicker">Galeria</p>
+          <h2>Nosso trabalho</h2>
+          <div class="gallery">
+            <button class="gallery-item reveal" type="button">
+              <img
+                src="img/degrade-maquina.webp"
+                alt="Barbeiro fazendo degradê com pente e máquina"
+                width="720"
+                height="900"
+                loading="lazy"
+              />
+              <span>Degradê na máquina</span>
+            </button>
+            <button class="gallery-item reveal" type="button">
+              <img
+                src="img/corte-salao.webp"
+                alt="Barbeiro cortando o cabelo de um cliente em frente ao espelho"
+                width="720"
+                height="900"
+                loading="lazy"
+              />
+              <span>Corte social</span>
+            </button>
+            <button class="gallery-item reveal" type="button">
+              <img
+                src="img/acabamento-navalha.webp"
+                alt="Acabamento do pezinho com navalha"
+                width="720"
+                height="900"
+                loading="lazy"
+              />
+              <span>Acabamento na navalha</span>
+            </button>
+            <button class="gallery-item reveal" type="button">
+              <img
+                src="img/cadeira-classica.webp"
+                alt="Cadeira de barbeiro clássica de couro preto ao lado de espelhos com moldura de madeira"
+                width="720"
+                height="900"
+                loading="lazy"
+              />
+              <span>Nosso espaço</span>
+            </button>
+            <button class="gallery-item reveal" type="button">
+              <img
+                src="img/corte-tesoura.webp"
+                alt="Corte na tesoura em cabelo grisalho"
+                width="720"
+                height="900"
+                loading="lazy"
+              />
+              <span>Corte na tesoura</span>
+            </button>
+            <button class="gallery-item reveal" type="button">
+              <img
+                src="img/barba-tesoura.webp"
+                alt="Cliente de barba cheia durante o corte na tesoura"
+                width="720"
+                height="900"
+                loading="lazy"
+              />
+              <span>Corte + barba</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <dialog class="lightbox" id="lightbox" aria-label="Foto ampliada">
+        <img id="lightboxImg" alt="" />
+        <p id="lightboxCaption"></p>
+        <button class="lightbox-nav prev" type="button" id="lightboxPrev" aria-label="Foto anterior">‹</button>
+        <button class="lightbox-nav next" type="button" id="lightboxNext" aria-label="Próxima foto">›</button>
+        <button class="lightbox-close" type="button" id="lightboxClose" aria-label="Fechar">×</button>
+      </dialog>
+
+      <section class="section section-dark" id="horarios">
+        <div class="container split">
+          <div>
+            <p class="section-kicker">Horários</p>
+            <h2>Quando estamos abertos</h2>
+            <p class="status" id="openStatus"></p>
+          </div>
+          <table class="hours">
+            <caption class="sr-only">Horário de funcionamento</caption>
+            <tbody>
+              <tr data-days="1,2,3,4,5">
+                <th scope="row">Segunda a sexta</th>
+                <td>9h às 20h</td>
+              </tr>
+              <tr data-days="6">
+                <th scope="row">Sábado</th>
+                <td>8h às 18h</td>
+              </tr>
+              <tr data-days="0">
+                <th scope="row">Domingo</th>
+                <td>Fechado</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section" id="local">
+        <div class="container split">
+          <div>
+            <p class="section-kicker">Onde estamos</p>
+            <h2>Fácil de chegar</h2>
+            <p class="address">
+              Rua das Navalhas, 123 — Centro
+              <br />
+              Cidade Exemplo — SP
+            </p>
+            <ul class="directions">
+              <li>
+                <strong>Metrô</strong>
+                2 minutos a pé da estação Central
+              </li>
+              <li>
+                <strong>Carro</strong>
+                estacionamento conveniado ao lado (1h grátis)
+              </li>
+              <li>
+                <strong>Bike</strong>
+                paraciclo na porta
+              </li>
+            </ul>
+          </div>
+          <svg
+            class="map"
+            viewBox="0 0 480 300"
+            role="img"
+            aria-label="Mapa ilustrado: a barbearia fica na esquina da Rua das Navalhas com a Avenida Central, ao lado da estação"
+          >
+            <rect width="480" height="300" class="map-bg" />
+            <g class="map-blocks">
+              <rect x="16" y="16" width="140" height="120" rx="8" />
+              <rect x="200" y="16" width="120" height="120" rx="8" />
+              <rect x="364" y="16" width="100" height="120" rx="8" />
+              <rect x="16" y="180" width="140" height="104" rx="8" />
+              <rect x="364" y="180" width="100" height="104" rx="8" />
+            </g>
+            <rect class="map-park" x="200" y="180" width="120" height="104" rx="8" />
+            <g class="map-roads">
+              <rect x="0" y="146" width="480" height="24" />
+              <rect x="166" y="0" width="24" height="300" />
+              <rect x="330" y="0" width="24" height="300" />
+            </g>
+            <text class="map-label" x="24" y="162">RUA DAS NAVALHAS</text>
+            <text class="map-label" x="183" y="290" transform="rotate(-90 183 290)">AV. CENTRAL</text>
+            <text class="map-label map-label-dark" x="260" y="236" text-anchor="middle">Praça</text>
+            <g class="map-station">
+              <rect x="372" y="196" width="84" height="30" rx="6" />
+              <text x="414" y="216" text-anchor="middle">Ⓜ Central</text>
+            </g>
+            <g class="map-pin-group">
+              <circle cx="140" cy="128" r="26" class="map-pulse" />
+              <path class="map-pin" d="M140 136s-16-14-16-26a16 16 0 1 1 32 0c0 12-16 26-16 26z" />
+              <circle cx="140" cy="110" r="5" class="map-pin-dot" />
+            </g>
+          </svg>
+        </div>
+      </section>
+
+      <section class="section section-dark" id="agendar">
+        <div class="container booking">
+          <div>
+            <p class="section-kicker">Agendamento</p>
+            <h2>Reserve seu horário</h2>
+            <p class="muted">
+              Escolha o serviço, o barbeiro, o dia e o horário. Os horários riscados já estão ocupados.
+            </p>
+          </div>
+          <form class="booking-form" id="bookingForm" novalidate>
+            <label>
+              Seu nome
+              <input type="text" name="nome" required autocomplete="name" />
+            </label>
+            <label>
+              Serviço
+              <select name="servico" id="serviceSelect" required></select>
+              <span class="service-info" id="serviceInfo"></span>
+            </label>
+            <fieldset class="barber-picker">
+              <legend>Barbeiro</legend>
+              <div class="barber-options" id="barberOptions">
+                <label class="chip">
+                  <input type="radio" name="barbeiro" value="" checked />
+                  <span>Sem preferência</span>
+                </label>
+              </div>
+            </fieldset>
+            <label>
+              Dia
+              <input type="date" name="dia" id="dateInput" required />
+            </label>
+            <fieldset class="slots-field">
+              <legend>Horário</legend>
+              <div class="slots" id="slots" aria-live="polite"></div>
+            </fieldset>
+            <p class="form-error" id="formError" role="alert"></p>
+            <button class="button" type="submit">Confirmar agendamento</button>
+            <div class="booking-result" id="bookingResult" role="status"></div>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <p>
+          <strong>PRIME BARBER</strong>
+          — barbearia fictícia criada por
+          <a href="../../index.html">Otávio</a>
+          como projeto de portfólio.
+        </p>
+        <p class="credits">
+          Fotos do Wikimedia Commons:
+          <a
+            href="https://commons.wikimedia.org/wiki/File:Barber_cutting_hair_with_comb._Back_view_of_man_in_barber_shop.jpg"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Nenad Stojkovic
+          </a>
+          (capa, galeria; CC BY 2.0),
+          <a
+            href="https://commons.wikimedia.org/wiki/File:Barber_brings_a_haircut_and_beard_to_his_client.jpg"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Shixart1985
+          </a>
+          (CC BY 2.0),
+          <a
+            href="https://commons.wikimedia.org/wiki/File:Barbershop_In_Iran_-_Barber,_Hairdresser_18.jpg"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Mostafa Meraji
+          </a>
+          (CC0) e
+          <a
+            href="https://commons.wikimedia.org/wiki/File:Valhalla_Cave_Davie_Barbershop_Classic_Barber_Chairs.jpg"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Leverageroi
+          </a>
+          (CC0).
+        </p>
+      </div>
+    </footer>
+
+    <div class="float-buttons">
+      <a
+        class="float-button instagram-float"
+        id="instagramFloat"
+        href="https://www.instagram.com/"
+        target="_blank"
+        rel="noreferrer"
+        aria-label="Ver o Instagram"
+      >
+        <svg aria-hidden="true"><use href="#i-instagram" /></svg>
+      </a>
+      <a
+        class="float-button whatsapp-float"
+        id="whatsappFloat"
+        href="https://wa.me/"
+        target="_blank"
+        rel="noreferrer"
+        aria-label="Falar pelo WhatsApp"
+      >
+        <svg aria-hidden="true"><use href="#i-whatsapp" /></svg>
+      </a>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
 </html>

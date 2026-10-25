@@ -1,89 +1,212 @@
 <!doctype html>
 <html lang="pt-BR">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Minha área | Otávio</title>
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="style.css">
-</head>
-<body>
-<div id="app">
-<header>
-  <div class="wrap nav">
-    <a class="logo" href="index.html#inicio" aria-label="Otávio, início">ottavvi<span>.</span>dev</a>
-    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="navLinks">Menu ☰</button>
-    <nav class="links" id="navLinks" aria-label="Navegação principal">
-      <a href="index.html#projetos">Projetos</a><a href="index.html#habilidades">Habilidades</a><a href="sobre.html">Sobre mim</a><a href="index.html#contato">Contato</a><a href="area.html" aria-current="page">Minha área</a>
-    </nav>
-  </div>
-</header>
-<main>
-<section class="auth-page" id="memberArea" style="border-top:0" hidden>
-  <div class="wrap">
-    <div class="auth-card">
-      <div class="section-kicker">Área de membros</div>
-      <h1>Olá, <span id="memberName"></span>!</h1>
-      <div id="verifyBox" hidden>
-        <p class="auth-alt">Falta só confirmar seu e-mail. Enviamos um link para <strong class="member-email"></strong> — clique nele para liberar sua área (confira também o spam).</p>
-        <div class="actions">
-          <button class="btn btn-primary" type="button" id="checkBtn">Já confirmei</button>
-          <button class="btn btn-ghost" type="button" id="resendBtn">Reenviar e-mail</button>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Minha área | Otávio</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <header>
+        <div class="wrap nav">
+          <!-- prettier-ignore -->
+          <a class="logo" href="index.html#inicio" aria-label="Otávio, início">ottavvi<span>.</span>dev</a>
+          <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="navLinks">Menu ☰</button>
+          <nav class="links" id="navLinks" aria-label="Navegação principal">
+            <a href="index.html#projetos">Projetos</a>
+            <a href="index.html#habilidades">Habilidades</a>
+            <a href="sobre.html">Sobre mim</a>
+            <a href="index.html#contato">Contato</a>
+            <a href="area.html" aria-current="page">Minha área</a>
+          </nav>
         </div>
-        <p class="notice" id="authNotice" role="status"></p>
-      </div>
-      <div id="memberContent" hidden>
-        <p class="auth-alt">Você entrou como <strong class="member-email"></strong>.</p>
-        <p class="auth-alt">Este é o espaço exclusivo para membros. Em breve, novidades por aqui.</p>
-        <div class="profile">
-          <details class="profile-section">
-            <summary>Alterar nome</summary>
-            <form class="auth-form" id="nameForm">
-              <label>Nome<input type="text" name="nome" required maxlength="100" autocomplete="name"></label>
-              <button class="btn btn-primary" type="submit">Salvar nome</button>
-              <p class="notice" id="nameNotice" role="status"></p>
-            </form>
-          </details>
-          <details class="profile-section">
-            <summary>Trocar senha</summary>
-            <form class="auth-form" id="passwordForm">
-              <label>Senha atual<span class="password-field"><input type="password" name="atual" required autocomplete="current-password" autocapitalize="off" autocorrect="off" spellcheck="false"><button class="toggle-password" type="button" aria-label="Mostrar senha" aria-pressed="false"><svg class="icon-eye" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><svg class="icon-eye-off" viewBox="0 0 24 24" aria-hidden="true" hidden><path d="M17.9 17.9A10 10 0 0 1 12 19c-6.5 0-10-7-10-7a18 18 0 0 1 5.1-5.9M9.9 5.2A9 9 0 0 1 12 5c6.5 0 10 7 10 7a18 18 0 0 1-2.2 3.2M14.1 14.1a3 3 0 1 1-4.2-4.2M2 2l20 20"/></svg></button></span></label>
-              <label>Nova senha<span class="password-field"><input type="password" name="nova" required minlength="6" autocomplete="new-password" autocapitalize="off" autocorrect="off" spellcheck="false"><button class="toggle-password" type="button" aria-label="Mostrar senha" aria-pressed="false"><svg class="icon-eye" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><svg class="icon-eye-off" viewBox="0 0 24 24" aria-hidden="true" hidden><path d="M17.9 17.9A10 10 0 0 1 12 19c-6.5 0-10-7-10-7a18 18 0 0 1 5.1-5.9M9.9 5.2A9 9 0 0 1 12 5c6.5 0 10 7 10 7a18 18 0 0 1-2.2 3.2M14.1 14.1a3 3 0 1 1-4.2-4.2M2 2l20 20"/></svg></button></span></label>
-              <label>Confirmar nova senha<span class="password-field"><input type="password" name="confirmar" required minlength="6" autocomplete="new-password" autocapitalize="off" autocorrect="off" spellcheck="false"><button class="toggle-password" type="button" aria-label="Mostrar senha" aria-pressed="false"><svg class="icon-eye" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><svg class="icon-eye-off" viewBox="0 0 24 24" aria-hidden="true" hidden><path d="M17.9 17.9A10 10 0 0 1 12 19c-6.5 0-10-7-10-7a18 18 0 0 1 5.1-5.9M9.9 5.2A9 9 0 0 1 12 5c6.5 0 10 7 10 7a18 18 0 0 1-2.2 3.2M14.1 14.1a3 3 0 1 1-4.2-4.2M2 2l20 20"/></svg></button></span></label>
-              <button class="btn btn-primary" type="submit">Trocar senha</button>
-              <p class="notice" id="passwordNotice" role="status"></p>
-            </form>
-          </details>
-          <details class="profile-section danger">
-            <summary>Excluir minha conta</summary>
-            <form class="auth-form" id="deleteForm">
-              <p class="auth-alt">Isso apaga sua conta e seus dados para sempre. Não dá para desfazer.</p>
-              <label>Digite sua senha para confirmar<span class="password-field"><input type="password" name="atual" required autocomplete="current-password" autocapitalize="off" autocorrect="off" spellcheck="false"><button class="toggle-password" type="button" aria-label="Mostrar senha" aria-pressed="false"><svg class="icon-eye" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><svg class="icon-eye-off" viewBox="0 0 24 24" aria-hidden="true" hidden><path d="M17.9 17.9A10 10 0 0 1 12 19c-6.5 0-10-7-10-7a18 18 0 0 1 5.1-5.9M9.9 5.2A9 9 0 0 1 12 5c6.5 0 10 7 10 7a18 18 0 0 1-2.2 3.2M14.1 14.1a3 3 0 1 1-4.2-4.2M2 2l20 20"/></svg></button></span></label>
-              <button class="btn btn-danger" type="submit">Excluir conta</button>
-              <p class="notice" id="deleteNotice" role="status"></p>
-            </form>
-          </details>
+      </header>
+      <main>
+        <section class="auth-page" id="memberArea" hidden>
+          <div class="wrap">
+            <div class="auth-card">
+              <div class="section-kicker">Área de membros</div>
+              <h1>
+                Olá,
+                <span id="memberName"></span>
+                !
+              </h1>
+              <div id="verifyBox" hidden>
+                <p class="auth-alt">
+                  Falta só confirmar seu e-mail. Enviamos um link para
+                  <strong class="member-email"></strong>
+                  — clique nele para liberar sua área (confira também o spam).
+                </p>
+                <div class="actions">
+                  <button class="btn btn-primary" type="button" id="checkBtn">Já confirmei</button>
+                  <button class="btn btn-ghost" type="button" id="resendBtn">Reenviar e-mail</button>
+                </div>
+                <p class="notice" id="authNotice" role="status"></p>
+              </div>
+              <div id="memberContent" hidden>
+                <p class="auth-alt">
+                  Você entrou como
+                  <strong class="member-email"></strong>
+                  .
+                </p>
+                <p class="auth-alt">Este é o espaço exclusivo para membros. Em breve, novidades por aqui.</p>
+                <div class="profile">
+                  <details class="profile-section">
+                    <summary>Alterar nome</summary>
+                    <form class="auth-form" id="nameForm">
+                      <label>
+                        Nome
+                        <input type="text" name="nome" required maxlength="100" autocomplete="name" />
+                      </label>
+                      <button class="btn btn-primary" type="submit">Salvar nome</button>
+                      <p class="notice" id="nameNotice" role="status"></p>
+                    </form>
+                  </details>
+                  <details class="profile-section">
+                    <summary>Trocar senha</summary>
+                    <form class="auth-form" id="passwordForm">
+                      <label>
+                        Senha atual
+                        <span class="password-field">
+                          <input
+                            type="password"
+                            name="atual"
+                            required
+                            autocomplete="current-password"
+                            autocapitalize="off"
+                            autocorrect="off"
+                            spellcheck="false"
+                          />
+                          <button class="toggle-password" type="button" aria-label="Mostrar senha" aria-pressed="false">
+                            <svg class="icon-eye" viewBox="0 0 24 24" aria-hidden="true">
+                              <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z" />
+                              <circle cx="12" cy="12" r="3" />
+                            </svg>
+                            <svg class="icon-eye-off" viewBox="0 0 24 24" aria-hidden="true" hidden>
+                              <path
+                                d="M17.9 17.9A10 10 0 0 1 12 19c-6.5 0-10-7-10-7a18 18 0 0 1 5.1-5.9M9.9 5.2A9 9 0 0 1 12 5c6.5 0 10 7 10 7a18 18 0 0 1-2.2 3.2M14.1 14.1a3 3 0 1 1-4.2-4.2M2 2l20 20"
+                              />
+                            </svg>
+                          </button>
+                        </span>
+                      </label>
+                      <label>
+                        Nova senha
+                        <span class="password-field">
+                          <input
+                            type="password"
+                            name="nova"
+                            required
+                            minlength="6"
+                            autocomplete="new-password"
+                            autocapitalize="off"
+                            autocorrect="off"
+                            spellcheck="false"
+                          />
+                          <button class="toggle-password" type="button" aria-label="Mostrar senha" aria-pressed="false">
+                            <svg class="icon-eye" viewBox="0 0 24 24" aria-hidden="true">
+                              <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z" />
+                              <circle cx="12" cy="12" r="3" />
+                            </svg>
+                            <svg class="icon-eye-off" viewBox="0 0 24 24" aria-hidden="true" hidden>
+                              <path
+                                d="M17.9 17.9A10 10 0 0 1 12 19c-6.5 0-10-7-10-7a18 18 0 0 1 5.1-5.9M9.9 5.2A9 9 0 0 1 12 5c6.5 0 10 7 10 7a18 18 0 0 1-2.2 3.2M14.1 14.1a3 3 0 1 1-4.2-4.2M2 2l20 20"
+                              />
+                            </svg>
+                          </button>
+                        </span>
+                      </label>
+                      <label>
+                        Confirmar nova senha
+                        <span class="password-field">
+                          <input
+                            type="password"
+                            name="confirmar"
+                            required
+                            minlength="6"
+                            autocomplete="new-password"
+                            autocapitalize="off"
+                            autocorrect="off"
+                            spellcheck="false"
+                          />
+                          <button class="toggle-password" type="button" aria-label="Mostrar senha" aria-pressed="false">
+                            <svg class="icon-eye" viewBox="0 0 24 24" aria-hidden="true">
+                              <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z" />
+                              <circle cx="12" cy="12" r="3" />
+                            </svg>
+                            <svg class="icon-eye-off" viewBox="0 0 24 24" aria-hidden="true" hidden>
+                              <path
+                                d="M17.9 17.9A10 10 0 0 1 12 19c-6.5 0-10-7-10-7a18 18 0 0 1 5.1-5.9M9.9 5.2A9 9 0 0 1 12 5c6.5 0 10 7 10 7a18 18 0 0 1-2.2 3.2M14.1 14.1a3 3 0 1 1-4.2-4.2M2 2l20 20"
+                              />
+                            </svg>
+                          </button>
+                        </span>
+                      </label>
+                      <button class="btn btn-primary" type="submit">Trocar senha</button>
+                      <p class="notice" id="passwordNotice" role="status"></p>
+                    </form>
+                  </details>
+                  <details class="profile-section danger">
+                    <summary>Excluir minha conta</summary>
+                    <form class="auth-form" id="deleteForm">
+                      <p class="auth-alt">Isso apaga sua conta e seus dados para sempre. Não dá para desfazer.</p>
+                      <label>
+                        Digite sua senha para confirmar
+                        <span class="password-field">
+                          <input
+                            type="password"
+                            name="atual"
+                            required
+                            autocomplete="current-password"
+                            autocapitalize="off"
+                            autocorrect="off"
+                            spellcheck="false"
+                          />
+                          <button class="toggle-password" type="button" aria-label="Mostrar senha" aria-pressed="false">
+                            <svg class="icon-eye" viewBox="0 0 24 24" aria-hidden="true">
+                              <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z" />
+                              <circle cx="12" cy="12" r="3" />
+                            </svg>
+                            <svg class="icon-eye-off" viewBox="0 0 24 24" aria-hidden="true" hidden>
+                              <path
+                                d="M17.9 17.9A10 10 0 0 1 12 19c-6.5 0-10-7-10-7a18 18 0 0 1 5.1-5.9M9.9 5.2A9 9 0 0 1 12 5c6.5 0 10 7 10 7a18 18 0 0 1-2.2 3.2M14.1 14.1a3 3 0 1 1-4.2-4.2M2 2l20 20"
+                              />
+                            </svg>
+                          </button>
+                        </span>
+                      </label>
+                      <button class="btn btn-danger" type="submit">Excluir conta</button>
+                      <p class="notice" id="deleteNotice" role="status"></p>
+                    </form>
+                  </details>
+                </div>
+              </div>
+              <div class="actions">
+                <a class="btn btn-primary" href="admin.html" id="adminLink" hidden>Painel de admin ↗</a>
+                <button class="btn btn-ghost" type="button" id="logoutBtn">Sair da conta</button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+      <footer>
+        <div class="wrap foot">
+          <span>
+            ©
+            <span id="year"></span>
+            Otávio. Feito com HTML, CSS e JavaScript.
+          </span>
+          <div class="small-links">
+            <a href="https://github.com/Ottavvi" target="_blank" rel="noreferrer">GitHub ↗</a>
+            <a href="index.html">Página inicial</a>
+          </div>
         </div>
-      </div>
-      <div class="actions">
-        <a class="btn btn-primary" href="admin.html" id="adminLink" hidden>Painel de admin ↗</a>
-        <button class="btn btn-ghost" type="button" id="logoutBtn">Sair da conta</button>
-      </div>
+      </footer>
     </div>
-  </div>
-</section>
-</main>
-<footer>
-  <div class="wrap foot">
-    <span>© <span id="year"></span> Otávio. Feito com HTML, CSS e JavaScript.</span>
-    <div class="small-links">
-      <a href="https://github.com/Ottavvi" target="_blank" rel="noreferrer">GitHub ↗</a>
-      <a href="index.html">Página inicial</a>
-    </div>
-  </div>
-</footer>
-</div>
-<script src="script.js"></script>
-<script type="module" src="auth.js"></script>
-</body>
+    <script src="js/main.js"></script>
+    <script type="module" src="js/auth/session.js"></script>
+    <script type="module" src="js/auth/area.js"></script>
+  </body>
 </html>
