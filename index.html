@@ -23,6 +23,9 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="theme-color" content="#0b0d12" />
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400..900&display=swap" />
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
@@ -74,6 +77,10 @@
                 <strong>CSS</strong>
                 ·
                 <strong>JavaScript</strong>
+                ·
+                <strong>React</strong>
+                ·
+                <strong>Node.js</strong>
               </p>
             </div>
             <aside class="profile-card" aria-label="Prévia ilustrativa de código">
@@ -130,6 +137,38 @@
               <article class="project project--featured">
                 <div class="project-art project-art--shot">
                   <img
+                    src="imagens/projeto-rota.webp"
+                    alt="Painel do Rota Municipal com veículos em operação, saídas do dia e pendências"
+                    width="960"
+                    height="570"
+                    loading="lazy"
+                  />
+                </div>
+                <div class="project-body">
+                  <div class="project-badge">Sistema completo</div>
+                  <h3>Rota Municipal</h3>
+                  <p>
+                    Sistema de gestão de transportes para prefeituras: frota, motoristas, transporte escolar, transporte
+                    de pacientes, combustível e manutenção. Tem login com perfis de acesso, auditoria, relatórios para
+                    prestação de contas e um app para o motorista que funciona sem internet na zona rural.
+                  </p>
+                  <div class="tags">
+                    <span class="tag">React</span>
+                    <span class="tag">Node.js</span>
+                    <span class="tag">SQLite</span>
+                    <span class="tag">PWA offline</span>
+                    <span class="tag">Playwright</span>
+                    <span class="tag">LGPD</span>
+                  </div>
+                  <div class="project-links">
+                    <a href="projetos/rota-municipal/">Ver apresentação ↗</a>
+                  </div>
+                  <div class="project-note">Código privado. A apresentação usa dados fictícios.</div>
+                </div>
+              </article>
+              <article class="project project--featured">
+                <div class="project-art project-art--shot">
+                  <img
                     src="imagens/projeto-pousada.webp"
                     alt="Página inicial do site da Pousada Lagoa Azul"
                     width="960"
@@ -164,13 +203,14 @@
                 </div>
               </article>
               <article class="project">
-                <div class="project-art">
-                  <div class="mock-card">
-                    <div class="mock-title">PRIME BARBER</div>
-                    <div class="mock-line"></div>
-                    <div class="mock-line short"></div>
-                    <div class="mock-button"></div>
-                  </div>
+                <div class="project-art project-art--shot">
+                  <img
+                    src="imagens/projeto-barbearia.webp"
+                    alt="Capa da landing page da barbearia Prime Barber"
+                    width="640"
+                    height="400"
+                    loading="lazy"
+                  />
                 </div>
                 <div class="project-body">
                   <h3>Landing page para barbearia</h3>
@@ -197,13 +237,14 @@
                 </div>
               </article>
               <article class="project">
-                <div class="project-art purple-bg">
-                  <div class="mock-card">
-                    <div class="mock-title">MINHAS TAREFAS</div>
-                    <div class="mock-line"></div>
-                    <div class="mock-line"></div>
-                    <div class="mock-line short"></div>
-                  </div>
+                <div class="project-art project-art--shot">
+                  <img
+                    src="imagens/projeto-tarefas.webp"
+                    alt="Lista de tarefas com itens pendentes e concluídos"
+                    width="640"
+                    height="400"
+                    loading="lazy"
+                  />
                 </div>
                 <div class="project-body">
                   <h3>Lista de tarefas</h3>
@@ -229,15 +270,14 @@
                 </div>
               </article>
               <article class="project">
-                <div class="project-art blue-bg">
-                  <div class="mock-card">
-                    <div class="mock-title">00:24:58</div>
-                    <div class="mock-line"></div>
-                    <div class="mock-controls">
-                      <div class="mock-button"></div>
-                      <div class="mock-outline"></div>
-                    </div>
-                  </div>
+                <div class="project-art project-art--shot">
+                  <img
+                    src="imagens/projeto-cronometro.webp"
+                    alt="Cronômetro rodando, com a tabela de voltas"
+                    width="640"
+                    height="400"
+                    loading="lazy"
+                  />
                 </div>
                 <div class="project-body">
                   <h3>Cronômetro online</h3>
@@ -268,25 +308,75 @@
             <h2>Aprendendo a construir para a web.</h2>
             <p class="section-intro">
               Sou estudante de Ciência da Computação. Na faculdade, construo a base em lógica, algoritmos e estruturas
-              de dados; fora dela, coloco isso em prática com desenvolvimento web, me aprofundando em JavaScript e em
-              serviços como o Firebase, que cuida do login e do banco de dados deste site.
+              de dados; fora dela, coloco isso em prática com desenvolvimento web, me aprofundando em JavaScript, React
+              e Node.js e em serviços como o Firebase, que cuida do login e do banco de dados deste site.
             </p>
             <div class="skills-grid">
               <div class="skill-box">
+                <span class="skill-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="m8 8-4 4 4 4M16 8l4 4-4 4M13.5 5l-3 14" /></svg>
+                </span>
                 <h3>01 / HTML</h3>
                 <p>Estrutura semântica de páginas, links, imagens, formulários e organização do conteúdo.</p>
               </div>
               <div class="skill-box">
+                <span class="skill-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M12 3a9 9 0 1 0 0 18c1.1 0 1.6-.8 1.3-1.7-.4-1-.1-2 1.1-2.3h2.1A3.5 3.5 0 0 0 20 13.5 9 9 0 0 0 12 3z"
+                    />
+                    <circle cx="7.5" cy="11" r="1" />
+                    <circle cx="10" cy="7" r="1" />
+                    <circle cx="15" cy="7.5" r="1" />
+                  </svg>
+                </span>
                 <h3>02 / CSS</h3>
                 <p>Estilos, cores, tipografia, layouts responsivos e adaptação para celular.</p>
               </div>
               <div class="skill-box">
+                <span class="skill-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M8 4H7a2 2 0 0 0-2 2v4l-2 2 2 2v4a2 2 0 0 0 2 2h1M16 4h1a2 2 0 0 1 2 2v4l2 2-2 2v4a2 2 0 0 1-2 2h-1"
+                    />
+                  </svg>
+                </span>
                 <h3>03 / JavaScript</h3>
                 <p>Interatividade, eventos e comportamento dinâmico — evoluindo com projetos práticos.</p>
               </div>
               <div class="skill-box">
-                <h3>04 / Git e GitHub</h3>
-                <p>Organização do código, histórico de alterações e publicação de projetos.</p>
+                <span class="skill-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="1.6" />
+                    <ellipse cx="12" cy="12" rx="9.5" ry="3.8" />
+                    <ellipse cx="12" cy="12" rx="9.5" ry="3.8" transform="rotate(60 12 12)" />
+                    <ellipse cx="12" cy="12" rx="9.5" ry="3.8" transform="rotate(120 12 12)" />
+                  </svg>
+                </span>
+                <h3>04 / React</h3>
+                <p>Interfaces em componentes, rotas e estado, como nas telas do Rota Municipal.</p>
+              </div>
+              <div class="skill-box">
+                <span class="skill-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24">
+                    <ellipse cx="12" cy="6" rx="7" ry="3" />
+                    <path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6" />
+                  </svg>
+                </span>
+                <h3>05 / Node.js e bancos de dados</h3>
+                <p>APIs com Express, banco SQLite, login com perfis de acesso e testes automatizados.</p>
+              </div>
+              <div class="skill-box">
+                <span class="skill-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24">
+                    <circle cx="6" cy="5" r="2" />
+                    <circle cx="6" cy="19" r="2" />
+                    <circle cx="18" cy="9" r="2" />
+                    <path d="M6 7v10M18 11c0 4-6 3-11.3 6.6" />
+                  </svg>
+                </span>
+                <h3>06 / Git e GitHub</h3>
+                <p>Organização do código, histórico de alterações e publicação automática de projetos.</p>
               </div>
             </div>
           </div>

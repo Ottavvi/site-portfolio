@@ -21,7 +21,14 @@ js/auth/<página>.js             código de cada página de conta (login.js, are
 firestore.rules                 regras de segurança do Firestore
 imagens/                        imagens do portfólio
 projetos/                       projetos de exemplo (barbearia, tarefas, cronômetro)
+projetos/rota-municipal/        apresentação do Rota Municipal (cópia da pasta vitrine/ daquele repositório)
 ```
+
+## Atualizar a apresentação do Rota Municipal
+
+O código do sistema é privado; aqui fica só a página de apresentação. Quando ela mudar, copie de novo
+`rota-municipal/vitrine/index.html` e `vitrine/imagens/` para `projetos/rota-municipal/`, mantendo a
+barra "Voltar ao portfólio" e o ícone que foram adicionados no topo da cópia.
 
 ## Rodar localmente
 
