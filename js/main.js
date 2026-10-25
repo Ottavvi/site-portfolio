@@ -14,6 +14,30 @@ navLinks.querySelectorAll('a').forEach(link =>
   })
 );
 
+// Botão de tema: alterna entre claro e escuro e guarda a escolha
+const themeBtn = document.getElementById('themeBtn');
+const isEnglish = document.documentElement.lang === 'en';
+function applyTheme(theme) {
+  document.documentElement.dataset.theme = theme;
+  const next = theme === 'light' ? 'dark' : 'light';
+  const label = isEnglish
+    ? `Switch to ${next} theme`
+    : `Mudar para tema ${next === 'light' ? 'claro' : 'escuro'}`;
+  themeBtn.setAttribute('aria-label', label);
+  themeBtn.title = label;
+  document
+    .querySelector('meta[name="theme-color"]')
+    ?.setAttribute('content', getComputedStyle(document.documentElement).getPropertyValue('--site-background').trim());
+}
+applyTheme(document.documentElement.dataset.theme || 'dark');
+themeBtn.addEventListener('click', () => {
+  const theme = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+  applyTheme(theme);
+  try {
+    localStorage.setItem('tema', theme);
+  } catch {}
+});
+
 // Ano atual no rodapé
 document.getElementById('year').textContent = new Date().getFullYear();
 
