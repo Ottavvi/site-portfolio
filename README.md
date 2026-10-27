@@ -65,6 +65,13 @@ Os módulos JavaScript não funcionam abrindo o arquivo direto (`file://`). Use 
 npx serve .
 ```
 
+## Verificação automática
+
+A cada envio para a main, o GitHub Actions (`.github/workflows/verificar.yml`) confere os links internos
+(`node ferramentas/verificar-links.js`, que também dá para rodar no computador), a formatação do Prettier e as
+notas do Lighthouse nas páginas principais (limites em `ferramentas/lighthouserc.json`). Ele não publica nada:
+só avisa, com um X vermelho no commit, se algo quebrou.
+
 ## Formatação
 
 O código segue o [Prettier](https://prettier.io) (configuração em `.prettierrc.json`) e o `.editorconfig`. Para formatar tudo:
