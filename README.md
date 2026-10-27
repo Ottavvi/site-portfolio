@@ -9,7 +9,8 @@ HTML, CSS e JavaScript puros, sem etapa de build. Login, área de membros e form
 ```
 index.html, sobre.html          páginas principais
 rota-municipal.html             estudo de caso do Rota Municipal
-en/                             versão em inglês (index, about e o estudo de caso)
+pousada.html                    estudo de caso da Pousada Lagoa Azul (prints em imagens/pousada/)
+en/                             versão em inglês (index, about e os estudos de caso)
 login.html, cadastro.html,      páginas de conta
 recuperar.html, acao.html,
 area.html, admin.html

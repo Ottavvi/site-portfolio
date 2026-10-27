@@ -620,7 +620,8 @@ h3 {
 }
 .project-links {
   display: flex;
-  gap: 15px;
+  flex-wrap: wrap;
+  gap: 8px 15px;
   margin-top: 18px;
   font-size: 0.84rem;
   font-weight: 700;
@@ -1550,6 +1551,16 @@ h3 {
   grid-template-columns: 1fr 1fr;
   gap: 22px;
   margin-top: 28px;
+}
+.case-wide {
+  margin-top: 44px;
+}
+.case-text code {
+  padding: 1px 6px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface);
+  font-size: 0.86em;
 }
 
 /* Botão de idioma no menu (PT / EN) */
