@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://ottavvi.github.io/site-portfolio/</loc>
+    <lastmod>2026-10-27</lastmod>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://ottavvi.github.io/site-portfolio/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ottavvi.github.io/site-portfolio/en/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ottavvi.github.io/site-portfolio/" />
+  </url>
+  <url>
+    <loc>https://ottavvi.github.io/site-portfolio/en/</loc>
+    <lastmod>2026-10-27</lastmod>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://ottavvi.github.io/site-portfolio/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ottavvi.github.io/site-portfolio/en/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ottavvi.github.io/site-portfolio/" />
+  </url>
+  <url>
+    <loc>https://ottavvi.github.io/site-portfolio/sobre.html</loc>
+    <lastmod>2026-10-27</lastmod>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://ottavvi.github.io/site-portfolio/sobre.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ottavvi.github.io/site-portfolio/en/about.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ottavvi.github.io/site-portfolio/sobre.html" />
+  </url>
+  <url>
+    <loc>https://ottavvi.github.io/site-portfolio/en/about.html</loc>
+    <lastmod>2026-10-27</lastmod>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://ottavvi.github.io/site-portfolio/sobre.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ottavvi.github.io/site-portfolio/en/about.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ottavvi.github.io/site-portfolio/sobre.html" />
+  </url>
+  <url>
+    <loc>https://ottavvi.github.io/site-portfolio/rota-municipal.html</loc>
+    <lastmod>2026-10-27</lastmod>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://ottavvi.github.io/site-portfolio/rota-municipal.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ottavvi.github.io/site-portfolio/en/rota-municipal.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ottavvi.github.io/site-portfolio/rota-municipal.html" />
+  </url>
+  <url>
+    <loc>https://ottavvi.github.io/site-portfolio/en/rota-municipal.html</loc>
+    <lastmod>2026-10-27</lastmod>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://ottavvi.github.io/site-portfolio/rota-municipal.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ottavvi.github.io/site-portfolio/en/rota-municipal.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ottavvi.github.io/site-portfolio/rota-municipal.html" />
+  </url>
+  <url>
+    <loc>https://ottavvi.github.io/site-portfolio/pousada.html</loc>
+    <lastmod>2026-10-27</lastmod>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://ottavvi.github.io/site-portfolio/pousada.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ottavvi.github.io/site-portfolio/en/pousada.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ottavvi.github.io/site-portfolio/pousada.html" />
+  </url>
+  <url>
+    <loc>https://ottavvi.github.io/site-portfolio/en/pousada.html</loc>
+    <lastmod>2026-10-27</lastmod>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://ottavvi.github.io/site-portfolio/pousada.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ottavvi.github.io/site-portfolio/en/pousada.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ottavvi.github.io/site-portfolio/pousada.html" />
+  </url>
+  <url>
+    <loc>https://ottavvi.github.io/site-portfolio/projetos/rota-municipal/</loc>
+    <lastmod>2026-10-27</lastmod>
+  </url>
+  <url>
+    <loc>https://ottavvi.github.io/site-portfolio/projetos/financas/</loc>
+    <lastmod>2026-10-27</lastmod>
+  </url>
+  <url>
+    <loc>https://ottavvi.github.io/site-portfolio/projetos/painel-empresas/</loc>
+    <lastmod>2026-10-27</lastmod>
+  </url>
+  <url>
+    <loc>https://ottavvi.github.io/site-portfolio/projetos/barbearia/</loc>
+    <lastmod>2026-10-27</lastmod>
+  </url>
+  <url>
+    <loc>https://ottavvi.github.io/site-portfolio/projetos/tarefas/</loc>
+    <lastmod>2026-10-27</lastmod>
+  </url>
+  <url>
+    <loc>https://ottavvi.github.io/site-portfolio/projetos/cronometro/</loc>
+    <lastmod>2026-10-27</lastmod>
+  </url>
+</urlset>

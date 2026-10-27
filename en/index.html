@@ -22,6 +22,7 @@
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="theme-color" content="#08141a" />
+    <link rel="canonical" href="https://ottavvi.github.io/site-portfolio/en/" />
     <link rel="alternate" hreflang="pt-BR" href="https://ottavvi.github.io/site-portfolio/" />
     <link rel="alternate" hreflang="en" href="https://ottavvi.github.io/site-portfolio/en/" />
     <link rel="alternate" hreflang="x-default" href="https://ottavvi.github.io/site-portfolio/" />
@@ -40,6 +41,31 @@
           localStorage.getItem('tema') || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
         document.documentElement.dataset.theme = tema;
       } catch {}
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Person",
+            "@id": "https://ottavvi.github.io/site-portfolio/#pessoa",
+            "name": "Otávio",
+            "url": "https://ottavvi.github.io/site-portfolio/",
+            "jobTitle": "Web developer",
+            "sameAs": ["https://github.com/Ottavvi"],
+            "knowsAbout": ["HTML", "CSS", "JavaScript", "React", "Node.js", "SQLite", "Firebase", "Power BI", "Excel"]
+          },
+          {
+            "@type": "WebSite",
+            "name": "ottavvi.dev",
+            "url": "https://ottavvi.github.io/site-portfolio/en/",
+            "inLanguage": "en",
+            "author": {
+              "@id": "https://ottavvi.github.io/site-portfolio/#pessoa"
+            }
+          }
+        ]
+      }
     </script>
   </head>
   <body>
