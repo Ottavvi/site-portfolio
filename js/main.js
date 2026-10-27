@@ -118,6 +118,14 @@ if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-mot
   });
 }
 
+// Tabelas dos estudos de caso: cada célula guarda o nome da coluna, que o CSS mostra no celular
+document.querySelectorAll('.case-table table').forEach(table => {
+  const headers = [...table.querySelectorAll('thead th')].map(th => th.textContent.trim());
+  table
+    .querySelectorAll('tbody tr')
+    .forEach(row => [...row.cells].forEach((cell, index) => (cell.dataset.label = headers[index] || '')));
+});
+
 // Brilho que acompanha o mouse nos cartões (o CSS lê --mx e --my)
 document.querySelectorAll('.project, .skill-box').forEach(card =>
   card.addEventListener('pointermove', event => {

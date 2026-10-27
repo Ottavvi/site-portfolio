@@ -64,6 +64,12 @@ const comandos = [
   ],
   [
     'projetos',
+    EN ? 'Business finance dashboards: case study' : 'Painel financeiro para empresas: estudo de caso',
+    url(EN ? 'en/paineis.html' : 'paineis.html'),
+    'power bi dax bi dados'
+  ],
+  [
+    'projetos',
     EN ? 'Business finance dashboards' : 'Painel financeiro para empresas',
     url('projetos/painel-empresas/'),
     'power bi dax'
