@@ -38,7 +38,7 @@ themeBtn.addEventListener('click', () => {
 
 // Contador de visitas (GoatCounter): sem cookies e sem dados pessoais, por isso não precisa de aviso.
 // Para ligar, crie a conta em goatcounter.com e coloque aqui o código escolhido (o "xxx" de xxx.goatcounter.com).
-const GOATCOUNTER = '';
+const GOATCOUNTER = 'ottavvi';
 // (não conta as visitas de teste no próprio computador)
 if (GOATCOUNTER && !['localhost', '127.0.0.1', ''].includes(location.hostname)) {
   const contador = document.createElement('script');
