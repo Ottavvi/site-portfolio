@@ -159,8 +159,26 @@
               Cada projeto é uma oportunidade de aprender, resolver um problema e melhorar minhas habilidades. Todos
               funcionam de verdade: abra, teste e veja o código.
             </p>
+            <div class="filters" role="group" aria-label="Filtrar projetos">
+              <button class="filter" type="button" data-filter="todos" aria-pressed="true">
+                Todos
+                <span class="filter-count"></span>
+              </button>
+              <button class="filter" type="button" data-filter="sites" aria-pressed="false">
+                Sites
+                <span class="filter-count"></span>
+              </button>
+              <button class="filter" type="button" data-filter="sistemas" aria-pressed="false">
+                Apps e sistemas
+                <span class="filter-count"></span>
+              </button>
+              <button class="filter" type="button" data-filter="dados" aria-pressed="false">
+                Dados e BI
+                <span class="filter-count"></span>
+              </button>
+            </div>
             <div class="projects">
-              <article class="project project--featured">
+              <article class="project project--featured" data-cat="sistemas">
                 <div class="project-art project-art--shot">
                   <img
                     src="imagens/projeto-rota.webp"
@@ -193,7 +211,7 @@
                   <div class="project-note">Código privado. A apresentação usa dados fictícios.</div>
                 </div>
               </article>
-              <article class="project project--featured">
+              <article class="project project--featured" data-cat="sites">
                 <div class="project-art project-art--shot">
                   <img
                     src="imagens/projeto-pousada.webp"
@@ -227,7 +245,7 @@
                   <div class="project-note">Fotos e contatos ainda provisórios, aguardando o material da pousada.</div>
                 </div>
               </article>
-              <article class="project project--featured">
+              <article class="project project--featured" data-cat="dados">
                 <div class="project-art project-art--shot">
                   <img
                     src="imagens/projeto-financas.webp"
@@ -259,7 +277,7 @@
                   <div class="project-note">Grátis para uso pessoal. Vem com dados de exemplo.</div>
                 </div>
               </article>
-              <article class="project project--featured">
+              <article class="project project--featured" data-cat="dados">
                 <div class="project-art project-art--shot">
                   <img
                     src="imagens/projeto-paineis.webp"
@@ -292,7 +310,7 @@
                   <div class="project-note">Grátis. Cada versão vem com uma empresa fictícia e dados de exemplo.</div>
                 </div>
               </article>
-              <article class="project">
+              <article class="project" data-cat="sites">
                 <div class="project-art project-art--shot">
                   <img
                     src="imagens/projeto-barbearia.webp"
@@ -326,7 +344,7 @@
                   <div class="project-note">Barbearia fictícia, criada para praticar layout e formulários.</div>
                 </div>
               </article>
-              <article class="project">
+              <article class="project" data-cat="sistemas">
                 <div class="project-art project-art--shot">
                   <img
                     src="imagens/projeto-tarefas.webp"
@@ -360,7 +378,7 @@
                   </div>
                 </div>
               </article>
-              <article class="project">
+              <article class="project" data-cat="sistemas">
                 <div class="project-art project-art--shot">
                   <img
                     src="imagens/projeto-cronometro.webp"
@@ -501,6 +519,13 @@
             <div>
               <div class="section-kicker">Um pouco sobre mim</div>
               <h2>Curiosidade, prática e evolução constante.</h2>
+              <div class="about-card">
+                <div class="avatar" aria-hidden="true"><span>O</span></div>
+                <div>
+                  <strong>Otávio</strong>
+                  <span>Estudante de Ciência da Computação</span>
+                </div>
+              </div>
             </div>
             <div class="about-copy">
               <p>

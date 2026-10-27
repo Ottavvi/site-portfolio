@@ -127,6 +127,27 @@ document.querySelectorAll('.project, .skill-box').forEach(card =>
   })
 );
 
+// Filtro de projetos por categoria (data-cat em cada projeto, data-filter em cada botão)
+const filterButtons = document.querySelectorAll('.filter');
+const projects = [...document.querySelectorAll('.project[data-cat]')];
+// Nome próprio para cada cartão: na troca, eles deslizam até a nova posição em vez de piscar
+projects.forEach((project, index) => (project.style.viewTransitionName = `projeto-${index}`));
+filterButtons.forEach(button => {
+  const { filter } = button.dataset;
+  button.querySelector('.filter-count').textContent =
+    filter === 'todos' ? projects.length : projects.filter(project => project.dataset.cat === filter).length;
+  button.addEventListener('click', () => {
+    const apply = () => {
+      filterButtons.forEach(other => other.setAttribute('aria-pressed', String(other === button)));
+      projects.forEach(project => (project.hidden = filter !== 'todos' && project.dataset.cat !== filter));
+    };
+    // Troca animada nos navegadores com View Transitions
+    if (document.startViewTransition && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.startViewTransition(apply);
+    } else apply();
+  });
+});
+
 // Botão de olho: mostra ou esconde a senha
 document.querySelectorAll('.toggle-password').forEach(button =>
   button.addEventListener('click', () => {

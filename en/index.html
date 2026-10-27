@@ -168,8 +168,26 @@
               Each project is a chance to learn, solve a problem and sharpen my skills. They all really work: open them,
               try them and read the code. The projects themselves are in Portuguese.
             </p>
+            <div class="filters" role="group" aria-label="Filter projects">
+              <button class="filter" type="button" data-filter="todos" aria-pressed="true">
+                All
+                <span class="filter-count"></span>
+              </button>
+              <button class="filter" type="button" data-filter="sites" aria-pressed="false">
+                Websites
+                <span class="filter-count"></span>
+              </button>
+              <button class="filter" type="button" data-filter="sistemas" aria-pressed="false">
+                Apps and systems
+                <span class="filter-count"></span>
+              </button>
+              <button class="filter" type="button" data-filter="dados" aria-pressed="false">
+                Data and BI
+                <span class="filter-count"></span>
+              </button>
+            </div>
             <div class="projects">
-              <article class="project project--featured">
+              <article class="project project--featured" data-cat="sistemas">
                 <div class="project-art project-art--shot">
                   <img
                     src="../imagens/projeto-rota.webp"
@@ -202,7 +220,7 @@
                   <div class="project-note">Private code. The presentation uses fictional data.</div>
                 </div>
               </article>
-              <article class="project project--featured">
+              <article class="project project--featured" data-cat="sites">
                 <div class="project-art project-art--shot">
                   <img
                     src="../imagens/projeto-pousada.webp"
@@ -238,7 +256,7 @@
                   </div>
                 </div>
               </article>
-              <article class="project project--featured">
+              <article class="project project--featured" data-cat="dados">
                 <div class="project-art project-art--shot">
                   <img
                     src="../imagens/projeto-financas.webp"
@@ -270,7 +288,7 @@
                   <div class="project-note">Free for personal use. Comes with sample data.</div>
                 </div>
               </article>
-              <article class="project project--featured">
+              <article class="project project--featured" data-cat="dados">
                 <div class="project-art project-art--shot">
                   <img
                     src="../imagens/projeto-paineis.webp"
@@ -303,7 +321,7 @@
                   <div class="project-note">Free. Each version comes with a fictional company and sample data.</div>
                 </div>
               </article>
-              <article class="project">
+              <article class="project" data-cat="sites">
                 <div class="project-art project-art--shot">
                   <img
                     src="../imagens/projeto-barbearia.webp"
@@ -337,7 +355,7 @@
                   <div class="project-note">Fictional barbershop, built to practice layout and forms.</div>
                 </div>
               </article>
-              <article class="project">
+              <article class="project" data-cat="sistemas">
                 <div class="project-art project-art--shot">
                   <img
                     src="../imagens/projeto-tarefas.webp"
@@ -371,7 +389,7 @@
                   </div>
                 </div>
               </article>
-              <article class="project">
+              <article class="project" data-cat="sistemas">
                 <div class="project-art project-art--shot">
                   <img
                     src="../imagens/projeto-cronometro.webp"
@@ -512,6 +530,13 @@
             <div>
               <div class="section-kicker">A bit about me</div>
               <h2>Curiosity, practice and constant growth.</h2>
+              <div class="about-card">
+                <div class="avatar" aria-hidden="true"><span>O</span></div>
+                <div>
+                  <strong>Otávio</strong>
+                  <span>Computer Science student</span>
+                </div>
+              </div>
             </div>
             <div class="about-copy">
               <p>
