@@ -36,6 +36,17 @@ themeBtn.addEventListener('click', () => {
   } catch {}
 });
 
+// Contador de visitas (GoatCounter): sem cookies e sem dados pessoais, por isso não precisa de aviso.
+// Para ligar, crie a conta em goatcounter.com e coloque aqui o código escolhido (o "xxx" de xxx.goatcounter.com).
+const GOATCOUNTER = '';
+if (GOATCOUNTER && location.hostname.endsWith('github.io')) {
+  const contador = document.createElement('script');
+  contador.async = true;
+  contador.src = 'https://gc.zgo.at/count.js';
+  contador.dataset.goatcounter = `https://${GOATCOUNTER}.goatcounter.com/count`;
+  document.head.append(contador);
+}
+
 // Ano atual no rodapé
 document.getElementById('year').textContent = new Date().getFullYear();
 
