@@ -1555,6 +1555,32 @@ h3 {
 .case-wide {
   margin-top: 44px;
 }
+
+/* ========== Página 404 ========== */
+.not-found {
+  min-height: calc(100vh - 150px);
+  display: flex;
+  align-items: center;
+}
+.not-found .wrap {
+  position: relative;
+  z-index: 1;
+}
+.not-found-code {
+  margin: 0;
+  font-family: var(--site-font-heading);
+  font-size: clamp(6rem, 22vw, 13rem);
+  font-weight: 700;
+  line-height: 0.9;
+  letter-spacing: -0.06em;
+  background: linear-gradient(100deg, var(--site-primary) 20%, var(--code-keyword));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.not-found .stack {
+  margin-top: 10px;
+}
 .case-text code {
   padding: 1px 6px;
   border: 1px solid var(--line);
