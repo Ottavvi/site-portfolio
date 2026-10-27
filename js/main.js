@@ -102,6 +102,10 @@ if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-mot
         if (!entry.isIntersecting) return;
         entry.target.classList.add('visible');
         observer.unobserve(entry.target);
+        // Depois de aparecer, tira o atraso para o hover responder na hora
+        entry.target.addEventListener('transitionend', () => (entry.target.style.transitionDelay = ''), {
+          once: true
+        });
       }),
     { threshold: 0.15 }
   );
@@ -113,6 +117,15 @@ if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-mot
     observer.observe(element);
   });
 }
+
+// Brilho que acompanha o mouse nos cartões (o CSS lê --mx e --my)
+document.querySelectorAll('.project, .skill-box').forEach(card =>
+  card.addEventListener('pointermove', event => {
+    const box = card.getBoundingClientRect();
+    card.style.setProperty('--mx', `${event.clientX - box.left}px`);
+    card.style.setProperty('--my', `${event.clientY - box.top}px`);
+  })
+);
 
 // Botão de olho: mostra ou esconde a senha
 document.querySelectorAll('.toggle-password').forEach(button =>
