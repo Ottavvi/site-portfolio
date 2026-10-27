@@ -1,7 +1,12 @@
-import { db } from './firebase.js';
-import { collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
-
-// Formulário de contato: envia para o e-mail (FormSubmit) e salva no painel de admin (Firestore)
+// Formulário de contato: envia para o e-mail (FormSubmit) e salva no painel de admin (Firestore).
+// O Firebase só é baixado na hora do envio, para não pesar no carregamento da página.
+async function salvarNoPainel(dados) {
+  const [{ db }, { collection, addDoc, serverTimestamp }] = await Promise.all([
+    import('./firebase.js'),
+    import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js')
+  ]);
+  return addDoc(collection(db, 'mensagens'), { ...dados, enviadaEm: serverTimestamp() });
+}
 const contactForm = document.getElementById('contactForm');
 
 // Textos no idioma da página (o portfólio tem versão em inglês na pasta en/)
@@ -36,11 +41,10 @@ if (contactForm)
     }).then(response => {
       if (!response.ok) throw new Error();
     });
-    const saveMessage = addDoc(collection(db, 'mensagens'), {
+    const saveMessage = salvarNoPainel({
       nome: data.get('nome').trim(),
       email: data.get('email').trim(),
-      mensagem: data.get('mensagem').trim(),
-      enviadaEm: serverTimestamp()
+      mensagem: data.get('mensagem').trim()
     });
 
     // Basta um dos dois dar certo para a mensagem chegar até você

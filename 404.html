@@ -8,13 +8,9 @@
     <meta name="theme-color" content="#08141a" />
     <!-- O GitHub Pages mostra esta página em qualquer endereço inexistente, por isso os caminhos são absolutos -->
     <link rel="icon" href="/site-portfolio/favicon.svg" type="image/svg+xml" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400..900&family=Space+Grotesk:wght@500..700&display=swap"
-    />
-    <link rel="stylesheet" href="/site-portfolio/css/style.css?v=5" />
+    <link rel="preload" href="/site-portfolio/fontes/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/site-portfolio/fontes/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="/site-portfolio/css/style.css?v=6" />
     <!-- Aplica o tema salvo (ou o do sistema) antes de desenhar a página, para não piscar -->
     <script>
       try {
@@ -80,6 +76,6 @@
         </div>
       </footer>
     </div>
-    <script src="/site-portfolio/js/main.js"></script>
+    <script src="/site-portfolio/js/main.js" defer></script>
   </body>
 </html>

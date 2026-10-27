@@ -18,11 +18,14 @@ css/style.css                   estilos de todas as páginas
 js/main.js                      menu, animações e campo de senha (todas as páginas)
 js/firebase.js                  configuração do Firebase e UID do admin
 js/contact.js                   formulário de contato (index.html)
-js/auth/session.js              link "Entrar/Minha área" e botão "Sair" (todas as páginas)
+js/auth/session.js              link "Entrar/Minha área" e botão "Sair" (todas as páginas); só baixa o
+                                Firebase nas páginas de conta ou se o navegador já entrou (marca "sessao")
 js/auth/shared.js               funções comuns das páginas de conta
 js/auth/<página>.js             código de cada página de conta (login.js, area.js...)
 firestore.rules                 regras de segurança do Firestore
 imagens/                        imagens do portfólio
+fontes/                         Inter e Space Grotesk hospedadas no site (licenças em fontes/LICENCAS.md)
+404.html, sitemap.xml           página de erro (caminhos absolutos /site-portfolio/) e mapa do site
 projetos/                       projetos de exemplo (barbearia, gerenciador de tarefas, central de tempo)
 projetos/rota-municipal/        apresentação do Rota Municipal (cópia da pasta vitrine/ daquele repositório)
 ```
