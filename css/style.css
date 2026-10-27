@@ -1881,6 +1881,54 @@ a.trilha-card:hover {
 .trilha-card .estudos-progresso {
   margin-top: 12px;
 }
+/* Níveis: chips nos cartões, atalhos no topo da trilha e seções de cada nível */
+.trilha-niveis {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 0 14px;
+  padding: 0;
+  list-style: none;
+}
+.trilha-niveis li {
+  padding: 2px 9px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  color: var(--text-muted);
+  font-size: 0.74rem;
+  font-weight: 650;
+}
+.trilha-atalhos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+.trilha-atalhos a {
+  padding: 7px 14px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--overlay);
+  color: var(--text-2);
+  font-size: 0.88rem;
+  font-weight: 650;
+  transition: border-color 0.18s;
+}
+.trilha-atalhos a:hover {
+  border-color: var(--site-primary);
+  color: var(--site-primary-text);
+}
+.trilha-nivel .estudos-progresso {
+  margin: 4px 0 26px;
+}
+.aula-sumario-nivel {
+  margin: 20px 0 8px;
+  color: var(--site-primary-text);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
 .trilha-card--breve {
   border-style: dashed;
   background: transparent;

@@ -122,16 +122,31 @@ ${scripts}    <script src="${prefixo}js/main.js" defer></script>
 // Faixa que diz onde o progresso está sendo salvo (preenchida pelo js/estudos.js)
 const avisoConta = `<p class="estudos-conta" id="estudosConta" aria-live="polite">Seu progresso fica salvo neste navegador.</p>`;
 
+// Níveis usados em todas as trilhas (as que ainda não têm conteúdo mostram os mesmos três)
+const NIVEIS = ['Iniciante', 'Intermediário', 'Avançado'];
+const slugDoNivel = nivel => nivel.titulo.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+
+// Módulos numerados em sequência pela trilha toda (o Módulo 3 é o primeiro do intermediário, e assim por diante)
+const modulosDaTrilha = trilha => {
+  let numero = 0;
+  return trilha.niveis.flatMap(nivel => nivel.modulos.map(modulo => ({ ...modulo, nivel, numero: ++numero })));
+};
 const itensDaTrilha = trilha =>
-  trilha.modulos.flatMap((modulo, m) => modulo.itens.map(item => ({ ...item, modulo, m })));
+  modulosDaTrilha(trilha).flatMap(modulo => modulo.itens.map(item => ({ ...item, modulo, nivel: modulo.nivel })));
+const modulosDoNivel = (trilha, nivel) => modulosDaTrilha(trilha).filter(modulo => modulo.nivel === nivel);
+const chipsDeNivel = () =>
+  `<ul class="trilha-niveis" aria-label="Níveis">${NIVEIS.map(nivel => `<li>${nivel}</li>`).join('')}</ul>`;
 const idCompleto = (trilha, item) => `${trilha.id}/${item.id}`;
 const icone = item =>
   item.tipo === 'desafio'
     ? '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 8-4 4 4 4M16 8l4 4-4 4" /></svg>'
     : '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h11a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3zM8 9h6M8 13h6" /></svg>';
 
-function barra(trilha) {
-  const ids = itensDaTrilha(trilha).map(item => idCompleto(trilha, item));
+// Barra de progresso de uma trilha inteira ou, passando um filtro, de um nível só
+function barra(trilha, filtro = () => true) {
+  const ids = itensDaTrilha(trilha)
+    .filter(filtro)
+    .map(item => idCompleto(trilha, item));
   return `<div class="estudos-progresso" data-progresso="${ids.join(' ')}">
                 <div class="estudos-progresso-barra"><span></span></div>
                 <span class="estudos-progresso-texto">0 de ${ids.length} concluídos</span>
@@ -147,6 +162,7 @@ function paginaInicial() {
               <span class="trilha-sigla" aria-hidden="true">${escapar(trilha.titulo.slice(0, 2))}</span>
               <h3>${escapar(trilha.titulo)}</h3>
               <p>${escapar(trilha.resumo)}</p>
+              ${chipsDeNivel()}
               <span class="trilha-breve">Em breve</span>
             </article>`;
       }
@@ -156,7 +172,8 @@ function paginaInicial() {
               <span class="trilha-sigla" aria-hidden="true">${escapar(trilha.titulo.slice(0, 2))}</span>
               <h3>${escapar(trilha.titulo)}</h3>
               <p>${escapar(trilha.resumo)}</p>
-              <span class="trilha-info">${trilha.modulos.length} módulos · ${aulas} aulas · ${itens.length - aulas} desafios</span>
+              ${chipsDeNivel()}
+              <span class="trilha-info">${modulosDaTrilha(trilha).length} módulos · ${aulas} aulas · ${itens.length - aulas} desafios</span>
               ${barra(trilha)}
             </a>`;
     })
@@ -218,11 +235,11 @@ ${entradas}
 }
 
 // ---------- Página de uma trilha (lista de módulos) ----------
-function listaDeItens(trilha, prefixoLink, atual) {
-  return trilha.modulos
+function listaDeItens(trilha, modulos, prefixoLink, atual) {
+  return modulos
     .map(
-      (modulo, m) => `              <li class="trilha-modulo">
-                <h3><span>Módulo ${m + 1}</span> ${escapar(modulo.titulo)}</h3>
+      modulo => `              <li class="trilha-modulo">
+                <h3><span>Módulo ${modulo.numero}</span> ${escapar(modulo.titulo)}</h3>
                 <ol>
 ${modulo.itens
   .map(
@@ -258,6 +275,9 @@ function paginaDaTrilha(trilha) {
             <div class="section-kicker case-kicker">Trilha</div>
             <h1>${escapar(trilha.titulo)}<em>.</em></h1>
             <p class="lead">${escapar(trilha.resumo)}</p>
+            <nav class="trilha-atalhos" aria-label="Níveis da trilha">
+              ${trilha.niveis.map(nivel => `<a href="#${slugDoNivel(nivel)}">${escapar(nivel.titulo)}</a>`).join('\n              ')}
+            </nav>
             ${barra(trilha)}
             <div class="actions">
               <a class="btn btn-primary" href="${itens[0].id}.html" data-continuar>Começar a trilha ↘</a>
@@ -265,13 +285,21 @@ function paginaDaTrilha(trilha) {
             ${avisoConta}
           </div>
         </section>
-        <section id="modulos">
+${trilha.niveis
+  .map(
+    (nivel, n) => `        <section class="trilha-nivel" id="${slugDoNivel(nivel)}">
           <div class="wrap">
+            <div class="section-kicker">Nível ${n + 1} de ${trilha.niveis.length}</div>
+            <h2>${escapar(nivel.titulo)}</h2>
+            <p class="section-intro">${escapar(nivel.resumo)}</p>
+            ${barra(trilha, item => item.nivel === nivel)}
             <ol class="trilha-modulos">
-${listaDeItens(trilha, '', null)}
+${listaDeItens(trilha, modulosDoNivel(trilha, nivel), '', null)}
             </ol>
           </div>
         </section>`
+  )
+  .join('\n')}`
     })
   );
 }
@@ -354,14 +382,19 @@ ${item.testes.map(([, teste]) => `        ${teste.toString()}`).join(',\n')}
             <details class="aula-sumario" open>
               <summary>Trilha de ${escapar(trilha.titulo)}</summary>
               ${barra(trilha)}
+${trilha.niveis
+  .map(
+    nivel => `              <p class="aula-sumario-nivel">${escapar(nivel.titulo)}</p>
               <ol class="trilha-modulos trilha-modulos--compacta">
-${listaDeItens(trilha, '', item.id)}
-              </ol>
+${listaDeItens(trilha, modulosDoNivel(trilha, nivel), '', item.id)}
+              </ol>`
+  )
+  .join('\n')}
             </details>
           </aside>
           <article class="aula-conteudo">
             <a class="text-link" href="./">← Trilha de ${escapar(trilha.titulo)}</a>
-            <div class="section-kicker case-kicker">Módulo ${item.m + 1} · ${escapar(item.modulo.titulo)}</div>
+            <div class="section-kicker case-kicker">${escapar(item.nivel.titulo)} · Módulo ${item.modulo.numero} · ${escapar(item.modulo.titulo)}</div>
             <h1>${escapar(item.titulo)}</h1>
             <p class="aula-meta">${ehDesafio ? 'Desafio' : 'Aula'} · ${item.minutos} min</p>
 ${ehDesafio ? desafio(trilha, item) : `            <div class="aula-texto">${item.corpo}</div>\n${quiz(item)}`}

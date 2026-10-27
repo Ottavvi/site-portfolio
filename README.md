@@ -72,7 +72,9 @@ As páginas de `estudos/` são **geradas**: não edite os `.html` de lá à mão
 `estudos/_conteudo/` (a pasta com `_` não é publicada pelo GitHub Pages):
 
 - `trilhas.js`: a lista de trilhas (as que ainda não têm aulas ficam com `emBreve: true`)
-- `html.js`: módulos, aulas (texto + quiz) e desafios (enunciado, código inicial, testes e solução) da trilha de HTML
+- `html.js`: a trilha de HTML em três níveis (`niveis`: Iniciante, Intermediário e Avançado), cada um com módulos,
+  aulas (texto + quiz) e desafios (enunciado, código inicial, testes e solução). Os módulos são numerados em
+  sequência pela trilha toda
 - `diario.js`: as anotações do diário de estudos
 - `ajuda.js`: `codigo()` para exemplos com botão "Experimente" e `dica()` para as caixas de dica
 

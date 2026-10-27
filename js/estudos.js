@@ -150,7 +150,8 @@ document.querySelectorAll('.quiz').forEach(quiz => {
 });
 
 // ---------- Editor ao vivo ----------
-// Estilo básico do resultado, para o HTML sem CSS ficar legível
+// Estilo básico do resultado, para o HTML sem CSS ficar legível. Vai depois do código, para um <!doctype> escrito
+// pela pessoa continuar sendo a primeira linha (senão o navegador entra em modo de compatibilidade)
 const ESTILO_RESULTADO = `<style>
   body { font-family: system-ui, sans-serif; line-height: 1.5; margin: 16px; color: #1f2933; }
   img { max-width: 100%; height: auto; }
@@ -181,7 +182,7 @@ function criarEditor(caixa, { codigoInicial, aoAtualizar, chaveSalva }) {
   let espera;
   let tabSai = false;
   const desenhar = () => {
-    resultado.srcdoc = ESTILO_RESULTADO + campo.value;
+    resultado.srcdoc = campo.value + ESTILO_RESULTADO;
   };
   resultado.addEventListener('load', () => {
     const doc = resultado.contentDocument;
