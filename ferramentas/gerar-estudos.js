@@ -155,28 +155,39 @@ function barra(trilha, filtro = () => true) {
 
 // ---------- Página inicial dos estudos ----------
 function paginaInicial() {
-  const cartoes = trilhas
-    .map(trilha => {
-      if (trilha.emBreve) {
-        return `            <article class="trilha-card trilha-card--breve">
-              <span class="trilha-sigla" aria-hidden="true">${escapar(trilha.titulo.slice(0, 2))}</span>
+  const cartao = trilha => {
+    if (trilha.emBreve) {
+      return `            <article class="trilha-card trilha-card--breve">
+              <span class="trilha-sigla${trilha.sigla.length > 3 ? ' trilha-sigla--longa' : ''}" aria-hidden="true">${escapar(trilha.sigla)}</span>
               <h3>${escapar(trilha.titulo)}</h3>
               <p>${escapar(trilha.resumo)}</p>
-              ${chipsDeNivel()}
               <span class="trilha-breve">Em breve</span>
             </article>`;
-      }
-      const itens = itensDaTrilha(trilha);
-      const aulas = itens.filter(item => item.tipo !== 'desafio').length;
-      return `            <a class="trilha-card" href="${trilha.id}/">
-              <span class="trilha-sigla" aria-hidden="true">${escapar(trilha.titulo.slice(0, 2))}</span>
+    }
+    const itens = itensDaTrilha(trilha);
+    const aulas = itens.filter(item => item.tipo !== 'desafio').length;
+    return `            <a class="trilha-card" href="${trilha.id}/">
+              <span class="trilha-sigla${trilha.sigla.length > 3 ? ' trilha-sigla--longa' : ''}" aria-hidden="true">${escapar(trilha.sigla)}</span>
               <h3>${escapar(trilha.titulo)}</h3>
               <p>${escapar(trilha.resumo)}</p>
               ${chipsDeNivel()}
               <span class="trilha-info">${modulosDaTrilha(trilha).length} módulos · ${aulas} aulas · ${itens.length - aulas} desafios</span>
               ${barra(trilha)}
             </a>`;
-    })
+  };
+  // Um bloco por área (Desenvolvimento web, Back-end e dados...), na ordem em que aparecem em trilhas.js
+  const areas = [...new Set(trilhas.map(trilha => trilha.area))];
+  const prontas = trilhas.filter(trilha => !trilha.emBreve).length;
+  const cartoes = areas
+    .map(
+      area => `            <h3 class="trilhas-area">${escapar(area)}</h3>
+            <div class="trilhas">
+${trilhas
+  .filter(trilha => trilha.area === area)
+  .map(cartao)
+  .join('\n')}
+            </div>`
+    )
     .join('\n');
   const entradas = diario
     .map(
@@ -214,9 +225,12 @@ function paginaInicial() {
           <div class="wrap">
             <div class="section-kicker">Trilhas</div>
             <h2>Escolha por onde começar.</h2>
-            <div class="trilhas">
+            <p class="section-intro">
+              ${trilhas.length} trilhas, cada uma do nível iniciante ao avançado.
+              ${prontas === 1 ? 'A primeira já está disponível' : `${prontas} já estão disponíveis`}; as outras vão
+              ganhando aulas aos poucos.
+            </p>
 ${cartoes}
-            </div>
           </div>
         </section>
         <section id="diario">

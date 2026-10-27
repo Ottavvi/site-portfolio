@@ -5,7 +5,9 @@ const { codigo, dica } = require('./ajuda');
 
 module.exports = {
   id: 'html',
+  area: 'Desenvolvimento web',
   titulo: 'HTML',
+  sigla: 'HTML',
   resumo: 'A estrutura de toda página da web: textos, links, imagens, semântica, tabelas e formulários.',
   niveis: [
     {

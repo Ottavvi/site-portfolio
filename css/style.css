@@ -1881,6 +1881,35 @@ a.trilha-card:hover {
 .trilha-card .estudos-progresso {
   margin-top: 12px;
 }
+/* Trilhas agrupadas por área na página inicial dos estudos */
+.trilhas-area {
+  margin: 40px 0 0;
+  color: var(--text-strong);
+  font-size: 1.2rem;
+}
+.trilhas-area + .trilhas {
+  margin-top: 16px;
+}
+.trilha-card--breve {
+  padding: 20px;
+}
+.trilha-card--breve .trilha-sigla {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 12px;
+  font-size: 0.85rem;
+}
+.trilha-sigla--longa {
+  font-size: 0.8rem;
+  letter-spacing: -0.02em;
+}
+.trilha-card--breve .trilha-sigla--longa {
+  font-size: 0.68rem;
+}
+.trilha-card--breve h3 {
+  font-size: 1.1rem;
+}
+
 /* Níveis: chips nos cartões, atalhos no topo da trilha e seções de cada nível */
 .trilha-niveis {
   display: flex;
