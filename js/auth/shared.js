@@ -44,6 +44,13 @@ export function showError(error, noticeId) {
   showNotice(errorMessages[error.code] || 'Algo deu errado. Tente novamente.', true, noticeId);
 }
 
+// Depois de entrar, volta para a página de estudos de onde a pessoa veio (?volta=estudos/...).
+// Só aceita caminhos da área de estudos, para o link não poder mandar ninguém para outro site.
+function destinoDepoisDeEntrar() {
+  const volta = new URLSearchParams(window.location.search).get('volta') || '';
+  return /^estudos\/[\w/.-]*$/.test(volta) && !volta.includes('..') ? volta : 'area.html';
+}
+
 // Envia um formulário de entrada/cadastro: trava o botão, executa a ação e leva para a área de membros
 export async function handleSubmit(form, action) {
   const submitBtn = form.querySelector('button[type="submit"]');
@@ -52,7 +59,11 @@ export async function handleSubmit(form, action) {
   submitBtn.textContent = 'Aguarde...';
   try {
     await action(new FormData(form));
-    window.location.href = 'area.html';
+    // Marca usada pelas outras páginas para saber que vale a pena carregar o Firebase (ver session.js)
+    try {
+      localStorage.setItem('sessao', '1');
+    } catch {}
+    window.location.href = destinoDepoisDeEntrar();
   } catch (error) {
     showError(error);
     submitBtn.disabled = false;

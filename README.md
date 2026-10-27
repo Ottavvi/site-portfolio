@@ -66,6 +66,24 @@ Os módulos JavaScript não funcionam abrindo o arquivo direto (`file://`). Use 
 npx serve .
 ```
 
+## Área de estudos (estudos/)
+
+As páginas de `estudos/` são **geradas**: não edite os `.html` de lá à mão. O conteúdo fica em
+`estudos/_conteudo/` (a pasta com `_` não é publicada pelo GitHub Pages):
+
+- `trilhas.js`: a lista de trilhas (as que ainda não têm aulas ficam com `emBreve: true`)
+- `html.js`: módulos, aulas (texto + quiz) e desafios (enunciado, código inicial, testes e solução) da trilha de HTML
+- `diario.js`: as anotações do diário de estudos
+- `ajuda.js`: `codigo()` para exemplos com botão "Experimente" e `dica()` para as caixas de dica
+
+Depois de editar, rode `node ferramentas/gerar-estudos.js` e faça o commit das páginas geradas (o GitHub Actions
+avisa se esquecer). Os testes de cada desafio são funções que recebem o documento do resultado e devolvem
+verdadeiro ou falso.
+
+O progresso fica no navegador (`estudos-progresso`) e, para quem está logado, também no campo `estudos` do
+documento `usuarios/{uid}` no Firestore (as regras atuais já permitem que cada pessoa grave só o próprio).
+Depois de entrar pelo link de uma aula, o login volta para ela (`login.html?volta=estudos/...`).
+
 ## Verificação automática
 
 A cada envio para a main, o GitHub Actions (`.github/workflows/verificar.yml`) confere os links internos

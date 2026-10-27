@@ -19,6 +19,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - name: Páginas de estudos em dia com o conteúdo
+        run: node ferramentas/gerar-estudos.js && git diff --exit-code -- estudos
       - name: Links internos
         run: node ferramentas/verificar-links.js
       - name: Formatação (Prettier)
