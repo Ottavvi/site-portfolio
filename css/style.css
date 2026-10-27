@@ -215,6 +215,147 @@ header.scrolled {
   display: block;
 }
 
+/* ========== Paleta de comandos (js/paleta.js) ========== */
+.cmd-btn {
+  order: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 38px;
+  padding: 0 10px;
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition:
+    color 0.18s,
+    border-color 0.18s;
+}
+.cmd-btn + .theme-btn {
+  margin-left: -10px;
+}
+.cmd-btn:hover {
+  color: var(--site-primary);
+  border-color: var(--site-primary);
+}
+.cmd-btn svg,
+.cmd-busca svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+.cmd kbd,
+.cmd-btn kbd {
+  padding: 1px 6px;
+  border: 1px solid var(--line-strong);
+  border-radius: 5px;
+  background: var(--overlay);
+  font-family: inherit;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-subtle);
+}
+.cmd {
+  width: min(580px, calc(100% - 28px));
+  margin: 12vh auto auto;
+  padding: 0;
+  border: 1px solid var(--line-strong);
+  border-radius: 18px;
+  background: var(--surface);
+  color: var(--site-on-background);
+  box-shadow: 0 30px 90px var(--shadow);
+  overflow: hidden;
+}
+.cmd::backdrop {
+  background: color-mix(in srgb, var(--site-background) 60%, transparent);
+  backdrop-filter: blur(6px);
+}
+.cmd[open] {
+  animation: cmd-entrar 0.18s ease;
+}
+@keyframes cmd-entrar {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.98);
+  }
+}
+.cmd-busca {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line);
+  color: var(--text-subtle);
+}
+.cmd-busca input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: none;
+  color: var(--text-strong);
+  font-size: 1rem;
+}
+.cmd-lista {
+  max-height: min(380px, 55vh);
+  margin: 0;
+  padding: 6px;
+  overflow-y: auto;
+  list-style: none;
+}
+.cmd-grupo {
+  padding: 10px 10px 4px;
+  color: var(--text-subtle);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.cmd-item {
+  padding: 9px 10px;
+  border-radius: 10px;
+  color: var(--text-2);
+  font-size: 0.93rem;
+  cursor: pointer;
+}
+.cmd-item[aria-selected='true'] {
+  background: color-mix(in srgb, var(--site-primary) 14%, transparent);
+  color: var(--text-strong);
+}
+.cmd-vazio {
+  padding: 22px 10px;
+  text-align: center;
+  color: var(--text-subtle);
+}
+.cmd-rodape {
+  margin: 0;
+  padding: 10px 16px;
+  border-top: 1px solid var(--line);
+  color: var(--text-subtle);
+  font-size: 0.78rem;
+}
+.cmd-rodape kbd {
+  margin-right: 3px;
+}
+.cmd-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  z-index: 20;
+  transform: translateX(-50%);
+  padding: 10px 16px;
+  border-radius: 12px;
+  background: var(--site-primary);
+  color: var(--site-on-primary);
+  font-weight: 700;
+  font-size: 0.9rem;
+  box-shadow: 0 12px 30px var(--shadow);
+}
+
 /* ========== Início (hero) e cartão de perfil ========== */
 .hero {
   padding: 92px 0 84px;
@@ -1711,6 +1852,14 @@ footer .foot {
   .menu-btn {
     display: block;
     margin-left: auto;
+  }
+  .cmd-btn {
+    width: 38px;
+    padding: 0;
+    justify-content: center;
+  }
+  .cmd-btn kbd {
+    display: none;
   }
   .links {
     display: none;

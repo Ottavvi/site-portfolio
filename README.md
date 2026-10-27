@@ -18,6 +18,8 @@ css/style.css                   estilos de todas as páginas
 js/main.js                      menu, animações e campo de senha (todas as páginas)
 js/firebase.js                  configuração do Firebase e UID do admin
 js/contact.js                   formulário de contato (index.html)
+js/paleta.js                    paleta de comandos (Ctrl+K, ⌘K ou "/"); a lista de páginas e projetos fica no
+                                próprio arquivo: ao criar um projeto novo, adicione-o lá também
 js/auth/session.js              link "Entrar/Minha área" e botão "Sair" (todas as páginas); só baixa o
                                 Firebase nas páginas de conta ou se o navegador já entrou (marca "sessao")
 js/auth/shared.js               funções comuns das páginas de conta
