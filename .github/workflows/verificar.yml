@@ -1,0 +1,35 @@
+# Confere o site a cada envio: links internos, formatação e notas do Lighthouse.
+# Não publica nada (o GitHub Pages publica sozinho a partir da main); só avisa se algo quebrou.
+name: Verificar site
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  links-e-formato:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Links internos
+        run: node ferramentas/verificar-links.js
+      - name: Formatação (Prettier)
+        run: npx --yes prettier@3 --check .
+
+  lighthouse:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lighthouse nas páginas principais
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          configPath: ./ferramentas/lighthouserc.json
+          uploadArtifacts: true

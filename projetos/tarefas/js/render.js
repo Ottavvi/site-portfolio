@@ -274,11 +274,7 @@ function desenharTarefa(t, arrastavel) {
   if (t.subtarefas.length) {
     const feitas = t.subtarefas.filter(s => s.feita).length;
     meta.append(
-      elemento(
-        'span',
-        `selo${feitas === t.subtarefas.length ? ' completo' : ''}`,
-        `☑ ${feitas}/${t.subtarefas.length}`
-      )
+      elemento('span', `selo${feitas === t.subtarefas.length ? ' completo' : ''}`, `☑ ${feitas}/${t.subtarefas.length}`)
     );
   }
   if (t.notas.trim()) meta.append(elemento('span', 'selo', '📝', { title: 'Tem notas' }));

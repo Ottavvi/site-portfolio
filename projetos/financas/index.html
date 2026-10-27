@@ -27,7 +27,10 @@
     <header class="hero">
       <div class="wrap">
         <span class="kicker">Planilha + BI</span>
-        <h1>Organização <em>financeira</em></h1>
+        <h1>
+          Organização
+          <em>financeira</em>
+        </h1>
         <p class="lead">
           Uma planilha completa para cuidar do próprio dinheiro: você anota o que entra e sai, e ela mostra para onde o
           dinheiro está indo, avisa o que está atrasado e projeta o fim do mês. Funciona no Excel do computador, no app
@@ -107,34 +110,71 @@
           <h2>Algumas telas.</h2>
           <div class="gallery">
             <figure class="shot wide">
-              <img src="img/painel-orcamento.webp" alt="Tabela de orçado x gasto e gráfico de gasto por categoria" width="1380" height="479" loading="lazy" />
+              <img
+                src="img/painel-orcamento.webp"
+                alt="Tabela de orçado x gasto e gráfico de gasto por categoria"
+                width="1380"
+                height="479"
+                loading="lazy"
+              />
               <figcaption>Orçado x gasto: o que passou do limite aparece em coral.</figcaption>
             </figure>
             <figure class="shot wide">
-              <img src="img/painel-calor.webp" alt="Mapa de calor de gastos por categoria em cada mês" width="1380" height="507" loading="lazy" />
+              <img
+                src="img/painel-calor.webp"
+                alt="Mapa de calor de gastos por categoria em cada mês"
+                width="1380"
+                height="507"
+                loading="lazy"
+              />
               <figcaption>Mapa de calor: em que mês cada categoria pesou mais.</figcaption>
             </figure>
             <figure class="shot wide">
-              <img src="img/cartao-topo.webp" alt="Aba de cartão de crédito com cartões, resumo e próximas faturas" width="1600" height="373" loading="lazy" />
+              <img
+                src="img/cartao-topo.webp"
+                alt="Aba de cartão de crédito com cartões, resumo e próximas faturas"
+                width="1600"
+                height="373"
+                loading="lazy"
+              />
               <figcaption>Cartão de crédito: parcelas do mês, quanto falta pagar e as próximas faturas.</figcaption>
             </figure>
             <figure class="shot wide">
-              <img src="img/simulador.webp" alt="Simulador de metas com projeção do saldo" width="1600" height="594" loading="lazy" />
+              <img
+                src="img/simulador.webp"
+                alt="Simulador de metas com projeção do saldo"
+                width="1600"
+                height="594"
+                loading="lazy"
+              />
               <figcaption>Simulador: quanto guardar por mês e em quanto tempo você chega no objetivo.</figcaption>
             </figure>
             <div class="phones">
               <figure class="shot">
-                <img src="img/celular-1.webp" alt="Aba Celular, parte de cima" width="434" height="1047" loading="lazy" />
+                <img
+                  src="img/celular-1.webp"
+                  alt="Aba Celular, parte de cima"
+                  width="434"
+                  height="1047"
+                  loading="lazy"
+                />
               </figure>
               <figure class="shot">
-                <img src="img/celular-2.webp" alt="Aba Celular, parte de baixo" width="434" height="876" loading="lazy" />
+                <img
+                  src="img/celular-2.webp"
+                  alt="Aba Celular, parte de baixo"
+                  width="434"
+                  height="876"
+                  loading="lazy"
+                />
               </figure>
               <div class="phones-text">
                 <h3>No celular</h3>
                 <p>
-                  Com a planilha no OneDrive, o app gratuito do Excel abre a aba <b>Celular</b>: o resumo do mês, o
-                  orçamento, as contas, as metas e o patrimônio em uma coluna só. Dá para lançar um gasto na fila do
-                  caixa.
+                  Com a planilha no OneDrive, o app gratuito do Excel abre a aba
+                  <b>Celular</b>
+                  : o resumo do mês, o orçamento, as contas, as metas e o patrimônio em uma coluna só. Dá para lançar um
+                  gasto na fila do caixa.
                 </p>
               </div>
             </div>
@@ -169,22 +209,37 @@
             <span class="kicker">Como foi feito</span>
             <h2>Planilha gerada por código.</h2>
             <p>
-              Em vez de montar à mão, a planilha inteira é gerada por um script em PowerShell que controla o Excel: abas,
-              tabelas, fórmulas, formatação condicional, gráficos e o tema escuro. Assim dá para refazer tudo em
+              Em vez de montar à mão, a planilha inteira é gerada por um script em PowerShell que controla o Excel:
+              abas, tabelas, fórmulas, formatação condicional, gráficos e o tema escuro. Assim dá para refazer tudo em
               minutos depois de qualquer ajuste.
             </p>
             <p>
-              O relatório do Power BI também é gerado por script (Node.js), no formato de projeto do Power BI: modelo
-              de dados com calendário, relacionamentos e 49 medidas DAX, e 7 páginas validadas contra os esquemas
-              oficiais. O guia de uso é uma página HTML convertida em PDF.
+              O relatório do Power BI também é gerado por script (Node.js), no formato de projeto do Power BI: modelo de
+              dados com calendário, relacionamentos e 49 medidas DAX, e 7 páginas validadas contra os esquemas oficiais.
+              O guia de uso é uma página HTML convertida em PDF.
             </p>
           </div>
           <ul class="tech">
-            <li><b>Excel</b>tabelas estruturadas, SUMIFS, SUMPRODUCT, validação de dados</li>
-            <li><b>Power BI</b>modelo semântico, DAX, inteligência de tempo</li>
-            <li><b>PowerShell</b>automação do Excel via COM</li>
-            <li><b>Node.js</b>geração e validação do relatório</li>
-            <li><b>HTML e CSS</b>guia de uso em PDF</li>
+            <li>
+              <b>Excel</b>
+              tabelas estruturadas, SUMIFS, SUMPRODUCT, validação de dados
+            </li>
+            <li>
+              <b>Power BI</b>
+              modelo semântico, DAX, inteligência de tempo
+            </li>
+            <li>
+              <b>PowerShell</b>
+              automação do Excel via COM
+            </li>
+            <li>
+              <b>Node.js</b>
+              geração e validação do relatório
+            </li>
+            <li>
+              <b>HTML e CSS</b>
+              guia de uso em PDF
+            </li>
           </ul>
         </div>
       </section>
