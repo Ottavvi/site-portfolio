@@ -20,9 +20,7 @@ const isEnglish = document.documentElement.lang === 'en';
 function applyTheme(theme) {
   document.documentElement.dataset.theme = theme;
   const next = theme === 'light' ? 'dark' : 'light';
-  const label = isEnglish
-    ? `Switch to ${next} theme`
-    : `Mudar para tema ${next === 'light' ? 'claro' : 'escuro'}`;
+  const label = isEnglish ? `Switch to ${next} theme` : `Mudar para tema ${next === 'light' ? 'claro' : 'escuro'}`;
   themeBtn.setAttribute('aria-label', label);
   themeBtn.title = label;
   document
@@ -40,6 +38,59 @@ themeBtn.addEventListener('click', () => {
 
 // Ano atual no rodapé
 document.getElementById('year').textContent = new Date().getFullYear();
+
+// Cabeçalho: sombra depois de rolar e barra fina com o progresso da leitura
+const header = document.querySelector('header');
+const progress = document.createElement('div');
+progress.className = 'scroll-progress';
+header.append(progress);
+let scrollQueued = false;
+function updateScroll() {
+  scrollQueued = false;
+  const max = document.documentElement.scrollHeight - innerHeight;
+  header.classList.toggle('scrolled', scrollY > 8);
+  progress.style.transform = `scaleX(${max > 0 ? Math.min(scrollY / max, 1) : 0})`;
+}
+addEventListener(
+  'scroll',
+  () => {
+    if (!scrollQueued) requestAnimationFrame(updateScroll);
+    scrollQueued = true;
+  },
+  { passive: true }
+);
+updateScroll();
+
+// Menu: destaca o link da seção que está na tela (só nos links para a própria página, como #projetos)
+const spyLinks = [...navLinks.querySelectorAll('a[href^="#"]')];
+const spySections = spyLinks.map(link => document.querySelector(link.hash)).filter(Boolean);
+if ('IntersectionObserver' in window && spySections.length) {
+  const spy = new IntersectionObserver(
+    entries =>
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        spyLinks.forEach(link => link.classList.toggle('active', link.hash === `#${entry.target.id}`));
+      }),
+    { rootMargin: '-45% 0px -50% 0px' }
+  );
+  spySections.forEach(section => spy.observe(section));
+}
+
+// Botão de copiar o e-mail (seção de contato)
+document.querySelectorAll('.copy-email').forEach(button => {
+  const label = button.querySelector('.copy-email-label');
+  const original = label.textContent;
+  button.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(button.dataset.email);
+      label.textContent = isEnglish ? 'Copied!' : 'Copiado!';
+    } catch {
+      location.href = `mailto:${button.dataset.email}`;
+      return;
+    }
+    setTimeout(() => (label.textContent = original), 2000);
+  });
+});
 
 // Animação ao rolar: cada bloco aparece quando entra na tela (desligada para quem prefere menos movimento)
 const revealSelector =
