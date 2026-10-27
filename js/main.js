@@ -140,6 +140,9 @@ filterButtons.forEach(button => {
     const apply = () => {
       filterButtons.forEach(other => other.setAttribute('aria-pressed', String(other === button)));
       projects.forEach(project => (project.hidden = filter !== 'todos' && project.dataset.cat !== filter));
+      // O subtítulo "Projetos de prática" some quando nenhum deles passa no filtro
+      const practiceTitle = document.querySelector('.projects-sub');
+      if (practiceTitle) practiceTitle.hidden = !document.querySelector('.project--compact:not([hidden])');
     };
     // Troca animada nos navegadores com View Transitions
     if (document.startViewTransition && !matchMedia('(prefers-reduced-motion: reduce)').matches) {

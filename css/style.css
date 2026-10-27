@@ -735,6 +735,41 @@ h3 {
 .project:not(.project--featured) .project-art--shot img {
   object-position: center top;
 }
+/* Projetos de prática: faixa separada, com cartões mais enxutos */
+.projects-sub {
+  grid-column: 1/-1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 16px;
+  margin-top: 34px;
+  padding-top: 26px;
+  border-top: 1px dashed var(--line-strong);
+}
+.projects-sub h3 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+.projects-sub p {
+  margin: 0;
+  color: var(--text-subtle);
+  font-size: 0.9rem;
+}
+.project.project--compact .project-art--shot {
+  aspect-ratio: 16/8;
+}
+.project--compact .project-body {
+  padding: 18px;
+}
+.project--compact h3 {
+  font-size: 1rem;
+}
+.project--compact p {
+  font-size: 0.86rem;
+}
+.project--compact .tags {
+  margin: 12px 0 14px;
+}
 .project-badge {
   display: inline-block;
   margin-bottom: 10px;
