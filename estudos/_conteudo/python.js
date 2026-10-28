@@ -785,6 +785,301 @@ e.entrada("café", 10)
 print(e.quantidade("café"))`
             }
           ]
+        },
+        {
+          titulo: 'Funções poderosas e testes',
+          itens: [
+            {
+              id: 'funcoes-avancadas',
+              titulo: 'args, key, lambda e geradores',
+              resumo: 'Funções flexíveis, ordenar por qualquer critério e processar sob demanda.',
+              minutos: 13,
+              corpo: `
+<h2>*args e **kwargs</h2>
+<p>Um <code>*</code> antes do parâmetro junta os argumentos extras numa tupla; <code>**</code> junta os argumentos com nome num dicionário:</p>
+${codigo(`def somar(*numeros):
+    return sum(numeros)
+
+def etiqueta(nome, **detalhes):
+    extras = ", ".join(f"{k}={v}" for k, v in detalhes.items())
+    return f"{nome} ({extras})" if extras else nome
+
+print(somar(1, 2, 3, 4))
+print(etiqueta("Café", origem="MG", torra="média"))
+
+valores = [10, 20, 30]
+print(somar(*valores))           # * também "espalha" uma lista nos argumentos`)}
+
+<h2>Ordenar e escolher com key</h2>
+<p><code>sorted</code>, <code>max</code> e <code>min</code> aceitam <code>key</code>: uma função que diz <strong>o que comparar</strong>. Para funções curtas, <code>lambda</code> cria uma função numa linha:</p>
+${codigo(`produtos = [
+    {"nome": "Café", "preco": 62.9, "estoque": 40},
+    {"nome": "Moedor", "preco": 149.0, "estoque": 8},
+    {"nome": "Filtro", "preco": 9.9, "estoque": 120},
+]
+
+por_preco = sorted(produtos, key=lambda p: p["preco"], reverse=True)
+print([p["nome"] for p in por_preco])
+
+mais_estoque = max(produtos, key=lambda p: p["estoque"])
+print(mais_estoque["nome"])
+
+# Vários critérios: uma tupla. Primeiro pelo tamanho do nome, depois pelo nome
+print(sorted(["Chá", "Café", "Mel", "Açúcar"], key=lambda n: (len(n), n)))
+
+print(any(p["estoque"] == 0 for p in produtos), all(p["preco"] > 5 for p in produtos))`)}
+
+<h2>zip e enumerate</h2>
+${codigo(`meses = ["jan", "fev", "mar"]
+vendas = [120, 135, 98]
+for mes, valor in zip(meses, vendas):
+    print(mes, valor)
+
+print(dict(zip(meses, vendas)))`)}
+
+<h2>Geradores</h2>
+<p>Uma função com <code>yield</code> vira um <strong>gerador</strong>: em vez de montar uma lista inteira na memória, ela entrega um valor de cada vez, só quando pedem. Perfeito para arquivos enormes e sequências longas:</p>
+${codigo(`def em_lotes(itens, tamanho):
+    for i in range(0, len(itens), tamanho):
+        yield itens[i:i + tamanho]
+
+for lote in em_lotes(list(range(1, 11)), 4):
+    print("enviando", lote)
+
+quadrados = (n * n for n in range(1, 1_000_000))   # parênteses: um gerador, não uma lista
+print(next(quadrados), next(quadrados), sum(n for n in range(5)))`)}
+${dica('Uma expressão geradora (com parênteses) dentro de sum, any, max etc. não cria lista nenhuma: <code>sum(p["preco"] for p in produtos)</code> soma direto.')}
+`,
+              quiz: [
+                {
+                  pergunta: 'Em def f(*args), o que args é dentro da função?',
+                  opcoes: ['Uma lista', 'Uma tupla com os argumentos extras', 'Um dicionário'],
+                  certa: 1,
+                  explicacao: '**kwargs é que vira dicionário.'
+                },
+                {
+                  pergunta: 'Como ordenar produtos pelo preço, do mais caro?',
+                  opcoes: [
+                    'sorted(produtos, reverse=True)',
+                    'sorted(produtos, key=lambda p: p["preco"], reverse=True)',
+                    'produtos.sort("preco")'
+                  ],
+                  certa: 1,
+                  explicacao: 'key diz o que comparar; reverse inverte a ordem.'
+                },
+                {
+                  pergunta: 'Qual a vantagem de um gerador sobre uma lista?',
+                  opcoes: [
+                    'É mais curto',
+                    'Produz um valor de cada vez, sem guardar tudo na memória',
+                    'Pode ser ordenado'
+                  ],
+                  certa: 1,
+                  explicacao: 'Ótimo para dados grandes ou infinitos.'
+                }
+              ]
+            },
+            {
+              id: 'testes-e-qualidade',
+              titulo: 'Testes e qualidade',
+              resumo: 'assert, unittest, pytest, anotações de tipo e ambientes virtuais.',
+              minutos: 12,
+              corpo: `
+<h2>assert</h2>
+<p>O jeito mais simples de conferir algo: se a condição for falsa, o programa para com <code>AssertionError</code>.</p>
+${codigo(`def desconto(preco, taxa):
+    return round(preco * (1 - taxa), 2)
+
+assert desconto(100, 0.1) == 90
+assert desconto(59.9, 0) == 59.9
+print("tudo certo")`)}
+
+<h2>unittest</h2>
+<p>A biblioteca padrão tem um sistema de testes completo. Cada método que começa com <code>test</code> é um teste, e o resultado diz quais passaram e por que os outros falharam:</p>
+${codigo(`import unittest
+import sys
+
+def classificar(nota):
+    if not 0 <= nota <= 10:
+        raise ValueError("nota fora de 0 a 10")
+    return "Aprovado" if nota >= 7 else "Recuperação" if nota >= 5 else "Reprovado"
+
+class TestaClassificar(unittest.TestCase):
+    def test_aprovado(self):
+        self.assertEqual(classificar(7), "Aprovado")
+
+    def test_recuperacao(self):
+        self.assertEqual(classificar(5.5), "Recuperação")
+
+    def test_nota_invalida(self):
+        with self.assertRaises(ValueError):
+            classificar(11)
+
+    def test_quebrado_de_proposito(self):
+        self.assertEqual(classificar(4), "Recuperação")
+
+unittest.main(argv=["x"], exit=False, testRunner=unittest.TextTestRunner(stream=sys.stdout, verbosity=2))`)}
+<p>O último teste falha de propósito: veja como a mensagem mostra o valor esperado e o recebido.</p>
+
+<h2>pytest</h2>
+<p>No dia a dia, a maioria dos projetos usa o <strong>pytest</strong> (<code>pip install pytest</code>), que aceita testes com <code>assert</code> simples, em arquivos <code>test_*.py</code>:</p>
+${trecho(`# test_notas.py
+import pytest
+from notas import classificar
+
+@pytest.mark.parametrize("nota, esperado", [(7, "Aprovado"), (5, "Recuperação"), (2, "Reprovado")])
+def test_classificar(nota, esperado):
+    assert classificar(nota) == esperado
+
+# no terminal:  pytest -v`)}
+
+<h2>Projeto organizado</h2>
+<ul>
+  <li><strong>Ambiente virtual</strong> por projeto: <code>python -m venv .venv</code> e ative (<code>.venv\\Scripts\\activate</code> no Windows). Os pacotes ficam isolados.</li>
+  <li><code>pip freeze &gt; requirements.txt</code> lista as versões, e <code>pip install -r requirements.txt</code> instala igual em outra máquina.</li>
+  <li><strong>Anotações de tipo</strong> (<code>def f(x: int) -&gt; str</code>) e o <strong>mypy</strong> acham erros antes de rodar.</li>
+  <li>O <strong>ruff</strong> formata e aponta problemas comuns em milissegundos, como o Prettier e o ESLint fazem no JavaScript.</li>
+</ul>
+${dica('Escreva o teste do bug antes de corrigir: ele falha, você corrige, ele passa, e o bug nunca mais volta sem alguém perceber.')}
+`,
+              quiz: [
+                {
+                  pergunta: 'O que acontece quando um assert é falso?',
+                  opcoes: ['Nada', 'O programa para com AssertionError', 'Imprime um aviso e continua'],
+                  certa: 1,
+                  explicacao: 'É a forma mais simples de garantir uma condição.'
+                },
+                {
+                  pergunta: 'No unittest, como conferir que uma função lança ValueError?',
+                  opcoes: [
+                    'self.assertEqual(f(), ValueError)',
+                    'with self.assertRaises(ValueError): f()',
+                    'assert ValueError'
+                  ],
+                  certa: 1,
+                  explicacao: 'O bloco with falha o teste se o erro não acontecer.'
+                },
+                {
+                  pergunta: 'Para que serve um ambiente virtual (venv)?',
+                  opcoes: ['Rodar Python na nuvem', 'Isolar os pacotes de cada projeto', 'Deixar o Python mais rápido'],
+                  certa: 1,
+                  explicacao: 'Cada projeto tem as suas versões, sem conflito com os outros.'
+                }
+              ]
+            },
+            {
+              id: 'desafio-analise-de-vendas',
+              tipo: 'desafio',
+              titulo: 'Desafio: análise de vendas',
+              resumo: 'Ordenar com key, agrupar, calcular médias e processar em lotes.',
+              minutos: 25,
+              enunciado: `
+<p>Escreva quatro funções para analisar uma lista de vendas (dicionários):</p>
+<ul>
+  <li><code>top(vendas, n=3, chave="valor")</code>: as <code>n</code> vendas com maior <code>chave</code>, da maior para a menor.</li>
+  <li><code>agrupar(itens, chave)</code>: um dicionário em que cada valor de <code>chave</code> leva à lista dos itens daquele grupo, na ordem original.</li>
+  <li><code>media_por(itens, grupo, campo)</code>: um dicionário com a média de <code>campo</code> em cada grupo, arredondada com 2 casas.</li>
+  <li><code>em_lotes(itens, tamanho)</code>: um <strong>gerador</strong> (use <code>yield</code>) que entrega listas de até <code>tamanho</code> itens.</li>
+</ul>`,
+              inicial: `VENDAS = [
+    {"vendedor": "Ana", "valor": 188.7},
+    {"vendedor": "Bruno", "valor": 149.0},
+    {"vendedor": "Ana", "valor": 99.0},
+    {"vendedor": "Carla", "valor": 138.0},
+    {"vendedor": "Bruno", "valor": 125.8},
+    {"vendedor": "Ana", "valor": 298.0},
+]
+
+
+def top(vendas, n=3, chave="valor"):
+    pass
+
+
+def agrupar(itens, chave):
+    pass
+
+
+def media_por(itens, grupo, campo):
+    pass
+
+
+def em_lotes(itens, tamanho):
+    pass
+
+
+print(top(VENDAS, 2))
+`,
+              testes: [
+                [
+                  'top devolve as n maiores, da maior para a menor',
+                  async doc =>
+                    doc.defaultView.__py.runPython(`
+_v = [{"v": 3}, {"v": 9}, {"v": 1}, {"v": 7}]
+[x["v"] for x in top(_v, 2, "v")] == [9, 7] and [x["valor"] for x in top(VENDAS)] == [298.0, 188.7, 149.0]
+`) === true
+                ],
+                [
+                  'agrupar mantém a ordem original dentro de cada grupo',
+                  async doc =>
+                    doc.defaultView.__py.runPython(`
+_g = agrupar(VENDAS, "vendedor")
+list(_g.keys()) == ["Ana", "Bruno", "Carla"] and [x["valor"] for x in _g["Ana"]] == [188.7, 99.0, 298.0]
+`) === true
+                ],
+                [
+                  'media_por calcula a média de cada grupo com 2 casas',
+                  async doc =>
+                    doc.defaultView.__py.runPython(
+                      'media_por(VENDAS, "vendedor", "valor") == {"Ana": 195.23, "Bruno": 137.4, "Carla": 138.0}'
+                    ) === true
+                ],
+                [
+                  'em_lotes é um gerador que entrega listas do tamanho pedido',
+                  async doc =>
+                    doc.defaultView.__py.runPython(`
+import types
+_l = em_lotes(list(range(7)), 3)
+isinstance(_l, types.GeneratorType) and list(_l) == [[0, 1, 2], [3, 4, 5], [6]]
+`) === true
+                ]
+              ],
+              solucao: `VENDAS = [
+    {"vendedor": "Ana", "valor": 188.7},
+    {"vendedor": "Bruno", "valor": 149.0},
+    {"vendedor": "Ana", "valor": 99.0},
+    {"vendedor": "Carla", "valor": 138.0},
+    {"vendedor": "Bruno", "valor": 125.8},
+    {"vendedor": "Ana", "valor": 298.0},
+]
+
+
+def top(vendas, n=3, chave="valor"):
+    return sorted(vendas, key=lambda v: v[chave], reverse=True)[:n]
+
+
+def agrupar(itens, chave):
+    grupos = {}
+    for item in itens:
+        grupos.setdefault(item[chave], []).append(item)
+    return grupos
+
+
+def media_por(itens, grupo, campo):
+    return {
+        nome: round(sum(i[campo] for i in lista) / len(lista), 2)
+        for nome, lista in agrupar(itens, grupo).items()
+    }
+
+
+def em_lotes(itens, tamanho):
+    for inicio in range(0, len(itens), tamanho):
+        yield itens[inicio:inicio + tamanho]
+
+
+print(top(VENDAS, 2))
+print(media_por(VENDAS, "vendedor", "valor"))`
+            }
+          ]
         }
       ]
     }

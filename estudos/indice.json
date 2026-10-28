@@ -1210,6 +1210,30 @@
           "tipo": "desafio",
           "nivel": "Avançado",
           "minutos": 25
+        },
+        {
+          "id": "nodejs/eventos-e-streams",
+          "titulo": "Eventos e streams",
+          "resumo": "EventEmitter, ler arquivos enormes aos pedaços e pipeline.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 12
+        },
+        {
+          "id": "nodejs/autenticacao",
+          "titulo": "Login: sessões, cookies e JWT",
+          "resumo": "Como uma API sabe quem está fazendo o pedido, e os cuidados de cada jeito.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 13
+        },
+        {
+          "id": "nodejs/desafio-emissor",
+          "titulo": "Desafio: um emissor de eventos",
+          "resumo": "Escreva on, off, once e emit, como o EventEmitter do Node.",
+          "tipo": "desafio",
+          "nivel": "Avançado",
+          "minutos": 25
         }
       ]
     },
@@ -1286,6 +1310,30 @@
           "id": "sqlite/desafio-avaliacoes",
           "titulo": "Desafio: avaliações de produtos",
           "resumo": "Crie uma tabela com restrições, insira dados e faça um ranking.",
+          "tipo": "desafio",
+          "nivel": "Avançado",
+          "minutos": 25
+        },
+        {
+          "id": "sqlite/datas-e-textos",
+          "titulo": "Funções de data e de texto",
+          "resumo": "date, julianday, strftime, substr, || e COALESCE.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 12
+        },
+        {
+          "id": "sqlite/indices-e-views",
+          "titulo": "Índices, views e EXPLAIN",
+          "resumo": "Consultas rápidas em tabelas grandes e consultas guardadas com nome.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 12
+        },
+        {
+          "id": "sqlite/desafio-clientes-inativos",
+          "titulo": "Desafio: clientes inativos",
+          "resumo": "Datas, subconsultas e uma view para a campanha de reativação.",
           "tipo": "desafio",
           "nivel": "Avançado",
           "minutos": 25
@@ -1373,6 +1421,30 @@
           "id": "python/desafio-estoque",
           "titulo": "Desafio: controle de estoque",
           "resumo": "Escreva uma classe com métodos, validação e exceções.",
+          "tipo": "desafio",
+          "nivel": "Avançado",
+          "minutos": 25
+        },
+        {
+          "id": "python/funcoes-avancadas",
+          "titulo": "args, key, lambda e geradores",
+          "resumo": "Funções flexíveis, ordenar por qualquer critério e processar sob demanda.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 13
+        },
+        {
+          "id": "python/testes-e-qualidade",
+          "titulo": "Testes e qualidade",
+          "resumo": "assert, unittest, pytest, anotações de tipo e ambientes virtuais.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 12
+        },
+        {
+          "id": "python/desafio-analise-de-vendas",
+          "titulo": "Desafio: análise de vendas",
+          "resumo": "Ordenar com key, agrupar, calcular médias e processar em lotes.",
           "tipo": "desafio",
           "nivel": "Avançado",
           "minutos": 25

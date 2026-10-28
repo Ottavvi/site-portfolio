@@ -675,6 +675,239 @@ GROUP BY p.id, p.nome
 ORDER BY media DESC;`
             }
           ]
+        },
+        {
+          titulo: 'Datas, textos e desempenho',
+          itens: [
+            {
+              id: 'datas-e-textos',
+              titulo: 'Funções de data e de texto',
+              resumo: 'date, julianday, strftime, substr, || e COALESCE.',
+              minutos: 12,
+              corpo: `
+<h2>Datas</h2>
+<p>O SQLite não tem um tipo de data: guarda texto no formato <code>AAAA-MM-DD</code> (ou <code>AAAA-MM-DD HH:MM:SS</code>) e tem funções que entendem esse formato:</p>
+${codigo(`SELECT
+  date('2026-10-31')                     AS data,
+  date('2026-10-31', '+30 days')         AS daqui_30_dias,
+  date('2026-10-31', 'start of month')   AS inicio_do_mes,
+  date('2026-10-31', '-1 month', 'start of month') AS mes_passado,
+  strftime('%d/%m/%Y', '2026-10-31')     AS formato_brasileiro,
+  strftime('%w', '2026-10-31')           AS dia_da_semana,   -- 0 = domingo
+  julianday('2026-12-25') - julianday('2026-10-31') AS dias_ate_o_natal;`)}
+<ul>
+  <li><code>date(valor, modificadores...)</code> soma e subtrai dias, meses e anos, e vai para o início do mês ou do ano.</li>
+  <li><code>julianday</code> transforma a data num número de dias. Subtrair dois deles dá a diferença em dias.</li>
+  <li><code>strftime</code> formata e extrai partes (<code>%Y</code>, <code>%m</code>, <code>%d</code>, <code>%w</code>, <code>%H</code>...).</li>
+  <li><code>date('now')</code> é a data de hoje em UTC. Em exercícios, use uma data fixa: o resultado não muda conforme o dia.</li>
+</ul>
+${codigo(`-- Há quantos dias foi cada pedido (em relação a 31/10/2026)?
+SELECT id, data, CAST(julianday('2026-10-31') - julianday(data) AS INTEGER) AS dias_atras
+FROM pedidos
+ORDER BY data DESC;`)}
+
+<h2>Textos</h2>
+${codigo(`SELECT
+  nome,
+  upper(nome)                                AS maiusculas,
+  substr(nome, 1, instr(nome, ' ') - 1)      AS primeiro_nome,
+  nome || ' (' || estado || ')'               AS com_estado,
+  length(nome)                                AS letras,
+  replace(cidade, 'São', 'S.')                AS cidade_curta
+FROM clientes;`)}
+<p><code>||</code> junta textos. <code>instr</code> acha a posição de um pedaço e <code>substr</code> recorta, uma combinação útil para separar partes de um texto.</p>
+
+<h2>Lidar com NULL</h2>
+<ul>
+  <li><code>COALESCE(a, b, c)</code> devolve o primeiro que não for NULL: <code>COALESCE(apelido, nome)</code>.</li>
+  <li><code>NULLIF(a, b)</code> devolve NULL se forem iguais. Evita divisão por zero: <code>vendas / NULLIF(visitas, 0)</code>.</li>
+  <li>Qualquer conta com NULL dá NULL: <code>10 + NULL</code> é NULL. E <code>COUNT(coluna)</code> ignora os NULL, enquanto <code>COUNT(*)</code> conta todas as linhas.</li>
+</ul>
+${dica("<code>printf</code> (ou <code>format</code>, nas versões novas) formata números: <code>printf('R$ %.2f', preco)</code> mostra duas casas. A vírgula brasileira fica para a aplicação, que formata com Intl na hora de mostrar.")}
+`,
+              quiz: [
+                {
+                  pergunta: 'Como calcular quantos dias se passaram entre duas datas no SQLite?',
+                  opcoes: ['data2 - data1', 'julianday(data2) - julianday(data1)', 'DATEDIFF(data1, data2)'],
+                  certa: 1,
+                  explicacao: 'As datas são texto; julianday as transforma em números de dias.'
+                },
+                {
+                  pergunta: "O que date('2026-10-31', 'start of month') devolve?",
+                  opcoes: ["'2026-10-01'", "'2026-10-31'", "'2026-11-01'"],
+                  certa: 0,
+                  explicacao: 'O modificador leva ao primeiro dia do mês.'
+                },
+                {
+                  pergunta: 'O que COALESCE(telefone, celular, "sem contato") devolve?',
+                  opcoes: ['Os três juntos', 'O primeiro que não for NULL', 'NULL se algum for NULL'],
+                  certa: 1,
+                  explicacao: 'Ótimo para valores de reserva.'
+                }
+              ]
+            },
+            {
+              id: 'indices-e-views',
+              titulo: 'Índices, views e EXPLAIN',
+              resumo: 'Consultas rápidas em tabelas grandes e consultas guardadas com nome.',
+              minutos: 12,
+              corpo: `
+<h2>Índices</h2>
+<p>Sem índice, para achar os pedidos do cliente 4 o banco lê a tabela inteira (um <strong>scan</strong>). Com milhões de linhas, isso demora. Um <strong>índice</strong> é como o índice remissivo de um livro: uma lista ordenada que leva direto às linhas certas.</p>
+${codigo(`EXPLAIN QUERY PLAN SELECT * FROM pedidos WHERE cliente_id = 4;
+
+CREATE INDEX idx_pedidos_cliente ON pedidos(cliente_id);
+
+EXPLAIN QUERY PLAN SELECT * FROM pedidos WHERE cliente_id = 4;`)}
+<p>Compare as duas linhas do plano: antes, <code>SCAN pedidos</code>; depois, <code>SEARCH pedidos USING INDEX idx_pedidos_cliente</code>.</p>
+<ul>
+  <li>Crie índices nas colunas usadas em <code>WHERE</code>, em <code>JOIN</code> (as chaves estrangeiras!) e em <code>ORDER BY</code> de consultas frequentes.</li>
+  <li>Índices têm custo: ocupam espaço e deixam <code>INSERT</code> e <code>UPDATE</code> um pouco mais lentos. Não crie um para cada coluna.</li>
+  <li><code>CREATE UNIQUE INDEX</code> também garante que não haja repetição (e-mail único, por exemplo).</li>
+  <li>Índice composto <code>(cliente_id, data)</code> atende filtros por cliente e por cliente + data, nessa ordem.</li>
+</ul>
+
+<h2>Views</h2>
+<p>Uma <strong>view</strong> é uma consulta guardada com nome, usada como se fosse uma tabela. Ótima para não repetir JOINs complicados e para dar a quem faz relatórios uma visão pronta:</p>
+${codigo(`CREATE VIEW vw_vendas AS
+SELECT p.id AS pedido, p.data, c.nome AS cliente, pr.nome AS produto, pr.categoria,
+       i.quantidade, i.quantidade * i.preco AS valor
+FROM itens i
+JOIN pedidos p   ON p.id = i.pedido_id
+JOIN clientes c  ON c.id = p.cliente_id
+JOIN produtos pr ON pr.id = i.produto_id
+WHERE p.status <> 'cancelado';
+
+SELECT categoria, ROUND(SUM(valor), 2) AS total FROM vw_vendas GROUP BY categoria;
+SELECT cliente, COUNT(DISTINCT pedido) AS pedidos FROM vw_vendas GROUP BY cliente ORDER BY pedidos DESC;`)}
+<p>A view não guarda dados: a consulta roda de novo a cada uso, sempre com os dados atuais.</p>
+${dica('Ferramentas de BI, como o Power BI, conseguem ler views direto do banco. Uma view bem feita é um ótimo "contrato" entre quem cuida do banco e quem faz os relatórios.')}
+`,
+              quiz: [
+                {
+                  pergunta: 'O que SCAN no EXPLAIN QUERY PLAN indica?',
+                  opcoes: ['Que o índice foi usado', 'Que a tabela inteira é lida', 'Um erro'],
+                  certa: 1,
+                  explicacao: 'Com o índice certo, aparece SEARCH ... USING INDEX.'
+                },
+                {
+                  pergunta: 'Qual o custo de criar índices?',
+                  opcoes: [
+                    'Nenhum',
+                    'Espaço em disco e escritas um pouco mais lentas',
+                    'As consultas ficam mais lentas'
+                  ],
+                  certa: 1,
+                  explicacao: 'Cada INSERT e UPDATE também atualiza os índices.'
+                },
+                {
+                  pergunta: 'Uma view guarda uma cópia dos dados?',
+                  opcoes: ['Sim', 'Não: a consulta roda de novo a cada uso', 'Só no SQLite'],
+                  certa: 1,
+                  explicacao: 'Por isso ela sempre mostra os dados atuais.'
+                }
+              ]
+            },
+            {
+              id: 'desafio-clientes-inativos',
+              tipo: 'desafio',
+              titulo: 'Desafio: clientes inativos',
+              resumo: 'Datas, subconsultas e uma view para a campanha de reativação.',
+              minutos: 25,
+              enunciado: `
+<p>A loja vai fazer uma campanha para quem anda sumido. Considere que <strong>hoje é 2026-10-31</strong> e que pedidos cancelados não contam. Escreva, nesta ordem:</p>
+<ol>
+  <li>Uma consulta com <code>nome</code> e <code>dias</code> (dias inteiros desde o último pedido) de cada cliente que já comprou, do mais sumido para o mais recente (empates por nome).</li>
+  <li>Uma consulta com o <code>nome</code> dos clientes que <strong>nunca</strong> compraram, por nome.</li>
+  <li>Um <code>CREATE VIEW vw_total_pedido</code> com <code>pedido_id</code> e <code>total</code> (soma de quantidade × preço, 2 casas) de cada pedido.</li>
+  <li>Uma consulta à view com <code>pedido_id</code> e <code>total</code> dos pedidos acima de 200, do maior para o menor.</li>
+</ol>`,
+              inicial: `-- 1. Dias desde o último pedido (hoje é 2026-10-31)
+
+
+-- 2. Clientes que nunca compraram
+
+
+-- 3. A view vw_total_pedido
+
+
+-- 4. Pedidos acima de 200, pela view
+`,
+              testes: [
+                [
+                  '1ª consulta: nome e dias desde o último pedido, do mais sumido',
+                  async doc => {
+                    const w = doc.defaultView;
+                    const r = w.__resultados[0];
+                    const g =
+                      w.__consultar(`SELECT c.nome, CAST(julianday('2026-10-31') - julianday(MAX(p.data)) AS INTEGER) AS dias
+                      FROM clientes c JOIN pedidos p ON p.cliente_id = c.id WHERE p.status <> 'cancelado'
+                      GROUP BY c.id ORDER BY dias DESC, c.nome`);
+                    return (
+                      !!r && r.columns.join() === 'nome,dias' && JSON.stringify(r.values) === JSON.stringify(g.values)
+                    );
+                  }
+                ],
+                [
+                  '2ª consulta: quem nunca comprou (cancelado não conta)',
+                  async doc => {
+                    const w = doc.defaultView;
+                    const r = w.__resultados[1];
+                    const g = w.__consultar(
+                      "SELECT nome FROM clientes WHERE id NOT IN (SELECT cliente_id FROM pedidos WHERE status <> 'cancelado') ORDER BY nome"
+                    );
+                    return !!r && JSON.stringify(r.values) === JSON.stringify(g.values);
+                  }
+                ],
+                [
+                  'A view vw_total_pedido existe, com pedido_id e total',
+                  async doc => {
+                    const db = doc.defaultView.__db;
+                    const r = db.exec(
+                      "SELECT name FROM sqlite_master WHERE type = 'view' AND name = 'vw_total_pedido'"
+                    )[0];
+                    if (!r) return false;
+                    const t = db.exec('SELECT pedido_id, total FROM vw_total_pedido WHERE pedido_id = 8')[0];
+                    return !!t && t.values[0][1] === 337.7;
+                  }
+                ],
+                [
+                  '4ª consulta: pedidos acima de 200 pela view, do maior para o menor',
+                  async doc => {
+                    const w = doc.defaultView;
+                    const r = w.__resultados[2];
+                    const g = w.__consultar(`SELECT pedido_id, ROUND(SUM(quantidade * preco), 2) AS total FROM itens
+                      GROUP BY pedido_id HAVING total > 200 ORDER BY total DESC`);
+                    return !!r && JSON.stringify(r.values) === JSON.stringify(g.values);
+                  }
+                ]
+              ],
+              solucao: `-- 1. Dias desde o último pedido (hoje é 2026-10-31)
+SELECT c.nome,
+       CAST(julianday('2026-10-31') - julianday(MAX(p.data)) AS INTEGER) AS dias
+FROM clientes c
+JOIN pedidos p ON p.cliente_id = c.id
+WHERE p.status <> 'cancelado'
+GROUP BY c.id, c.nome
+ORDER BY dias DESC, c.nome;
+
+-- 2. Clientes que nunca compraram
+SELECT nome FROM clientes
+WHERE id NOT IN (SELECT cliente_id FROM pedidos WHERE status <> 'cancelado')
+ORDER BY nome;
+
+-- 3. A view vw_total_pedido
+CREATE VIEW vw_total_pedido AS
+SELECT pedido_id, ROUND(SUM(quantidade * preco), 2) AS total
+FROM itens
+GROUP BY pedido_id;
+
+-- 4. Pedidos acima de 200, pela view
+SELECT pedido_id, total FROM vw_total_pedido
+WHERE total > 200
+ORDER BY total DESC;`
+            }
+          ]
         }
       ]
     }

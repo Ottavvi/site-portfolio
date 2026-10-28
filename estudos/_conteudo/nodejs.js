@@ -918,6 +918,294 @@ ${codigo(`<script>
 </script>`
             }
           ]
+        },
+        {
+          titulo: 'Eventos, streams e login',
+          itens: [
+            {
+              id: 'eventos-e-streams',
+              titulo: 'Eventos e streams',
+              resumo: 'EventEmitter, ler arquivos enormes aos pedaços e pipeline.',
+              minutos: 12,
+              corpo: `
+<h2>EventEmitter</h2>
+<p>Boa parte do Node é baseada em <strong>eventos</strong>: o servidor emite <code>request</code>, um arquivo emite <code>data</code> e <code>end</code>, um processo emite <code>exit</code>. A classe <code>EventEmitter</code> é a base disso, e você pode usá-la nos seus módulos:</p>
+${trecho(`import { EventEmitter } from 'node:events';
+
+class Pedidos extends EventEmitter {
+  criar(pedido) {
+    // ... salva no banco
+    this.emit('criado', pedido);
+  }
+}
+
+const pedidos = new Pedidos();
+pedidos.on('criado', p => console.log('Enviar e-mail de confirmação para', p.email));
+pedidos.on('criado', p => console.log('Atualizar estoque de', p.itens.length, 'itens'));
+pedidos.once('criado', () => console.log('Primeiro pedido do dia!'));   // só na primeira vez
+pedidos.criar({ email: 'ana@cafe.com', itens: [1, 2] });`)}
+<p>Quem cria o pedido não precisa conhecer quem reage a ele: o e-mail e o estoque se inscrevem no evento. Esse desacoplamento é o padrão <strong>observador</strong>. O navegador tem a mesma ideia no <code>EventTarget</code>, que você já usa com <code>addEventListener</code>, e o próximo desafio é escrever um emissor do zero.</p>
+
+<h2>Streams: aos pedaços</h2>
+<p>Ler um CSV de 3 GB com <code>readFile</code> tenta pôr 3 GB na memória. Um <strong>stream</strong> entrega o arquivo em pedaços pequenos, e a memória usada fica constante:</p>
+${trecho(`import { createReadStream } from 'node:fs';
+import { createInterface } from 'node:readline';
+
+const linhas = createInterface({ input: createReadStream('vendas-2026.csv', 'utf8') });
+let total = 0;
+for await (const linha of linhas) {
+  const valor = Number(linha.split(';')[3]?.replace(',', '.'));
+  if (!Number.isNaN(valor)) total += valor;
+}
+console.log('Total:', total.toFixed(2));`)}
+
+<h2>pipeline</h2>
+<p>Streams se encaixam como canos: ler, transformar, comprimir, gravar. <code>pipeline</code> liga tudo, cuida do controle de fluxo (não lê mais rápido do que consegue gravar) e fecha tudo se der erro no meio:</p>
+${trecho(`import { pipeline } from 'node:stream/promises';
+import { createReadStream, createWriteStream } from 'node:fs';
+import { createGzip } from 'node:zlib';
+
+await pipeline(
+  createReadStream('relatorio.csv'),
+  createGzip(),
+  createWriteStream('relatorio.csv.gz')
+);`)}
+${dica('Num servidor, a resposta (<code>res</code>) também é um stream. Para enviar um arquivo grande, use <code>pipeline(createReadStream(arquivo), res)</code> em vez de ler tudo para depois responder.')}
+`,
+              quiz: [
+                {
+                  pergunta: 'Qual a vantagem do padrão de eventos no exemplo dos pedidos?',
+                  opcoes: [
+                    'Fica mais rápido',
+                    'Quem cria o pedido não precisa conhecer quem reage a ele',
+                    'Usa menos memória'
+                  ],
+                  certa: 1,
+                  explicacao: 'Novas reações (um log, uma métrica) se inscrevem sem mudar o código do pedido.'
+                },
+                {
+                  pergunta: 'Por que usar stream para um arquivo de 3 GB?',
+                  opcoes: [
+                    'readFile não lê CSV',
+                    'Para processar aos pedaços, com memória constante',
+                    'É mais fácil de escrever'
+                  ],
+                  certa: 1,
+                  explicacao: 'readFile tentaria carregar o arquivo inteiro na memória.'
+                },
+                {
+                  pergunta: 'O que pipeline faz além de ligar os streams?',
+                  opcoes: [
+                    'Nada',
+                    'Controla o fluxo entre eles e fecha tudo se der erro no meio',
+                    'Converte para JSON'
+                  ],
+                  certa: 1,
+                  explicacao: 'Sem ele, um erro no meio pode deixar arquivos abertos.'
+                }
+              ]
+            },
+            {
+              id: 'autenticacao',
+              titulo: 'Login: sessões, cookies e JWT',
+              resumo: 'Como uma API sabe quem está fazendo o pedido, e os cuidados de cada jeito.',
+              minutos: 13,
+              corpo: `
+<p>HTTP não tem memória: cada pedido chega sozinho. Depois do login, a API precisa de um jeito de reconhecer a pessoa nos pedidos seguintes. Há dois caminhos principais.</p>
+
+<h2>Sessão com cookie</h2>
+<ol>
+  <li>A pessoa envia e-mail e senha. O servidor confere o hash da senha.</li>
+  <li>O servidor cria uma sessão (um registro no banco ou em memória, com um id aleatório e longo) e devolve o id num cookie.</li>
+  <li>O navegador manda o cookie sozinho em todo pedido seguinte; o servidor procura a sessão pelo id.</li>
+</ol>
+${trecho(`res.setHeader('Set-Cookie',
+  \`sessao=\${idAleatorio}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=\${60 * 60 * 24 * 7}\`);`)}
+<ul>
+  <li><code>HttpOnly</code>: o JavaScript da página não consegue ler o cookie (protege contra roubo por XSS).</li>
+  <li><code>Secure</code>: só vai por HTTPS.</li>
+  <li><code>SameSite=Lax</code>: não é enviado em pedidos vindos de outros sites (protege contra CSRF na maioria dos casos).</li>
+</ul>
+<p>Sair é apagar a sessão no servidor: a partir dali, o id não vale mais nada.</p>
+
+<h2>JWT</h2>
+<p>Um <strong>JWT</strong> (JSON Web Token) é um texto em três partes separadas por ponto: cabeçalho, conteúdo (<em>payload</em>) e assinatura. O servidor assina o conteúdo com uma chave secreta; ao receber o token de volta, confere a assinatura e confia no conteúdo sem consultar o banco.</p>
+${codigo(`<pre id="saida"></pre>
+<script>
+  // Um JWT de exemplo (assinatura falsa). Repare: o conteúdo NÃO é criptografado, só codificado
+  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.' +
+    'eyJzdWIiOiI0MiIsIm5vbWUiOiJBbmEiLCJwYXBlbCI6ImFkbWluIiwiZXhwIjoxOTI0OTk1NjAwfQ.' +
+    'assinatura-de-exemplo';
+
+  const [cabecalho, conteudo] = token.split('.').map(parte => {
+    try { return JSON.parse(atob(parte.replace(/-/g, '+').replace(/_/g, '/'))); } catch { return null; }
+  });
+  document.querySelector('#saida').textContent = JSON.stringify({ cabecalho, conteudo }, null, 2) +
+    '\\nExpira em: ' + new Date(conteudo.exp * 1000).toLocaleString('pt-BR');
+</script>`)}
+<ul>
+  <li>Qualquer um <strong>lê</strong> o conteúdo de um JWT. Nunca coloque nele dados sensíveis.</li>
+  <li>Ninguém consegue <strong>alterar</strong> sem invalidar a assinatura. Por isso o servidor sempre verifica (com uma biblioteca como <code>jose</code>), e nunca apenas decodifica.</li>
+  <li>Como não há registro no servidor, um JWT não pode ser "desligado" antes de expirar: use validade curta (minutos) e um token de renovação guardado com cuidado.</li>
+</ul>
+${dica('Para um site com front-end e API no mesmo domínio, sessão com cookie HttpOnly costuma ser o caminho mais simples e seguro. JWT brilha quando vários serviços diferentes precisam confiar no mesmo login. E serviços prontos, como Firebase Auth (usado na área de estudos deste site), resolvem o login todo para você.')}
+`,
+              quiz: [
+                {
+                  pergunta: 'O que o atributo HttpOnly de um cookie faz?',
+                  opcoes: [
+                    'Só funciona em HTTP',
+                    'Impede o JavaScript da página de ler o cookie',
+                    'Apaga o cookie ao fechar'
+                  ],
+                  certa: 1,
+                  explicacao: 'Um script injetado (XSS) não consegue roubá-lo.'
+                },
+                {
+                  pergunta: 'O conteúdo de um JWT é secreto?',
+                  opcoes: [
+                    'Sim, é criptografado',
+                    'Não: qualquer um decodifica e lê; a assinatura só impede alterações',
+                    'Depende do navegador'
+                  ],
+                  certa: 1,
+                  explicacao: 'Por isso nada sensível vai no payload.'
+                },
+                {
+                  pergunta: 'Por que JWTs costumam ter validade curta?',
+                  opcoes: [
+                    'Para economizar espaço',
+                    'Porque não dá para cancelar um JWT antes de ele expirar',
+                    'É exigência do HTTPS'
+                  ],
+                  certa: 1,
+                  explicacao: 'Sem registro no servidor, só a expiração encerra um token roubado.'
+                }
+              ]
+            },
+            {
+              id: 'desafio-emissor',
+              tipo: 'desafio',
+              titulo: 'Desafio: um emissor de eventos',
+              resumo: 'Escreva on, off, once e emit, como o EventEmitter do Node.',
+              minutos: 25,
+              enunciado: `
+<p>Escreva a classe <code>Emissor</code>:</p>
+<ul>
+  <li><code>on(evento, funcao)</code>: inscreve a função e devolve uma <strong>função que cancela</strong> a inscrição.</li>
+  <li><code>off(evento, funcao)</code>: cancela a inscrição.</li>
+  <li><code>once(evento, funcao)</code>: a função roda só na primeira emissão.</li>
+  <li><code>emit(evento, ...dados)</code>: chama as funções inscritas, <strong>na ordem de inscrição</strong>, com os dados. Devolve quantas foram chamadas.</li>
+  <li>Como no Node: emitir <code>'error'</code> sem ninguém inscrito <strong>lança</strong> o erro recebido.</li>
+</ul>`,
+              inicial: `<script>
+  class Emissor {
+    on(evento, funcao) {}
+    off(evento, funcao) {}
+    once(evento, funcao) {}
+    emit(evento, ...dados) {}
+  }
+
+  const pedidos = new Emissor();
+  pedidos.on('criado', p => console.log('E-mail para', p.email));
+  pedidos.emit('criado', { email: 'ana@cafe.com' });
+</script>
+`,
+              testes: [
+                [
+                  'on e emit chamam as funções em ordem, com os dados, e emit devolve a quantidade',
+                  doc => {
+                    const e = new (doc.defaultView.eval('Emissor'))();
+                    const ordem = [];
+                    e.on('x', (a, b) => ordem.push('1:' + a + b));
+                    e.on('x', a => ordem.push('2:' + a));
+                    const n = e.emit('x', 'a', 'b');
+                    return n === 2 && ordem.join() === '1:ab,2:a' && e.emit('nada') === 0;
+                  }
+                ],
+                [
+                  'off e a função devolvida por on cancelam a inscrição',
+                  doc => {
+                    const e = new (doc.defaultView.eval('Emissor'))();
+                    let a = 0;
+                    let b = 0;
+                    const fa = () => a++;
+                    e.on('x', fa);
+                    const cancelar = e.on('x', () => b++);
+                    e.emit('x');
+                    e.off('x', fa);
+                    cancelar();
+                    e.emit('x');
+                    return a === 1 && b === 1;
+                  }
+                ],
+                [
+                  'once roda só uma vez',
+                  doc => {
+                    const e = new (doc.defaultView.eval('Emissor'))();
+                    let n = 0;
+                    e.once('x', () => n++);
+                    e.emit('x');
+                    e.emit('x');
+                    return n === 1;
+                  }
+                ],
+                [
+                  "emit('error') sem ouvinte lança o erro; com ouvinte, não",
+                  doc => {
+                    const e = new (doc.defaultView.eval('Emissor'))();
+                    const erro = new Error('falhou');
+                    let lancou = null;
+                    try {
+                      e.emit('error', erro);
+                    } catch (x) {
+                      lancou = x;
+                    }
+                    let recebido = null;
+                    e.on('error', x => (recebido = x));
+                    e.emit('error', erro);
+                    return lancou === erro && recebido === erro;
+                  }
+                ]
+              ],
+              solucao: `<script>
+  class Emissor {
+    #ouvintes = new Map(); // evento → lista de funções
+
+    on(evento, funcao) {
+      if (!this.#ouvintes.has(evento)) this.#ouvintes.set(evento, []);
+      this.#ouvintes.get(evento).push(funcao);
+      return () => this.off(evento, funcao);
+    }
+
+    off(evento, funcao) {
+      const lista = this.#ouvintes.get(evento) ?? [];
+      const i = lista.indexOf(funcao);
+      if (i !== -1) lista.splice(i, 1);
+    }
+
+    once(evento, funcao) {
+      const umaVez = (...dados) => {
+        this.off(evento, umaVez);
+        funcao(...dados);
+      };
+      return this.on(evento, umaVez);
+    }
+
+    emit(evento, ...dados) {
+      const lista = [...(this.#ouvintes.get(evento) ?? [])]; // cópia: once remove durante o laço
+      if (evento === 'error' && lista.length === 0) throw dados[0];
+      for (const funcao of lista) funcao(...dados);
+      return lista.length;
+    }
+  }
+
+  const pedidos = new Emissor();
+  pedidos.on('criado', p => console.log('E-mail para', p.email));
+  pedidos.emit('criado', { email: 'ana@cafe.com' });
+</script>`
+            }
+          ]
         }
       ]
     }

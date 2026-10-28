@@ -2395,6 +2395,58 @@
       "explicacao": "A plataforma decide a porta e informa pela variável de ambiente."
     }
   ],
+  "nodejs/eventos-e-streams": [
+    {
+      "pergunta": "Qual a vantagem do padrão de eventos no exemplo dos pedidos?",
+      "opcoes": ["Fica mais rápido", "Quem cria o pedido não precisa conhecer quem reage a ele", "Usa menos memória"],
+      "certa": 1,
+      "explicacao": "Novas reações (um log, uma métrica) se inscrevem sem mudar o código do pedido."
+    },
+    {
+      "pergunta": "Por que usar stream para um arquivo de 3 GB?",
+      "opcoes": [
+        "readFile não lê CSV",
+        "Para processar aos pedaços, com memória constante",
+        "É mais fácil de escrever"
+      ],
+      "certa": 1,
+      "explicacao": "readFile tentaria carregar o arquivo inteiro na memória."
+    },
+    {
+      "pergunta": "O que pipeline faz além de ligar os streams?",
+      "opcoes": ["Nada", "Controla o fluxo entre eles e fecha tudo se der erro no meio", "Converte para JSON"],
+      "certa": 1,
+      "explicacao": "Sem ele, um erro no meio pode deixar arquivos abertos."
+    }
+  ],
+  "nodejs/autenticacao": [
+    {
+      "pergunta": "O que o atributo HttpOnly de um cookie faz?",
+      "opcoes": ["Só funciona em HTTP", "Impede o JavaScript da página de ler o cookie", "Apaga o cookie ao fechar"],
+      "certa": 1,
+      "explicacao": "Um script injetado (XSS) não consegue roubá-lo."
+    },
+    {
+      "pergunta": "O conteúdo de um JWT é secreto?",
+      "opcoes": [
+        "Sim, é criptografado",
+        "Não: qualquer um decodifica e lê; a assinatura só impede alterações",
+        "Depende do navegador"
+      ],
+      "certa": 1,
+      "explicacao": "Por isso nada sensível vai no payload."
+    },
+    {
+      "pergunta": "Por que JWTs costumam ter validade curta?",
+      "opcoes": [
+        "Para economizar espaço",
+        "Porque não dá para cancelar um JWT antes de ele expirar",
+        "É exigência do HTTPS"
+      ],
+      "certa": 1,
+      "explicacao": "Sem registro no servidor, só a expiração encerra um token roubado."
+    }
+  ],
   "sqlite/o-que-e-sql": [
     {
       "pergunta": "Numa tabela, o que é cada linha?",
@@ -2525,6 +2577,46 @@
       "opcoes": ["Produtos vendidos", "Produtos que nunca apareceram num pedido", "Pedidos sem itens"],
       "certa": 1,
       "explicacao": "A subconsulta lista os produtos vendidos; NOT IN fica com os que não estão nessa lista."
+    }
+  ],
+  "sqlite/datas-e-textos": [
+    {
+      "pergunta": "Como calcular quantos dias se passaram entre duas datas no SQLite?",
+      "opcoes": ["data2 - data1", "julianday(data2) - julianday(data1)", "DATEDIFF(data1, data2)"],
+      "certa": 1,
+      "explicacao": "As datas são texto; julianday as transforma em números de dias."
+    },
+    {
+      "pergunta": "O que date('2026-10-31', 'start of month') devolve?",
+      "opcoes": ["'2026-10-01'", "'2026-10-31'", "'2026-11-01'"],
+      "certa": 0,
+      "explicacao": "O modificador leva ao primeiro dia do mês."
+    },
+    {
+      "pergunta": "O que COALESCE(telefone, celular, \"sem contato\") devolve?",
+      "opcoes": ["Os três juntos", "O primeiro que não for NULL", "NULL se algum for NULL"],
+      "certa": 1,
+      "explicacao": "Ótimo para valores de reserva."
+    }
+  ],
+  "sqlite/indices-e-views": [
+    {
+      "pergunta": "O que SCAN no EXPLAIN QUERY PLAN indica?",
+      "opcoes": ["Que o índice foi usado", "Que a tabela inteira é lida", "Um erro"],
+      "certa": 1,
+      "explicacao": "Com o índice certo, aparece SEARCH ... USING INDEX."
+    },
+    {
+      "pergunta": "Qual o custo de criar índices?",
+      "opcoes": ["Nenhum", "Espaço em disco e escritas um pouco mais lentas", "As consultas ficam mais lentas"],
+      "certa": 1,
+      "explicacao": "Cada INSERT e UPDATE também atualiza os índices."
+    },
+    {
+      "pergunta": "Uma view guarda uma cópia dos dados?",
+      "opcoes": ["Sim", "Não: a consulta roda de novo a cada uso", "Só no SQLite"],
+      "certa": 1,
+      "explicacao": "Por isso ela sempre mostra os dados atuais."
     }
   ],
   "python/primeiros-passos": [
@@ -2677,6 +2769,50 @@
       "opcoes": ["Média", "Mediana", "Máximo"],
       "certa": 1,
       "explicacao": "A mediana é o valor do meio e não é puxada pelos extremos."
+    }
+  ],
+  "python/funcoes-avancadas": [
+    {
+      "pergunta": "Em def f(*args), o que args é dentro da função?",
+      "opcoes": ["Uma lista", "Uma tupla com os argumentos extras", "Um dicionário"],
+      "certa": 1,
+      "explicacao": "**kwargs é que vira dicionário."
+    },
+    {
+      "pergunta": "Como ordenar produtos pelo preço, do mais caro?",
+      "opcoes": [
+        "sorted(produtos, reverse=True)",
+        "sorted(produtos, key=lambda p: p[\"preco\"], reverse=True)",
+        "produtos.sort(\"preco\")"
+      ],
+      "certa": 1,
+      "explicacao": "key diz o que comparar; reverse inverte a ordem."
+    },
+    {
+      "pergunta": "Qual a vantagem de um gerador sobre uma lista?",
+      "opcoes": ["É mais curto", "Produz um valor de cada vez, sem guardar tudo na memória", "Pode ser ordenado"],
+      "certa": 1,
+      "explicacao": "Ótimo para dados grandes ou infinitos."
+    }
+  ],
+  "python/testes-e-qualidade": [
+    {
+      "pergunta": "O que acontece quando um assert é falso?",
+      "opcoes": ["Nada", "O programa para com AssertionError", "Imprime um aviso e continua"],
+      "certa": 1,
+      "explicacao": "É a forma mais simples de garantir uma condição."
+    },
+    {
+      "pergunta": "No unittest, como conferir que uma função lança ValueError?",
+      "opcoes": ["self.assertEqual(f(), ValueError)", "with self.assertRaises(ValueError): f()", "assert ValueError"],
+      "certa": 1,
+      "explicacao": "O bloco with falha o teste se o erro não acontecer."
+    },
+    {
+      "pergunta": "Para que serve um ambiente virtual (venv)?",
+      "opcoes": ["Rodar Python na nuvem", "Isolar os pacotes de cada projeto", "Deixar o Python mais rápido"],
+      "certa": 1,
+      "explicacao": "Cada projeto tem as suas versões, sem conflito com os outros."
     }
   ],
   "playwright/o-que-e-playwright": [
