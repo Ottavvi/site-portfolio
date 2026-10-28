@@ -1771,6 +1771,130 @@
       "explicacao": "O build gera a pasta dist/, com o código otimizado."
     }
   ],
+  "nodejs/o-que-e-node": [
+    {
+      "pergunta": "O que existe no Node mas não no navegador?",
+      "opcoes": ["document", "process", "window"],
+      "certa": 1,
+      "explicacao": "process dá acesso a argumentos, ambiente e saída do programa. document e window são do navegador."
+    },
+    {
+      "pergunta": "Em node script.js relatorio.csv, onde está \"relatorio.csv\"?",
+      "opcoes": ["process.argv[0]", "process.argv[1]", "process.argv[2]"],
+      "certa": 2,
+      "explicacao": "Os dois primeiros são o node e o script."
+    },
+    {
+      "pergunta": "O que \"type\": \"module\" no package.json faz?",
+      "opcoes": ["Instala módulos", "Liga import/export (Módulos ES)", "Cria um módulo novo"],
+      "certa": 1,
+      "explicacao": "Sem ele, os arquivos .js usam require (CommonJS)."
+    }
+  ],
+  "nodejs/npm-e-pacotes": [
+    {
+      "pergunta": "O que vai para o Git?",
+      "opcoes": ["node_modules", "package-lock.json", "Os dois"],
+      "certa": 1,
+      "explicacao": "O lock garante versões iguais; node_modules é recriado pelo npm install."
+    },
+    {
+      "pergunta": "Qual versão \"^2.3.1\" aceita?",
+      "opcoes": ["3.0.0", "2.9.0", "2.3.0"],
+      "certa": 1,
+      "explicacao": "O ^ aceita versões menores e correções novas, sem mudar o número maior."
+    },
+    {
+      "pergunta": "Onde instalar o Prettier num projeto?",
+      "opcoes": ["dependencies", "devDependencies (npm install -D)", "Em lugar nenhum"],
+      "certa": 1,
+      "explicacao": "Ele só é usado para desenvolver, não pelo app rodando."
+    }
+  ],
+  "nodejs/arquivos": [
+    {
+      "pergunta": "O que readFile(arquivo) devolve sem o \"utf8\"?",
+      "opcoes": ["Texto", "Um Buffer (bytes)", "null"],
+      "certa": 1,
+      "explicacao": "Informe a codificação para receber texto."
+    },
+    {
+      "pergunta": "O que o código de erro ENOENT significa?",
+      "opcoes": ["Sem permissão", "O arquivo ou pasta não existe", "Disco cheio"],
+      "certa": 1,
+      "explicacao": "Error NO ENTry: não há entrada com esse caminho."
+    },
+    {
+      "pergunta": "Por que evitar readFileSync dentro de um servidor?",
+      "opcoes": [
+        "Ele é proibido",
+        "Ele trava o processo inteiro enquanto lê, e ninguém mais é atendido",
+        "Ele não lê UTF-8"
+      ],
+      "certa": 1,
+      "explicacao": "O Node tem uma linha de execução só; bloqueá-la trava todo mundo."
+    }
+  ],
+  "nodejs/servidor-http": [
+    {
+      "pergunta": "Qual status responder quando um produto foi criado?",
+      "opcoes": ["200", "201", "204"],
+      "certa": 1,
+      "explicacao": "201 Created: o recurso novo foi criado."
+    },
+    {
+      "pergunta": "Na rota /api/produtos/:id, onde chega o id?",
+      "opcoes": ["req.query.id", "req.params.id", "req.body.id"],
+      "certa": 1,
+      "explicacao": "Parâmetros do caminho ficam em req.params, sempre como texto."
+    },
+    {
+      "pergunta": "Para que serve app.use(express.json())?",
+      "opcoes": ["Responder em JSON", "Ler o corpo JSON dos pedidos e colocar em req.body", "Validar o JSON"],
+      "certa": 1,
+      "explicacao": "Sem ele, req.body fica undefined nos POST com JSON."
+    }
+  ],
+  "nodejs/api-com-banco": [
+    {
+      "pergunta": "Como evitar injeção de SQL?",
+      "opcoes": ["Escapando aspas à mão", "Usando consultas parametrizadas com ?", "Usando só SELECT"],
+      "certa": 1,
+      "explicacao": "O banco trata o valor como dado, nunca como parte do comando."
+    },
+    {
+      "pergunta": "Onde ficam as chaves de API e senhas do banco?",
+      "opcoes": ["No código", "Em variáveis de ambiente (.env fora do Git)", "No package.json"],
+      "certa": 1,
+      "explicacao": "Assim elas mudam por ambiente e não vazam pelo repositório."
+    },
+    {
+      "pergunta": "Como guardar a senha de um usuário?",
+      "opcoes": ["Em texto puro", "Criptografada com uma chave", "Como hash lento com sal (scrypt, bcrypt, argon2)"],
+      "certa": 2,
+      "explicacao": "Um hash não pode ser revertido, e o sal impede comparar com tabelas prontas."
+    }
+  ],
+  "nodejs/middlewares-testes-e-deploy": [
+    {
+      "pergunta": "O que um middleware faz para passar o pedido adiante?",
+      "opcoes": ["return true", "Chama next()", "Chama res.send()"],
+      "certa": 1,
+      "explicacao": "Sem next() (ou uma resposta), o pedido fica pendurado."
+    },
+    {
+      "pergunta": "Como rodar os testes escritos com node:test?",
+      "opcoes": ["node test", "node --test (ou npm test)", "npx jest"],
+      "certa": 1,
+      "explicacao": "O próprio Node acha os arquivos *.test.js e roda."
+    },
+    {
+      "pergunta": "Em que porta a API deve escutar numa plataforma como o Render?",
+      "opcoes": ["Sempre 3000", "A de process.env.PORT", "80"],
+      "certa": 1,
+      "explicacao": "A plataforma decide a porta e informa pela variável de ambiente."
+    }
+  ],
   "sqlite/o-que-e-sql": [
     {
       "pergunta": "Numa tabela, o que é cada linha?",

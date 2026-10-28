@@ -14,14 +14,7 @@ module.exports = [
   require('./react'),
 
   // ---------- Back-end e dados ----------
-  {
-    id: 'nodejs',
-    area: 'Back-end e dados',
-    titulo: 'Node.js',
-    sigla: 'Nd',
-    resumo: 'JavaScript fora do navegador: scripts, arquivos e APIs com Express.',
-    emBreve: true
-  },
+  require('./nodejs'),
   require('./sqlite'),
   require('./python'),
 

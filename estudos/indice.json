@@ -895,6 +895,85 @@
       ]
     },
     {
+      "id": "nodejs",
+      "titulo": "Node.js",
+      "sigla": "Nd",
+      "itens": [
+        {
+          "id": "nodejs/o-que-e-node",
+          "titulo": "O que é o Node.js",
+          "resumo": "Rodar arquivos, o objeto process, módulos e o package.json.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 10
+        },
+        {
+          "id": "nodejs/npm-e-pacotes",
+          "titulo": "npm e pacotes",
+          "resumo": "Instalar, versões, dependências de desenvolvimento e segurança.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 10
+        },
+        {
+          "id": "nodejs/desafio-argumentos",
+          "titulo": "Desafio: ler argumentos de um script",
+          "resumo": "Transforme process.argv num objeto de opções.",
+          "tipo": "desafio",
+          "nivel": "Iniciante",
+          "minutos": 18
+        },
+        {
+          "id": "nodejs/arquivos",
+          "titulo": "Arquivos e caminhos",
+          "resumo": "fs/promises, path, JSON em arquivo e erros comuns.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 12
+        },
+        {
+          "id": "nodejs/servidor-http",
+          "titulo": "Um servidor HTTP",
+          "resumo": "node:http, rotas, JSON e o Express.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 13
+        },
+        {
+          "id": "nodejs/desafio-roteador",
+          "titulo": "Desafio: um mini roteador",
+          "resumo": "Escreva o roteador de uma API, com parâmetros e 404.",
+          "tipo": "desafio",
+          "nivel": "Intermediário",
+          "minutos": 25
+        },
+        {
+          "id": "nodejs/api-com-banco",
+          "titulo": "Banco de dados, variáveis de ambiente e segurança",
+          "resumo": "SQLite no Node, consultas parametrizadas, .env e senhas.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 14
+        },
+        {
+          "id": "nodejs/middlewares-testes-e-deploy",
+          "titulo": "Middlewares, testes e deploy",
+          "resumo": "A cadeia de middlewares, node:test e como publicar uma API.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 13
+        },
+        {
+          "id": "nodejs/desafio-middlewares",
+          "titulo": "Desafio: cadeia de middlewares",
+          "resumo": "Componha middlewares assíncronos com next, como no Express e no Koa.",
+          "tipo": "desafio",
+          "nivel": "Avançado",
+          "minutos": 25
+        }
+      ]
+    },
+    {
       "id": "sqlite",
       "titulo": "SQLite",
       "sigla": "SQL",
