@@ -609,6 +609,30 @@
           "tipo": "desafio",
           "nivel": "Avançado",
           "minutos": 22
+        },
+        {
+          "id": "modulos-es/organizar-um-projeto",
+          "titulo": "Organizar pastas e dependências",
+          "resumo": "Pastas por funcionalidade, arquivo de entrada e dependências circulares.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 11
+        },
+        {
+          "id": "modulos-es/do-navegador-ao-vite",
+          "titulo": "Do navegador ao Vite",
+          "resumo": "Quando usar um bundler, pacotes do npm e variáveis de ambiente.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 10
+        },
+        {
+          "id": "modulos-es/desafio-dependencia-circular",
+          "titulo": "Desafio: quebrar uma dependência circular",
+          "resumo": "Dois módulos que se importam: reorganize para o ciclo sumir.",
+          "tipo": "desafio",
+          "nivel": "Avançado",
+          "minutos": 18
         }
       ]
     },
@@ -664,6 +688,30 @@
           "tipo": "desafio",
           "nivel": "Avançado",
           "minutos": 20
+        },
+        {
+          "id": "localstorage/indexeddb",
+          "titulo": "IndexedDB",
+          "resumo": "O banco de dados do navegador: assíncrono, com objetos e muito espaço.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 13
+        },
+        {
+          "id": "localstorage/exportar-e-importar",
+          "titulo": "Backup, cota e persistência",
+          "resumo": "Baixar e restaurar os dados num arquivo, e pedir para o navegador não apagar.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 11
+        },
+        {
+          "id": "localstorage/desafio-backup",
+          "titulo": "Desafio: exportar e importar backup",
+          "resumo": "Funções de backup com prefixo, versão e validação.",
+          "tipo": "desafio",
+          "nivel": "Avançado",
+          "minutos": 22
         }
       ]
     },
@@ -719,6 +767,30 @@
           "tipo": "desafio",
           "nivel": "Avançado",
           "minutos": 25
+        },
+        {
+          "id": "web-audio/efeitos",
+          "titulo": "Eco, panorâmica e distorção",
+          "resumo": "DelayNode com realimentação, StereoPannerNode e WaveShaperNode.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 12
+        },
+        {
+          "id": "web-audio/microfone-e-gravacao",
+          "titulo": "Microfone e gravação",
+          "resumo": "getUserMedia, medidor de volume e MediaRecorder.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 11
+        },
+        {
+          "id": "web-audio/desafio-eco",
+          "titulo": "Desafio: efeito de eco",
+          "resumo": "Monte um eco com DelayNode e realimentação, conferido pelo som.",
+          "tipo": "desafio",
+          "nivel": "Avançado",
+          "minutos": 22
         }
       ]
     },
@@ -771,6 +843,30 @@
           "id": "notificacoes/desafio-lembretes",
           "titulo": "Desafio: lembretes agendados",
           "resumo": "Agende e cancele lembretes que avisam na hora certa.",
+          "tipo": "desafio",
+          "nivel": "Avançado",
+          "minutos": 22
+        },
+        {
+          "id": "notificacoes/preferencias-de-aviso",
+          "titulo": "Preferências de aviso",
+          "resumo": "Categorias, canais, horário silencioso, resumos e limite de frequência.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 11
+        },
+        {
+          "id": "notificacoes/avisos-no-celular",
+          "titulo": "Avisos no celular e no app instalado",
+          "resumo": "showNotification, ações, selo no ícone e vibração.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 10
+        },
+        {
+          "id": "notificacoes/desafio-horario-silencioso",
+          "titulo": "Desafio: horário silencioso",
+          "resumo": "Decida se um aviso pode sair agora, respeitando as preferências.",
           "tipo": "desafio",
           "nivel": "Avançado",
           "minutos": 22

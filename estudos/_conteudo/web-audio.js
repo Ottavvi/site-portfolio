@@ -633,6 +633,290 @@ ${codigo(`<script>
 </script>`
             }
           ]
+        },
+        {
+          titulo: 'Efeitos e microfone',
+          itens: [
+            {
+              id: 'efeitos',
+              titulo: 'Eco, panorâmica e distorção',
+              resumo: 'DelayNode com realimentação, StereoPannerNode e WaveShaperNode.',
+              minutos: 12,
+              corpo: `
+<h2>Eco</h2>
+<p>O <code>DelayNode</code> atrasa o som. Sozinho, faz uma repetição. Ligando a saída dele de volta na entrada, passando por um volume menor que 1, cada repetição sai mais baixa que a anterior: é o <strong>eco</strong>. Esse caminho de volta se chama <strong>realimentação</strong> (<em>feedback</em>):</p>
+${codigo(`<button id="tocar">Bip com eco</button>
+<label>Atraso <input id="atraso" type="range" min="0.05" max="0.6" step="0.05" value="0.25"></label>
+<label>Retorno <input id="retorno" type="range" min="0" max="0.8" step="0.1" value="0.5"></label>
+
+<script>
+  let ctx;
+  document.querySelector('#tocar').addEventListener('click', () => {
+    ctx ??= new AudioContext();
+    const t = ctx.currentTime;
+    const osc = new OscillatorNode(ctx, { frequency: 660 });
+    const envelope = new GainNode(ctx, { gain: 0 });
+    envelope.gain.linearRampToValueAtTime(0.3, t + 0.01);
+    envelope.gain.linearRampToValueAtTime(0, t + 0.12);
+
+    const atraso = new DelayNode(ctx, { delayTime: Number(document.querySelector('#atraso').value), maxDelayTime: 1 });
+    const retorno = new GainNode(ctx, { gain: Number(document.querySelector('#retorno').value) });
+
+    osc.connect(envelope);
+    envelope.connect(ctx.destination);   // o som original
+    envelope.connect(atraso);            // e uma cópia atrasada...
+    atraso.connect(retorno);
+    retorno.connect(ctx.destination);
+    retorno.connect(atraso);             // ...que volta para o atraso, cada vez mais baixa
+
+    osc.start(t);
+    osc.stop(t + 0.12);
+  });
+</script>`)}
+${dica('Com o retorno em 1 ou mais, o eco nunca diminui, e o som cresce até distorcer. Mantenha a realimentação sempre abaixo de 1.')}
+
+<h2>Panorâmica</h2>
+<p><code>StereoPannerNode</code> posiciona o som entre o lado esquerdo (<code>-1</code>) e o direito (<code>1</code>). Use fone de ouvido:</p>
+${codigo(`<button id="passar">Som passando da esquerda para a direita</button>
+<script>
+  let ctx;
+  document.querySelector('#passar').addEventListener('click', () => {
+    ctx ??= new AudioContext();
+    const t = ctx.currentTime;
+    const osc = new OscillatorNode(ctx, { type: 'sawtooth', frequency: 220 });
+    const vol = new GainNode(ctx, { gain: 0.1 });
+    const pan = new StereoPannerNode(ctx, { pan: -1 });
+    pan.pan.linearRampToValueAtTime(1, t + 2);
+    osc.connect(vol).connect(pan).connect(ctx.destination);
+    osc.start(t);
+    osc.stop(t + 2);
+  });
+</script>`)}
+
+<h2>Distorção</h2>
+<p>O <code>WaveShaperNode</code> passa cada amostra por uma curva. Uma curva que "achata" os picos produz a distorção das guitarras:</p>
+${trecho(`function curvaDeDistorcao(intensidade = 50) {
+  const curva = new Float32Array(1024);
+  for (let i = 0; i < curva.length; i++) {
+    const x = (i * 2) / curva.length - 1;
+    curva[i] = ((3 + intensidade) * x * 20 * (Math.PI / 180)) / (Math.PI + intensidade * Math.abs(x));
+  }
+  return curva;
+}
+const distorcao = new WaveShaperNode(ctx, { curve: curvaDeDistorcao(80), oversample: '4x' });`)}
+<p>Para reverberação realista (o som de uma igreja, de um banheiro), existe o <code>ConvolverNode</code>, que aplica a "impressão acústica" de um ambiente gravada num arquivo de áudio.</p>
+`,
+              quiz: [
+                {
+                  pergunta: 'O que transforma um atraso simples num eco com várias repetições?',
+                  opcoes: [
+                    'Um filtro',
+                    'Ligar a saída do atraso de volta na entrada, com volume menor que 1',
+                    'Dois osciladores'
+                  ],
+                  certa: 1,
+                  explicacao: 'É a realimentação: cada volta sai mais baixa.'
+                },
+                {
+                  pergunta: 'Que valor de pan põe o som todo no lado direito?',
+                  opcoes: ['-1', '0', '1'],
+                  certa: 2,
+                  explicacao: '-1 é esquerda, 0 é centro e 1 é direita.'
+                },
+                {
+                  pergunta: 'O que acontece com realimentação em 1,2?',
+                  opcoes: ['O eco some', 'O eco cresce a cada volta até distorcer', 'Nada'],
+                  certa: 1,
+                  explicacao: 'Cada repetição sai mais alta que a anterior.'
+                }
+              ]
+            },
+            {
+              id: 'microfone-e-gravacao',
+              titulo: 'Microfone e gravação',
+              resumo: 'getUserMedia, medidor de volume e MediaRecorder.',
+              minutos: 11,
+              corpo: `
+<p>O microfone entra no Web Audio como mais um nó. Como envolve privacidade, o navegador sempre pede permissão, e a página precisa estar em HTTPS (ou <code>localhost</code>). Dentro do editor desta trilha (um iframe), o pedido costuma ser bloqueado, então os exemplos são para testar numa página sua.</p>
+
+<h2>Medidor de volume</h2>
+${trecho(`const fluxo = await navigator.mediaDevices.getUserMedia({ audio: true });
+const ctx = new AudioContext();
+const microfone = ctx.createMediaStreamSource(fluxo);
+const analisador = new AnalyserNode(ctx, { fftSize: 2048 });
+microfone.connect(analisador);           // não ligue no destination: faria microfonia
+
+const amostras = new Float32Array(analisador.fftSize);
+function medir() {
+  analisador.getFloatTimeDomainData(amostras);
+  const rms = Math.sqrt(amostras.reduce((soma, a) => soma + a * a, 0) / amostras.length);
+  const db = 20 * Math.log10(rms || 1e-8);          // decibéis em relação ao máximo (dBFS)
+  barra.style.width = Math.max(0, 100 + db * 2) + '%';
+  requestAnimationFrame(medir);
+}
+medir();`)}
+<p>O <strong>RMS</strong> (raiz da média dos quadrados) é a medida de volume mais comum: considera todas as amostras, não só o pico. Convertido em <strong>dBFS</strong>, 0 é o máximo possível e o silêncio fica em torno de -60 a -90.</p>
+
+<h2>Gravar</h2>
+<p>O <code>MediaRecorder</code> grava um fluxo de áudio (ou vídeo) num arquivo:</p>
+${trecho(`const gravador = new MediaRecorder(fluxo);
+const pedacos = [];
+gravador.addEventListener('dataavailable', e => pedacos.push(e.data));
+gravador.addEventListener('stop', () => {
+  const audio = new Blob(pedacos, { type: gravador.mimeType });
+  player.src = URL.createObjectURL(audio);         // <audio controls id="player">
+});
+
+gravador.start();
+setTimeout(() => gravador.stop(), 5000);           // 5 segundos`)}
+${dica('Quando terminar, desligue o microfone com <code>fluxo.getTracks().forEach(t =&gt; t.stop())</code>. Enquanto ele estiver aberto, o navegador mostra o ícone de gravação, e a pessoa tem razão de desconfiar se ele continuar aceso.')}
+
+<h2>Áudio e privacidade</h2>
+<ul>
+  <li>Peça o microfone só quando a pessoa clicar em algo como "Gravar", nunca ao abrir a página.</li>
+  <li>Diga o que acontece com o áudio: fica no aparelho ou vai para um servidor?</li>
+  <li>Gravação de voz é dado pessoal, e voz usada para identificar alguém é dado biométrico (sensível), segundo a LGPD.</li>
+</ul>
+`,
+              quiz: [
+                {
+                  pergunta: 'Por que não ligar o microfone direto em ctx.destination num medidor?',
+                  opcoes: ['Dá erro', 'O som do alto-falante volta para o microfone e vira microfonia', 'Fica mudo'],
+                  certa: 1,
+                  explicacao: 'O analisador não precisa estar ligado na saída para medir.'
+                },
+                {
+                  pergunta: 'O que o RMS mede?',
+                  opcoes: ['O pico mais alto', 'O volume médio considerando todas as amostras', 'A frequência'],
+                  certa: 1,
+                  explicacao: 'É a raiz da média dos quadrados das amostras.'
+                },
+                {
+                  pergunta: 'Como desligar o microfone ao terminar?',
+                  opcoes: [
+                    'ctx.close()',
+                    'Parar as faixas do fluxo: fluxo.getTracks().forEach(t => t.stop())',
+                    'Recarregar a página'
+                  ],
+                  certa: 1,
+                  explicacao: 'Fechar o contexto não libera o microfone.'
+                }
+              ]
+            },
+            {
+              id: 'desafio-eco',
+              tipo: 'desafio',
+              titulo: 'Desafio: efeito de eco',
+              resumo: 'Monte um eco com DelayNode e realimentação, conferido pelo som.',
+              minutos: 22,
+              enunciado: `
+<p>Escreva <code>eco(ctx, entrada, atraso, retorno)</code>. Ela recebe um nó de entrada e devolve um nó de <strong>saída</strong> (um <code>GainNode</code>) com:</p>
+<ul>
+  <li>o som original, sem mudança;</li>
+  <li>uma repetição depois de <code>atraso</code> segundos, com volume <code>retorno</code>;</li>
+  <li>outra depois de <code>2 × atraso</code>, com volume <code>retorno²</code>, e assim por diante (realimentação).</li>
+</ul>
+<p>Os testes tocam um único "clique" (uma amostra de valor 1) por dentro do seu eco num <code>OfflineAudioContext</code> e medem o que sai: 1 no começo, 0,5 depois do atraso, 0,25 depois de dois atrasos... Curiosidade: num ciclo de realimentação, o navegador acrescenta um bloco de 128 amostras (cerca de 3 ms) a cada volta, então a segunda repetição sai um pouquinho depois de 2 × atraso. Os testes contam com isso.</p>`,
+              inicial: `<button id="ouvir">Ouvir</button>
+
+<script>
+  function eco(ctx, entrada, atraso, retorno) {
+    // devolva o nó de saída
+  }
+
+  let ctx;
+  document.querySelector('#ouvir').addEventListener('click', () => {
+    ctx ??= new AudioContext();
+    const t = ctx.currentTime;
+    const osc = new OscillatorNode(ctx, { frequency: 520 });
+    const env = new GainNode(ctx, { gain: 0 });
+    env.gain.linearRampToValueAtTime(0.3, t + 0.01);
+    env.gain.linearRampToValueAtTime(0, t + 0.1);
+    osc.connect(env);
+    eco(ctx, env, 0.2, 0.5).connect(ctx.destination);
+    osc.start(t);
+    osc.stop(t + 0.1);
+  });
+</script>
+`,
+              testes: [
+                [
+                  'eco devolve um nó de áudio',
+                  doc => {
+                    const w = doc.defaultView;
+                    const ctx = new w.OfflineAudioContext(1, 4410, 44100);
+                    const saida = w.eval('eco')(ctx, new w.GainNode(ctx), 0.05, 0.5);
+                    return saida instanceof w.AudioNode;
+                  }
+                ],
+                [
+                  'O som original passa (pico 1 no começo) e há silêncio antes do primeiro eco',
+                  async doc => {
+                    const w = doc.defaultView;
+                    const ctx = new w.OfflineAudioContext(1, 44100, 44100);
+                    const buffer = ctx.createBuffer(1, 1, 44100);
+                    buffer.getChannelData(0)[0] = 1;
+                    const fonte = new w.AudioBufferSourceNode(ctx, { buffer });
+                    w.eval('eco')(ctx, fonte, 0.1, 0.5).connect(ctx.destination);
+                    fonte.start(0);
+                    const d = (await ctx.startRendering()).getChannelData(0);
+                    const pico = (a, b) => d.slice(a, b).reduce((m, v) => Math.max(m, Math.abs(v)), 0);
+                    return Math.abs(pico(0, 5) - 1) < 0.01 && pico(50, 4400) < 0.001;
+                  }
+                ],
+                [
+                  'Repetições com volume 0,5 e 0,25 depois de 1 e 2 atrasos',
+                  async doc => {
+                    const w = doc.defaultView;
+                    const ctx = new w.OfflineAudioContext(1, 44100, 44100);
+                    const buffer = ctx.createBuffer(1, 1, 44100);
+                    buffer.getChannelData(0)[0] = 1;
+                    const fonte = new w.AudioBufferSourceNode(ctx, { buffer });
+                    w.eval('eco')(ctx, fonte, 0.1, 0.5).connect(ctx.destination);
+                    fonte.start(0);
+                    const d = (await ctx.startRendering()).getChannelData(0);
+                    const pico = (a, b) => d.slice(a, b).reduce((m, v) => Math.max(m, Math.abs(v)), 0);
+                    // Num ciclo, o navegador soma um bloco de 128 amostras a cada volta: a 2ª repetição sai em ~8.948
+                    return (
+                      Math.abs(pico(4405, 4416) - 0.5) < 0.02 &&
+                      Math.abs(pico(8815, 8960) - 0.25) < 0.02 &&
+                      Math.abs(pico(13225, 13500) - 0.125) < 0.02
+                    );
+                  }
+                ]
+              ],
+              solucao: `<button id="ouvir">Ouvir</button>
+
+<script>
+  function eco(ctx, entrada, atraso, retorno) {
+    const saida = new GainNode(ctx);
+    const linha = new DelayNode(ctx, { delayTime: atraso, maxDelayTime: 2 });
+    const volta = new GainNode(ctx, { gain: retorno });
+
+    entrada.connect(saida);     // som original
+    entrada.connect(linha);
+    linha.connect(volta);
+    volta.connect(saida);       // cada repetição sai...
+    volta.connect(linha);       // ...e volta para ser atrasada de novo
+    return saida;
+  }
+
+  let ctx;
+  document.querySelector('#ouvir').addEventListener('click', () => {
+    ctx ??= new AudioContext();
+    const t = ctx.currentTime;
+    const osc = new OscillatorNode(ctx, { frequency: 520 });
+    const env = new GainNode(ctx, { gain: 0 });
+    env.gain.linearRampToValueAtTime(0.3, t + 0.01);
+    env.gain.linearRampToValueAtTime(0, t + 0.1);
+    osc.connect(env);
+    eco(ctx, env, 0.2, 0.5).connect(ctx.destination);
+    osc.start(t);
+    osc.stop(t + 0.1);
+  });
+</script>`
+            }
+          ]
         }
       ]
     }

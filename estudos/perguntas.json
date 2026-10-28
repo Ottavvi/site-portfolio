@@ -1283,6 +1283,58 @@
       "explicacao": "A página inicial fica mais leve, e o módulo é baixado só quando for usado."
     }
   ],
+  "modulos-es/organizar-um-projeto": [
+    {
+      "pergunta": "Qual a vantagem de organizar pastas por funcionalidade?",
+      "opcoes": [
+        "Menos arquivos",
+        "Tudo de uma funcionalidade fica junto, e mudá-la mexe numa pasta só",
+        "É obrigatório nos módulos"
+      ],
+      "certa": 1,
+      "explicacao": "Em projetos grandes, isso facilita achar, mudar e apagar código."
+    },
+    {
+      "pergunta": "Como resolver um ciclo em que a.js e b.js importam um do outro?",
+      "opcoes": [
+        "Juntar tudo num arquivo só, sempre",
+        "Levar o que os dois usam para um terceiro módulo",
+        "Trocar import por require"
+      ],
+      "certa": 1,
+      "explicacao": "O terceiro módulo não importa nenhum dos dois, e o ciclo desaparece."
+    },
+    {
+      "pergunta": "Por que listar() devolve cópias dos itens?",
+      "opcoes": ["Para ser mais rápido", "Para quem usa não alterar o estado interno sem querer", "É obrigatório"],
+      "certa": 1,
+      "explicacao": "O estado só muda pelas funções do módulo, onde há validação."
+    }
+  ],
+  "modulos-es/do-navegador-ao-vite": [
+    {
+      "pergunta": "O que é tree shaking?",
+      "opcoes": [
+        "Reordenar os arquivos",
+        "Deixar de fora do build o que foi exportado mas nunca importado",
+        "Atualizar pacotes"
+      ],
+      "certa": 1,
+      "explicacao": "Por isso importar só o que usa deixa o site menor."
+    },
+    {
+      "pergunta": "Uma chave secreta de API pode ir numa variável VITE_?",
+      "opcoes": ["Sim, se estiver no .env", "Não: tudo o que vai para o front-end é público", "Só em produção"],
+      "certa": 1,
+      "explicacao": "O build coloca o valor dentro do JavaScript que o navegador baixa."
+    },
+    {
+      "pergunta": "Qual comando gera os arquivos para publicar?",
+      "opcoes": ["npm run dev", "npm run build", "npm install"],
+      "certa": 1,
+      "explicacao": "O build gera a pasta dist/."
+    }
+  ],
   "localstorage/guardar-e-ler": [
     {
       "pergunta": "O que getItem devolve para uma chave que não existe?",
@@ -1369,6 +1421,58 @@
       "opcoes": ["localStorage", "IndexedDB", "Cookies"],
       "certa": 1,
       "explicacao": "IndexedDB é assíncrono, guarda objetos e tem muito mais espaço."
+    }
+  ],
+  "localstorage/indexeddb": [
+    {
+      "pergunta": "Qual a principal diferença do IndexedDB para o localStorage?",
+      "opcoes": [
+        "Ele é síncrono",
+        "Ele é assíncrono, guarda objetos e arquivos e tem muito mais espaço",
+        "Ele sincroniza entre aparelhos"
+      ],
+      "certa": 1,
+      "explicacao": "E tem índices para buscar por campos."
+    },
+    {
+      "pergunta": "Onde se criam os object stores?",
+      "opcoes": ["Em qualquer transação", "No evento upgradeneeded, ao mudar a versão do banco", "No servidor"],
+      "certa": 1,
+      "explicacao": "A estrutura do banco só muda durante o upgrade de versão."
+    },
+    {
+      "pergunta": "Uma data guardada no IndexedDB volta como:",
+      "opcoes": ["Texto", "Date", "Número"],
+      "certa": 1,
+      "explicacao": "Ele usa clonagem estruturada, não JSON."
+    }
+  ],
+  "localstorage/exportar-e-importar": [
+    {
+      "pergunta": "Por que oferecer backup num app que guarda dados no navegador?",
+      "opcoes": [
+        "Para ocupar menos espaço",
+        "Os dados podem sumir ao limpar o navegador ou trocar de computador",
+        "É obrigatório"
+      ],
+      "certa": 1,
+      "explicacao": "O backup em arquivo é a garantia da pessoa."
+    },
+    {
+      "pergunta": "O que fazer antes de gravar os dados de um arquivo de backup?",
+      "opcoes": ["Nada", "Validar o formato e as chaves", "Apagar tudo"],
+      "certa": 1,
+      "explicacao": "O arquivo pode ser de outro app, de outra versão ou ter sido editado."
+    },
+    {
+      "pergunta": "Para que serve navigator.storage.persist()?",
+      "opcoes": [
+        "Sincronizar com a nuvem",
+        "Pedir que o navegador não apague os dados do site para liberar espaço",
+        "Aumentar a velocidade"
+      ],
+      "certa": 1,
+      "explicacao": "Sem ele, o armazenamento é de melhor esforço."
     }
   ],
   "web-audio/primeiro-som": [
@@ -1465,6 +1569,54 @@
       ],
       "certa": 1,
       "explicacao": "Ótimo para gerar arquivos e para testes automáticos de áudio."
+    }
+  ],
+  "web-audio/efeitos": [
+    {
+      "pergunta": "O que transforma um atraso simples num eco com várias repetições?",
+      "opcoes": [
+        "Um filtro",
+        "Ligar a saída do atraso de volta na entrada, com volume menor que 1",
+        "Dois osciladores"
+      ],
+      "certa": 1,
+      "explicacao": "É a realimentação: cada volta sai mais baixa."
+    },
+    {
+      "pergunta": "Que valor de pan põe o som todo no lado direito?",
+      "opcoes": ["-1", "0", "1"],
+      "certa": 2,
+      "explicacao": "-1 é esquerda, 0 é centro e 1 é direita."
+    },
+    {
+      "pergunta": "O que acontece com realimentação em 1,2?",
+      "opcoes": ["O eco some", "O eco cresce a cada volta até distorcer", "Nada"],
+      "certa": 1,
+      "explicacao": "Cada repetição sai mais alta que a anterior."
+    }
+  ],
+  "web-audio/microfone-e-gravacao": [
+    {
+      "pergunta": "Por que não ligar o microfone direto em ctx.destination num medidor?",
+      "opcoes": ["Dá erro", "O som do alto-falante volta para o microfone e vira microfonia", "Fica mudo"],
+      "certa": 1,
+      "explicacao": "O analisador não precisa estar ligado na saída para medir."
+    },
+    {
+      "pergunta": "O que o RMS mede?",
+      "opcoes": ["O pico mais alto", "O volume médio considerando todas as amostras", "A frequência"],
+      "certa": 1,
+      "explicacao": "É a raiz da média dos quadrados das amostras."
+    },
+    {
+      "pergunta": "Como desligar o microfone ao terminar?",
+      "opcoes": [
+        "ctx.close()",
+        "Parar as faixas do fluxo: fluxo.getTracks().forEach(t => t.stop())",
+        "Recarregar a página"
+      ],
+      "certa": 1,
+      "explicacao": "Fechar o contexto não libera o microfone."
     }
   ],
   "notificacoes/como-funcionam": [
@@ -1573,6 +1725,54 @@
       "opcoes": ["Tentar de novo a cada minuto", "Apagar essa inscrição do banco", "Pedir permissão de novo"],
       "certa": 1,
       "explicacao": "A inscrição não existe mais; guardá-la só gera envios inúteis."
+    }
+  ],
+  "notificacoes/preferencias-de-aviso": [
+    {
+      "pergunta": "Por que oferecer categorias de aviso dentro do app?",
+      "opcoes": [
+        "Para enviar mais avisos",
+        "Para a pessoa desligar o que não quer sem bloquear tudo no navegador",
+        "É exigência do navegador"
+      ],
+      "certa": 1,
+      "explicacao": "Bloquear no navegador é definitivo; desligar uma categoria, não."
+    },
+    {
+      "pergunta": "Como deve vir a categoria de promoções?",
+      "opcoes": ["Ligada", "Desligada por padrão", "Sem opção de desligar"],
+      "certa": 1,
+      "explicacao": "Marketing é opcional e deve depender de uma escolha da pessoa."
+    },
+    {
+      "pergunta": "O que é um resumo (digest)?",
+      "opcoes": [
+        "Um aviso por evento",
+        "Vários eventos reunidos num aviso só, de tempos em tempos",
+        "Um e-mail de boas-vindas"
+      ],
+      "certa": 1,
+      "explicacao": "Bom para eventos frequentes e pouco urgentes."
+    }
+  ],
+  "notificacoes/avisos-no-celular": [
+    {
+      "pergunta": "Qual o jeito de mostrar notificação que funciona também no Android?",
+      "opcoes": ["new Notification()", "registration.showNotification() pelo service worker", "alert()"],
+      "certa": 1,
+      "explicacao": "No Android, o construtor Notification não é suportado na página."
+    },
+    {
+      "pergunta": "Como saber qual botão de ação foi clicado?",
+      "opcoes": ["Não dá", "Pelo evento.action no notificationclick do service worker", "Pelo título"],
+      "certa": 1,
+      "explicacao": "O action de cada botão chega no evento."
+    },
+    {
+      "pergunta": "O que é preciso para notificações web no iPhone?",
+      "opcoes": ["Nada", "O site estar adicionado à tela de início (iOS 16.4 ou mais novo)", "Um app da App Store"],
+      "certa": 1,
+      "explicacao": "No Safari comum, sem instalar, elas não funcionam."
     }
   ],
   "pwa-offline/o-que-e-pwa": [

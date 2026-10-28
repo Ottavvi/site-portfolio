@@ -561,6 +561,293 @@ ${dica('Uma ideia que aparece no próximo desafio: o localStorage não tem valid
 </script>`
             }
           ]
+        },
+        {
+          titulo: 'Mais espaço e backup',
+          itens: [
+            {
+              id: 'indexeddb',
+              titulo: 'IndexedDB',
+              resumo: 'O banco de dados do navegador: assíncrono, com objetos e muito espaço.',
+              minutos: 13,
+              corpo: `
+<p>Quando o localStorage aperta (muitos registros, arquivos, buscas por campo), o próximo passo é o <strong>IndexedDB</strong>: um banco de dados dentro do navegador. Ele guarda objetos de verdade (não só texto), arquivos (<code>Blob</code>), tem índices para buscar e é <strong>assíncrono</strong>, então não trava a página.</p>
+
+<h2>As peças</h2>
+<ul>
+  <li><strong>Banco</strong>: aberto com <code>indexedDB.open(nome, versao)</code>.</li>
+  <li><strong>Object store</strong>: o equivalente a uma tabela. É criado no evento <code>upgradeneeded</code>, que roda quando a versão do banco muda.</li>
+  <li><strong>Transação</strong>: toda leitura e escrita acontece dentro de uma, que é <code>readonly</code> ou <code>readwrite</code>.</li>
+  <li><strong>Índice</strong>: permite buscar por outro campo além da chave.</li>
+</ul>
+<p>A API original usa eventos (<code>onsuccess</code>, <code>onerror</code>) e é verbosa. Um pequeno embrulho em Promises deixa tudo com cara de <code>await</code>:</p>
+${codigo(`<ul id="lista"></ul>
+<script>
+  const pedido = req => new Promise((ok, erro) => {
+    req.onsuccess = () => ok(req.result);
+    req.onerror = () => erro(req.error);
+  });
+
+  function abrir() {
+    const req = indexedDB.open('exemplo-anotacoes', 1);
+    req.onupgradeneeded = () => {
+      const store = req.result.createObjectStore('notas', { keyPath: 'id', autoIncrement: true });
+      store.createIndex('porTag', 'tag');
+    };
+    return pedido(req);
+  }
+
+  (async () => {
+    const db = await abrir();
+
+    const escrever = db.transaction('notas', 'readwrite').objectStore('notas');
+    await pedido(escrever.add({ texto: 'Comprar café', tag: 'casa', criada: new Date() }));
+    await pedido(escrever.add({ texto: 'Revisar o PR', tag: 'trabalho', criada: new Date() }));
+
+    const ler = db.transaction('notas').objectStore('notas');
+    const todas = await pedido(ler.getAll());
+    const deCasa = await pedido(ler.index('porTag').getAll('casa'));
+    console.log(todas.length, 'nota(s) no total;', deCasa.length, 'de casa');
+    console.log('A data voltou como Date?', todas[0].criada instanceof Date);
+
+    document.querySelector('#lista').innerHTML = todas.map(n => '<li>' + n.texto + ' (' + n.tag + ')</li>').join('');
+    db.close();
+  })().catch(e => console.error(e.message));
+</script>`)}
+<p>Repare que a data volta como <code>Date</code>: o IndexedDB guarda objetos sem passar por JSON. Cada vez que o código roda, duas notas novas são acrescentadas, porque o banco persiste.</p>
+${dica('Para uso simples, a biblioteca <strong>idb-keyval</strong> (menos de 1 KB) dá ao IndexedDB a cara do localStorage: <code>await set("chave", valor)</code> e <code>await get("chave")</code>. A biblioteca <strong>idb</strong>, do mesmo autor, embrulha a API completa em Promises.')}
+
+<h2>Mudanças de versão</h2>
+<p>Para criar um store ou um índice novo, aumente a versão no <code>open</code>. O <code>upgradeneeded</code> recebe <code>event.oldVersion</code>, e você aplica só os passos que faltam (de 1 para 2, de 2 para 3...), como migrações de banco de dados.</p>
+`,
+              quiz: [
+                {
+                  pergunta: 'Qual a principal diferença do IndexedDB para o localStorage?',
+                  opcoes: [
+                    'Ele é síncrono',
+                    'Ele é assíncrono, guarda objetos e arquivos e tem muito mais espaço',
+                    'Ele sincroniza entre aparelhos'
+                  ],
+                  certa: 1,
+                  explicacao: 'E tem índices para buscar por campos.'
+                },
+                {
+                  pergunta: 'Onde se criam os object stores?',
+                  opcoes: [
+                    'Em qualquer transação',
+                    'No evento upgradeneeded, ao mudar a versão do banco',
+                    'No servidor'
+                  ],
+                  certa: 1,
+                  explicacao: 'A estrutura do banco só muda durante o upgrade de versão.'
+                },
+                {
+                  pergunta: 'Uma data guardada no IndexedDB volta como:',
+                  opcoes: ['Texto', 'Date', 'Número'],
+                  certa: 1,
+                  explicacao: 'Ele usa clonagem estruturada, não JSON.'
+                }
+              ]
+            },
+            {
+              id: 'exportar-e-importar',
+              titulo: 'Backup, cota e persistência',
+              resumo: 'Baixar e restaurar os dados num arquivo, e pedir para o navegador não apagar.',
+              minutos: 11,
+              corpo: `
+<p>Dados que vivem só no navegador podem sumir: a pessoa limpa os dados do site, troca de computador, ou o navegador apaga para liberar espaço. Um app que guarda coisas importantes no navegador deve oferecer <strong>backup</strong>.</p>
+
+<h2>Baixar um arquivo</h2>
+${codigo(`<button id="baixar">Baixar backup</button>
+<script>
+  localStorage.setItem('app:tarefas', JSON.stringify(['Estudar', 'Treinar']));
+  localStorage.setItem('app:tema', 'escuro');
+
+  document.querySelector('#baixar').addEventListener('click', () => {
+    const dados = {};
+    for (let i = 0; i < localStorage.length; i++) {
+      const chave = localStorage.key(i);
+      if (chave.startsWith('app:')) dados[chave] = localStorage.getItem(chave);
+    }
+    const arquivo = new Blob([JSON.stringify({ versao: 1, dados }, null, 2)], { type: 'application/json' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(arquivo);
+    link.download = 'backup-' + new Date().toISOString().slice(0, 10) + '.json';
+    link.click();
+    URL.revokeObjectURL(link.href);
+  });
+</script>`)}
+
+<h2>Restaurar</h2>
+<p>Um <code>&lt;input type="file"&gt;</code> entrega o arquivo escolhido, e <code>await arquivo.text()</code> lê o conteúdo. <strong>Valide antes de gravar</strong>: o arquivo pode ser de outro app, de outra versão, ou ter sido editado à mão.</p>
+${trecho(`entrada.addEventListener('change', async () => {
+  const arquivo = entrada.files[0];
+  if (!arquivo) return;
+  try {
+    const backup = JSON.parse(await arquivo.text());
+    if (backup.versao !== 1 || typeof backup.dados !== 'object') throw new Error('Formato desconhecido');
+    for (const [chave, valor] of Object.entries(backup.dados)) {
+      if (chave.startsWith('app:')) localStorage.setItem(chave, valor);
+    }
+    location.reload();
+  } catch (erro) {
+    alert('Este arquivo não é um backup válido: ' + erro.message);
+  }
+});`)}
+
+<h2>Quanto espaço há, e pedir para não apagar</h2>
+${codigo(`<p id="saida">Calculando…</p>
+<script>
+  (async () => {
+    if (!navigator.storage?.estimate) {
+      document.querySelector('#saida').textContent = 'Este navegador não informa a cota.';
+      return;
+    }
+    const { usage, quota } = await navigator.storage.estimate();
+    const mb = n => (n / 1024 / 1024).toFixed(1) + ' MB';
+    const persistente = await navigator.storage.persisted();
+    document.querySelector('#saida').textContent =
+      \`Usado: \${mb(usage)} de \${mb(quota)}. Armazenamento persistente: \${persistente ? 'sim' : 'não'}.\`;
+  })();
+</script>`)}
+<p>Por padrão, o armazenamento é "melhor esforço": se o disco encher, o navegador pode apagar dados dos sites menos usados. <code>navigator.storage.persist()</code> pede para ele não fazer isso. Alguns navegadores concedem sozinhos para sites instalados ou muito usados; outros perguntam à pessoa.</p>
+${dica('O app de finanças e o de ordens de serviço deste portfólio guardam tudo no navegador e têm botões de exportar e restaurar backup, exatamente por esse motivo.')}
+`,
+              quiz: [
+                {
+                  pergunta: 'Por que oferecer backup num app que guarda dados no navegador?',
+                  opcoes: [
+                    'Para ocupar menos espaço',
+                    'Os dados podem sumir ao limpar o navegador ou trocar de computador',
+                    'É obrigatório'
+                  ],
+                  certa: 1,
+                  explicacao: 'O backup em arquivo é a garantia da pessoa.'
+                },
+                {
+                  pergunta: 'O que fazer antes de gravar os dados de um arquivo de backup?',
+                  opcoes: ['Nada', 'Validar o formato e as chaves', 'Apagar tudo'],
+                  certa: 1,
+                  explicacao: 'O arquivo pode ser de outro app, de outra versão ou ter sido editado.'
+                },
+                {
+                  pergunta: 'Para que serve navigator.storage.persist()?',
+                  opcoes: [
+                    'Sincronizar com a nuvem',
+                    'Pedir que o navegador não apague os dados do site para liberar espaço',
+                    'Aumentar a velocidade'
+                  ],
+                  certa: 1,
+                  explicacao: 'Sem ele, o armazenamento é de melhor esforço.'
+                }
+              ]
+            },
+            {
+              id: 'desafio-backup',
+              tipo: 'desafio',
+              titulo: 'Desafio: exportar e importar backup',
+              resumo: 'Funções de backup com prefixo, versão e validação.',
+              minutos: 22,
+              enunciado: `
+<p>Escreva as duas funções do backup de um app cujas chaves começam com <code>app:</code>:</p>
+<ul>
+  <li><code>exportarBackup()</code>: devolve um <strong>texto JSON</strong> com <code>versao: 1</code> e <code>dados</code>, um objeto com todas as chaves que começam com <code>app:</code> e seus valores (como estão no localStorage). Chaves de fora do app não entram.</li>
+  <li><code>importarBackup(texto)</code>: lê o JSON e grava as chaves de <code>dados</code> que começam com <code>app:</code>, ignorando as outras. Devolve quantas gravou. Se o texto não for JSON, a <code>versao</code> não for 1 ou <code>dados</code> não for um objeto, lança um <code>Error</code> <strong>sem gravar nada</strong>.</li>
+</ul>`,
+              inicial: `<script>
+  function exportarBackup() {
+  }
+
+  function importarBackup(texto) {
+  }
+
+  localStorage.setItem('app:tema', 'escuro');
+  console.log(exportarBackup());
+</script>
+`,
+              testes: [
+                [
+                  'exportarBackup devolve versao 1 e só as chaves app:',
+                  doc => {
+                    const ls = doc.defaultView.localStorage;
+                    ls.setItem('app:teste-a', '1');
+                    ls.setItem('outra-coisa', 'x');
+                    const backup = JSON.parse(doc.defaultView.eval('exportarBackup')());
+                    ls.removeItem('outra-coisa');
+                    return (
+                      backup.versao === 1 &&
+                      backup.dados['app:teste-a'] === '1' &&
+                      !('outra-coisa' in backup.dados) &&
+                      Object.keys(backup.dados).every(k => k.startsWith('app:'))
+                    );
+                  }
+                ],
+                [
+                  'importarBackup grava as chaves app:, ignora as outras e devolve a quantidade',
+                  doc => {
+                    const ls = doc.defaultView.localStorage;
+                    const n = doc.defaultView.eval('importarBackup')(
+                      JSON.stringify({ versao: 1, dados: { 'app:x': 'um', 'app:y': 'dois', invasora: 'nao' } })
+                    );
+                    const ok =
+                      n === 2 &&
+                      ls.getItem('app:x') === 'um' &&
+                      ls.getItem('app:y') === 'dois' &&
+                      ls.getItem('invasora') === null;
+                    ls.removeItem('app:x');
+                    ls.removeItem('app:y');
+                    return ok;
+                  }
+                ],
+                [
+                  'Arquivo inválido lança erro e não grava nada',
+                  doc => {
+                    const w = doc.defaultView;
+                    const importar = w.eval('importarBackup');
+                    const lanca = texto => {
+                      try {
+                        importar(texto);
+                        return false;
+                      } catch {
+                        return true;
+                      }
+                    };
+                    return (
+                      lanca('{quebrado') &&
+                      lanca(JSON.stringify({ versao: 2, dados: { 'app:z': '1' } })) &&
+                      lanca(JSON.stringify({ versao: 1, dados: 'texto' })) &&
+                      w.localStorage.getItem('app:z') === null
+                    );
+                  }
+                ]
+              ],
+              solucao: `<script>
+  const PREFIXO = 'app:';
+
+  function exportarBackup() {
+    const dados = {};
+    for (let i = 0; i < localStorage.length; i++) {
+      const chave = localStorage.key(i);
+      if (chave.startsWith(PREFIXO)) dados[chave] = localStorage.getItem(chave);
+    }
+    return JSON.stringify({ versao: 1, dados });
+  }
+
+  function importarBackup(texto) {
+    const backup = JSON.parse(texto);                 // texto inválido já lança erro aqui
+    if (backup?.versao !== 1) throw new Error('Versão de backup desconhecida');
+    if (typeof backup.dados !== 'object' || backup.dados === null) throw new Error('Backup sem dados');
+
+    const validas = Object.entries(backup.dados).filter(([chave]) => chave.startsWith(PREFIXO));
+    for (const [chave, valor] of validas) localStorage.setItem(chave, valor);
+    return validas.length;
+  }
+
+  localStorage.setItem('app:tema', 'escuro');
+  console.log(exportarBackup());
+</script>`
+            }
+          ]
         }
       ]
     }

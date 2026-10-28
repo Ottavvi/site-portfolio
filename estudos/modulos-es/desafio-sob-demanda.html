@@ -74,11 +74,11 @@
               <summary>Trilha de Módulos ES</summary>
               <div
                 class="estudos-progresso"
-                data-progresso="modulos-es/por-que-modulos modulos-es/formas-de-exportar modulos-es/como-modulos-funcionam modulos-es/desafio-loja-modular modulos-es/import-dinamico modulos-es/desafio-sob-demanda"
+                data-progresso="modulos-es/por-que-modulos modulos-es/formas-de-exportar modulos-es/como-modulos-funcionam modulos-es/desafio-loja-modular modulos-es/import-dinamico modulos-es/desafio-sob-demanda modulos-es/organizar-um-projeto modulos-es/do-navegador-ao-vite modulos-es/desafio-dependencia-circular"
                 data-trilha="modulos-es"
               >
                 <div class="estudos-progresso-barra"><span></span></div>
-                <span class="estudos-progresso-texto">0 de 6 concluídos</span>
+                <span class="estudos-progresso-texto">0 de 9 concluídos</span>
               </div>
               <p class="aula-sumario-nivel">Iniciante</p>
               <ol class="trilha-modulos trilha-modulos--compacta">
@@ -178,6 +178,49 @@
                           <small>Cada aba carrega o seu módulo com import() só quando é aberta.</small>
                         </span>
                         <span class="trilha-item-tempo">22 min</span>
+                      </a>
+                    </li>
+                  </ol>
+                </li>
+                <li class="trilha-modulo">
+                  <h3><span>Módulo 4</span> Projetos maiores</h3>
+                  <ol>
+                    <li class="trilha-item" data-item="modulos-es/organizar-um-projeto">
+                      <a href="organizar-um-projeto.html">
+                        <span class="trilha-item-icone"
+                          ><svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M4 5h11a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3zM8 9h6M8 13h6" /></svg
+                        ></span>
+                        <span class="trilha-item-texto">
+                          <strong>Organizar pastas e dependências</strong>
+                          <small>Pastas por funcionalidade, arquivo de entrada e dependências circulares.</small>
+                        </span>
+                        <span class="trilha-item-tempo">11 min</span>
+                      </a>
+                    </li>
+                    <li class="trilha-item" data-item="modulos-es/do-navegador-ao-vite">
+                      <a href="do-navegador-ao-vite.html">
+                        <span class="trilha-item-icone"
+                          ><svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M4 5h11a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3zM8 9h6M8 13h6" /></svg
+                        ></span>
+                        <span class="trilha-item-texto">
+                          <strong>Do navegador ao Vite</strong>
+                          <small>Quando usar um bundler, pacotes do npm e variáveis de ambiente.</small>
+                        </span>
+                        <span class="trilha-item-tempo">10 min</span>
+                      </a>
+                    </li>
+                    <li class="trilha-item trilha-item--desafio" data-item="modulos-es/desafio-dependencia-circular">
+                      <a href="desafio-dependencia-circular.html">
+                        <span class="trilha-item-icone"
+                          ><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 8-4 4 4 4M16 8l4 4-4 4" /></svg
+                        ></span>
+                        <span class="trilha-item-texto">
+                          <strong>Desafio: quebrar uma dependência circular</strong>
+                          <small>Dois módulos que se importam: reorganize para o ciclo sumir.</small>
+                        </span>
+                        <span class="trilha-item-tempo">18 min</span>
                       </a>
                     </li>
                   </ol>
@@ -297,7 +340,9 @@ document.querySelectorAll('[data-aba]').forEach(botao =&gt; {
             </div>
             <nav class="aula-navegacao" aria-label="Aulas">
               <a href="import-dinamico.html"><small>← Anterior</small>import() e import maps</a>
-              <a class="aula-proxima" href="./"><small>Fim da trilha →</small>Voltar para a trilha</a>
+              <a class="aula-proxima" href="organizar-um-projeto.html"
+                ><small>Próxima →</small>Organizar pastas e dependências</a
+              >
             </nav>
           </article>
         </div>

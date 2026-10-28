@@ -567,6 +567,289 @@ document.querySelectorAll('[data-aba]').forEach(botao => {
 });`
             }
           ]
+        },
+        {
+          titulo: 'Projetos maiores',
+          itens: [
+            {
+              id: 'organizar-um-projeto',
+              titulo: 'Organizar pastas e dependências',
+              resumo: 'Pastas por funcionalidade, arquivo de entrada e dependências circulares.',
+              minutos: 11,
+              corpo: `
+<h2>Pastas por funcionalidade</h2>
+<p>Há dois jeitos comuns de organizar módulos. Por <strong>tipo</strong> (<code>componentes/</code>, <code>servicos/</code>, <code>utils/</code>) e por <strong>funcionalidade</strong> (<code>carrinho/</code>, <code>login/</code>, <code>produtos/</code>). Em projetos que crescem, o segundo costuma ganhar: tudo o que é do carrinho fica junto, e apagar ou mudar uma funcionalidade mexe numa pasta só.</p>
+${trecho(`js/
+  main.js                 ← ponto de entrada: liga as partes
+  compartilhado/
+    dinheiro.js           ← formatar moeda, usado por várias funcionalidades
+    api.js
+  carrinho/
+    index.js              ← o que o resto do app pode usar do carrinho
+    estado.js
+    desenhar.js
+  produtos/
+    index.js
+    busca.js`)}
+<p>O <code>index.js</code> de cada pasta reexporta só o que é público (<code>export { adicionar, total } from './estado.js'</code>). Os outros arquivos da pasta são detalhes internos, que podem mudar sem quebrar quem usa.</p>
+
+<h2>A direção das dependências</h2>
+<p>Uma regra simples evita a maior parte dos problemas: as importações devem "descer". <code>main.js</code> importa as funcionalidades; as funcionalidades importam <code>compartilhado/</code>; e <code>compartilhado/</code> não importa nenhuma funcionalidade.</p>
+
+<h2>Dependências circulares</h2>
+<p>Quando <code>a.js</code> importa <code>b.js</code> e <code>b.js</code> importa <code>a.js</code>, há um ciclo. Módulos ES até permitem, mas um dos dois começa a rodar antes de o outro terminar, e usar no topo do arquivo algo que ainda não foi criado dá erro:</p>
+${trecho(`// usuarios.js
+import { totalDoUsuario } from './pedidos.js';
+export const MOEDA = 'R$';
+
+// pedidos.js
+import { MOEDA } from './usuarios.js';
+export const ROTULO = 'Total em ' + MOEDA;   // ReferenceError: Cannot access 'MOEDA' before initialization`)}
+<p>A solução quase sempre é a mesma: o que os dois precisam vai para um <strong>terceiro módulo</strong>, que nenhum dos dois importa de volta (uma <code>config.js</code> ou algo em <code>compartilhado/</code>). O próximo desafio é exatamente esse.</p>
+${dica('Ferramentas como o <code>madge</code> (<code>npx madge --circular js/</code>) listam os ciclos de um projeto. No editor desta trilha, um ciclo aparece como "Não foi possível carregar um módulo".')}
+
+<h2>Exportar funções, não estado solto</h2>
+<p>Um módulo que exporta uma variável que qualquer um pode alterar vira um ponto de bugs. Exporte funções que mexem no estado, e o estado fica privado:</p>
+${codigo(`<ul id="lista"></ul>
+<script type="module" src="./main.js"></script>
+
+// --- carrinho.js ---
+const itens = [];                         // privado: ninguém de fora mexe direto
+
+export function adicionar(nome, preco) {
+  if (preco <= 0) throw new Error('Preço inválido');
+  itens.push({ nome, preco });
+}
+export const listar = () => itens.map(i => ({ ...i }));   // cópias, não o original
+export const total = () => itens.reduce((s, i) => s + i.preco, 0);
+
+// --- main.js ---
+import { adicionar, listar, total } from './carrinho.js';
+
+adicionar('Café', 62.9);
+adicionar('Caneca', 34.5);
+listar()[0].preco = 0;                    // mexe na cópia, não no carrinho
+document.querySelector('#lista').innerHTML =
+  listar().map(i => \`<li>\${i.nome}: \${i.preco}</li>\`).join('') + \`<li><strong>Total: \${total()}</strong></li>\`;`)}
+`,
+              quiz: [
+                {
+                  pergunta: 'Qual a vantagem de organizar pastas por funcionalidade?',
+                  opcoes: [
+                    'Menos arquivos',
+                    'Tudo de uma funcionalidade fica junto, e mudá-la mexe numa pasta só',
+                    'É obrigatório nos módulos'
+                  ],
+                  certa: 1,
+                  explicacao: 'Em projetos grandes, isso facilita achar, mudar e apagar código.'
+                },
+                {
+                  pergunta: 'Como resolver um ciclo em que a.js e b.js importam um do outro?',
+                  opcoes: [
+                    'Juntar tudo num arquivo só, sempre',
+                    'Levar o que os dois usam para um terceiro módulo',
+                    'Trocar import por require'
+                  ],
+                  certa: 1,
+                  explicacao: 'O terceiro módulo não importa nenhum dos dois, e o ciclo desaparece.'
+                },
+                {
+                  pergunta: 'Por que listar() devolve cópias dos itens?',
+                  opcoes: [
+                    'Para ser mais rápido',
+                    'Para quem usa não alterar o estado interno sem querer',
+                    'É obrigatório'
+                  ],
+                  certa: 1,
+                  explicacao: 'O estado só muda pelas funções do módulo, onde há validação.'
+                }
+              ]
+            },
+            {
+              id: 'do-navegador-ao-vite',
+              titulo: 'Do navegador ao Vite',
+              resumo: 'Quando usar um bundler, pacotes do npm e variáveis de ambiente.',
+              minutos: 10,
+              corpo: `
+<p>Tudo nesta trilha funciona no navegador sem ferramenta nenhuma, e isso basta para muitos sites (este portfólio é assim). Um <strong>bundler</strong> como o <strong>Vite</strong> passa a valer a pena quando:</p>
+<ul>
+  <li>você quer usar muitos pacotes do npm com <code>import x from 'nome-do-pacote'</code>;</li>
+  <li>usa JSX, TypeScript ou outra coisa que o navegador não entende direto;</li>
+  <li>o site tem dezenas de módulos e o número de arquivos baixados começa a pesar.</li>
+</ul>
+
+<h2>O que o Vite faz</h2>
+${trecho(`npm create vite@latest meu-site -- --template vanilla
+cd meu-site
+npm install
+npm run dev       # servidor que recarrega na hora a cada arquivo salvo
+npm run build     # gera a pasta dist/ otimizada para publicar`)}
+<ul>
+  <li>Em desenvolvimento, ele serve os seus módulos quase como estão (rápido), resolvendo os nomes de pacotes.</li>
+  <li>No build, ele <strong>junta</strong> os módulos em poucos arquivos, <strong>minifica</strong>, cria nomes com hash para o cache (<code>main-4f2a.js</code>) e separa os <code>import()</code> dinâmicos em arquivos próprios.</li>
+  <li><strong>Tree shaking</strong>: o que um pacote exporta mas você não importa fica de fora. Por isso <code>import { debounce } from 'lodash-es'</code> é bem menor que importar a biblioteca inteira.</li>
+</ul>
+
+<h2>Variáveis de ambiente</h2>
+<p>O Vite coloca em <code>import.meta.env</code> as variáveis dos arquivos <code>.env</code> que começam com <code>VITE_</code>:</p>
+${trecho(`# .env.production
+VITE_API_URL=https://api.meusite.com
+
+// em qualquer módulo
+const resposta = await fetch(\`\${import.meta.env.VITE_API_URL}/produtos\`);
+if (import.meta.env.DEV) console.log('modo de desenvolvimento');`)}
+${dica('Tudo o que vai para o front-end é público: qualquer pessoa vê no navegador. Nunca coloque uma chave secreta numa variável VITE_, mesmo que ela esteja num .env.')}
+
+<h2>CommonJS ainda existe</h2>
+<p>Você vai encontrar <code>require()</code> e <code>module.exports</code> em pacotes antigos e em código Node. Bundlers e o Node convertem entre os dois formatos, mas misturar no mesmo arquivo não funciona. Em código novo, use sempre <code>import</code>/<code>export</code>.</p>
+`,
+              quiz: [
+                {
+                  pergunta: 'O que é tree shaking?',
+                  opcoes: [
+                    'Reordenar os arquivos',
+                    'Deixar de fora do build o que foi exportado mas nunca importado',
+                    'Atualizar pacotes'
+                  ],
+                  certa: 1,
+                  explicacao: 'Por isso importar só o que usa deixa o site menor.'
+                },
+                {
+                  pergunta: 'Uma chave secreta de API pode ir numa variável VITE_?',
+                  opcoes: [
+                    'Sim, se estiver no .env',
+                    'Não: tudo o que vai para o front-end é público',
+                    'Só em produção'
+                  ],
+                  certa: 1,
+                  explicacao: 'O build coloca o valor dentro do JavaScript que o navegador baixa.'
+                },
+                {
+                  pergunta: 'Qual comando gera os arquivos para publicar?',
+                  opcoes: ['npm run dev', 'npm run build', 'npm install'],
+                  certa: 1,
+                  explicacao: 'O build gera a pasta dist/.'
+                }
+              ]
+            },
+            {
+              id: 'desafio-dependencia-circular',
+              tipo: 'desafio',
+              titulo: 'Desafio: quebrar uma dependência circular',
+              resumo: 'Dois módulos que se importam: reorganize para o ciclo sumir.',
+              minutos: 18,
+              enunciado: `
+<p><code>usuarios.js</code> e <code>pedidos.js</code> importam um do outro, e a página não carrega. Reorganize:</p>
+<ul>
+  <li>Crie um terceiro módulo com a constante <code>MOEDA</code> (só um arquivo pode exportar <code>MOEDA</code>).</li>
+  <li>Não pode haver nenhum ciclo de importação entre os arquivos.</li>
+  <li>A página precisa mostrar <code>Total em R$ | Ana: R$ 75.50</code> em <code>#saida</code>.</li>
+</ul>`,
+              inicial: `<p id="saida"></p>
+<script type="module" src="./main.js"></script>
+
+// --- usuarios.js ---
+import { totalDoUsuario } from './pedidos.js';
+
+export const MOEDA = 'R$';
+
+export function resumo(nome) {
+  return nome + ': ' + MOEDA + ' ' + totalDoUsuario(nome).toFixed(2);
+}
+
+// --- pedidos.js ---
+import { MOEDA } from './usuarios.js';
+
+const pedidos = [
+  { cliente: 'Ana', valor: 50 },
+  { cliente: 'Ana', valor: 25.5 },
+  { cliente: 'Rui', valor: 10 }
+];
+
+export const ROTULO = 'Total em ' + MOEDA;
+
+export function totalDoUsuario(nome) {
+  return pedidos.filter(p => p.cliente === nome).reduce((s, p) => s + p.valor, 0);
+}
+
+// --- main.js ---
+import { resumo } from './usuarios.js';
+import { ROTULO } from './pedidos.js';
+
+document.querySelector('#saida').textContent = ROTULO + ' | ' + resumo('Ana');
+`,
+              testes: [
+                [
+                  'Só um arquivo exporta MOEDA',
+                  doc => {
+                    const arquivos = Object.values(doc.defaultView.__arquivos);
+                    return arquivos.filter(codigo => /export\s+const\s+MOEDA\b/.test(codigo)).length === 1;
+                  }
+                ],
+                [
+                  'Não há nenhum ciclo de importação',
+                  doc => {
+                    const arquivos = doc.defaultView.__arquivos;
+                    const deps = nome =>
+                      [...(arquivos[nome] || '').matchAll(/from\s+['"]\.\/([\w.-]+\.js)['"]/g)].map(m => m[1]);
+                    const visitando = new Set();
+                    const feitos = new Set();
+                    const temCiclo = nome => {
+                      if (visitando.has(nome)) return true;
+                      if (feitos.has(nome)) return false;
+                      visitando.add(nome);
+                      const ciclo = deps(nome).some(temCiclo);
+                      visitando.delete(nome);
+                      feitos.add(nome);
+                      return ciclo;
+                    };
+                    return Object.keys(arquivos).length >= 4 && !Object.keys(arquivos).some(temCiclo);
+                  }
+                ],
+                [
+                  '#saida mostra "Total em R$ | Ana: R$ 75.50"',
+                  async doc => {
+                    await doc.defaultView.__esperar(100);
+                    return doc.querySelector('#saida').textContent === 'Total em R$ | Ana: R$ 75.50';
+                  }
+                ]
+              ],
+              solucao: `<p id="saida"></p>
+<script type="module" src="./main.js"></script>
+
+// --- config.js ---
+export const MOEDA = 'R$';
+
+// --- usuarios.js ---
+import { MOEDA } from './config.js';
+import { totalDoUsuario } from './pedidos.js';
+
+export function resumo(nome) {
+  return nome + ': ' + MOEDA + ' ' + totalDoUsuario(nome).toFixed(2);
+}
+
+// --- pedidos.js ---
+import { MOEDA } from './config.js';
+
+const pedidos = [
+  { cliente: 'Ana', valor: 50 },
+  { cliente: 'Ana', valor: 25.5 },
+  { cliente: 'Rui', valor: 10 }
+];
+
+export const ROTULO = 'Total em ' + MOEDA;
+
+export function totalDoUsuario(nome) {
+  return pedidos.filter(p => p.cliente === nome).reduce((s, p) => s + p.valor, 0);
+}
+
+// --- main.js ---
+import { resumo } from './usuarios.js';
+import { ROTULO } from './pedidos.js';
+
+document.querySelector('#saida').textContent = ROTULO + ' | ' + resumo('Ana');`
+            }
+          ]
         }
       ]
     }

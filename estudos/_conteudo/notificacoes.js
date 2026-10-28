@@ -654,6 +654,266 @@ ${dica('No iPhone e no iPad, o push na web só funciona depois que a pessoa adic
 </script>`
             }
           ]
+        },
+        {
+          titulo: 'Avisar sem incomodar',
+          itens: [
+            {
+              id: 'preferencias-de-aviso',
+              titulo: 'Preferências de aviso',
+              resumo: 'Categorias, canais, horário silencioso, resumos e limite de frequência.',
+              minutos: 11,
+              corpo: `
+<p>A permissão do navegador é um interruptor só: tudo ou nada. Quem avisa demais leva um "bloquear" e perde o canal para sempre. A saída é dar controle fino <strong>dentro do seu app</strong>, para a pessoa nunca precisar desligar tudo.</p>
+
+<h2>O que oferecer</h2>
+<ul>
+  <li><strong>Categorias</strong>: pedidos e mensagens sim, promoções não. Cada uma com seu interruptor, e as de marketing desligadas por padrão.</li>
+  <li><strong>Canais</strong>: notificação no navegador, e-mail, WhatsApp. A mesma informação não precisa chegar por todos.</li>
+  <li><strong>Horário silencioso</strong>: nada entre 22h e 7h, a não ser que seja urgente.</li>
+  <li><strong>Resumo</strong>: em vez de 15 avisos de "curtiram sua foto", um por dia com tudo junto.</li>
+</ul>
+${codigo(`<style>
+  fieldset { border: 1px solid #ccd; border-radius: 10px; margin-bottom: 10px; }
+  label { display: block; margin: 4px 0; }
+</style>
+<form id="prefs">
+  <fieldset>
+    <legend>O que avisar</legend>
+    <label><input type="checkbox" name="pedidos" checked> Status dos pedidos</label>
+    <label><input type="checkbox" name="mensagens" checked> Mensagens do suporte</label>
+    <label><input type="checkbox" name="promocoes"> Promoções</label>
+  </fieldset>
+  <fieldset>
+    <legend>Horário silencioso</legend>
+    <label>Das <input type="time" name="inicio" value="22:00"> às <input type="time" name="fim" value="07:00"></label>
+  </fieldset>
+</form>
+<pre id="salvo"></pre>
+
+<script>
+  const form = document.querySelector('#prefs');
+  function salvar() {
+    const dados = new FormData(form);
+    const prefs = {
+      categorias: { pedidos: dados.has('pedidos'), mensagens: dados.has('mensagens'), promocoes: dados.has('promocoes') },
+      silencio: { inicio: dados.get('inicio'), fim: dados.get('fim') }
+    };
+    localStorage.setItem('prefs-aviso', JSON.stringify(prefs));
+    document.querySelector('#salvo').textContent = JSON.stringify(prefs, null, 2);
+  }
+  form.addEventListener('change', salvar);
+  salvar();
+</script>`)}
+<p>Num app com conta, essas preferências vão para o servidor, que é quem decide se envia um push ou um e-mail.</p>
+
+<h2>Limite de frequência</h2>
+<p>Mesmo com tudo ligado, ninguém quer 30 avisos por hora. Um limite simples ("no máximo 3 por hora por categoria; o resto entra no próximo resumo") protege a pessoa de um bug ou de uma campanha exagerada.</p>
+${dica('Meça: quantas notificações são clicadas e quantas pessoas desligam uma categoria depois de recebê-la. Uma categoria que só é desligada está atrapalhando.')}
+`,
+              quiz: [
+                {
+                  pergunta: 'Por que oferecer categorias de aviso dentro do app?',
+                  opcoes: [
+                    'Para enviar mais avisos',
+                    'Para a pessoa desligar o que não quer sem bloquear tudo no navegador',
+                    'É exigência do navegador'
+                  ],
+                  certa: 1,
+                  explicacao: 'Bloquear no navegador é definitivo; desligar uma categoria, não.'
+                },
+                {
+                  pergunta: 'Como deve vir a categoria de promoções?',
+                  opcoes: ['Ligada', 'Desligada por padrão', 'Sem opção de desligar'],
+                  certa: 1,
+                  explicacao: 'Marketing é opcional e deve depender de uma escolha da pessoa.'
+                },
+                {
+                  pergunta: 'O que é um resumo (digest)?',
+                  opcoes: [
+                    'Um aviso por evento',
+                    'Vários eventos reunidos num aviso só, de tempos em tempos',
+                    'Um e-mail de boas-vindas'
+                  ],
+                  certa: 1,
+                  explicacao: 'Bom para eventos frequentes e pouco urgentes.'
+                }
+              ]
+            },
+            {
+              id: 'avisos-no-celular',
+              titulo: 'Avisos no celular e no app instalado',
+              resumo: 'showNotification, ações, selo no ícone e vibração.',
+              minutos: 10,
+              corpo: `
+<p>No Android, <code>new Notification()</code> não funciona: lá, as notificações saem sempre pelo service worker, com <code>registration.showNotification()</code>. Usar sempre esse caminho funciona em todos os lugares:</p>
+${trecho(`const registro = await navigator.serviceWorker.ready;
+await registro.showNotification('Pedido saiu para entrega', {
+  body: 'Chega em cerca de 40 minutos.',
+  icon: '/icones/icone-192.png',
+  badge: '/icones/badge-72.png',      // ícone pequeno, monocromático, da barra do Android
+  tag: 'pedido-123',
+  vibrate: [100, 50, 100],             // vibra, pausa, vibra (em ms), onde houver suporte
+  data: { url: '/pedidos/123' },
+  actions: [
+    { action: 'rastrear', title: 'Rastrear' },
+    { action: 'ajuda', title: 'Preciso de ajuda' }
+  ]
+});`)}
+<p>Os botões de <code>actions</code> aparecem na notificação, e o service worker sabe qual foi clicado:</p>
+${trecho(`// sw.js
+self.addEventListener('notificationclick', evento => {
+  evento.notification.close();
+  const destino = evento.action === 'ajuda' ? '/ajuda' : evento.notification.data.url;
+  evento.waitUntil(clients.openWindow(destino));
+});`)}
+
+<h2>O selo no ícone</h2>
+<p>Num app instalado, a <strong>Badging API</strong> põe um número no ícone (como o contador de e-mails não lidos). É bem menos invasivo que uma notificação:</p>
+${trecho(`if ('setAppBadge' in navigator) {
+  navigator.setAppBadge(naoLidas);        // um número
+  // navigator.clearAppBadge();           // limpa
+}`)}
+
+<h2>iPhone e iPad</h2>
+<p>No iOS (a partir da versão 16.4), notificações web e selos só funcionam para sites <strong>adicionados à tela de início</strong>, e o pedido de permissão precisa vir de um toque da pessoa dentro do app instalado. Para quem usa muito iPhone, explique isso no convite, com o passo a passo do "Compartilhar, Adicionar à Tela de Início".</p>
+${dica('Teste as notificações num celular de verdade. O que aparece no computador (tamanho do texto, ícone, ações) muda bastante no Android e no iOS.')}
+`,
+              quiz: [
+                {
+                  pergunta: 'Qual o jeito de mostrar notificação que funciona também no Android?',
+                  opcoes: ['new Notification()', 'registration.showNotification() pelo service worker', 'alert()'],
+                  certa: 1,
+                  explicacao: 'No Android, o construtor Notification não é suportado na página.'
+                },
+                {
+                  pergunta: 'Como saber qual botão de ação foi clicado?',
+                  opcoes: ['Não dá', 'Pelo evento.action no notificationclick do service worker', 'Pelo título'],
+                  certa: 1,
+                  explicacao: 'O action de cada botão chega no evento.'
+                },
+                {
+                  pergunta: 'O que é preciso para notificações web no iPhone?',
+                  opcoes: [
+                    'Nada',
+                    'O site estar adicionado à tela de início (iOS 16.4 ou mais novo)',
+                    'Um app da App Store'
+                  ],
+                  certa: 1,
+                  explicacao: 'No Safari comum, sem instalar, elas não funcionam.'
+                }
+              ]
+            },
+            {
+              id: 'desafio-horario-silencioso',
+              tipo: 'desafio',
+              titulo: 'Desafio: horário silencioso',
+              resumo: 'Decida se um aviso pode sair agora, respeitando as preferências.',
+              minutos: 22,
+              enunciado: `
+<p>Escreva <code>deveAvisar(aviso, prefs, agora)</code>, que devolve <code>true</code> ou <code>false</code>:</p>
+<ul>
+  <li><code>aviso</code> tem <code>categoria</code> (texto) e <code>urgente</code> (booleano). <code>prefs.categorias</code> diz quais estão ligadas; <code>prefs.silencio</code> tem <code>inicio</code> e <code>fim</code> no formato <code>"HH:MM"</code>. <code>agora</code> é um <code>Date</code>.</li>
+  <li>Categoria desligada (ou que não existe nas preferências): <code>false</code>, mesmo se urgente.</li>
+  <li>Aviso urgente de categoria ligada: <code>true</code>, a qualquer hora.</li>
+  <li>Dentro do horário silencioso: <code>false</code>. O horário pode <strong>atravessar a meia-noite</strong> (22:00 às 07:00). O início conta como silencioso; o fim, não.</li>
+</ul>`,
+              inicial: `<script>
+  function deveAvisar(aviso, prefs, agora) {
+  }
+
+  const prefs = {
+    categorias: { pedidos: true, promocoes: false },
+    silencio: { inicio: '22:00', fim: '07:00' }
+  };
+  console.log(deveAvisar({ categoria: 'pedidos', urgente: false }, prefs, new Date(2026, 9, 28, 23, 30)));
+</script>
+`,
+              testes: [
+                [
+                  'Categoria desligada ou desconhecida nunca avisa',
+                  doc => {
+                    const f = doc.defaultView.eval('deveAvisar');
+                    const prefs = {
+                      categorias: { pedidos: true, promocoes: false },
+                      silencio: { inicio: '22:00', fim: '07:00' }
+                    };
+                    const meioDia = new Date(2026, 9, 28, 12, 0);
+                    return (
+                      f({ categoria: 'promocoes', urgente: true }, prefs, meioDia) === false &&
+                      f({ categoria: 'outra', urgente: false }, prefs, meioDia) === false
+                    );
+                  }
+                ],
+                [
+                  'Fora do horário silencioso, avisa',
+                  doc => {
+                    const f = doc.defaultView.eval('deveAvisar');
+                    const prefs = { categorias: { pedidos: true }, silencio: { inicio: '22:00', fim: '07:00' } };
+                    return (
+                      f({ categoria: 'pedidos', urgente: false }, prefs, new Date(2026, 9, 28, 12, 0)) === true &&
+                      f({ categoria: 'pedidos', urgente: false }, prefs, new Date(2026, 9, 28, 7, 0)) === true
+                    );
+                  }
+                ],
+                [
+                  'Silêncio que atravessa a meia-noite (22:00 às 07:00)',
+                  doc => {
+                    const f = doc.defaultView.eval('deveAvisar');
+                    const prefs = { categorias: { pedidos: true }, silencio: { inicio: '22:00', fim: '07:00' } };
+                    const a = { categoria: 'pedidos', urgente: false };
+                    return (
+                      f(a, prefs, new Date(2026, 9, 28, 22, 0)) === false &&
+                      f(a, prefs, new Date(2026, 9, 28, 23, 45)) === false &&
+                      f(a, prefs, new Date(2026, 9, 29, 3, 10)) === false &&
+                      f(a, prefs, new Date(2026, 9, 29, 6, 59)) === false &&
+                      f(a, prefs, new Date(2026, 9, 28, 21, 59)) === true
+                    );
+                  }
+                ],
+                [
+                  'Silêncio no mesmo dia (13:00 às 14:00) e urgentes passam',
+                  doc => {
+                    const f = doc.defaultView.eval('deveAvisar');
+                    const prefs = { categorias: { pedidos: true }, silencio: { inicio: '13:00', fim: '14:00' } };
+                    const a = { categoria: 'pedidos', urgente: false };
+                    return (
+                      f(a, prefs, new Date(2026, 9, 28, 13, 30)) === false &&
+                      f(a, prefs, new Date(2026, 9, 28, 14, 30)) === true &&
+                      f(a, prefs, new Date(2026, 9, 28, 2, 0)) === true &&
+                      f({ categoria: 'pedidos', urgente: true }, prefs, new Date(2026, 9, 28, 13, 30)) === true
+                    );
+                  }
+                ]
+              ],
+              solucao: `<script>
+  const emMinutos = horario => {
+    const [h, m] = horario.split(':').map(Number);
+    return h * 60 + m;
+  };
+
+  function emSilencio(silencio, agora) {
+    const atual = agora.getHours() * 60 + agora.getMinutes();
+    const inicio = emMinutos(silencio.inicio);
+    const fim = emMinutos(silencio.fim);
+    // No mesmo dia (13:00 às 14:00) ou atravessando a meia-noite (22:00 às 07:00)
+    return inicio <= fim ? atual >= inicio && atual < fim : atual >= inicio || atual < fim;
+  }
+
+  function deveAvisar(aviso, prefs, agora) {
+    if (!prefs.categorias[aviso.categoria]) return false;
+    if (aviso.urgente) return true;
+    return !emSilencio(prefs.silencio, agora);
+  }
+
+  const prefs = {
+    categorias: { pedidos: true, promocoes: false },
+    silencio: { inicio: '22:00', fim: '07:00' }
+  };
+  console.log(deveAvisar({ categoria: 'pedidos', urgente: false }, prefs, new Date(2026, 9, 28, 23, 30)));
+</script>`
+            }
+          ]
         }
       ]
     }
