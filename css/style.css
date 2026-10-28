@@ -2288,6 +2288,38 @@ a.trilha-card:hover {
   border: 0;
   background: #fff;
 }
+.editor-console {
+  border-top: 1px solid var(--line-strong);
+}
+.editor-console-linhas {
+  max-height: 170px;
+  overflow-y: auto;
+  padding: 6px 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.82rem;
+  line-height: 1.6;
+}
+.editor-console-linha {
+  padding: 2px 12px;
+  color: var(--text-strong);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.editor-console-linha + .editor-console-linha {
+  border-top: 1px solid var(--line);
+}
+.editor-console-warn {
+  color: #e0a43a;
+}
+.editor-console-error {
+  color: #f07178;
+}
+:root[data-theme='light'] .editor-console-warn {
+  color: #8a5a00;
+}
+:root[data-theme='light'] .editor-console-error {
+  color: #b3261e;
+}
 
 /* Quiz */
 .quiz {

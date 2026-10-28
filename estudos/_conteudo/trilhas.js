@@ -4,14 +4,7 @@ module.exports = [
   // ---------- Desenvolvimento web ----------
   require('./html'),
   require('./css'),
-  {
-    id: 'javascript',
-    area: 'Desenvolvimento web',
-    titulo: 'JavaScript',
-    sigla: 'JS',
-    resumo: 'Variáveis, funções, eventos e o DOM: fazer a página reagir ao que a pessoa faz.',
-    emBreve: true
-  },
+  require('./javascript'),
   {
     id: 'modulos-es',
     area: 'Desenvolvimento web',

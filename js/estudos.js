@@ -13,6 +13,11 @@ const gravarLocal = (chave, valor) => {
     localStorage.setItem(chave, valor);
   } catch {}
 };
+const removerLocal = chave => {
+  try {
+    localStorage.removeItem(chave);
+  } catch {}
+};
 
 // ---------- Progresso ----------
 const feitos = new Set(JSON.parse(lerLocal(CHAVE_PROGRESSO) || '[]'));
@@ -161,6 +166,37 @@ const ESTILO_RESULTADO = `<style data-base>@layer base {
   fieldset label, label:has(input[type=checkbox]), label:has(input[type=radio]) { display: inline-block; margin-right: 12px; }
 }</style>`;
 
+// Vai no começo do resultado (logo depois do <!doctype>, se houver): copia console.log e os erros para o painel
+// Console embaixo do resultado e guarda tudo em window.__saida, para os testes dos desafios de JavaScript
+const CONSOLE_RESULTADO = `<script data-base>(() => {
+  const saida = (window.__saida = []);
+  const texto = v => {
+    if (typeof v === 'string') return v;
+    if (v instanceof Error) return v.name + ': ' + v.message;
+    if (typeof v !== 'object' || v === null) return String(v);
+    try { return JSON.stringify(v); } catch { return String(v); }
+  };
+  const enviar = (tipo, valores) => {
+    const linha = valores.map(texto).join(' ');
+    saida.push(linha);
+    parent.postMessage({ console: tipo, linha }, '*');
+  };
+  for (const tipo of ['log', 'info', 'warn', 'error']) {
+    const original = console[tipo];
+    console[tipo] = (...valores) => { enviar(tipo, valores); original.apply(console, valores); };
+  }
+  addEventListener('error', e => enviar('error', [e.message]));
+  addEventListener('unhandledrejection', e => enviar('error', ['Promise rejeitada: ' + texto(e.reason)]));
+})();</script>`;
+const comConsole = codigo => {
+  const doctype = codigo.match(/^s*<!doctype[^>]*>/i);
+  return doctype ? doctype[0] + CONSOLE_RESULTADO + codigo.slice(doctype[0].length) : CONSOLE_RESULTADO + codigo;
+};
+
+// Um laço infinito trava a aba. A marca fica gravada enquanto o resultado carrega: se ela ainda estiver lá quando
+// a página abrir de novo, o código salvo não roda sozinho
+const MARCA_RODANDO = 'estudos-rodando';
+
 function criarEditor(caixa, { codigoInicial, aoAtualizar, chaveSalva }) {
   const salvo = chaveSalva ? lerLocal(chaveSalva) : null;
   caixa.classList.add('editor');
@@ -174,21 +210,47 @@ function criarEditor(caixa, { codigoInicial, aoAtualizar, chaveSalva }) {
     </div>
     <div class="editor-painel">
       <div class="editor-barra"><span>Resultado</span></div>
-      <iframe sandbox="allow-same-origin allow-forms" title="Resultado do código"></iframe>
+      <iframe sandbox="allow-scripts allow-same-origin allow-forms allow-modals" title="Resultado do código"></iframe>
+      <div class="editor-console" hidden>
+        <div class="editor-barra"><span>Console</span></div>
+        <div class="editor-console-linhas" role="log"></div>
+      </div>
     </div>`;
   const campo = caixa.querySelector('textarea');
   const resultado = caixa.querySelector('iframe');
+  const painelConsole = caixa.querySelector('.editor-console');
+  const linhasConsole = caixa.querySelector('.editor-console-linhas');
   campo.value = salvo ?? codigoInicial;
+
+  const escreverNoConsole = (tipo, linha) => {
+    const item = document.createElement('div');
+    item.className = `editor-console-linha editor-console-${tipo}`;
+    item.textContent = linha;
+    linhasConsole.append(item);
+    painelConsole.hidden = false;
+    linhasConsole.scrollTop = linhasConsole.scrollHeight;
+  };
+  window.addEventListener('message', event => {
+    if (event.source === resultado.contentWindow && event.data?.console) {
+      escreverNoConsole(event.data.console, event.data.linha);
+    }
+  });
 
   let espera;
   let tabSai = false;
   const desenhar = () => {
-    resultado.srcdoc = campo.value + ESTILO_RESULTADO;
+    linhasConsole.replaceChildren();
+    painelConsole.hidden = true;
+    if (chaveSalva) gravarLocal(MARCA_RODANDO, chaveSalva);
+    resultado.srcdoc = comConsole(campo.value) + ESTILO_RESULTADO;
   };
   resultado.addEventListener('load', () => {
+    if (chaveSalva && lerLocal(MARCA_RODANDO) === chaveSalva) removerLocal(MARCA_RODANDO);
     const doc = resultado.contentDocument;
     // Formulários no resultado: valida como de verdade, mas não envia para lugar nenhum
     doc.addEventListener('submit', event => {
+      // Se o JavaScript da página já cuidou do envio, não se mete
+      if (event.defaultPrevented) return;
       event.preventDefault();
       const aviso = doc.createElement('p');
       aviso.textContent = '✓ Formulário válido. (O envio é só uma simulação.)';
@@ -220,7 +282,15 @@ function criarEditor(caixa, { codigoInicial, aoAtualizar, chaveSalva }) {
     desenhar();
     campo.focus();
   });
-  desenhar();
+  if (chaveSalva && lerLocal(MARCA_RODANDO) === chaveSalva) {
+    removerLocal(MARCA_RODANDO);
+    escreverNoConsole(
+      'warn',
+      'Da última vez, este código travou a página (talvez um laço que nunca termina). Ele não rodou agora: corrija e edite para rodar de novo, ou clique em Recomeçar.'
+    );
+  } else {
+    desenhar();
+  }
 }
 
 // Botão "Experimente" em cada exemplo de código das aulas

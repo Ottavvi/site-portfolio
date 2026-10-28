@@ -78,6 +78,9 @@ As páginas de `estudos/` são **geradas**: não edite os `.html` de lá à mão
 - `css.js`: a trilha de CSS, no mesmo formato. Os testes dos desafios leem `getComputedStyle` do resultado e, quando
   precisam saber como algo foi escrito (rem, `@media`, `var()`), o texto dos `<style>` (o estilo base do editor tem
   `data-base` e fica fora)
+- `javascript.js`: a trilha de JavaScript. Os testes pegam as funções da pessoa com `doc.defaultView.eval('nome')`
+  (enxerga até `const` e `class`) e simulam cliques e envios. O editor roda scripts e mostra um console embaixo do
+  resultado (`window.__saida` guarda as linhas). Um código que travou a aba não roda sozinho ao reabrir a página
 - `diario.js`: as anotações do diário de estudos
 - `ajuda.js`: `codigo()` para exemplos com botão "Experimente", `trecho()` para código que não roda sozinho (só CSS) e `dica()` para as caixas de dica
 
