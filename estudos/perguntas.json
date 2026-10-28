@@ -1046,5 +1046,289 @@
       "certa": 1,
       "explicacao": "Devolver o próprio array deixaria qualquer um fazer push nele, contornando as regras da classe."
     }
+  ],
+  "sqlite/o-que-e-sql": [
+    {
+      "pergunta": "Numa tabela, o que é cada linha?",
+      "opcoes": ["Um tipo de dado", "Um registro", "Um banco inteiro"],
+      "certa": 1,
+      "explicacao": "Cada linha é um registro (um cliente, um produto). As colunas são os campos de cada registro."
+    },
+    {
+      "pergunta": "O que SELECT nome FROM clientes devolve?",
+      "opcoes": ["Só a coluna nome de todos os clientes", "Todas as colunas", "O primeiro cliente"],
+      "certa": 0,
+      "explicacao": "SELECT escolhe as colunas. Sem filtro, vêm todas as linhas da tabela."
+    },
+    {
+      "pergunta": "Para que serve DISTINCT?",
+      "opcoes": ["Ordenar", "Tirar linhas repetidas do resultado", "Apagar dados repetidos da tabela"],
+      "certa": 1,
+      "explicacao": "Ele age só no resultado da consulta. A tabela continua igual."
+    }
+  ],
+  "sqlite/filtrar-e-ordenar": [
+    {
+      "pergunta": "Como achar produtos cujo nome termina em 'manual'?",
+      "opcoes": ["LIKE 'manual%'", "LIKE '%manual'", "= '%manual'"],
+      "certa": 1,
+      "explicacao": "O % vem antes: qualquer coisa e depois \"manual\". Com =, o % é tratado como um caractere comum."
+    },
+    {
+      "pergunta": "Como saber quais clientes não têm cidade preenchida?",
+      "opcoes": ["WHERE cidade = NULL", "WHERE cidade = ''", "WHERE cidade IS NULL"],
+      "certa": 2,
+      "explicacao": "NULL não é igual a nada, nem a outro NULL. Por isso existe IS NULL."
+    },
+    {
+      "pergunta": "Qual é a ordem certa das partes?",
+      "opcoes": ["SELECT, WHERE, FROM, LIMIT", "SELECT, FROM, WHERE, ORDER BY, LIMIT", "FROM, SELECT, ORDER BY, WHERE"],
+      "certa": 1,
+      "explicacao": "O banco recusa a consulta se as partes estiverem fora de ordem."
+    }
+  ],
+  "sqlite/agrupar": [
+    {
+      "pergunta": "Qual a diferença entre WHERE e HAVING?",
+      "opcoes": [
+        "Nenhuma",
+        "WHERE filtra linhas antes de agrupar; HAVING filtra os grupos depois",
+        "HAVING só funciona com texto"
+      ],
+      "certa": 1,
+      "explicacao": "Por isso COUNT(*) > 1 só pode ir no HAVING: antes de agrupar, ainda não existe contagem."
+    },
+    {
+      "pergunta": "O que COUNT(*) conta?",
+      "opcoes": ["Colunas", "Linhas", "Valores diferentes"],
+      "certa": 1,
+      "explicacao": "Linhas (de cada grupo, se houver GROUP BY). Para contar valores diferentes, use COUNT(DISTINCT coluna)."
+    },
+    {
+      "pergunta": "Com GROUP BY categoria, o que pode ir no SELECT?",
+      "opcoes": ["Qualquer coluna", "categoria e funções de agregação", "Só COUNT(*)"],
+      "certa": 1,
+      "explicacao": "As outras colunas têm vários valores por grupo: precisam de uma agregação que escolha ou resuma."
+    }
+  ],
+  "sqlite/joins": [
+    {
+      "pergunta": "O que é uma chave estrangeira?",
+      "opcoes": [
+        "Uma coluna que aponta para o id de outra tabela",
+        "Uma senha do banco",
+        "Uma coluna que não pode repetir"
+      ],
+      "certa": 0,
+      "explicacao": "pedidos.cliente_id aponta para clientes.id: é assim que o pedido sabe de quem é."
+    },
+    {
+      "pergunta": "Qual JOIN mostra também os clientes sem nenhum pedido?",
+      "opcoes": ["INNER JOIN", "clientes LEFT JOIN pedidos", "pedidos LEFT JOIN clientes"],
+      "certa": 1,
+      "explicacao": "O LEFT JOIN mantém todas as linhas da tabela da esquerda, aqui a de clientes."
+    },
+    {
+      "pergunta": "Num LEFT JOIN, o que aparece nas colunas da direita quando não há par?",
+      "opcoes": ["Zero", "Texto vazio", "NULL"],
+      "certa": 2,
+      "explicacao": "Por isso WHERE p.id IS NULL encontra quem não tem par."
+    }
+  ],
+  "sqlite/criar-e-alterar": [
+    {
+      "pergunta": "O que faz UPDATE produtos SET preco = 0; (sem WHERE)?",
+      "opcoes": ["Dá erro", "Zera o preço de todos os produtos", "Zera só o primeiro"],
+      "certa": 1,
+      "explicacao": "Sem WHERE, a mudança vale para todas as linhas. Teste o filtro com um SELECT antes."
+    },
+    {
+      "pergunta": "Qual restrição impede dois fornecedores com o mesmo e-mail?",
+      "opcoes": ["NOT NULL", "UNIQUE", "DEFAULT"],
+      "certa": 1,
+      "explicacao": "UNIQUE recusa valores repetidos na coluna."
+    },
+    {
+      "pergunta": "Para que serve uma transação?",
+      "opcoes": [
+        "Deixar a consulta mais rápida",
+        "Garantir que um grupo de mudanças aconteça inteiro ou não aconteça",
+        "Criar tabelas"
+      ],
+      "certa": 1,
+      "explicacao": "Se algo falhar no meio, o ROLLBACK volta tudo ao estado anterior ao BEGIN."
+    }
+  ],
+  "sqlite/subconsultas-e-janelas": [
+    {
+      "pergunta": "Para que serve o WITH (CTE)?",
+      "opcoes": ["Criar uma tabela permanente", "Dar nome a um passo intermediário da consulta", "Apagar linhas"],
+      "certa": 1,
+      "explicacao": "A CTE existe só durante aquela consulta e deixa consultas longas mais fáceis de ler."
+    },
+    {
+      "pergunta": "Qual a diferença entre GROUP BY e uma função de janela?",
+      "opcoes": ["Nenhuma", "A janela calcula sobre o grupo sem juntar as linhas", "A janela só funciona com texto"],
+      "certa": 1,
+      "explicacao": "Com OVER, cada linha continua no resultado e ganha o valor calculado sobre o seu grupo."
+    },
+    {
+      "pergunta": "O que NOT IN (SELECT produto_id FROM itens) encontra?",
+      "opcoes": ["Produtos vendidos", "Produtos que nunca apareceram num pedido", "Pedidos sem itens"],
+      "certa": 1,
+      "explicacao": "A subconsulta lista os produtos vendidos; NOT IN fica com os que não estão nessa lista."
+    }
+  ],
+  "python/primeiros-passos": [
+    {
+      "pergunta": "Como se escreve verdadeiro em Python?",
+      "opcoes": ["true", "True", "TRUE"],
+      "certa": 1,
+      "explicacao": "True e False começam com maiúscula. Escrever true dá NameError."
+    },
+    {
+      "pergunta": "O que f\"{2 * 3}\" produz?",
+      "opcoes": ["\"{2 * 3}\"", "\"6\"", "Um erro"],
+      "certa": 1,
+      "explicacao": "Nas f-strings, o que está entre chaves é calculado."
+    },
+    {
+      "pergunta": "Qual o resultado de \"2\" + \"3\"?",
+      "opcoes": ["5", "\"23\"", "Um erro"],
+      "certa": 1,
+      "explicacao": "Somar textos junta os dois. Para somar números, converta com int() ou float()."
+    }
+  ],
+  "python/decisoes-e-lacos": [
+    {
+      "pergunta": "O que marca o que está dentro de um if em Python?",
+      "opcoes": ["Chaves { }", "A indentação depois dos dois pontos", "A palavra end"],
+      "certa": 1,
+      "explicacao": "As linhas recuadas abaixo do if: são o bloco dele. Errar a indentação dá IndentationError."
+    },
+    {
+      "pergunta": "Quais números range(2, 5) gera?",
+      "opcoes": ["2, 3, 4, 5", "2, 3, 4", "3, 4, 5"],
+      "certa": 1,
+      "explicacao": "O início entra e o fim não."
+    },
+    {
+      "pergunta": "Como se escreve \"e\" lógico em Python?",
+      "opcoes": ["&&", "and", "&"],
+      "certa": 1,
+      "explicacao": "Python usa palavras: and, or e not."
+    }
+  ],
+  "python/funcoes": [
+    {
+      "pergunta": "O que uma função sem return devolve?",
+      "opcoes": ["0", "None", "Um erro"],
+      "certa": 1,
+      "explicacao": "Sem return, o resultado é None."
+    },
+    {
+      "pergunta": "Em def f(a, b=2), como chamar mudando só b?",
+      "opcoes": ["f(b=5)", "f(1, b=5)", "f(, 5)"],
+      "certa": 1,
+      "explicacao": "a não tem valor padrão, então precisa ser passado. b pode ir pelo nome."
+    },
+    {
+      "pergunta": "Quanto é 2 ** 4?",
+      "opcoes": ["8", "16", "6"],
+      "certa": 1,
+      "explicacao": "** é potência: 2 elevado a 4."
+    }
+  ],
+  "python/listas-e-dicionarios": [
+    {
+      "pergunta": "Em lista = [5, 6, 7], quanto vale lista[-1]?",
+      "opcoes": ["5", "7", "Erro"],
+      "certa": 1,
+      "explicacao": "Índices negativos contam do fim: -1 é o último."
+    },
+    {
+      "pergunta": "O que [x * 2 for x in [1, 2, 3]] produz?",
+      "opcoes": ["[1, 2, 3, 1, 2, 3]", "[2, 4, 6]", "12"],
+      "certa": 1,
+      "explicacao": "A compreensão aplica x * 2 a cada item e monta uma lista nova."
+    },
+    {
+      "pergunta": "Como ler uma chave que pode não existir sem dar erro?",
+      "opcoes": ["d[\"chave\"]", "d.get(\"chave\")", "d.chave"],
+      "certa": 1,
+      "explicacao": "get devolve None (ou um padrão) quando a chave não existe."
+    }
+  ],
+  "python/textos-csv-e-json": [
+    {
+      "pergunta": "O que \"a;b;c\".split(\";\") devolve?",
+      "opcoes": ["\"abc\"", "[\"a\", \"b\", \"c\"]", "(\"a\", \"b\", \"c\")"],
+      "certa": 1,
+      "explicacao": "split quebra o texto numa lista, usando o separador informado."
+    },
+    {
+      "pergunta": "Por que usar o módulo csv em vez de split(\",\")?",
+      "opcoes": [
+        "É mais curto",
+        "Ele trata campos com aspas e vírgulas dentro do texto",
+        "split não funciona com arquivos"
+      ],
+      "certa": 1,
+      "explicacao": "Um campo como \"Silva, Ana\" quebraria no split. O csv entende as aspas."
+    },
+    {
+      "pergunta": "Qual função transforma texto JSON em dicionário?",
+      "opcoes": ["json.dumps", "json.loads", "json.parse"],
+      "certa": 1,
+      "explicacao": "loads lê (load string). dumps faz o caminho inverso."
+    }
+  ],
+  "python/erros-e-classes": [
+    {
+      "pergunta": "Qual exceção float(\"abc\") levanta?",
+      "opcoes": ["TypeError", "ValueError", "KeyError"],
+      "certa": 1,
+      "explicacao": "O tipo (texto) é aceito, mas o valor não pode virar número: ValueError."
+    },
+    {
+      "pergunta": "O que é self num método?",
+      "opcoes": ["A classe", "O próprio objeto em que o método foi chamado", "Uma palavra reservada sem uso"],
+      "certa": 1,
+      "explicacao": "Em conta.depositar(10), self é conta."
+    },
+    {
+      "pergunta": "Por que evitar except: sem tipo?",
+      "opcoes": [
+        "É mais lento",
+        "Ele captura qualquer erro, inclusive bugs que deveriam aparecer",
+        "Não funciona em Python 3"
+      ],
+      "certa": 1,
+      "explicacao": "Um erro de digitação num nome viraria silêncio. Capture o tipo que você espera."
+    }
+  ],
+  "python/biblioteca-padrao": [
+    {
+      "pergunta": "Qual classe conta quantas vezes cada item aparece?",
+      "opcoes": ["defaultdict", "Counter", "OrderedDict"],
+      "certa": 1,
+      "explicacao": "Counter(lista) devolve a contagem, e most_common(n) os n mais frequentes."
+    },
+    {
+      "pergunta": "Qual a diferença entre strftime e strptime?",
+      "opcoes": [
+        "Nenhuma",
+        "strftime formata uma data em texto; strptime lê um texto como data",
+        "strptime é só para horas"
+      ],
+      "certa": 1,
+      "explicacao": "f de format, p de parse (ler)."
+    },
+    {
+      "pergunta": "Com valores muito fora da curva, qual medida representa melhor o \"típico\"?",
+      "opcoes": ["Média", "Mediana", "Máximo"],
+      "certa": 1,
+      "explicacao": "A mediana é o valor do meio e não é puxada pelos extremos."
+    }
   ]
 }

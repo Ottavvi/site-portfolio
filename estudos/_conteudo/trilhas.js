@@ -71,22 +71,8 @@ module.exports = [
     resumo: 'JavaScript fora do navegador: scripts, arquivos e APIs com Express.',
     emBreve: true
   },
-  {
-    id: 'sqlite',
-    area: 'Back-end e dados',
-    titulo: 'SQLite',
-    sigla: 'SQL',
-    resumo: 'Banco de dados num arquivo: tabelas, consultas, relacionamentos e índices.',
-    emBreve: true
-  },
-  {
-    id: 'python',
-    area: 'Back-end e dados',
-    titulo: 'Python',
-    sigla: 'Py',
-    resumo: 'A linguagem mais usada para automatizar tarefas e trabalhar com dados.',
-    emBreve: true
-  },
+  require('./sqlite'),
+  require('./python'),
 
   // ---------- Qualidade e entrega ----------
   {

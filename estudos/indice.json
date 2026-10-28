@@ -484,6 +484,172 @@
           "minutos": 30
         }
       ]
+    },
+    {
+      "id": "sqlite",
+      "titulo": "SQLite",
+      "sigla": "SQL",
+      "itens": [
+        {
+          "id": "sqlite/o-que-e-sql",
+          "titulo": "Bancos, tabelas e SELECT",
+          "resumo": "O que é um banco relacional e como pedir dados a ele.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 9
+        },
+        {
+          "id": "sqlite/filtrar-e-ordenar",
+          "titulo": "Filtrar e ordenar",
+          "resumo": "WHERE, AND, OR, LIKE, IN, ORDER BY e LIMIT.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 11
+        },
+        {
+          "id": "sqlite/desafio-consultas",
+          "titulo": "Desafio: perguntas sobre a loja",
+          "resumo": "Responda três perguntas com SELECT, WHERE, ORDER BY e LIMIT.",
+          "tipo": "desafio",
+          "nivel": "Iniciante",
+          "minutos": 15
+        },
+        {
+          "id": "sqlite/agrupar",
+          "titulo": "Contar, somar e agrupar",
+          "resumo": "COUNT, SUM, AVG, GROUP BY e HAVING.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 12
+        },
+        {
+          "id": "sqlite/joins",
+          "titulo": "Juntar tabelas com JOIN",
+          "resumo": "INNER JOIN, LEFT JOIN, apelidos e chaves estrangeiras.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 13
+        },
+        {
+          "id": "sqlite/desafio-relatorio",
+          "titulo": "Desafio: relatório de vendas",
+          "resumo": "Use JOIN e GROUP BY para montar o relatório da loja.",
+          "tipo": "desafio",
+          "nivel": "Intermediário",
+          "minutos": 20
+        },
+        {
+          "id": "sqlite/criar-e-alterar",
+          "titulo": "Criar tabelas e alterar dados",
+          "resumo": "CREATE TABLE, restrições, INSERT, UPDATE, DELETE e transações.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 13
+        },
+        {
+          "id": "sqlite/subconsultas-e-janelas",
+          "titulo": "Subconsultas, CTEs e janelas",
+          "resumo": "Consultas dentro de consultas, WITH, CASE e funções de janela.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 14
+        },
+        {
+          "id": "sqlite/desafio-avaliacoes",
+          "titulo": "Desafio: avaliações de produtos",
+          "resumo": "Crie uma tabela com restrições, insira dados e faça um ranking.",
+          "tipo": "desafio",
+          "nivel": "Avançado",
+          "minutos": 25
+        }
+      ]
+    },
+    {
+      "id": "python",
+      "titulo": "Python",
+      "sigla": "Py",
+      "itens": [
+        {
+          "id": "python/primeiros-passos",
+          "titulo": "Primeiros passos em Python",
+          "resumo": "print, variáveis, tipos e f-strings.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 9
+        },
+        {
+          "id": "python/decisoes-e-lacos",
+          "titulo": "Decisões e laços",
+          "resumo": "if, elif, else, for, range e while.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 11
+        },
+        {
+          "id": "python/funcoes",
+          "titulo": "Funções",
+          "resumo": "def, parâmetros, valores padrão e return.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 10
+        },
+        {
+          "id": "python/desafio-funcoes",
+          "titulo": "Desafio: funções da cantina",
+          "resumo": "Escreva três funções com decisões, laços e return.",
+          "tipo": "desafio",
+          "nivel": "Iniciante",
+          "minutos": 18
+        },
+        {
+          "id": "python/listas-e-dicionarios",
+          "titulo": "Listas, dicionários e compreensões",
+          "resumo": "As estruturas que você vai usar o tempo todo.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 13
+        },
+        {
+          "id": "python/textos-csv-e-json",
+          "titulo": "Textos, CSV e JSON",
+          "resumo": "Limpar texto e ler os formatos de dados mais comuns.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 13
+        },
+        {
+          "id": "python/desafio-extrato",
+          "titulo": "Desafio: resumo do extrato",
+          "resumo": "Leia um CSV de extrato e resuma os gastos por categoria.",
+          "tipo": "desafio",
+          "nivel": "Intermediário",
+          "minutos": 25
+        },
+        {
+          "id": "python/erros-e-classes",
+          "titulo": "Erros e classes",
+          "resumo": "try/except, raise, classes e dataclasses.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 14
+        },
+        {
+          "id": "python/biblioteca-padrao",
+          "titulo": "A biblioteca padrão",
+          "resumo": "collections, datetime e statistics: pilhas incluídas.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 12
+        },
+        {
+          "id": "python/desafio-estoque",
+          "titulo": "Desafio: controle de estoque",
+          "resumo": "Escreva uma classe com métodos, validação e exceções.",
+          "tipo": "desafio",
+          "nivel": "Avançado",
+          "minutos": 25
+        }
+      ]
     }
   ]
 }

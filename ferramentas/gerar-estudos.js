@@ -173,7 +173,7 @@ function paginaInicial() {
               <h3>${escapar(trilha.titulo)}</h3>
               <p>${escapar(trilha.resumo)}</p>
               ${chipsDeNivel()}
-              <span class="trilha-info">${modulosDaTrilha(trilha).length} módulos · ${aulas} aulas · ${itens.length - aulas} desafios</span>
+              <span class="trilha-info">${modulosDaTrilha(trilha).length} módulos · ${aulas} aulas${itens.length > aulas ? ` · ${itens.length - aulas} desafios` : ''}</span>
               ${barra(trilha)}
             </a>`;
   };
@@ -374,6 +374,9 @@ ${perguntas}
             </section>`;
 }
 
+// Ambiente do editor (js/estudos-ambientes.js): sql, python, react... Sem ele, o código roda como HTML
+const linguagem = (trilha, item) => item.linguagem || trilha.linguagem || '';
+
 function desafio(trilha, item) {
   const testes = item.testes
     .map(([descricao], i) => `                <li data-teste="${i}">${escapar(descricao)}</li>`)
@@ -385,8 +388,8 @@ function desafio(trilha, item) {
 ${testes}
               </ul>
             </div>
-            <div class="editor" data-desafio="${idCompleto(trilha, item)}">
-              <textarea aria-label="Seu código HTML" spellcheck="false">${escapar(item.inicial)}</textarea>
+            <div class="editor" data-desafio="${idCompleto(trilha, item)}"${linguagem(trilha, item) ? ` data-linguagem="${linguagem(trilha, item)}"` : ''}>
+              <textarea aria-label="Seu código" spellcheck="false">${escapar(item.inicial)}</textarea>
             </div>
             <details class="desafio-solucao">
               <summary>Ver uma solução possível</summary>
@@ -431,7 +434,7 @@ ${listaDeItens(trilha, modulosDoNivel(trilha, nivel), '', item.id)}
   .join('\n')}
             </details>
           </aside>
-          <article class="aula-conteudo">
+          <article class="aula-conteudo"${linguagem(trilha, item) ? ` data-linguagem="${linguagem(trilha, item)}"` : ''}>
             <a class="text-link" href="./">← Trilha de ${escapar(trilha.titulo)}</a>
             <div class="section-kicker case-kicker">${escapar(item.nivel.titulo)} · Módulo ${item.modulo.numero} · ${escapar(item.modulo.titulo)}</div>
             <h1>${escapar(item.titulo)}</h1>

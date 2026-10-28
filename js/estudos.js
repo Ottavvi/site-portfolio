@@ -1,4 +1,5 @@
 // Área de estudos: progresso (no navegador e, para quem entrou, na conta), quiz, editor ao vivo e desafios
+import { AMBIENTES, ATRASO } from './estudos-ambientes.js';
 
 const CHAVE_PROGRESSO = 'estudos-progresso';
 const lerLocal = chave => {
@@ -242,8 +243,32 @@ const ESTILO_RESULTADO = `<style data-base>@layer base {
 }</style>`;
 
 // Vai no começo do resultado (logo depois do <!doctype>, se houver): copia console.log e os erros para o painel
-// Console embaixo do resultado e guarda tudo em window.__saida, para os testes dos desafios de JavaScript
+// Console embaixo do resultado e guarda tudo em window.__saida, para os testes dos desafios de JavaScript.
+// O resultado tem a mesma origem do site, então o localStorage dele seria o mesmo do progresso: os exemplos ganham
+// um localStorage separado (as chaves vão com o prefixo estudos-sandbox:), e um clear() não apaga nada daqui.
 const CONSOLE_RESULTADO = `<script data-base>(() => {
+  try {
+    const real = localStorage;
+    const P = 'estudos-sandbox:';
+    const chaves = () => Object.keys(real).filter(k => k.startsWith(P)).map(k => k.slice(P.length));
+    const api = {
+      getItem: k => real.getItem(P + k),
+      setItem: (k, v) => real.setItem(P + k, String(v)),
+      removeItem: k => real.removeItem(P + k),
+      clear: () => chaves().forEach(k => real.removeItem(P + k)),
+      key: i => chaves()[i] ?? null,
+      get length() { return chaves().length; }
+    };
+    const separado = new Proxy(api, {
+      get: (alvo, k) => (k in alvo ? (typeof alvo[k] === 'function' ? alvo[k] : alvo.length) : alvo.getItem(k) ?? undefined),
+      set: (alvo, k, v) => (alvo.setItem(k, v), true),
+      deleteProperty: (alvo, k) => (alvo.removeItem(k), true),
+      ownKeys: () => chaves(),
+      getOwnPropertyDescriptor: (alvo, k) => (chaves().includes(k) ? { value: alvo.getItem(k), enumerable: true, configurable: true } : undefined)
+    });
+    Object.defineProperty(window, 'localStorage', { value: separado, configurable: true });
+  } catch {}
+  window.__esperar = (ms = 30) => new Promise(r => setTimeout(r, ms));
   const saida = (window.__saida = []);
   const texto = v => {
     if (typeof v === 'string') return v;
@@ -272,7 +297,9 @@ const comConsole = codigo => {
 // a página abrir de novo, o código salvo não roda sozinho
 const MARCA_RODANDO = 'estudos-rodando';
 
-function criarEditor(caixa, { codigoInicial, aoAtualizar, chaveSalva }) {
+// linguagem: o ambiente do resultado (js/estudos-ambientes.js). Sem ela, o código é HTML
+function criarEditor(caixa, { codigoInicial, aoAtualizar, chaveSalva, linguagem }) {
+  const montar = AMBIENTES[linguagem] || (codigo => codigo);
   const salvo = chaveSalva ? lerLocal(chaveSalva) : null;
   caixa.classList.add('editor');
   caixa.innerHTML = `
@@ -317,7 +344,7 @@ function criarEditor(caixa, { codigoInicial, aoAtualizar, chaveSalva }) {
     linhasConsole.replaceChildren();
     painelConsole.hidden = true;
     if (chaveSalva) gravarLocal(MARCA_RODANDO, chaveSalva);
-    resultado.srcdoc = comConsole(campo.value) + ESTILO_RESULTADO;
+    resultado.srcdoc = comConsole(montar(campo.value)) + ESTILO_RESULTADO;
   };
   resultado.addEventListener('load', () => {
     if (chaveSalva && lerLocal(MARCA_RODANDO) === chaveSalva) removerLocal(MARCA_RODANDO);
@@ -339,7 +366,7 @@ function criarEditor(caixa, { codigoInicial, aoAtualizar, chaveSalva }) {
     espera = setTimeout(() => {
       desenhar();
       if (chaveSalva) gravarLocal(chaveSalva, campo.value);
-    }, 300);
+    }, ATRASO[linguagem] || 300);
   });
   // Tab insere dois espaços; Esc libera o próximo Tab para sair do editor (acessibilidade pelo teclado)
   campo.addEventListener('keydown', event => {
@@ -368,7 +395,8 @@ function criarEditor(caixa, { codigoInicial, aoAtualizar, chaveSalva }) {
   }
 }
 
-// Botão "Experimente" em cada exemplo de código das aulas
+// Botão "Experimente" em cada exemplo de código das aulas. O ambiente vem do bloco ou da aula (data-linguagem)
+const linguagemDaPagina = document.querySelector('.aula-conteudo[data-linguagem]')?.dataset.linguagem;
 document.querySelectorAll('pre[data-experimente]').forEach(bloco => {
   const codigoDoExemplo = bloco.textContent;
   const botao = document.createElement('button');
@@ -378,7 +406,7 @@ document.querySelectorAll('pre[data-experimente]').forEach(bloco => {
   botao.addEventListener('click', () => {
     const caixa = document.createElement('div');
     bloco.replaceWith(caixa);
-    criarEditor(caixa, { codigoInicial: codigoDoExemplo });
+    criarEditor(caixa, { codigoInicial: codigoDoExemplo, linguagem: bloco.dataset.linguagem || linguagemDaPagina });
     caixa.querySelector('textarea').focus();
   });
   bloco.append(botao);
@@ -389,17 +417,25 @@ const caixaDesafio = document.querySelector('[data-desafio]');
 if (caixaDesafio && window.TESTES_DO_DESAFIO) {
   const id = caixaDesafio.dataset.desafio;
   const itens = [...document.querySelectorAll('#desafioTestes [data-teste]')];
+  let rodada = 0;
   criarEditor(caixaDesafio, {
     codigoInicial: caixaDesafio.querySelector('textarea').value,
     chaveSalva: `estudos-codigo:${id}`,
-    aoAtualizar: doc => {
-      const resultados = window.TESTES_DO_DESAFIO.map(teste => {
+    linguagem: caixaDesafio.dataset.linguagem,
+    // Os testes podem ser assíncronos (SQL e Python carregam antes de rodar): esperam o __pronto do ambiente e rodam
+    // um de cada vez, porque alguns clicam e digitam no resultado. Se o código mudar no meio, o resultado velho é ignorado.
+    aoAtualizar: async doc => {
+      const minhaRodada = ++rodada;
+      await doc.defaultView?.__pronto;
+      const resultados = [];
+      for (const teste of window.TESTES_DO_DESAFIO) {
         try {
-          return Boolean(teste(doc));
+          resultados.push(Boolean(await teste(doc)));
         } catch {
-          return false;
+          resultados.push(false);
         }
-      });
+      }
+      if (minhaRodada !== rodada) return;
       resultados.forEach((passou, i) => itens[i].classList.toggle('passou', passou));
       if (resultados.every(Boolean)) marcar(id, true);
     }
