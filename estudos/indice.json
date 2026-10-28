@@ -706,6 +706,116 @@
       ]
     },
     {
+      "id": "pwa-offline",
+      "titulo": "PWA offline",
+      "sigla": "PWA",
+      "itens": [
+        {
+          "id": "pwa-offline/o-que-e-pwa",
+          "titulo": "O que é um PWA",
+          "resumo": "As três peças: HTTPS, manifesto e service worker.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 8
+        },
+        {
+          "id": "pwa-offline/manifesto",
+          "titulo": "O manifesto",
+          "resumo": "Nome, ícones, cores, start_url e display.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 10
+        },
+        {
+          "id": "pwa-offline/service-worker",
+          "titulo": "O service worker",
+          "resumo": "Registro, install, activate, fetch e atualizações.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 14
+        },
+        {
+          "id": "pwa-offline/desafio-manifesto",
+          "titulo": "Desafio: manifesto do app",
+          "resumo": "Escreva o manifesto completo de um app de receitas.",
+          "tipo": "desafio",
+          "nivel": "Intermediário",
+          "minutos": 15
+        },
+        {
+          "id": "pwa-offline/estrategias-de-cache",
+          "titulo": "Estratégias de cache",
+          "resumo": "Cache primeiro, rede primeiro, stale-while-revalidate e página offline.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 14
+        },
+        {
+          "id": "pwa-offline/desafio-estrategias",
+          "titulo": "Desafio: estratégias de cache",
+          "resumo": "Implemente cache primeiro e rede primeiro com página offline.",
+          "tipo": "desafio",
+          "nivel": "Avançado",
+          "minutos": 25
+        }
+      ]
+    },
+    {
+      "id": "i18n",
+      "titulo": "i18n",
+      "sigla": "i18n",
+      "itens": [
+        {
+          "id": "i18n/o-que-muda",
+          "titulo": "O que muda além da tradução",
+          "resumo": "lang, URLs por idioma, hreflang e a escolha do idioma.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 9
+        },
+        {
+          "id": "i18n/dicionarios-de-texto",
+          "titulo": "Dicionários de texto",
+          "resumo": "Tirar os textos do código, chaves, variáveis e idioma de reserva.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 11
+        },
+        {
+          "id": "i18n/intl-numeros-e-datas",
+          "titulo": "Números, moedas e datas",
+          "resumo": "Intl.NumberFormat, DateTimeFormat e RelativeTimeFormat.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 12
+        },
+        {
+          "id": "i18n/desafio-formatos",
+          "titulo": "Desafio: vitrine internacional",
+          "resumo": "Formate preços, datas e prazos em qualquer idioma.",
+          "tipo": "desafio",
+          "nivel": "Intermediário",
+          "minutos": 18
+        },
+        {
+          "id": "i18n/plurais-ordem-e-direcao",
+          "titulo": "Plurais, ordem e direção",
+          "resumo": "PluralRules, ListFormat, Collator e dir=\"rtl\".",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 13
+        },
+        {
+          "id": "i18n/desafio-traducao",
+          "titulo": "Desafio: sistema de tradução",
+          "resumo": "Uma função t() com variáveis, plurais e idioma de reserva.",
+          "tipo": "desafio",
+          "nivel": "Avançado",
+          "minutos": 25
+        }
+      ]
+    },
+    {
       "id": "sqlite",
       "titulo": "SQLite",
       "sigla": "SQL",

@@ -9,22 +9,8 @@ module.exports = [
   require('./localstorage'),
   require('./web-audio'),
   require('./notificacoes'),
-  {
-    id: 'pwa-offline',
-    area: 'Desenvolvimento web',
-    titulo: 'PWA offline',
-    sigla: 'PWA',
-    resumo: 'Service worker, cache e manifesto: um site que instala como app e funciona sem internet.',
-    emBreve: true
-  },
-  {
-    id: 'i18n',
-    area: 'Desenvolvimento web',
-    titulo: 'i18n',
-    sigla: 'i18n',
-    resumo: 'Sites em vários idiomas: textos, datas, moedas e o que muda além da tradução.',
-    emBreve: true
-  },
+  require('./pwa-offline'),
+  require('./i18n'),
   {
     id: 'react',
     area: 'Desenvolvimento web',

@@ -1427,6 +1427,198 @@
       "explicacao": "A inscrição não existe mais; guardá-la só gera envios inúteis."
     }
   ],
+  "pwa-offline/o-que-e-pwa": [
+    {
+      "pergunta": "Qual peça faz o site abrir sem internet?",
+      "opcoes": ["O manifesto", "O service worker", "O HTTPS"],
+      "certa": 1,
+      "explicacao": "Ele intercepta os pedidos e pode responder com o que guardou no cache."
+    },
+    {
+      "pergunta": "Service workers funcionam numa página http:// publicada?",
+      "opcoes": ["Sim", "Não: só em HTTPS (ou localhost)", "Só no Firefox"],
+      "certa": 1,
+      "explicacao": "Como ele intercepta tudo, o navegador exige uma conexão segura."
+    },
+    {
+      "pergunta": "O que significa o \"progressivo\" de PWA?",
+      "opcoes": [
+        "Que carrega aos poucos",
+        "Que o site funciona em todo navegador e ganha extras onde há suporte",
+        "Que precisa ser atualizado sempre"
+      ],
+      "certa": 1,
+      "explicacao": "Nada quebra onde não há suporte; os recursos de app são um bônus."
+    }
+  ],
+  "pwa-offline/manifesto": [
+    {
+      "pergunta": "Qual valor de display faz o app abrir sem a barra do navegador?",
+      "opcoes": ["browser", "standalone", "minimal"],
+      "certa": 1,
+      "explicacao": "standalone abre em janela própria, como um app instalado."
+    },
+    {
+      "pergunta": "Para que serve um ícone maskable?",
+      "opcoes": [
+        "Esconder o ícone",
+        "Ter margem para o sistema recortar em formas diferentes sem cortar o desenho",
+        "Ser usado no modo escuro"
+      ],
+      "certa": 1,
+      "explicacao": "O Android recorta os ícones; o maskable foi feito para isso."
+    },
+    {
+      "pergunta": "Onde aparece o short_name?",
+      "opcoes": ["Na aba do navegador", "Embaixo do ícone na tela inicial", "No Google"],
+      "certa": 1,
+      "explicacao": "O espaço é pequeno, por isso ele deve ser curto."
+    }
+  ],
+  "pwa-offline/service-worker": [
+    {
+      "pergunta": "Em que evento se guardam os arquivos essenciais no cache?",
+      "opcoes": ["fetch", "install", "activate"],
+      "certa": 1,
+      "explicacao": "install roda uma vez por versão, antes de ela assumir."
+    },
+    {
+      "pergunta": "Uma versão nova do service worker foi instalada. Quando ela assume?",
+      "opcoes": [
+        "Na hora",
+        "Quando todas as abas da versão antiga forem fechadas (ou com skipWaiting)",
+        "Depois de 24 horas"
+      ],
+      "certa": 1,
+      "explicacao": "Ela fica em espera para não misturar versões numa página aberta."
+    },
+    {
+      "pergunta": "O que /js/sw.js consegue controlar?",
+      "opcoes": ["O site inteiro", "Só as páginas dentro de /js/", "Nada"],
+      "certa": 1,
+      "explicacao": "O escopo padrão é a pasta do arquivo. Por isso ele fica na raiz."
+    }
+  ],
+  "pwa-offline/estrategias-de-cache": [
+    {
+      "pergunta": "Qual estratégia combina com as páginas HTML de um site de notícias?",
+      "opcoes": ["Cache primeiro", "Rede primeiro, com o cache como reserva", "Nunca usar cache"],
+      "certa": 1,
+      "explicacao": "O conteúdo precisa estar atualizado, mas offline é melhor mostrar a última versão do que nada."
+    },
+    {
+      "pergunta": "Por que usar resposta.clone() antes do cache.put?",
+      "opcoes": ["Para deixar mais rápido", "O corpo de uma resposta só pode ser lido uma vez", "O cache exige cópias"],
+      "certa": 1,
+      "explicacao": "Uma cópia vai para o cache e a original segue para a página."
+    },
+    {
+      "pergunta": "O que o stale-while-revalidate faz?",
+      "opcoes": [
+        "Espera a rede e depois o cache",
+        "Responde do cache na hora e atualiza o cache em paralelo para a próxima vez",
+        "Apaga o cache velho"
+      ],
+      "certa": 1,
+      "explicacao": "Rápido agora, atualizado na próxima visita."
+    }
+  ],
+  "i18n/o-que-muda": [
+    {
+      "pergunta": "Para que serve o atributo lang no <html>?",
+      "opcoes": [
+        "Traduzir a página automaticamente",
+        "Dizer o idioma para leitores de tela, navegadores e buscadores",
+        "Mudar a fonte"
+      ],
+      "certa": 1,
+      "explicacao": "O leitor de tela, por exemplo, escolhe a pronúncia por ele."
+    },
+    {
+      "pergunta": "Por que ter uma URL por idioma?",
+      "opcoes": [
+        "É obrigatório no HTML",
+        "Buscadores encontram cada versão e o link compartilhado abre no idioma certo",
+        "Fica mais rápido"
+      ],
+      "certa": 1,
+      "explicacao": "Com o idioma só no JavaScript, as outras versões ficam invisíveis."
+    },
+    {
+      "pergunta": "Por que evitar bandeiras no seletor de idioma?",
+      "opcoes": ["São pesadas", "Bandeira representa país, não idioma", "Não funcionam no celular"],
+      "certa": 1,
+      "explicacao": "Espanhol é falado em mais de 20 países; qual bandeira usar?"
+    }
+  ],
+  "i18n/dicionarios-de-texto": [
+    {
+      "pergunta": "Por que não montar 'Olá, ' + nome + '!' em código?",
+      "opcoes": [
+        "É mais lento",
+        "A ordem das palavras muda entre idiomas; o texto inteiro precisa ser traduzível",
+        "Não funciona com acentos"
+      ],
+      "certa": 1,
+      "explicacao": "Com um marcador {nome}, o tradutor pode colocá-lo onde a língua pede."
+    },
+    {
+      "pergunta": "O que a função deve fazer quando falta uma tradução?",
+      "opcoes": ["Dar erro", "Usar o idioma de reserva (e, em último caso, a chave)", "Deixar vazio"],
+      "certa": 1,
+      "explicacao": "Vazio esconde o problema; a chave na tela facilita achar o que falta."
+    },
+    {
+      "pergunta": "O que document.documentElement.lang = \"en\" muda?",
+      "opcoes": ["Traduz a página", "O atributo lang do <html>", "A URL"],
+      "certa": 1,
+      "explicacao": "Ao trocar o idioma, atualize o lang também, para leitores de tela e o navegador."
+    }
+  ],
+  "i18n/intl-numeros-e-datas": [
+    {
+      "pergunta": "Como mostrar 1234.5 no formato brasileiro?",
+      "opcoes": [
+        "valor.toString().replace('.', ',')",
+        "new Intl.NumberFormat('pt-BR').format(valor)",
+        "valor.toFixed('pt-BR')"
+      ],
+      "certa": 1,
+      "explicacao": "O Intl cuida do separador de milhar e do decimal: 1.234,5."
+    },
+    {
+      "pergunta": "O que a opção timeZone muda?",
+      "opcoes": ["O instante guardado", "Só como o instante é mostrado", "O idioma"],
+      "certa": 1,
+      "explicacao": "O Date é o mesmo; muda a hora \"de parede\" exibida."
+    },
+    {
+      "pergunta": "O que rtf.format(-1, 'day') mostra com numeric: 'auto' em pt-BR?",
+      "opcoes": ["há 1 dia", "ontem", "-1 dia"],
+      "certa": 1,
+      "explicacao": "Com 'auto', ele usa palavras como ontem, amanhã e semana passada."
+    }
+  ],
+  "i18n/plurais-ordem-e-direcao": [
+    {
+      "pergunta": "O que Intl.PluralRules(\"pt-BR\").select(1) devolve?",
+      "opcoes": ["'singular'", "'one'", "1"],
+      "certa": 1,
+      "explicacao": "Ele devolve a categoria, e o dicionário tem um texto para cada uma."
+    },
+    {
+      "pergunta": "Por que usar Intl.Collator para ordenar nomes?",
+      "opcoes": ["É mais rápido", "O sort() padrão erra com acentos e maiúsculas", "sort() não funciona com texto"],
+      "certa": 1,
+      "explicacao": "O Collator ordena como um dicionário daquela língua."
+    },
+    {
+      "pergunta": "Qual propriedade se adapta sozinha a dir=\"rtl\"?",
+      "opcoes": ["margin-left", "margin-inline-start", "left"],
+      "certa": 1,
+      "explicacao": "As propriedades lógicas seguem a direção do texto."
+    }
+  ],
   "sqlite/o-que-e-sql": [
     {
       "pergunta": "Numa tabela, o que é cada linha?",
