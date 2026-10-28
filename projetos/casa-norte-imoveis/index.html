@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Casa Norte Imóveis — Curitiba</title>
+    <meta
+      name="description"
+      content="Apartamentos, casas e sobrados para comprar ou alugar em Curitiba, com custo mensal completo e simulador de financiamento."
+    />
+    <link rel="icon" href="img/icone.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="css/estilo.css" />
+  </head>
+  <body>
+    <header class="topo">
+      <a href="#" class="marca"><img src="img/icone.svg" alt="" width="30" height="30" />Casa Norte</a>
+      <nav class="nav">
+        <a href="#imoveis">Imóveis</a>
+        <a href="#simulador">Financiamento</a>
+        <a href="#anunciar">Anunciar</a>
+        <button id="ver-favoritos" class="favs-botao" aria-pressed="false">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M12 21s-7.5-4.6-9.5-9.3C1 8 3.3 4.5 7 4.5c2 0 3.5 1.2 5 3 1.5-1.8 3-3 5-3 3.7 0 6 3.5 4.5 7.2C19.5 16.4 12 21 12 21z"
+            />
+          </svg>
+          Salvos <span id="qtd-favs">0</span>
+        </button>
+      </nav>
+    </header>
+
+    <main>
+      <section class="abertura">
+        <h1>Imóveis em Curitiba com o custo do mês inteiro na etiqueta.</h1>
+        <p class="abertura-sub">
+          Aluguel ou parcela, condomínio e IPTU somados no anúncio. Você compara o que realmente vai pagar.
+        </p>
+        <form id="busca" class="busca" role="search">
+          <div class="negocio" role="radiogroup" aria-label="Negócio">
+            <label><input type="radio" name="negocio" value="comprar" checked /><span>Comprar</span></label>
+            <label><input type="radio" name="negocio" value="alugar" /><span>Alugar</span></label>
+          </div>
+          <label class="campo">
+            <span>Bairro</span>
+            <select name="bairro" id="f-bairro">
+              <option value="">Todos</option>
+            </select>
+          </label>
+          <label class="campo">
+            <span>Tipo</span>
+            <select name="tipo" id="f-tipo">
+              <option value="">Todos</option>
+            </select>
+          </label>
+          <label class="campo">
+            <span>Quartos</span>
+            <select name="quartos">
+              <option value="0">Tanto faz</option>
+              <option value="1">1 ou mais</option>
+              <option value="2">2 ou mais</option>
+              <option value="3">3 ou mais</option>
+              <option value="4">4 ou mais</option>
+            </select>
+          </label>
+          <label class="campo">
+            <span id="rotulo-teto">Até (por mês)</span>
+            <select name="teto" id="f-teto"></select>
+          </label>
+        </form>
+      </section>
+
+      <section id="imoveis" class="imoveis">
+        <div class="barra-resultado">
+          <p id="contagem" aria-live="polite"></p>
+          <label class="ordenar"
+            >Ordenar
+            <select id="ordem">
+              <option value="custo">Menor custo mensal</option>
+              <option value="custo-desc">Maior custo mensal</option>
+              <option value="m2">Menor preço por m²</option>
+              <option value="area">Maior área</option>
+              <option value="novos">Mais recentes</option>
+            </select>
+          </label>
+        </div>
+        <ul id="lista" class="lista"></ul>
+        <div id="nada" class="nada" hidden>
+          <p>Nenhum imóvel com esses filtros.</p>
+          <button class="botao-linha" id="limpar">Limpar filtros</button>
+        </div>
+      </section>
+
+      <section id="simulador" class="simulador">
+        <div class="sim-texto">
+          <h2>Quanto fica a parcela?</h2>
+          <p>
+            Compare as duas tabelas mais usadas no Brasil. Na SAC a parcela começa maior e cai todo mês; na Price ela
+            fica igual do começo ao fim, mas você paga mais juros no total.
+          </p>
+          <form id="form-sim" class="form-sim">
+            <label>Valor do imóvel <input name="valor" inputmode="numeric" value="650.000" /></label>
+            <label>Entrada <input name="entrada" inputmode="numeric" value="130.000" /></label>
+            <label
+              >Prazo
+              <select name="anos"></select
+            ></label>
+            <label>Juros ao ano <input name="juros" inputmode="decimal" value="11,5" /></label>
+          </form>
+          <p class="nota">
+            Estimativa sem seguros, taxas do banco e TR. A entrada mínima costuma ser 20% e a parcela não pode passar de
+            30% da renda bruta.
+          </p>
+        </div>
+        <div class="sim-resultado" aria-live="polite">
+          <div id="sim-cartoes" class="sim-cartoes"></div>
+          <div id="sim-grafico"></div>
+          <p class="legenda"><span class="l-sac"></span>SAC <span class="l-price"></span>Price</p>
+        </div>
+      </section>
+
+      <section id="anunciar" class="anunciar">
+        <div>
+          <h2>Quer vender ou alugar o seu?</h2>
+          <p>
+            Avaliamos pelo preço do metro quadrado das vendas reais do bairro, não pelo que os vizinhos pedem. Fotos,
+            planta e visita guiada por nossa conta.
+          </p>
+        </div>
+        <form id="form-anunciar" class="form-anunciar" novalidate>
+          <label
+            >Bairro
+            <select name="bairro" id="a-bairro"></select
+          ></label>
+          <label>Área privativa (m²) <input name="area" inputmode="numeric" placeholder="85" /></label>
+          <p id="estimativa" class="estimativa" aria-live="polite">Informe a área para ver a faixa de preço.</p>
+          <a id="anunciar-zap" class="botao" href="https://wa.me/5541900000000" rel="noopener">Falar com um corretor</a>
+        </form>
+      </section>
+    </main>
+
+    <footer class="rodape">
+      <p>Casa Norte Imóveis · CRECI-PR 00000-J · Rua Itupava, 1200, Juvevê, Curitiba</p>
+      <p class="aviso">Imobiliária fictícia criada para portfólio. Imóveis, preços e endereços são ilustrativos.</p>
+    </footer>
+
+    <dialog id="detalhe" class="detalhe" aria-labelledby="det-titulo">
+      <div id="det-corpo"></div>
+    </dialog>
+
+    <script type="module" src="js/app.js"></script>
+  </body>
+</html>

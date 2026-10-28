@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Lumiar Odontologia — agende sua consulta</title>
+    <meta
+      name="description"
+      content="Clínica odontológica no bairro Lumiar. Limpeza, clareamento, ortodontia, implantes e atendimento infantil, com agendamento online."
+    />
+    <link rel="icon" href="img/icone.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="css/estilo.css" />
+  </head>
+  <body>
+    <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+    <header class="topo">
+      <a class="marca" href="#" aria-label="Lumiar Odontologia, início">
+        <img src="img/icone.svg" alt="" width="34" height="34" />
+        <span>Lumiar<small>odontologia</small></span>
+      </a>
+      <button class="menu-botao" aria-expanded="false" aria-controls="menu">Menu</button>
+      <nav id="menu" class="menu">
+        <a href="#tratamentos">Tratamentos</a>
+        <a href="#equipe">Equipe</a>
+        <a href="#convenios">Convênios</a>
+        <a href="#duvidas">Dúvidas</a>
+        <a href="#minhas" class="menu-minhas" hidden>Minhas consultas <b id="qtd-minhas">0</b></a>
+        <a href="#agendar" class="botao botao-pequeno">Agendar</a>
+      </nav>
+    </header>
+
+    <main id="conteudo">
+      <section class="abertura">
+        <div class="abertura-texto">
+          <h1>Dentista no Lumiar, com horário que cabe na sua semana.</h1>
+          <p>
+            Três dentistas, um consultório com luz natural e agenda aberta até as 19h. Você escolhe o horário aqui e
+            recebe a confirmação na hora, sem ligar para ninguém.
+          </p>
+          <ul class="selos">
+            <li>Seg a sex, 8h às 19h · sáb, 8h às 12h</li>
+            <li>Rua das Laranjeiras, 214</li>
+          </ul>
+        </div>
+        <aside class="agenda-viva" aria-labelledby="agenda-viva-titulo">
+          <h2 id="agenda-viva-titulo">Próximos horários livres</h2>
+          <p class="agenda-viva-sub">Avaliação e limpeza · 40 min</p>
+          <ol id="proximos" class="proximos"></ol>
+          <a href="#agendar" class="link-sutil">Ver todos os dias</a>
+        </aside>
+      </section>
+
+      <section id="tratamentos" class="secao">
+        <div class="secao-cabeca">
+          <h2>Tratamentos</h2>
+          <p>Valores de referência para pagamento particular. O orçamento final sai na avaliação.</p>
+        </div>
+        <div id="lista-tratamentos" class="tratamentos"></div>
+      </section>
+
+      <section class="secao primeira">
+        <div class="secao-cabeca">
+          <h2>Como é a primeira consulta</h2>
+        </div>
+        <ol class="passos">
+          <li>
+            <h3>Conversa</h3>
+            <p>O que incomoda, o que você quer mudar e o seu histórico. Sem pressa.</p>
+          </li>
+          <li>
+            <h3>Exame e foto intraoral</h3>
+            <p>A câmera mostra na tela o que o dentista vê. Você entende cada indicação.</p>
+          </li>
+          <li>
+            <h3>Plano por escrito</h3>
+            <p>Etapas, prazos e valores num documento que você leva para casa e decide com calma.</p>
+          </li>
+        </ol>
+      </section>
+
+      <section id="equipe" class="secao">
+        <div class="secao-cabeca">
+          <h2>Equipe</h2>
+        </div>
+        <div id="lista-equipe" class="equipe"></div>
+      </section>
+
+      <section id="agendar" class="secao agendar">
+        <div class="secao-cabeca">
+          <h2>Agendar consulta</h2>
+          <p>Leva um minuto. Você pode remarcar ou cancelar por aqui mesmo.</p>
+        </div>
+        <form id="form-agenda" class="agenda" novalidate>
+          <fieldset class="etapa">
+            <legend>Tratamento</legend>
+            <select id="campo-tratamento" name="tratamento" required></select>
+          </fieldset>
+          <fieldset class="etapa">
+            <legend>Profissional</legend>
+            <div id="campo-profissional" class="opcoes-prof" role="radiogroup"></div>
+          </fieldset>
+          <fieldset class="etapa">
+            <legend>Dia</legend>
+            <div class="dias-nav">
+              <button type="button" id="dias-antes" aria-label="Semana anterior">‹</button>
+              <div id="campo-dia" class="dias" role="radiogroup"></div>
+              <button type="button" id="dias-depois" aria-label="Próxima semana">›</button>
+            </div>
+          </fieldset>
+          <fieldset class="etapa">
+            <legend>Horário</legend>
+            <div id="campo-hora" class="horas" role="radiogroup"></div>
+          </fieldset>
+          <fieldset class="etapa dados">
+            <legend>Seus dados</legend>
+            <label>Nome completo <input name="nome" autocomplete="name" required /></label>
+            <label
+              >WhatsApp <input name="fone" inputmode="tel" autocomplete="tel" placeholder="(11) 90000-0000" required
+            /></label>
+            <label class="largo"
+              ><span>Algo que o dentista deve saber? <span class="opcional">(opcional)</span></span>
+              <textarea name="obs" rows="2"></textarea>
+            </label>
+          </fieldset>
+          <div class="resumo" aria-live="polite">
+            <p id="resumo-texto">Escolha o dia e o horário.</p>
+            <p id="erro-agenda" class="erro" role="alert"></p>
+            <button class="botao" type="submit">Confirmar agendamento</button>
+          </div>
+        </form>
+      </section>
+
+      <section id="minhas" class="secao minhas" hidden>
+        <div class="secao-cabeca">
+          <h2>Minhas consultas</h2>
+          <p>Ficam salvas neste aparelho.</p>
+        </div>
+        <ul id="lista-minhas" class="lista-minhas"></ul>
+      </section>
+
+      <section id="convenios" class="secao convenios">
+        <div class="secao-cabeca">
+          <h2>Convênios e pagamento</h2>
+        </div>
+        <div class="convenios-grade">
+          <div>
+            <h3>Atendemos</h3>
+            <ul class="lista-simples">
+              <li>Amil Dental</li>
+              <li>Bradesco Dental</li>
+              <li>OdontoPrev</li>
+              <li>SulAmérica Odonto</li>
+              <li>Porto Seguro Odonto</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Particular</h3>
+            <p>Pix com 5% de desconto, cartão em até 10 vezes sem juros e boleto para tratamentos acima de R$ 1.500.</p>
+            <p>Ortodontia tem mensalidade fixa, sem taxa de manutenção escondida.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="duvidas" class="secao duvidas">
+        <div class="secao-cabeca">
+          <h2>Dúvidas comuns</h2>
+        </div>
+        <details>
+          <summary>Clareamento dói?</summary>
+          <p>
+            Pode dar sensibilidade nos primeiros dias. Usamos gel dessensibilizante antes e indicamos o creme dental
+            certo para a fase do tratamento.
+          </p>
+        </details>
+        <details>
+          <summary>Com que idade a criança deve ir ao dentista?</summary>
+          <p>
+            Quando nasce o primeiro dente, ou até o primeiro aniversário. A primeira visita é quase uma brincadeira.
+          </p>
+        </details>
+        <details>
+          <summary>Vocês atendem urgência?</summary>
+          <p>
+            Sim, em horário comercial. Dor forte, dente quebrado ou inchaço: chame no WhatsApp que encaixamos no mesmo
+            dia.
+          </p>
+        </details>
+        <details>
+          <summary>Preciso levar algum exame?</summary>
+          <p>Se tiver radiografias recentes, traga. Se não tiver, fazemos aqui quando for necessário.</p>
+        </details>
+      </section>
+
+      <section class="secao local">
+        <div>
+          <h2>Onde estamos</h2>
+          <p>Rua das Laranjeiras, 214 · Lumiar<br />A duas quadras da estação, com estacionamento conveniado.</p>
+          <p>
+            <a class="link-forte" href="https://wa.me/5511900000000" rel="noopener">WhatsApp (11) 90000-0000</a>
+          </p>
+        </div>
+        <img class="mapa" src="img/mapa.svg" alt="Mapa do quarteirão com a clínica marcada perto da estação" />
+      </section>
+    </main>
+
+    <footer class="rodape">
+      <p>Lumiar Odontologia · Responsável técnica: Dra. Helena Prado, CRO-SP 00000</p>
+      <p class="aviso">Site de portfólio com clínica fictícia. Agendamentos ficam salvos só neste navegador.</p>
+    </footer>
+
+    <div id="aviso" class="toast" role="status" aria-live="polite"></div>
+    <script type="module" src="js/app.js"></script>
+  </body>
+</html>

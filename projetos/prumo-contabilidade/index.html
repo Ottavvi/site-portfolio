@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Prumo Contabilidade — contabilidade para pequenas empresas</title>
+    <meta
+      name="description"
+      content="Escritório de contabilidade para MEI, Simples Nacional e Lucro Presumido. Compare os regimes, veja a agenda fiscal e abra sua empresa."
+    />
+    <link rel="icon" href="img/icone.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="css/estilo.css" />
+  </head>
+  <body>
+    <header class="topo">
+      <a href="#" class="marca"
+        ><img src="img/icone.svg" alt="" width="28" height="28" />Prumo<span>contabilidade</span></a
+      >
+      <nav class="nav">
+        <a href="#servicos">Serviços</a>
+        <a href="#abrir">Abrir empresa</a>
+        <a href="#agenda">Agenda fiscal</a>
+        <a href="#honorarios">Honorários</a>
+        <a href="#contato" class="botao botao-pequeno">Falar com um contador</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="abertura">
+        <div class="abertura-texto">
+          <h1>Quanto de imposto a sua empresa pagaria em cada regime?</h1>
+          <p>
+            Faturamento e folha do mês, e a conta sai na hora: MEI, Simples Nacional e Lucro Presumido lado a lado. É o
+            mesmo raciocínio que usamos na primeira reunião.
+          </p>
+        </div>
+        <form id="comparador" class="comparador" novalidate>
+          <label class="c-atividade"
+            >O que a empresa faz
+            <select name="atividade" id="c-atividade"></select>
+          </label>
+          <label
+            >Faturamento por mês
+            <span class="campo-moeda"
+              ><span>R$</span><input name="faturamento" inputmode="numeric" value="30.000"
+            /></span>
+          </label>
+          <label
+            ><span>Folha por mês <small>(salários + pró-labore)</small></span>
+            <span class="campo-moeda"><span>R$</span><input name="folha" inputmode="numeric" value="5.000" /></span>
+          </label>
+        </form>
+        <div id="resultado" class="resultado" aria-live="polite"></div>
+        <p id="dica" class="dica" aria-live="polite"></p>
+        <details class="premissas">
+          <summary>Como a conta é feita</summary>
+          <ul>
+            <li>Receita e folha iguais todos os meses: a receita dos últimos 12 meses é o faturamento × 12.</li>
+            <li>
+              Simples: alíquota efetiva das tabelas dos Anexos I a V da LC 123/2006. Serviços intelectuais vão para o
+              Anexo III quando a folha chega a 28% da receita (Fator R); abaixo disso, Anexo V.
+            </li>
+            <li>
+              MEI em 2026: limite de R$ 81 mil por ano e DAS de R$ 81,05 mais R$ 1 (ICMS) ou R$ 5 (ISS). A LC 238/2026
+              sobe o limite para R$ 110 mil em 2027.
+            </li>
+            <li>
+              Lucro Presumido de serviços: presunção de 32%, ISS de 3% e INSS patronal de 20% sobre a folha, sem RAT e
+              terceiros.
+            </li>
+            <li>
+              Reforma tributária: em 2026 a CBS e o IBS estão em fase de teste; as mudanças de valor começam em 2027.
+            </li>
+            <li>É uma estimativa para conversa, não um planejamento tributário.</li>
+          </ul>
+        </details>
+      </section>
+
+      <section id="servicos" class="servicos">
+        <h2>O que fazemos por mês</h2>
+        <dl class="lista-servicos">
+          <div>
+            <dt>Impostos</dt>
+            <dd>Apuração e guia do DAS, ISS e tributos federais, conferidos com o extrato do banco.</dd>
+          </div>
+          <div>
+            <dt>Folha e pró-labore</dt>
+            <dd>Holerites, férias, 13º, eSocial, FGTS Digital e DCTFWeb.</dd>
+          </div>
+          <div>
+            <dt>Contabilidade</dt>
+            <dd>Livro diário, balancete, DRE e balanço. Com eles você consegue crédito no banco.</dd>
+          </div>
+          <div>
+            <dt>Fator R</dt>
+            <dd>Para quem presta serviço intelectual: acompanhamos a folha para manter o Anexo III quando compensa.</dd>
+          </div>
+          <div>
+            <dt>Declarações</dt>
+            <dd>DEFIS, DASN-SIMEI, ECD, ECF e o Imposto de Renda dos sócios.</dd>
+          </div>
+          <div>
+            <dt>Atendimento</dt>
+            <dd>WhatsApp com contador, não com robô. Resposta no mesmo dia útil.</dd>
+          </div>
+        </dl>
+      </section>
+
+      <section id="abrir" class="abrir">
+        <h2>Abrir uma empresa com a gente</h2>
+        <ol class="etapas">
+          <li>
+            <h3>Conversa</h3>
+            <p>Atividade, sócios, cidade e quanto pretende faturar. Escolhemos o regime e os CNAEs.</p>
+          </li>
+          <li>
+            <h3>Viabilidade</h3>
+            <p>Consulta na prefeitura para confirmar que a atividade pode funcionar no endereço.</p>
+          </li>
+          <li>
+            <h3>Contrato social</h3>
+            <p>Redigimos e registramos na Junta Comercial. Sai o CNPJ.</p>
+          </li>
+          <li>
+            <h3>Inscrições</h3>
+            <p>Prefeitura (e estado, se vender produto), alvará e certificado digital.</p>
+          </li>
+          <li>
+            <h3>Primeira nota</h3>
+            <p>Configuramos a emissão de nota fiscal e a conta PJ. Em média, 15 dias úteis do começo ao fim.</p>
+          </li>
+        </ol>
+      </section>
+
+      <section id="agenda" class="agenda">
+        <div class="agenda-cabeca">
+          <h2>Agenda fiscal</h2>
+          <div class="regime-agenda" role="radiogroup" aria-label="Regime">
+            <label><input type="radio" name="regime" value="simples" checked /><span>Simples</span></label>
+            <label><input type="radio" name="regime" value="mei" /><span>MEI</span></label>
+          </div>
+        </div>
+        <ol id="lista-agenda" class="lista-agenda"></ol>
+        <p class="agenda-nota">Datas ajustadas para fins de semana. Feriados locais podem mudar o dia; nós avisamos.</p>
+      </section>
+
+      <section id="honorarios" class="honorarios">
+        <h2>Honorários</h2>
+        <table class="tabela-honorarios">
+          <thead>
+            <tr>
+              <th scope="col">Regime</th>
+              <th scope="col">Inclui</th>
+              <th scope="col">Por mês</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">MEI</th>
+              <td>DAS, declaração anual e emissão de notas</td>
+              <td>R$ 89</td>
+            </tr>
+            <tr>
+              <th scope="row">Simples, só serviços</th>
+              <td>Até 2 funcionários, pró-labore e Fator R</td>
+              <td>R$ 390</td>
+            </tr>
+            <tr>
+              <th scope="row">Simples, comércio</th>
+              <td>Até 5 funcionários e conferência de estoque</td>
+              <td>R$ 590</td>
+            </tr>
+            <tr>
+              <th scope="row">Lucro Presumido</th>
+              <td>Até 10 funcionários, ECD e ECF</td>
+              <td>a partir de R$ 1.200</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="honorarios-nota">Abertura de empresa: R$ 690, ou grátis para quem fecha 12 meses de contabilidade.</p>
+      </section>
+
+      <section class="agente">
+        <div>
+          <h2>Seus números, a qualquer hora</h2>
+          <p>
+            Cada cliente recebe o Agente Contábil: um painel que lê o extrato da empresa, monta DRE e balanço e responde
+            perguntas como "quanto vou pagar de DAS?" ou "qual o meu Fator R?".
+          </p>
+        </div>
+        <a class="botao botao-claro" href="../agente-contabil/">Ver o Agente Contábil</a>
+      </section>
+
+      <section id="contato" class="contato">
+        <h2>Marque uma conversa</h2>
+        <form id="form-contato" class="form-contato" novalidate>
+          <label>Seu nome <input name="nome" autocomplete="name" /></label>
+          <label
+            >Situação
+            <select name="situacao">
+              <option>Quero abrir uma empresa</option>
+              <option>Sou MEI e vou passar do limite</option>
+              <option>Quero trocar de contador</option>
+              <option>Tenho dúvida sobre o regime</option>
+            </select>
+          </label>
+          <label class="largo"
+            >Conte em uma frase <input name="msg" placeholder="Ex.: sou desenvolvedor e faturo uns R$ 25 mil por mês"
+          /></label>
+          <p id="erro-contato" class="erro largo" role="alert"></p>
+          <button class="botao largo">Enviar pelo WhatsApp</button>
+        </form>
+      </section>
+    </main>
+
+    <footer class="rodape">
+      <p>Prumo Contabilidade · CRC-SP 000000/O · Av. Paulista, 1000, sala 47, São Paulo</p>
+      <p class="aviso">Escritório fictício criado para portfólio. Os valores do comparador são estimativas.</p>
+    </footer>
+
+    <script type="module" src="js/app.js"></script>
+  </body>
+</html>

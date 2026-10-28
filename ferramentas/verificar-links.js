@@ -7,8 +7,14 @@ const RAIZ = path.join(__dirname, '..');
 // A 404 usa caminhos absolutos porque o GitHub Pages a mostra em qualquer endereço
 const PREFIXO_ABSOLUTO = '/site-portfolio/';
 const IGNORAR_PASTAS = new Set(['.git', 'node_modules', 'ferramentas']);
-// Âncoras que não são elementos da página, e sim rotas lidas pelo JavaScript (abas da central de tempo)
-const ROTAS_JS = { 'projetos/cronometro/index.html': ['cronometro', 'temporizador', 'pomodoro'] };
+// Âncoras que não são elementos da página, e sim rotas lidas pelo JavaScript (abas da central de tempo e telas dos agentes)
+const ROTAS_JS = {
+  'projetos/cronometro/index.html': ['cronometro', 'temporizador', 'pomodoro'],
+  'projetos/agente-financeiro/index.html': ['visao', 'transacoes', 'orcamentos', 'previsao', 'metas', 'importar', 'ajustes'],
+  'projetos/agente-contabil/index.html': [
+    'painel', 'lancamentos', 'diario', 'razao', 'balancete', 'dre', 'balanco', 'impostos', 'obrigacoes', 'importar', 'ajustes',
+  ],
+};
 
 function listarHtml(pasta) {
   return fs.readdirSync(pasta, { withFileTypes: true }).flatMap(item => {

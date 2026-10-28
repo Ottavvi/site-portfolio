@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Agente Contábil</title>
+    <meta
+      name="description"
+      content="Um agente contábil para pequenas empresas: transforma o extrato bancário em lançamentos de partidas dobradas, monta DRE, balancete e balanço, apura o Simples Nacional e responde perguntas."
+    />
+    <meta name="theme-color" content="#eaefeb" />
+    <link rel="icon" href="icone.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="css/app.css" />
+    <script>
+      try {
+        const tema = localStorage.getItem('agente-contabil-tema');
+        if (tema) document.documentElement.dataset.tema = tema;
+      } catch {}
+    </script>
+  </head>
+  <body>
+    <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+    <div class="app">
+      <nav class="trilho" aria-label="Seções">
+        <a class="marca" href="#painel">
+          <img src="icone.svg" alt="" width="36" height="36" />
+          <span>Agente<br />Contábil</span>
+        </a>
+        <ul>
+          <li><a href="#painel" data-tela="painel">Painel</a></li>
+          <li><a href="#lancamentos" data-tela="lancamentos">Extrato e contas</a></li>
+          <li><a href="#diario" data-tela="diario">Livro diário</a></li>
+          <li><a href="#razao" data-tela="razao">Razão</a></li>
+          <li><a href="#balancete" data-tela="balancete">Balancete</a></li>
+          <li><a href="#dre" data-tela="dre">DRE</a></li>
+          <li><a href="#balanco" data-tela="balanco">Balanço</a></li>
+          <li><a href="#impostos" data-tela="impostos">Impostos</a></li>
+          <li><a href="#obrigacoes" data-tela="obrigacoes">Obrigações</a></li>
+          <li><a href="#importar" data-tela="importar">Importar extrato</a></li>
+          <li><a href="#ajustes" data-tela="ajustes">Empresa e ajustes</a></li>
+        </ul>
+        <p class="trilho-nota" id="avisoExemplo" hidden>
+          Você está vendo uma empresa de exemplo.
+          <a href="#importar">Importe o extrato</a>
+          da sua para usar os dados dela.
+        </p>
+        <button type="button" class="btn-tema" id="btnTema" aria-label="Alternar tema claro e escuro">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
+          </svg>
+          <span>Tema</span>
+        </button>
+      </nav>
+
+      <main id="conteudo" tabindex="-1"></main>
+
+      <aside class="agente" id="agente" aria-label="Agente">
+        <header class="agente-topo">
+          <div>
+            <h2>Pergunte ao agente</h2>
+            <p class="agente-modo" id="agenteModo">Respondendo com os dados deste navegador</p>
+          </div>
+          <button type="button" class="agente-fechar" id="agenteFechar" aria-label="Fechar o agente">×</button>
+        </header>
+        <div class="agente-conversa" id="conversa" role="log" aria-live="polite"></div>
+        <form class="agente-campo" id="formPergunta">
+          <label class="sr" for="pergunta">Sua pergunta</label>
+          <textarea id="pergunta" rows="1" placeholder="Sua pergunta" autocomplete="off"></textarea>
+          <button type="submit" class="btn btn-primario" aria-label="Perguntar">Perguntar</button>
+        </form>
+      </aside>
+      <button type="button" class="abrir-agente" id="abrirAgente" aria-controls="agente" aria-expanded="false">
+        Perguntar ao agente
+      </button>
+    </div>
+    <div class="aviso-rapido" id="avisoRapido" role="status" hidden></div>
+    <script type="module" src="js/app.js"></script>
+  </body>
+</html>

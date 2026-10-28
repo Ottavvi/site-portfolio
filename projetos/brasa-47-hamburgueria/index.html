@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Brasa 47 — smash burger na chapa</title>
+    <meta
+      name="description"
+      content="Hamburgueria de smash burger na Vila Madalena. Monte o seu, peça pelo site e receba em casa ou retire no balcão."
+    />
+    <meta name="theme-color" content="#f4b731" />
+    <link rel="icon" href="img/icone.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="css/estilo.css" />
+  </head>
+  <body>
+    <header class="topo">
+      <a href="#" class="logo" aria-label="Brasa 47, início">BRASA<span>47</span></a>
+      <p id="status" class="status"></p>
+      <nav class="nav" aria-label="Seções">
+        <a href="#monte">Monte o seu</a>
+        <a href="#cardapio">Cardápio</a>
+        <a href="#onde">Onde</a>
+      </nav>
+      <button id="abrir-sacola" class="sacola-botao" aria-haspopup="dialog">
+        Sacola <span id="sacola-qtd" class="sacola-qtd">0</span>
+        <span id="sacola-total" class="sacola-total"></span>
+      </button>
+    </header>
+
+    <main>
+      <section id="monte" class="monte">
+        <div class="monte-palco">
+          <div class="disco">
+            <div id="burger-grande" class="burger-grande" aria-live="polite"></div>
+          </div>
+          <p class="etiqueta" aria-live="polite"><span id="monte-preco">R$ 22</span></p>
+        </div>
+        <form id="form-monte" class="monte-form">
+          <h1>Monte o seu smash.</h1>
+          <p class="monte-sub">Carne prensada na chapa de ferro até a borda ficar crocante. Você escolhe o resto.</p>
+
+          <fieldset>
+            <legend>Pão</legend>
+            <div id="op-pao" class="pilulas"></div>
+          </fieldset>
+          <fieldset>
+            <legend>Carne <span class="legenda-nota">smash de 90 g, blend da casa</span></legend>
+            <div id="op-carne" class="pilulas"></div>
+          </fieldset>
+          <fieldset>
+            <legend>Queijo <span class="legenda-nota">uma fatia por carne</span></legend>
+            <div id="op-queijo" class="pilulas"></div>
+          </fieldset>
+          <fieldset>
+            <legend>Extras</legend>
+            <div id="op-extras" class="pilulas"></div>
+          </fieldset>
+          <fieldset>
+            <legend>Molho</legend>
+            <div id="op-molho" class="pilulas"></div>
+          </fieldset>
+          <div class="monte-acao">
+            <button type="submit" class="botao">Colocar na sacola</button>
+            <button type="button" id="monte-limpar" class="botao-texto">Recomeçar</button>
+          </div>
+        </form>
+      </section>
+
+      <section id="cardapio" class="cardapio">
+        <h2>Cardápio</h2>
+        <nav class="abas" aria-label="Categorias do cardápio">
+          <a href="#c-burgers">Burgers</a>
+          <a href="#c-acomp">Para acompanhar</a>
+          <a href="#c-bebidas">Bebidas</a>
+        </nav>
+        <h3 id="c-burgers" class="categoria">Burgers da casa</h3>
+        <div id="lista-burgers" class="grade-burgers"></div>
+        <div class="duas">
+          <div>
+            <h3 id="c-acomp" class="categoria">Para acompanhar</h3>
+            <ul id="lista-acomp" class="lista-itens"></ul>
+          </div>
+          <div>
+            <h3 id="c-bebidas" class="categoria">Bebidas</h3>
+            <ul id="lista-bebidas" class="lista-itens"></ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="onde" class="onde">
+        <div>
+          <h2>Balcão e entrega</h2>
+          <p>Rua Aspicuelta, 47 · Vila Madalena, São Paulo</p>
+          <p>Terça a domingo, das 18h às 23h30. Segunda a chapa descansa.</p>
+        </div>
+        <dl class="numeros">
+          <div>
+            <dt>Entrega</dt>
+            <dd>35 a 50 min</dd>
+          </div>
+          <div>
+            <dt>Retirada</dt>
+            <dd>15 min</dd>
+          </div>
+          <div>
+            <dt>Taxa</dt>
+            <dd>R$ 5 a R$ 10</dd>
+          </div>
+        </dl>
+      </section>
+    </main>
+
+    <footer class="rodape">
+      <p>Brasa 47 · Hamburgueria fictícia criada para portfólio. Os pedidos abrem o WhatsApp com a mensagem pronta.</p>
+    </footer>
+
+    <dialog id="sacola" class="sacola" aria-labelledby="sacola-titulo">
+      <form method="dialog" class="sacola-topo">
+        <h2 id="sacola-titulo">Sua sacola</h2>
+        <button class="fechar" aria-label="Fechar sacola">×</button>
+      </form>
+      <div id="sacola-corpo" class="sacola-corpo"></div>
+    </dialog>
+
+    <div id="aviso" class="aviso" role="status" aria-live="polite"></div>
+    <script type="module" src="js/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bancada — ordens de serviço</title>
+    <meta
+      name="description"
+      content="Sistema de ordens de serviço para assistência técnica: quadro de status, orçamento, entrega com garantia e impressão."
+    />
+    <link rel="icon" href="img/icone.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="css/app.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="topo">
+        <div class="marca">
+          <img src="img/icone.svg" alt="" width="30" height="30" /><b>Bancada</b><span>ordens de serviço</span>
+        </div>
+        <label class="busca">
+          <span class="sr">Buscar</span>
+          <input id="busca" type="search" placeholder="Buscar por cliente, aparelho ou número" autocomplete="off" />
+        </label>
+        <button id="nova" class="botao">Nova OS</button>
+        <details class="menu">
+          <summary aria-label="Mais opções">···</summary>
+          <div class="menu-itens">
+            <button data-acao="csv">Exportar planilha (CSV)</button>
+            <button data-acao="backup">Baixar backup</button>
+            <label class="arquivo"
+              >Restaurar backup<input type="file" id="restaurar" accept=".json,application/json"
+            /></label>
+            <button data-acao="exemplo">Voltar aos dados de exemplo</button>
+          </div>
+        </details>
+      </header>
+
+      <section class="numeros" id="numeros" aria-label="Resumo"></section>
+
+      <main class="quadro" id="quadro" aria-label="Ordens por status"></main>
+    </div>
+
+    <dialog id="detalhe" class="gaveta" aria-labelledby="det-titulo">
+      <div id="det-corpo"></div>
+    </dialog>
+
+    <dialog id="nova-os" class="modal" aria-labelledby="nova-titulo">
+      <form id="form-nova" novalidate>
+        <div class="modal-topo">
+          <h2 id="nova-titulo">Nova ordem de serviço</h2>
+          <button type="button" class="fechar" data-fechar aria-label="Fechar">×</button>
+        </div>
+        <fieldset>
+          <legend>Cliente</legend>
+          <label>Nome <input name="nome" autocomplete="off" required /></label>
+          <label>WhatsApp <input name="fone" inputmode="tel" autocomplete="off" required /></label>
+        </fieldset>
+        <fieldset>
+          <legend>Aparelho</legend>
+          <label
+            >Tipo
+            <select name="tipo" id="nova-tipo"></select
+          ></label>
+          <label>Marca e modelo <input name="modelo" placeholder="Ex.: Samsung Galaxy A54" required /></label>
+          <label>Nº de série ou IMEI <span class="opcional">(opcional)</span><input name="serie" /></label>
+          <label
+            >Acessórios deixados <span class="opcional">(opcional)</span
+            ><input name="acessorios" placeholder="Carregador, capinha..."
+          /></label>
+        </fieldset>
+        <label class="largo"
+          >Defeito relatado pelo cliente
+          <textarea name="defeito" rows="3" required></textarea>
+        </label>
+        <label>Prazo prometido <input name="prazo" type="date" required /></label>
+        <p id="erro-nova" class="erro" role="alert"></p>
+        <div class="modal-acoes">
+          <button type="button" class="botao-linha" data-fechar>Cancelar</button>
+          <button class="botao">Abrir OS</button>
+        </div>
+      </form>
+    </dialog>
+
+    <div id="impressao" class="impressao" aria-hidden="true"></div>
+    <div id="aviso" class="aviso" role="status" aria-live="polite"></div>
+    <script type="module" src="js/app.js"></script>
+  </body>
+</html>

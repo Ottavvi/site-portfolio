@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Studio Alento — pilates, yoga e funcional leve</title>
+    <meta
+      name="description"
+      content="Studio de pilates nos aparelhos, pilates solo, yoga e funcional leve. Veja a grade da semana e reserve sua aula experimental."
+    />
+    <link rel="icon" href="img/icone.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="css/estilo.css" />
+  </head>
+  <body>
+    <header class="topo">
+      <a href="#" class="marca">alento<span>studio</span></a>
+      <nav class="nav">
+        <a href="#grade">Grade</a>
+        <a href="#planos">Planos</a>
+        <a href="#equipe">Equipe</a>
+        <a href="#grade" class="botao botao-pequeno">Aula experimental</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="abertura">
+        <div class="respiro" aria-hidden="true">
+          <div class="respiro-circulo"></div>
+          <p class="respiro-texto"><span class="inspira">inspira</span><span class="solta">solta</span></p>
+        </div>
+        <div class="abertura-texto">
+          <h1>Respira. O resto a gente ajusta.</h1>
+          <p>
+            Pilates, yoga e funcional leve em turmas pequenas, com fisioterapeuta na equipe. Para quem tem dor nas
+            costas, para quem nunca treinou e para quem só quer sair do trabalho mais leve.
+          </p>
+          <a href="#grade" class="botao">Escolher aula experimental</a>
+          <p class="abertura-nota">A primeira aula é por nossa conta.</p>
+        </div>
+      </section>
+
+      <section class="modalidades" aria-labelledby="mod-titulo">
+        <h2 id="mod-titulo">Quatro jeitos de mexer o corpo</h2>
+        <ul id="lista-mod" class="lista-mod"></ul>
+      </section>
+
+      <section id="grade" class="grade-secao">
+        <div class="grade-cabeca">
+          <div>
+            <h2>Grade da semana</h2>
+            <p>Escolha um horário com vaga para a sua aula experimental.</p>
+          </div>
+          <div class="filtros" role="group" aria-label="Filtrar por modalidade" id="filtros"></div>
+        </div>
+        <div id="grade-tabela" class="grade"></div>
+        <div id="grade-lista" class="grade-lista"></div>
+      </section>
+
+      <section id="planos" class="planos">
+        <div class="planos-cabeca">
+          <h2>Planos</h2>
+          <div class="periodos" role="radiogroup" aria-label="Fidelidade" id="periodos"></div>
+        </div>
+        <div class="tipo-plano" role="radiogroup" aria-label="Tipo de aula">
+          <label><input type="radio" name="tipo" value="aparelhos" checked /><span>Pilates nos aparelhos</span></label>
+          <label><input type="radio" name="tipo" value="livre" /><span>Solo, yoga e funcional</span></label>
+        </div>
+        <div id="lista-planos" class="lista-planos"></div>
+        <p class="planos-nota">
+          Reposição de falta avisada com 3 horas de antecedência, dentro do mesmo mês. Avaliação postural na matrícula.
+        </p>
+      </section>
+
+      <section id="equipe" class="equipe">
+        <h2>Quem dá aula</h2>
+        <ul id="lista-equipe" class="lista-equipe"></ul>
+      </section>
+
+      <section class="contato">
+        <div>
+          <h2>Rua Fradique Coutinho, 820</h2>
+          <p>Pinheiros, São Paulo · 3 minutos da estação Fradique Coutinho</p>
+          <p>Seg a sex, 7h às 21h · sáb, 8h às 11h</p>
+        </div>
+        <a class="botao botao-claro" href="https://wa.me/5511900000820" rel="noopener">Conversar no WhatsApp</a>
+      </section>
+    </main>
+
+    <footer class="rodape">
+      <p>Studio Alento · estúdio fictício criado para portfólio. Reservas ficam salvas só neste navegador.</p>
+    </footer>
+
+    <dialog id="reserva" class="reserva" aria-labelledby="reserva-titulo">
+      <form id="form-reserva" method="dialog" novalidate>
+        <button type="button" class="fechar" data-fechar aria-label="Fechar">×</button>
+        <p class="reserva-tag" id="reserva-tag"></p>
+        <h2 id="reserva-titulo"></h2>
+        <p id="reserva-info" class="reserva-info"></p>
+        <label>Nome <input name="nome" autocomplete="name" required /></label>
+        <label>WhatsApp <input name="fone" inputmode="tel" autocomplete="tel" required /></label>
+        <label
+          >Alguma dor ou limitação? <span class="opcional">(opcional)</span>
+          <input name="obs" placeholder="Ex.: hérnia lombar, joelho operado" />
+        </label>
+        <p id="reserva-erro" class="erro" role="alert"></p>
+        <button class="botao botao-largo" value="ok">Reservar aula experimental</button>
+      </form>
+    </dialog>
+
+    <div id="aviso" class="aviso" role="status" aria-live="polite"></div>
+    <script type="module" src="js/app.js"></script>
+  </body>
+</html>
