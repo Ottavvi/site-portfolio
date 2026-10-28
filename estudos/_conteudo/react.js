@@ -1005,6 +1005,346 @@ function App() {
 createRoot(document.getElementById('root')).render(<App />);`
             }
           ]
+        },
+        {
+          titulo: 'Estado complexo e desempenho',
+          itens: [
+            {
+              id: 'use-reducer',
+              titulo: 'useReducer',
+              resumo: 'Centralizar as mudanças de um estado complexo numa função só.',
+              minutos: 12,
+              corpo: `
+<p>Quando um componente tem vários <code>useState</code> que mudam juntos e muitas funções que mexem neles (adicionar, remover, aumentar, limpar...), a lógica fica espalhada. O <code>useReducer</code> junta todas as mudanças num lugar: uma função <strong>redutora</strong> que recebe o estado atual e uma <strong>ação</strong>, e devolve o estado novo.</p>
+${codigo(`import { useReducer } from 'react';
+import { createRoot } from 'react-dom/client';
+
+function placar(estado, acao) {
+  switch (acao.tipo) {
+    case 'ponto':
+      return { ...estado, [acao.time]: estado[acao.time] + acao.valor };
+    case 'zerar':
+      return { casa: 0, visitante: 0 };
+    default:
+      throw new Error('Ação desconhecida: ' + acao.tipo);
+  }
+}
+
+function App() {
+  const [estado, despachar] = useReducer(placar, { casa: 0, visitante: 0 });
+  return (
+    <>
+      <h2>Casa {estado.casa} × {estado.visitante} Visitante</h2>
+      <button onClick={() => despachar({ tipo: 'ponto', time: 'casa', valor: 1 })}>+1 Casa</button>{' '}
+      <button onClick={() => despachar({ tipo: 'ponto', time: 'visitante', valor: 1 })}>+1 Visitante</button>{' '}
+      <button onClick={() => despachar({ tipo: 'ponto', time: 'casa', valor: 3 })}>+3 Casa</button>{' '}
+      <button onClick={() => despachar({ tipo: 'zerar' })}>Zerar</button>
+    </>
+  );
+}
+
+createRoot(document.getElementById('root')).render(<App />);`)}
+<ul>
+  <li><code>useReducer(redutor, estadoInicial)</code> devolve o estado e a função <code>despachar</code> (em inglês, <code>dispatch</code>).</li>
+  <li>O componente só diz <strong>o que aconteceu</strong> (<code>{ tipo: 'ponto', time: 'casa' }</code>); o redutor decide <strong>como o estado muda</strong>.</li>
+  <li>O redutor é uma <strong>função pura</strong>: não mexe no estado antigo, não chama APIs, não usa <code>Date.now()</code>. Com a mesma entrada, devolve sempre a mesma saída. Por isso dá para testar sem React nenhum.</li>
+</ul>
+${dica('Regra prática: useState para valores independentes e simples (um campo, um booleano de "aberto"); useReducer quando várias ações mexem no mesmo estado ou quando o estado novo depende de regras.')}
+
+<h2>Redutor + contexto</h2>
+<p>Juntando <code>useReducer</code> com contexto, qualquer componente da árvore pode despachar ações sem receber funções por props, um padrão comum para carrinho, sessão e preferências:</p>
+${trecho(`const CarrinhoContext = createContext(null);
+
+function ProvedorCarrinho({ children }) {
+  const [estado, despachar] = useReducer(carrinho, { itens: [] });
+  return <CarrinhoContext.Provider value={{ estado, despachar }}>{children}</CarrinhoContext.Provider>;
+}
+
+// Em qualquer lugar lá embaixo:
+const { despachar } = useContext(CarrinhoContext);
+despachar({ tipo: 'adicionar', produto });`)}
+`,
+              quiz: [
+                {
+                  pergunta: 'O que uma função redutora recebe e devolve?',
+                  opcoes: [
+                    'Recebe props e devolve JSX',
+                    'Recebe o estado atual e uma ação e devolve o estado novo',
+                    'Recebe um evento e devolve nada'
+                  ],
+                  certa: 1,
+                  explicacao: '(estado, acao) => novoEstado.'
+                },
+                {
+                  pergunta: 'Por que o redutor deve ser uma função pura?',
+                  opcoes: [
+                    'Por estilo',
+                    'O React pode chamá-lo mais de uma vez, e funções puras são previsíveis e fáceis de testar',
+                    'Para ser mais rápido'
+                  ],
+                  certa: 1,
+                  explicacao: 'Mesmo estado e ação, mesmo resultado, sem efeitos colaterais.'
+                },
+                {
+                  pergunta: 'O que o componente passa para despachar()?',
+                  opcoes: ['O estado novo inteiro', 'Uma ação descrevendo o que aconteceu', 'Uma função'],
+                  certa: 1,
+                  explicacao: 'A lógica da mudança fica no redutor.'
+                }
+              ]
+            },
+            {
+              id: 'desempenho',
+              titulo: 'Desempenho: memo, useMemo e lazy',
+              resumo: 'Quando o React desenha de novo, como evitar trabalho repetido e carregar sob demanda.',
+              minutos: 13,
+              corpo: `
+<p>Quando o estado de um componente muda, ele e <strong>todos os filhos</strong> são chamados de novo. Na maioria dos casos isso é rápido e não faz diferença. Otimize só quando medir um problema (a aba Profiler das React DevTools mostra quem desenhou e quanto levou).</p>
+
+<h2>memo: não desenhar o filho à toa</h2>
+<p><code>memo(Componente)</code> faz o React pular o componente se as props não mudaram. Veja o contador de desenhos:</p>
+${codigo(`import { useState, memo, useRef } from 'react';
+import { createRoot } from 'react-dom/client';
+
+function Lista({ itens }) {
+  const vezes = useRef(0);
+  vezes.current++;
+  return <p>Lista com {itens.length} itens (desenhada {vezes.current}×)</p>;
+}
+const ListaMemo = memo(Lista);
+
+const itens = Array.from({ length: 1000 }, (_, i) => 'Item ' + i);
+
+function App() {
+  const [texto, setTexto] = useState('');
+  return (
+    <>
+      <input value={texto} onChange={e => setTexto(e.target.value)} placeholder="Digite aqui" />
+      <Lista itens={itens} />
+      <ListaMemo itens={itens} />
+    </>
+  );
+}
+
+createRoot(document.getElementById('root')).render(<App />);`)}
+<p>A cada tecla, <code>Lista</code> desenha de novo; <code>ListaMemo</code> não, porque <code>itens</code> é o mesmo array.</p>
+
+<h2>useMemo e useCallback</h2>
+<p>O <code>memo</code> compara as props por <strong>identidade</strong>. Um array, objeto ou função criado dentro do componente é <strong>novo a cada desenho</strong>, e o memo nunca pula. Os dois hooks guardam o mesmo valor entre desenhos:</p>
+${trecho(`// Recalcula só quando produtos ou busca mudarem (e o resultado mantém a identidade)
+const filtrados = useMemo(
+  () => produtos.filter(p => p.nome.toLowerCase().includes(busca.toLowerCase())),
+  [produtos, busca]
+);
+
+// A mesma função entre desenhos, para um filho com memo não desenhar à toa
+const remover = useCallback(id => despachar({ tipo: 'remover', id }), []);`)}
+${dica('Não espalhe useMemo e useCallback por tudo: eles também custam e deixam o código mais difícil de ler. Use quando um cálculo é caro de verdade ou quando um filho com memo recebe aquele valor.')}
+
+<h2>Listas grandes e carregamento sob demanda</h2>
+<ul>
+  <li>Listas com milhares de linhas: desenhe só o que está visível (<em>virtualização</em>, com bibliotecas como TanStack Virtual).</li>
+  <li><code>key</code> estável em listas: com o índice como key, o React reaproveita os elementos errados ao reordenar.</li>
+  <li>Telas pesadas que nem todo mundo abre: <code>lazy</code> + <code>Suspense</code> carregam o código só quando a tela aparece (o <code>import()</code> dinâmico da trilha de Módulos ES).</li>
+</ul>
+${trecho(`const Relatorios = lazy(() => import('./Relatorios.jsx'));
+
+<Suspense fallback={<p>Carregando…</p>}>
+  {mostrarRelatorios && <Relatorios />}
+</Suspense>`)}
+`,
+              quiz: [
+                {
+                  pergunta: 'Quando o estado de um componente muda, quem é desenhado de novo?',
+                  opcoes: ['Só ele', 'Ele e todos os filhos', 'A página inteira'],
+                  certa: 1,
+                  explicacao: 'A não ser os filhos com memo cujas props não mudaram.'
+                },
+                {
+                  pergunta: 'Por que um filho com memo desenha de novo quando recebe onClick={() => ...}?',
+                  opcoes: [
+                    'memo não funciona com funções',
+                    'A função é criada de novo a cada desenho, então a prop muda',
+                    'Por causa do key'
+                  ],
+                  certa: 1,
+                  explicacao: 'useCallback mantém a mesma função entre desenhos.'
+                },
+                {
+                  pergunta: 'Antes de otimizar, o que fazer?',
+                  opcoes: ['Pôr useMemo em tudo', 'Medir (Profiler) para achar o problema real', 'Trocar de framework'],
+                  certa: 1,
+                  explicacao: 'A maioria dos desenhos é rápida; otimize onde dói.'
+                }
+              ]
+            },
+            {
+              id: 'desafio-carrinho-reducer',
+              tipo: 'desafio',
+              titulo: 'Desafio: carrinho com useReducer',
+              resumo: 'Adicionar, alterar quantidade, remover e totalizar com um redutor.',
+              minutos: 25,
+              enunciado: `
+<p>Faça o carrinho funcionar com <code>useReducer</code> (o código precisa usá-lo):</p>
+<ul>
+  <li>Cada botão <strong>Adicionar</strong> de um produto põe ele no carrinho. Se já estiver lá, soma 1 na quantidade (não cria outra linha).</li>
+  <li>No carrinho, cada item é um <code>&lt;li&gt;</code> com o nome, a quantidade num <code>&lt;span className="qtd"&gt;</code> e os botões <strong>+</strong>, <strong>−</strong> e <strong>Remover</strong>. Diminuir de 1 para 0 remove o item.</li>
+  <li><code>&lt;p id="total"&gt;</code> mostra o total no formato <code>Total: R$ 97,40</code> (com vírgula).</li>
+</ul>`,
+              inicial: `import { useReducer } from 'react';
+import { createRoot } from 'react-dom/client';
+
+const produtos = [
+  { id: 1, nome: 'Café', preco: 62.9 },
+  { id: 2, nome: 'Caneca', preco: 34.5 },
+  { id: 3, nome: 'Filtro', preco: 9.9 }
+];
+
+function carrinho(estado, acao) {
+  return estado;
+}
+
+function App() {
+  return (
+    <main>
+      <section>
+        {produtos.map(p => (
+          <p key={p.id}>{p.nome} <button>Adicionar</button></p>
+        ))}
+      </section>
+      <ul id="carrinho"></ul>
+      <p id="total">Total: R$ 0,00</p>
+    </main>
+  );
+}
+
+createRoot(document.getElementById('root')).render(<App />);
+`,
+              testes: [
+                [
+                  'Adicionar o mesmo produto duas vezes soma a quantidade numa linha só',
+                  async doc => {
+                    const w = doc.defaultView;
+                    const adicionar = nome =>
+                      [...doc.querySelectorAll('section p')]
+                        .find(p => p.textContent.includes(nome))
+                        .querySelector('button')
+                        .click();
+                    adicionar('Café');
+                    await w.__esperar();
+                    adicionar('Café');
+                    await w.__esperar();
+                    const linhas = [...doc.querySelectorAll('#carrinho li')].filter(li =>
+                      li.textContent.includes('Café')
+                    );
+                    return linhas.length === 1 && linhas[0].querySelector('.qtd')?.textContent.trim() === '2';
+                  }
+                ],
+                [
+                  'O total aparece com vírgula: Total: R$ 125,80',
+                  async doc => doc.querySelector('#total').textContent.replace(/\s/g, ' ').trim() === 'Total: R$ 125,80'
+                ],
+                [
+                  '+ e − mudam a quantidade, e − em 1 remove o item',
+                  async doc => {
+                    const w = doc.defaultView;
+                    const linha = () =>
+                      [...doc.querySelectorAll('#carrinho li')].find(li => li.textContent.includes('Café'));
+                    const botao = texto =>
+                      [...linha().querySelectorAll('button')].find(b => b.textContent.trim() === texto);
+                    botao('+').click();
+                    await w.__esperar();
+                    const tres = linha().querySelector('.qtd').textContent.trim() === '3';
+                    for (let i = 0; i < 3; i++) {
+                      botao('−').click();
+                      await w.__esperar();
+                    }
+                    return (
+                      tres &&
+                      !linha() &&
+                      doc.querySelector('#total').textContent.replace(/\s/g, ' ').trim() === 'Total: R$ 0,00'
+                    );
+                  }
+                ],
+                [
+                  'Remover tira o item e o código usa useReducer',
+                  async doc => {
+                    const w = doc.defaultView;
+                    [...doc.querySelectorAll('section p')]
+                      .find(p => p.textContent.includes('Caneca'))
+                      .querySelector('button')
+                      .click();
+                    await w.__esperar();
+                    const linha = [...doc.querySelectorAll('#carrinho li')].find(li =>
+                      li.textContent.includes('Caneca')
+                    );
+                    [...linha.querySelectorAll('button')].find(b => b.textContent.trim() === 'Remover').click();
+                    await w.__esperar();
+                    const codigo = w.frameElement.closest('.editor').querySelector('textarea').value;
+                    return !doc.querySelector('#carrinho li') && /useReducer\(\s*carrinho/.test(codigo);
+                  }
+                ]
+              ],
+              solucao: `import { useReducer } from 'react';
+import { createRoot } from 'react-dom/client';
+
+const produtos = [
+  { id: 1, nome: 'Café', preco: 62.9 },
+  { id: 2, nome: 'Caneca', preco: 34.5 },
+  { id: 3, nome: 'Filtro', preco: 9.9 }
+];
+
+function carrinho(estado, acao) {
+  switch (acao.tipo) {
+    case 'adicionar': {
+      const existe = estado.find(i => i.id === acao.produto.id);
+      if (existe) return estado.map(i => (i.id === acao.produto.id ? { ...i, qtd: i.qtd + 1 } : i));
+      return [...estado, { ...acao.produto, qtd: 1 }];
+    }
+    case 'mudar':
+      return estado
+        .map(i => (i.id === acao.id ? { ...i, qtd: i.qtd + acao.delta } : i))
+        .filter(i => i.qtd > 0);
+    case 'remover':
+      return estado.filter(i => i.id !== acao.id);
+    default:
+      return estado;
+  }
+}
+
+const reais = valor => 'R$ ' + valor.toFixed(2).replace('.', ',');
+
+function App() {
+  const [itens, despachar] = useReducer(carrinho, []);
+  const total = itens.reduce((soma, i) => soma + i.preco * i.qtd, 0);
+
+  return (
+    <main>
+      <section>
+        {produtos.map(p => (
+          <p key={p.id}>
+            {p.nome} <button onClick={() => despachar({ tipo: 'adicionar', produto: p })}>Adicionar</button>
+          </p>
+        ))}
+      </section>
+      <ul id="carrinho">
+        {itens.map(i => (
+          <li key={i.id}>
+            {i.nome} × <span className="qtd">{i.qtd}</span>{' '}
+            <button onClick={() => despachar({ tipo: 'mudar', id: i.id, delta: 1 })}>+</button>
+            <button onClick={() => despachar({ tipo: 'mudar', id: i.id, delta: -1 })}>−</button>
+            <button onClick={() => despachar({ tipo: 'remover', id: i.id })}>Remover</button>
+          </li>
+        ))}
+      </ul>
+      <p id="total">Total: {reais(total)}</p>
+    </main>
+  );
+}
+
+createRoot(document.getElementById('root')).render(<App />);`
+            }
+          ]
         }
       ]
     }

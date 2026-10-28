@@ -925,6 +925,30 @@
           "tipo": "desafio",
           "nivel": "Avançado",
           "minutos": 25
+        },
+        {
+          "id": "pwa-offline/nova-versao",
+          "titulo": "Avisar que há uma versão nova",
+          "resumo": "Detectar o service worker em espera e atualizar com um clique.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 11
+        },
+        {
+          "id": "pwa-offline/fila-offline",
+          "titulo": "Ações feitas sem internet",
+          "resumo": "Detectar a conexão, guardar o que não foi enviado e sincronizar depois.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 12
+        },
+        {
+          "id": "pwa-offline/desafio-fila-offline",
+          "titulo": "Desafio: fila de envio offline",
+          "resumo": "Guarde o que falhou e envie depois, em ordem.",
+          "tipo": "desafio",
+          "nivel": "Avançado",
+          "minutos": 22
         }
       ]
     },
@@ -980,6 +1004,30 @@
           "tipo": "desafio",
           "nivel": "Avançado",
           "minutos": 25
+        },
+        {
+          "id": "i18n/mensagens-icu",
+          "titulo": "Mensagens no formato ICU",
+          "resumo": "plural e select dentro do próprio texto, e contexto para quem traduz.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 11
+        },
+        {
+          "id": "i18n/conferir-traducoes",
+          "titulo": "Conferir traduções e testar o layout",
+          "resumo": "Chaves faltando, variáveis trocadas e pseudo-localização.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 11
+        },
+        {
+          "id": "i18n/desafio-conferir-dicionarios",
+          "titulo": "Desafio: conferir os dicionários",
+          "resumo": "Compare dois dicionários e aponte o que falta, sobra ou está diferente.",
+          "tipo": "desafio",
+          "nivel": "Avançado",
+          "minutos": 22
         }
       ]
     },
@@ -1056,6 +1104,30 @@
           "id": "react/desafio-cronometro",
           "titulo": "Desafio: cronômetro",
           "resumo": "Um cronômetro com useEffect, limpeza e um hook próprio.",
+          "tipo": "desafio",
+          "nivel": "Avançado",
+          "minutos": 25
+        },
+        {
+          "id": "react/use-reducer",
+          "titulo": "useReducer",
+          "resumo": "Centralizar as mudanças de um estado complexo numa função só.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 12
+        },
+        {
+          "id": "react/desempenho",
+          "titulo": "Desempenho: memo, useMemo e lazy",
+          "resumo": "Quando o React desenha de novo, como evitar trabalho repetido e carregar sob demanda.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 13
+        },
+        {
+          "id": "react/desafio-carrinho-reducer",
+          "titulo": "Desafio: carrinho com useReducer",
+          "resumo": "Adicionar, alterar quantidade, remover e totalizar com um redutor.",
           "tipo": "desafio",
           "nivel": "Avançado",
           "minutos": 25

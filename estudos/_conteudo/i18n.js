@@ -573,6 +573,238 @@ ${dica('Teste o layout com textos longos e com <code>dir="rtl"</code> mesmo que 
 </script>`
             }
           ]
+        },
+        {
+          titulo: 'Tradução no dia a dia',
+          itens: [
+            {
+              id: 'mensagens-icu',
+              titulo: 'Mensagens no formato ICU',
+              resumo: 'plural e select dentro do próprio texto, e contexto para quem traduz.',
+              minutos: 11,
+              corpo: `
+<p>Na trilha básica, os plurais ficavam num objeto separado (<code>{ one: ..., other: ... }</code>). As bibliotecas profissionais (FormatJS, i18next com o plugin ICU, e a maioria das ferramentas de tradução) usam o <strong>formato de mensagem ICU</strong>, que coloca as variações dentro do próprio texto:</p>
+${trecho(`{n, plural, =0 {Carrinho vazio} one {# item no carrinho} other {# itens no carrinho}}
+
+{genero, select, feminino {Ela comentou} masculino {Ele comentou} other {Comentaram}} na sua foto.
+
+Olá, {nome}! Você tem {n, plural, one {# mensagem nova} other {# mensagens novas}}.`)}
+<ul>
+  <li><code>plural</code> escolhe pela categoria do número no idioma (<code>one</code>, <code>other</code>...), e <code>=0</code> pega um valor exato. O <code>#</code> é trocado pelo número.</li>
+  <li><code>select</code> escolhe por um texto, como o gênero, e <code>other</code> é o caso padrão (obrigatório).</li>
+  <li>A frase inteira fica com o tradutor, que pode mudar a ordem e as variações conforme o idioma pede.</li>
+</ul>
+
+<h2>Um select em miniatura</h2>
+<p>Bibliotecas fazem a análise completa, mas o princípio cabe em poucas linhas:</p>
+${codigo(`<script>
+  // Entende só: {variavel, select, opcao {texto} ... other {texto}}
+  function formatarSelect(mensagem, vars) {
+    return mensagem.replace(/\\{(\\w+), select, ((?:\\w+ \\{[^}]*\\} ?)+)\\}/g, (_, nome, opcoes) => {
+      const mapa = Object.fromEntries([...opcoes.matchAll(/(\\w+) \\{([^}]*)\\}/g)].map(m => [m[1], m[2]]));
+      return mapa[vars[nome]] ?? mapa.other;
+    });
+  }
+
+  const msg = '{genero, select, feminino {Ela comentou} masculino {Ele comentou} other {Comentaram}} na sua foto.';
+  console.log(formatarSelect(msg, { genero: 'feminino' }));
+  console.log(formatarSelect(msg, { genero: 'masculino' }));
+  console.log(formatarSelect(msg, {}));
+</script>`)}
+
+<h2>Contexto para quem traduz</h2>
+<p>"Abrir" é um verbo num botão ("Abrir arquivo") e pode ser um estado numa etiqueta ("Aberto"). Sem contexto, o tradutor erra. Boas práticas:</p>
+<ul>
+  <li>Chaves que dizem onde o texto aparece: <code>carrinho.botaoFinalizar</code>, não <code>texto37</code>.</li>
+  <li>Uma descrição junto de cada texto ambíguo ("botão; até 20 caracteres").</li>
+  <li>Prints das telas para o tradutor, quando possível.</li>
+  <li>Nunca reaproveitar a mesma chave em dois lugares só porque, em português, o texto é igual.</li>
+</ul>
+${dica('Ferramentas como Crowdin, Lokalise e Weblate guardam os textos, mostram o contexto para os tradutores e geram os arquivos de cada idioma, integrando com o Git.')}
+`,
+              quiz: [
+                {
+                  pergunta: 'Em {n, plural, one {# item} other {# itens}}, o que o # vira?',
+                  opcoes: ['Um símbolo de cerquilha', 'O número n', 'O nome da variável'],
+                  certa: 1,
+                  explicacao: 'O # é trocado pelo número formatado.'
+                },
+                {
+                  pergunta: 'No select do ICU, qual opção é obrigatória?',
+                  opcoes: ['feminino', 'other', '=0'],
+                  certa: 1,
+                  explicacao: 'other é o caso padrão quando nenhum outro bate.'
+                },
+                {
+                  pergunta: 'Por que não reaproveitar uma chave só porque o texto em português é igual?',
+                  opcoes: [
+                    'Ocupa mais espaço',
+                    'Em outro idioma, os dois lugares podem precisar de traduções diferentes',
+                    'Não tem problema nenhum'
+                  ],
+                  certa: 1,
+                  explicacao: '"Abrir" (botão) e "Aberto" (estado) podem ser palavras diferentes em outra língua.'
+                }
+              ]
+            },
+            {
+              id: 'conferir-traducoes',
+              titulo: 'Conferir traduções e testar o layout',
+              resumo: 'Chaves faltando, variáveis trocadas e pseudo-localização.',
+              minutos: 11,
+              corpo: `
+<p>Com vários idiomas, os erros mais comuns são previsíveis e dá para pegar com código antes de publicar:</p>
+<ul>
+  <li><strong>Chave faltando</strong> num idioma: o texto cai no idioma de reserva ou aparece a chave na tela.</li>
+  <li><strong>Chave sobrando</strong>: um texto que não existe mais no idioma base.</li>
+  <li><strong>Variável diferente</strong>: o tradutor escreveu <code>{nme}</code> em vez de <code>{nome}</code>, ou esqueceu uma variável.</li>
+  <li><strong>Texto que não cabe</strong>: a tradução é mais longa e quebra o botão.</li>
+</ul>
+<p>Um script que compara os dicionários pode rodar no GitHub Actions a cada push e barrar o que estiver incompleto. É o próximo desafio.</p>
+
+<h2>Pseudo-localização</h2>
+<p>Antes de ter qualquer tradução, dá para testar se o site aguenta: troque cada texto por uma versão "falsa", mais longa e cheia de acentos, mas ainda legível. Textos que continuam em português na tela são os que alguém esqueceu de tirar do código, e botões que quebram mostram onde o layout é frágil:</p>
+${codigo(`<style>
+  .barra { display: flex; gap: 8px; max-width: 360px; }
+  button { white-space: nowrap; padding: 8px 12px; }
+</style>
+<div class="barra" id="barra">
+  <button data-i18n="salvar">Salvar</button>
+  <button data-i18n="cancelar">Cancelar</button>
+  <button data-i18n="excluir">Excluir conta</button>
+</div>
+<p><label><input type="checkbox" id="pseudo"> Pseudo-localização</label></p>
+
+<script>
+  const acentos = { a: 'á', e: 'ë', i: 'ï', o: 'ö', u: 'ü', c: 'ç', n: 'ñ', A: 'Å', E: 'É', S: 'Š', C: 'Ç' };
+  const pseudo = texto => '[' + [...texto].map(l => acentos[l] ?? l).join('') + ' ' + '·'.repeat(Math.ceil(texto.length * 0.4)) + ']';
+
+  const originais = [...document.querySelectorAll('[data-i18n]')].map(b => b.textContent);
+  document.querySelector('#pseudo').addEventListener('change', e => {
+    document.querySelectorAll('[data-i18n]').forEach((b, i) => {
+      b.textContent = e.target.checked ? pseudo(originais[i]) : originais[i];
+    });
+  });
+</script>`)}
+<p>Os colchetes mostram se o texto foi cortado no começo ou no fim, e os pontos simulam o crescimento de 30% a 40% comum em traduções. Com a caixa marcada, os botões passam da largura da barra: é o sinal para permitir quebra de linha ou repensar o layout.</p>
+${dica('No Chrome, as ferramentas de desenvolvedor permitem simular outro idioma (Sensores, Localização, e o idioma em Configurações de idioma). Combine com <code>dir="rtl"</code> para testar árabe e hebraico.')}
+`,
+              quiz: [
+                {
+                  pergunta: 'Para que serve a pseudo-localização?',
+                  opcoes: [
+                    'Traduzir automaticamente',
+                    'Achar textos esquecidos no código e layouts que quebram com textos longos, antes das traduções',
+                    'Esconder textos'
+                  ],
+                  certa: 1,
+                  explicacao: 'Ela simula uma tradução longa e acentuada, ainda legível.'
+                },
+                {
+                  pergunta: 'O tradutor escreveu {nme} em vez de {nome}. O que acontece?',
+                  opcoes: ['Nada', 'A variável não é trocada e aparece {nme} na tela', 'O navegador corrige'],
+                  certa: 1,
+                  explicacao: 'Por isso vale conferir as variáveis de cada tradução com um script.'
+                },
+                {
+                  pergunta: 'Onde rodar a conferência dos dicionários para ela nunca ser esquecida?',
+                  opcoes: ['Só no computador de quem traduz', 'No CI (GitHub Actions), a cada push', 'Em produção'],
+                  certa: 1,
+                  explicacao: 'Assim uma tradução incompleta não chega ao ar sem aviso.'
+                }
+              ]
+            },
+            {
+              id: 'desafio-conferir-dicionarios',
+              tipo: 'desafio',
+              titulo: 'Desafio: conferir os dicionários',
+              resumo: 'Compare dois dicionários e aponte o que falta, sobra ou está diferente.',
+              minutos: 22,
+              enunciado: `
+<p>Escreva <code>compararDicionarios(base, traducao)</code>. Os dicionários podem ter objetos aninhados, e as chaves são comparadas no formato "achatado", com ponto: <code>{ carrinho: { titulo: '...' } }</code> tem a chave <code>carrinho.titulo</code>. Devolva um objeto com três listas, cada uma em <strong>ordem alfabética</strong>:</p>
+<ul>
+  <li><code>faltando</code>: chaves que estão na base e não na tradução.</li>
+  <li><code>sobrando</code>: chaves que estão na tradução e não na base.</li>
+  <li><code>variaveisDiferentes</code>: chaves que existem nos dois, mas com variáveis <code>{assim}</code> diferentes (compare o conjunto de nomes, sem importar a ordem).</li>
+</ul>`,
+              inicial: `<pre id="saida"></pre>
+<script>
+  function compararDicionarios(base, traducao) {
+    return { faltando: [], sobrando: [], variaveisDiferentes: [] };
+  }
+
+  const pt = { titulo: 'Loja', carrinho: { vazio: 'Carrinho vazio', total: 'Total: {valor}' }, saudacao: 'Olá, {nome}!' };
+  const en = { titulo: 'Shop', carrinho: { total: 'Total: {value}' }, saudacao: 'Hi, {nome}!', antigo: 'Old' };
+  document.querySelector('#saida').textContent = JSON.stringify(compararDicionarios(pt, en), null, 2);
+</script>
+`,
+              testes: [
+                [
+                  'Acha as chaves faltando, inclusive aninhadas',
+                  doc => {
+                    const r = doc.defaultView.eval('compararDicionarios')(
+                      { a: '1', b: { c: '2', d: '3' }, e: '4' },
+                      { a: '1', b: { c: '2' } }
+                    );
+                    return JSON.stringify(r.faltando) === JSON.stringify(['b.d', 'e']);
+                  }
+                ],
+                [
+                  'Acha as chaves sobrando, em ordem alfabética',
+                  doc => {
+                    const r = doc.defaultView.eval('compararDicionarios')(
+                      { a: '1' },
+                      { a: '1', z: '2', m: { n: '3' } }
+                    );
+                    return JSON.stringify(r.sobrando) === JSON.stringify(['m.n', 'z']) && r.faltando.length === 0;
+                  }
+                ],
+                [
+                  'Acha variáveis diferentes, sem importar a ordem',
+                  doc => {
+                    const r = doc.defaultView.eval('compararDicionarios')(
+                      {
+                        total: 'Total: {valor}',
+                        ola: 'Olá, {nome}! Hoje é {dia}.',
+                        ok: 'Sem variável',
+                        x: { y: 'De {a} a {b}' }
+                      },
+                      { total: 'Total: {value}', ola: 'Hoje é {dia}, {nome}!', ok: 'No variable', x: { y: 'From {a}' } }
+                    );
+                    return JSON.stringify(r.variaveisDiferentes) === JSON.stringify(['total', 'x.y']);
+                  }
+                ]
+              ],
+              solucao: `<pre id="saida"></pre>
+<script>
+  // { a: { b: 'x' } } vira { 'a.b': 'x' }
+  function achatar(objeto, prefixo = '') {
+    return Object.entries(objeto).reduce((plano, [chave, valor]) => {
+      const nome = prefixo ? prefixo + '.' + chave : chave;
+      if (valor && typeof valor === 'object') Object.assign(plano, achatar(valor, nome));
+      else plano[nome] = valor;
+      return plano;
+    }, {});
+  }
+
+  const variaveis = texto => [...new Set([...String(texto).matchAll(/\\{(\\w+)\\}/g)].map(m => m[1]))].sort().join();
+
+  function compararDicionarios(base, traducao) {
+    const b = achatar(base);
+    const t = achatar(traducao);
+    return {
+      faltando: Object.keys(b).filter(k => !(k in t)).sort(),
+      sobrando: Object.keys(t).filter(k => !(k in b)).sort(),
+      variaveisDiferentes: Object.keys(b).filter(k => k in t && variaveis(b[k]) !== variaveis(t[k])).sort()
+    };
+  }
+
+  const pt = { titulo: 'Loja', carrinho: { vazio: 'Carrinho vazio', total: 'Total: {valor}' }, saudacao: 'Olá, {nome}!' };
+  const en = { titulo: 'Shop', carrinho: { total: 'Total: {value}' }, saudacao: 'Hi, {nome}!', antigo: 'Old' };
+  document.querySelector('#saida').textContent = JSON.stringify(compararDicionarios(pt, en), null, 2);
+</script>`
+            }
+          ]
         }
       ]
     }

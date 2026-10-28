@@ -570,6 +570,284 @@ ${dica('Não guarde respostas com erro. Antes do <code>cache.put</code>, confira
 </script>`
             }
           ]
+        },
+        {
+          titulo: 'Atualizar e sincronizar',
+          itens: [
+            {
+              id: 'nova-versao',
+              titulo: 'Avisar que há uma versão nova',
+              resumo: 'Detectar o service worker em espera e atualizar com um clique.',
+              minutos: 11,
+              corpo: `
+<p>Na trilha básica, vimos que uma versão nova do service worker fica <strong>em espera</strong> até todas as abas antigas fecharem. Num app que a pessoa nunca fecha (um PWA instalado, um painel aberto o dia todo), isso pode levar semanas. O padrão é avisar: "Há uma versão nova. Atualizar?".</p>
+
+<h2>Na página: perceber a versão em espera</h2>
+${trecho(`const registro = await navigator.serviceWorker.register('/sw.js');
+
+function oferecerAtualizacao(trabalhador) {
+  aviso.hidden = false;                              // "Nova versão disponível. [Atualizar]"
+  botaoAtualizar.onclick = () => trabalhador.postMessage({ tipo: 'PULAR_ESPERA' });
+}
+
+// Já havia uma esperando (a pessoa abriu a página depois da atualização)
+if (registro.waiting) oferecerAtualizacao(registro.waiting);
+
+// Uma nova começou a instalar agora
+registro.addEventListener('updatefound', () => {
+  const nova = registro.installing;
+  nova.addEventListener('statechange', () => {
+    if (nova.state === 'installed' && navigator.serviceWorker.controller) oferecerAtualizacao(nova);
+  });
+});
+
+// Quando a nova assumir, recarrega uma vez para usar os arquivos novos
+let recarregou = false;
+navigator.serviceWorker.addEventListener('controllerchange', () => {
+  if (recarregou) return;
+  recarregou = true;
+  location.reload();
+});`)}
+<p>O <code>navigator.serviceWorker.controller</code> no <code>if</code> separa a primeira instalação (quando ainda não há nenhum service worker controlando a página, e não há nada para "atualizar") de uma atualização de verdade.</p>
+
+<h2>No service worker: pular a espera quando pedirem</h2>
+${trecho(`// sw.js
+self.addEventListener('message', evento => {
+  if (evento.data?.tipo === 'PULAR_ESPERA') self.skipWaiting();
+});`)}
+<p>Assim a versão nova só assume quando a pessoa aceita, e a página recarrega logo em seguida: nunca há JavaScript antigo conversando com um service worker novo.</p>
+
+<h2>Procurar atualizações</h2>
+<p>O navegador confere o <code>sw.js</code> a cada navegação e, no máximo, a cada 24 horas. Num app que fica aberto, dá para conferir de tempos em tempos com <code>registro.update()</code>, por exemplo a cada hora ou quando a aba volta a ficar visível.</p>
+${dica('Não interrompa a pessoa no meio de uma tarefa recarregando sozinho. Um aviso discreto, com o botão "Atualizar", deixa ela escolher a hora. Se houver um formulário sendo preenchido, espere.')}
+`,
+              quiz: [
+                {
+                  pergunta: 'Onde fica a versão nova do service worker enquanto espera?',
+                  opcoes: ['registro.active', 'registro.waiting', 'navigator.serviceWorker.controller'],
+                  certa: 1,
+                  explicacao: 'active é a que está controlando; waiting é a instalada esperando a vez.'
+                },
+                {
+                  pergunta: 'Por que recarregar a página no controllerchange?',
+                  opcoes: [
+                    'Para limpar o cache',
+                    'Para a página usar os arquivos novos junto com o service worker novo',
+                    'É obrigatório'
+                  ],
+                  certa: 1,
+                  explicacao: 'Senão o JavaScript antigo continua rodando com o service worker novo.'
+                },
+                {
+                  pergunta: 'Qual a melhor forma de aplicar a atualização?',
+                  opcoes: [
+                    'Recarregar sozinho assim que ela chega',
+                    'Mostrar um aviso e deixar a pessoa escolher a hora',
+                    'Esperar a pessoa desinstalar o app'
+                  ],
+                  certa: 1,
+                  explicacao: 'Recarregar no meio de uma tarefa pode fazer a pessoa perder o que estava fazendo.'
+                }
+              ]
+            },
+            {
+              id: 'fila-offline',
+              titulo: 'Ações feitas sem internet',
+              resumo: 'Detectar a conexão, guardar o que não foi enviado e sincronizar depois.',
+              minutos: 12,
+              corpo: `
+<p>Mostrar páginas offline é metade do trabalho. A outra metade é o que a pessoa <strong>faz</strong> sem internet: marcar uma tarefa, registrar uma entrega, enviar um formulário. Um app offline de verdade guarda essas ações e envia quando a conexão volta.</p>
+
+<h2>Saber se há conexão</h2>
+${codigo(`<p id="status"></p>
+<script>
+  function mostrar() {
+    const el = document.querySelector('#status');
+    el.textContent = navigator.onLine ? '● Conectado' : '○ Sem internet: suas ações serão enviadas depois';
+    el.style.color = navigator.onLine ? '#0b7a6f' : '#b45309';
+  }
+  addEventListener('online', mostrar);
+  addEventListener('offline', mostrar);
+  mostrar();
+</script>
+<p>Desligue a rede nas ferramentas de desenvolvedor (aba Rede, "Offline") para ver mudar.</p>`)}
+${dica('<code>navigator.onLine</code> só sabe se há uma rede, não se a internet funciona (um Wi-Fi de hotel sem login diz "online"). A verdade é a resposta do <code>fetch</code>: trate a falha dele como o sinal definitivo.')}
+
+<h2>A fila de saída</h2>
+<ol>
+  <li>Ao fazer uma ação, atualize a tela na hora (a pessoa não espera a rede) e tente enviar.</li>
+  <li>Se o envio falhar por falta de conexão, guarde a ação numa <strong>fila</strong> persistente (IndexedDB ou localStorage), com um id único.</li>
+  <li>Quando a conexão voltar (evento <code>online</code>, ou ao abrir o app), envie a fila <strong>em ordem</strong>. Pare no primeiro erro para não embaralhar a sequência.</li>
+  <li>Mostre quantas ações estão pendentes: "3 alterações aguardando envio".</li>
+</ol>
+<p>O id único permite ao servidor ignorar uma ação que chegou duas vezes (a resposta se perdeu, mas o envio tinha funcionado). Isso se chama <strong>idempotência</strong>.</p>
+
+<h2>Background Sync</h2>
+<p>Em navegadores com Chromium, o service worker pode pedir para ser acordado quando a conexão voltar, mesmo com o app fechado:</p>
+${trecho(`// na página
+const registro = await navigator.serviceWorker.ready;
+await registro.sync.register('enviar-fila');
+
+// no service worker
+self.addEventListener('sync', evento => {
+  if (evento.tag === 'enviar-fila') evento.waitUntil(enviarFilaPendente());
+});`)}
+<p>Como não existe em todos os navegadores, trate como um extra: a fila também é enviada no evento <code>online</code> e ao abrir o app.</p>
+${dica('O app do motorista do Rota Municipal, neste portfólio, funciona assim na zona rural: registra as viagens sem sinal e envia quando a conexão volta.')}
+`,
+              quiz: [
+                {
+                  pergunta: 'navigator.onLine === true garante que a internet funciona?',
+                  opcoes: ['Sim', 'Não: só diz que há uma rede; a resposta do fetch é a prova', 'Só no celular'],
+                  certa: 1,
+                  explicacao: 'Uma rede sem acesso à internet também conta como online.'
+                },
+                {
+                  pergunta: 'Por que enviar a fila em ordem e parar no primeiro erro?',
+                  opcoes: [
+                    'Para gastar menos bateria',
+                    'Para as ações chegarem ao servidor na sequência em que foram feitas',
+                    'Não precisa de ordem'
+                  ],
+                  certa: 1,
+                  explicacao: '"Criar tarefa" precisa chegar antes de "concluir tarefa".'
+                },
+                {
+                  pergunta: 'Para que serve o id único de cada ação?',
+                  opcoes: [
+                    'Para ordenar',
+                    'Para o servidor ignorar a mesma ação recebida duas vezes',
+                    'Para criptografar'
+                  ],
+                  certa: 1,
+                  explicacao: 'É a idempotência: repetir o envio não duplica o efeito.'
+                }
+              ]
+            },
+            {
+              id: 'desafio-fila-offline',
+              tipo: 'desafio',
+              titulo: 'Desafio: fila de envio offline',
+              resumo: 'Guarde o que falhou e envie depois, em ordem.',
+              minutos: 22,
+              enunciado: `
+<p>Escreva <code>criarFila(enviar)</code>. <code>enviar(acao)</code> devolve uma Promise que <strong>rejeita</strong> quando não há conexão. A fila devolvida tem:</p>
+<ul>
+  <li><code>adicionar(acao)</code> (assíncrona): tenta enviar. Se der certo, pronto. Se falhar <strong>ou se já houver ações pendentes</strong> (para não passar na frente delas), guarda a ação no fim da fila.</li>
+  <li><code>sincronizar()</code> (assíncrona): envia as pendentes em ordem; para na primeira que falhar, mantendo ela e as seguintes. Devolve quantas enviou.</li>
+  <li><code>pendentes()</code>: devolve uma cópia da lista de ações pendentes.</li>
+</ul>`,
+              inicial: `<p id="status"></p>
+<script>
+  function criarFila(enviar) {
+    return {
+      async adicionar(acao) {},
+      async sincronizar() {},
+      pendentes() { return []; }
+    };
+  }
+</script>
+`,
+              testes: [
+                [
+                  'Com conexão, adicionar envia na hora e nada fica pendente',
+                  async doc => {
+                    const enviadas = [];
+                    const fila = doc.defaultView.eval('criarFila')(async a => enviadas.push(a));
+                    await fila.adicionar('a');
+                    await fila.adicionar('b');
+                    return enviadas.join() === 'a,b' && fila.pendentes().length === 0;
+                  }
+                ],
+                [
+                  'Sem conexão, as ações ficam pendentes, em ordem',
+                  async doc => {
+                    const fila = doc.defaultView.eval('criarFila')(async () => {
+                      throw new TypeError('Failed to fetch');
+                    });
+                    await fila.adicionar('a');
+                    await fila.adicionar('b');
+                    const copia = fila.pendentes();
+                    copia.push('intrusa');
+                    return fila.pendentes().join() === 'a,b';
+                  }
+                ],
+                [
+                  'Com a conexão de volta, sincronizar envia tudo em ordem e devolve a quantidade',
+                  async doc => {
+                    let online = false;
+                    const enviadas = [];
+                    const fila = doc.defaultView.eval('criarFila')(async a => {
+                      if (!online) throw new TypeError('offline');
+                      enviadas.push(a);
+                    });
+                    await fila.adicionar('a');
+                    await fila.adicionar('b');
+                    online = true;
+                    await fila.adicionar('c');
+                    const antes = enviadas.length;
+                    const n = await fila.sincronizar();
+                    return antes === 0 && n === 3 && enviadas.join() === 'a,b,c' && fila.pendentes().length === 0;
+                  }
+                ],
+                [
+                  'sincronizar para no primeiro erro e mantém o resto',
+                  async doc => {
+                    const enviadas = [];
+                    let falhar = new Set(['a', 'b', 'c']);
+                    const fila = doc.defaultView.eval('criarFila')(async a => {
+                      if (falhar.has(a)) throw new TypeError('offline');
+                      enviadas.push(a);
+                    });
+                    await fila.adicionar('a');
+                    await fila.adicionar('b');
+                    await fila.adicionar('c');
+                    falhar = new Set(['b']);
+                    const n = await fila.sincronizar();
+                    return n === 1 && enviadas.join() === 'a' && fila.pendentes().join() === 'b,c';
+                  }
+                ]
+              ],
+              solucao: `<p id="status"></p>
+<script>
+  function criarFila(enviar) {
+    const fila = [];
+
+    return {
+      async adicionar(acao) {
+        if (fila.length > 0) {
+          fila.push(acao);          // há pendentes: entra no fim, para não passar na frente
+          return;
+        }
+        try {
+          await enviar(acao);
+        } catch {
+          fila.push(acao);
+        }
+      },
+
+      async sincronizar() {
+        let enviadas = 0;
+        while (fila.length > 0) {
+          try {
+            await enviar(fila[0]);
+          } catch {
+            break;                  // para no primeiro erro, mantendo a ordem
+          }
+          fila.shift();
+          enviadas++;
+        }
+        return enviadas;
+      },
+
+      pendentes() {
+        return [...fila];
+      }
+    };
+  }
+</script>`
+            }
+          ]
         }
       ]
     }

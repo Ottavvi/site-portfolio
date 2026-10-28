@@ -1871,6 +1871,58 @@
       "explicacao": "Rápido agora, atualizado na próxima visita."
     }
   ],
+  "pwa-offline/nova-versao": [
+    {
+      "pergunta": "Onde fica a versão nova do service worker enquanto espera?",
+      "opcoes": ["registro.active", "registro.waiting", "navigator.serviceWorker.controller"],
+      "certa": 1,
+      "explicacao": "active é a que está controlando; waiting é a instalada esperando a vez."
+    },
+    {
+      "pergunta": "Por que recarregar a página no controllerchange?",
+      "opcoes": [
+        "Para limpar o cache",
+        "Para a página usar os arquivos novos junto com o service worker novo",
+        "É obrigatório"
+      ],
+      "certa": 1,
+      "explicacao": "Senão o JavaScript antigo continua rodando com o service worker novo."
+    },
+    {
+      "pergunta": "Qual a melhor forma de aplicar a atualização?",
+      "opcoes": [
+        "Recarregar sozinho assim que ela chega",
+        "Mostrar um aviso e deixar a pessoa escolher a hora",
+        "Esperar a pessoa desinstalar o app"
+      ],
+      "certa": 1,
+      "explicacao": "Recarregar no meio de uma tarefa pode fazer a pessoa perder o que estava fazendo."
+    }
+  ],
+  "pwa-offline/fila-offline": [
+    {
+      "pergunta": "navigator.onLine === true garante que a internet funciona?",
+      "opcoes": ["Sim", "Não: só diz que há uma rede; a resposta do fetch é a prova", "Só no celular"],
+      "certa": 1,
+      "explicacao": "Uma rede sem acesso à internet também conta como online."
+    },
+    {
+      "pergunta": "Por que enviar a fila em ordem e parar no primeiro erro?",
+      "opcoes": [
+        "Para gastar menos bateria",
+        "Para as ações chegarem ao servidor na sequência em que foram feitas",
+        "Não precisa de ordem"
+      ],
+      "certa": 1,
+      "explicacao": "\"Criar tarefa\" precisa chegar antes de \"concluir tarefa\"."
+    },
+    {
+      "pergunta": "Para que serve o id único de cada ação?",
+      "opcoes": ["Para ordenar", "Para o servidor ignorar a mesma ação recebida duas vezes", "Para criptografar"],
+      "certa": 1,
+      "explicacao": "É a idempotência: repetir o envio não duplica o efeito."
+    }
+  ],
   "i18n/o-que-muda": [
     {
       "pergunta": "Para que serve o atributo lang no <html>?",
@@ -1965,6 +2017,54 @@
       "opcoes": ["margin-left", "margin-inline-start", "left"],
       "certa": 1,
       "explicacao": "As propriedades lógicas seguem a direção do texto."
+    }
+  ],
+  "i18n/mensagens-icu": [
+    {
+      "pergunta": "Em {n, plural, one {# item} other {# itens}}, o que o # vira?",
+      "opcoes": ["Um símbolo de cerquilha", "O número n", "O nome da variável"],
+      "certa": 1,
+      "explicacao": "O # é trocado pelo número formatado."
+    },
+    {
+      "pergunta": "No select do ICU, qual opção é obrigatória?",
+      "opcoes": ["feminino", "other", "=0"],
+      "certa": 1,
+      "explicacao": "other é o caso padrão quando nenhum outro bate."
+    },
+    {
+      "pergunta": "Por que não reaproveitar uma chave só porque o texto em português é igual?",
+      "opcoes": [
+        "Ocupa mais espaço",
+        "Em outro idioma, os dois lugares podem precisar de traduções diferentes",
+        "Não tem problema nenhum"
+      ],
+      "certa": 1,
+      "explicacao": "\"Abrir\" (botão) e \"Aberto\" (estado) podem ser palavras diferentes em outra língua."
+    }
+  ],
+  "i18n/conferir-traducoes": [
+    {
+      "pergunta": "Para que serve a pseudo-localização?",
+      "opcoes": [
+        "Traduzir automaticamente",
+        "Achar textos esquecidos no código e layouts que quebram com textos longos, antes das traduções",
+        "Esconder textos"
+      ],
+      "certa": 1,
+      "explicacao": "Ela simula uma tradução longa e acentuada, ainda legível."
+    },
+    {
+      "pergunta": "O tradutor escreveu {nme} em vez de {nome}. O que acontece?",
+      "opcoes": ["Nada", "A variável não é trocada e aparece {nme} na tela", "O navegador corrige"],
+      "certa": 1,
+      "explicacao": "Por isso vale conferir as variáveis de cada tradução com um script."
+    },
+    {
+      "pergunta": "Onde rodar a conferência dos dicionários para ela nunca ser esquecida?",
+      "opcoes": ["Só no computador de quem traduz", "No CI (GitHub Actions), a cada push", "Em produção"],
+      "certa": 1,
+      "explicacao": "Assim uma tradução incompleta não chega ao ar sem aviso."
     }
   ],
   "react/o-que-e-react": [
@@ -2117,6 +2217,58 @@
       "opcoes": ["npm run dev", "npm run build", "npm start"],
       "certa": 1,
       "explicacao": "O build gera a pasta dist/, com o código otimizado."
+    }
+  ],
+  "react/use-reducer": [
+    {
+      "pergunta": "O que uma função redutora recebe e devolve?",
+      "opcoes": [
+        "Recebe props e devolve JSX",
+        "Recebe o estado atual e uma ação e devolve o estado novo",
+        "Recebe um evento e devolve nada"
+      ],
+      "certa": 1,
+      "explicacao": "(estado, acao) => novoEstado."
+    },
+    {
+      "pergunta": "Por que o redutor deve ser uma função pura?",
+      "opcoes": [
+        "Por estilo",
+        "O React pode chamá-lo mais de uma vez, e funções puras são previsíveis e fáceis de testar",
+        "Para ser mais rápido"
+      ],
+      "certa": 1,
+      "explicacao": "Mesmo estado e ação, mesmo resultado, sem efeitos colaterais."
+    },
+    {
+      "pergunta": "O que o componente passa para despachar()?",
+      "opcoes": ["O estado novo inteiro", "Uma ação descrevendo o que aconteceu", "Uma função"],
+      "certa": 1,
+      "explicacao": "A lógica da mudança fica no redutor."
+    }
+  ],
+  "react/desempenho": [
+    {
+      "pergunta": "Quando o estado de um componente muda, quem é desenhado de novo?",
+      "opcoes": ["Só ele", "Ele e todos os filhos", "A página inteira"],
+      "certa": 1,
+      "explicacao": "A não ser os filhos com memo cujas props não mudaram."
+    },
+    {
+      "pergunta": "Por que um filho com memo desenha de novo quando recebe onClick={() => ...}?",
+      "opcoes": [
+        "memo não funciona com funções",
+        "A função é criada de novo a cada desenho, então a prop muda",
+        "Por causa do key"
+      ],
+      "certa": 1,
+      "explicacao": "useCallback mantém a mesma função entre desenhos."
+    },
+    {
+      "pergunta": "Antes de otimizar, o que fazer?",
+      "opcoes": ["Pôr useMemo em tudo", "Medir (Profiler) para achar o problema real", "Trocar de framework"],
+      "certa": 1,
+      "explicacao": "A maioria dos desenhos é rápida; otimize onde dói."
     }
   ],
   "nodejs/o-que-e-node": [
