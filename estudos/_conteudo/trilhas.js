@@ -19,22 +19,8 @@ module.exports = [
   require('./python'),
 
   // ---------- Qualidade e entrega ----------
-  {
-    id: 'playwright',
-    area: 'Qualidade e entrega',
-    titulo: 'Playwright',
-    sigla: 'PW',
-    resumo: 'Testes que abrem o navegador e usam o site como uma pessoa usaria.',
-    emBreve: true
-  },
-  {
-    id: 'github-actions',
-    area: 'Qualidade e entrega',
-    titulo: 'GitHub Actions',
-    sigla: 'GA',
-    resumo: 'Robôs que testam e publicam o projeto sozinhos a cada envio para o GitHub.',
-    emBreve: true
-  },
+  require('./playwright'),
+  require('./github-actions'),
   {
     id: 'powershell',
     area: 'Qualidade e entrega',

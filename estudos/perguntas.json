@@ -2178,5 +2178,221 @@
       "certa": 1,
       "explicacao": "A mediana é o valor do meio e não é puxada pelos extremos."
     }
+  ],
+  "playwright/o-que-e-playwright": [
+    {
+      "pergunta": "O que um teste de ponta a ponta faz?",
+      "opcoes": [
+        "Testa uma função isolada",
+        "Usa o site num navegador de verdade, como uma pessoa, e confere o resultado",
+        "Mede a velocidade do servidor"
+      ],
+      "certa": 1,
+      "explicacao": "Ele passa por todas as camadas: HTML, CSS, JavaScript e servidor."
+    },
+    {
+      "pergunta": "Qual comando abre o modo visual do Playwright?",
+      "opcoes": ["npx playwright test --ui", "npx playwright show", "npm run ui"],
+      "certa": 0,
+      "explicacao": "O --ui mostra cada passo, o navegador e permite rodar de novo um teste só."
+    },
+    {
+      "pergunta": "Por que quase toda linha de um teste tem await?",
+      "opcoes": ["É só estilo", "Ações e verificações levam tempo e são assíncronas", "Para deixar mais lento"],
+      "certa": 1,
+      "explicacao": "Clicar, esperar a página reagir e conferir são operações que terminam depois."
+    }
+  ],
+  "playwright/localizadores": [
+    {
+      "pergunta": "Qual localizador o Playwright recomenda primeiro?",
+      "opcoes": ["page.locator('#id')", "getByRole com o nome", "XPath"],
+      "certa": 1,
+      "explicacao": "Papel e nome são o que a pessoa vê; seletores CSS mudam por motivos de estilo."
+    },
+    {
+      "pergunta": "O que acontece ao clicar com um localizador que acha 3 botões?",
+      "opcoes": ["Clica no primeiro", "O teste falha, pedindo um localizador mais específico", "Clica nos três"],
+      "certa": 1,
+      "explicacao": "É a regra estrita: melhor falhar que clicar no botão errado."
+    },
+    {
+      "pergunta": "Como achar um campo pelo texto do <label>?",
+      "opcoes": ["getByText", "getByLabel", "getByPlaceholder"],
+      "certa": 1,
+      "explicacao": "getByLabel liga o rótulo ao campo, como um leitor de tela faz."
+    }
+  ],
+  "playwright/acoes-e-expect": [
+    {
+      "pergunta": "Por que não usar waitForTimeout(2000)?",
+      "opcoes": [
+        "Não existe",
+        "Deixa o teste lento quando a página é rápida e instável quando ela é lenta",
+        "É mais rápido"
+      ],
+      "certa": 1,
+      "explicacao": "As asserções já esperam o resultado aparecer."
+    },
+    {
+      "pergunta": "Qual a diferença entre toHaveText e toContainText?",
+      "opcoes": [
+        "Nenhuma",
+        "toHaveText exige o texto inteiro; toContainText, um pedaço",
+        "toContainText é para listas"
+      ],
+      "certa": 1,
+      "explicacao": "Use toContainText quando o resto do texto pode variar."
+    },
+    {
+      "pergunta": "Como conferir que algo NÃO aparece?",
+      "opcoes": ["expect(x).hidden()", "expect(x).not.toBeVisible()", "expect(!x).toBeVisible()"],
+      "certa": 1,
+      "explicacao": "O .not inverte qualquer asserção."
+    }
+  ],
+  "playwright/boas-praticas": [
+    {
+      "pergunta": "Por que um teste não deve depender de outro?",
+      "opcoes": [
+        "Por estilo",
+        "Para rodarem em paralelo, em qualquer ordem, e uma falha não derrubar as outras",
+        "É uma regra do JavaScript"
+      ],
+      "certa": 1,
+      "explicacao": "Cada teste prepara o próprio estado, normalmente num beforeEach."
+    },
+    {
+      "pergunta": "Para que serve page.route?",
+      "opcoes": [
+        "Navegar entre páginas",
+        "Interceptar pedidos de rede e responder o que o teste quiser",
+        "Criar rotas no servidor"
+      ],
+      "certa": 1,
+      "explicacao": "Assim dá para testar o erro da API sem derrubar a API."
+    },
+    {
+      "pergunta": "Como saber se os seus testes realmente protegem o código?",
+      "opcoes": ["Contando quantos são", "Quebrando o código de propósito e vendo se algum falha", "Se todos passam"],
+      "certa": 1,
+      "explicacao": "Testes que continuam passando com o código quebrado não estão conferindo aquilo."
+    }
+  ],
+  "github-actions/o-que-e-ci": [
+    {
+      "pergunta": "Onde ficam os workflows do GitHub Actions?",
+      "opcoes": ["Na raiz do repositório", "Em .github/workflows/", "Nas configurações do GitHub"],
+      "certa": 1,
+      "explicacao": "Arquivos .yml nessa pasta, versionados junto com o código."
+    },
+    {
+      "pergunta": "Em YAML, o que define o que está dentro de quê?",
+      "opcoes": ["Chaves { }", "A indentação com espaços", "Ponto e vírgula"],
+      "certa": 1,
+      "explicacao": "E tab não é aceito: só espaços."
+    },
+    {
+      "pergunta": "O que é integração contínua?",
+      "opcoes": [
+        "Programar sem parar",
+        "Rodar as verificações do projeto automaticamente a cada mudança",
+        "Juntar dois repositórios"
+      ],
+      "certa": 1,
+      "explicacao": "Testes, formatação e build rodando a cada push, sem depender de alguém lembrar."
+    }
+  ],
+  "github-actions/primeiro-workflow": [
+    {
+      "pergunta": "Por que o primeiro passo costuma ser actions/checkout?",
+      "opcoes": [
+        "Para fazer login",
+        "A máquina começa vazia: ele baixa o código do repositório",
+        "Para criar a branch"
+      ],
+      "certa": 1,
+      "explicacao": "Sem ele, não há código nenhum para testar."
+    },
+    {
+      "pergunta": "Qual a diferença entre uses e run?",
+      "opcoes": ["Nenhuma", "uses roda uma action pronta; run roda comandos no terminal", "run é só para Windows"],
+      "certa": 1,
+      "explicacao": "Actions prontas cuidam de tarefas comuns; run é para os seus comandos."
+    },
+    {
+      "pergunta": "O que acontece quando um passo falha?",
+      "opcoes": ["Os outros continuam", "Os seguintes não rodam e o workflow fica vermelho", "Ele tenta 3 vezes"],
+      "certa": 1,
+      "explicacao": "O job para no primeiro erro, a não ser que o passo diga o contrário."
+    }
+  ],
+  "github-actions/gatilhos-e-condicoes": [
+    {
+      "pergunta": "O que workflow_dispatch faz?",
+      "opcoes": ["Roda a cada hora", "Permite rodar o workflow na mão, por um botão", "Cancela o workflow"],
+      "certa": 1,
+      "explicacao": "Aparece um botão \"Run workflow\" na aba Actions."
+    },
+    {
+      "pergunta": "Dois jobs sem needs rodam como?",
+      "opcoes": ["Um depois do outro", "Em paralelo", "Só o primeiro"],
+      "certa": 1,
+      "explicacao": "needs é o que cria uma ordem entre eles."
+    },
+    {
+      "pergunta": "Em que fuso o cron do schedule é interpretado?",
+      "opcoes": ["Horário de Brasília", "UTC", "O fuso de quem criou o repositório"],
+      "certa": 1,
+      "explicacao": "Sempre UTC: 9h UTC são 6h em Brasília."
+    }
+  ],
+  "github-actions/segredos-e-deploy": [
+    {
+      "pergunta": "Onde guardar o token de deploy de um serviço externo?",
+      "opcoes": ["No arquivo do workflow", "Nos Secrets do repositório", "No README"],
+      "certa": 1,
+      "explicacao": "O workflow lê com secrets.NOME, e o valor nunca aparece nos logs."
+    },
+    {
+      "pergunta": "Para que serve o bloco permissions?",
+      "opcoes": [
+        "Dizer quem pode ver o repositório",
+        "Limitar o que o GITHUB_TOKEN da execução pode fazer",
+        "Dar acesso a outros repositórios"
+      ],
+      "certa": 1,
+      "explicacao": "Menos permissão é menos estrago se algo der errado."
+    },
+    {
+      "pergunta": "Como os arquivos do build chegam ao job de deploy?",
+      "opcoes": ["Ficam na mesma máquina", "Como um artefato enviado por upload-pages-artifact", "Por e-mail"],
+      "certa": 1,
+      "explicacao": "Cada job roda numa máquina nova; artefatos levam arquivos entre eles."
+    }
+  ],
+  "github-actions/matriz-e-reuso": [
+    {
+      "pergunta": "Uma matriz com node: [18, 20, 22] e os: [ubuntu, windows] cria quantos jobs?",
+      "opcoes": ["5", "6", "3"],
+      "certa": 1,
+      "explicacao": "Todas as combinações: 3 × 2 = 6."
+    },
+    {
+      "pergunta": "Qual a diferença entre cache e artefato?",
+      "opcoes": [
+        "Nenhuma",
+        "Cache acelera execuções futuras; artefato guarda resultados ou passa arquivos entre jobs",
+        "Artefato é só para imagens"
+      ],
+      "certa": 1,
+      "explicacao": "Cache é otimização; artefato é um resultado que você quer ver ou usar."
+    },
+    {
+      "pergunta": "Por que fixar actions de terceiros pelo SHA?",
+      "opcoes": ["Fica mais rápido", "Uma tag pode ser movida para outro código; o SHA não muda", "É obrigatório"],
+      "certa": 1,
+      "explicacao": "Protege contra uma action comprometida depois que você a adotou."
+    }
   ]
 }

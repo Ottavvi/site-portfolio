@@ -1138,6 +1138,132 @@
           "minutos": 25
         }
       ]
+    },
+    {
+      "id": "playwright",
+      "titulo": "Playwright",
+      "sigla": "PW",
+      "itens": [
+        {
+          "id": "playwright/o-que-e-playwright",
+          "titulo": "Testes de ponta a ponta",
+          "resumo": "Por que testar no navegador, como instalar e a estrutura de um teste.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 9
+        },
+        {
+          "id": "playwright/localizadores",
+          "titulo": "Localizadores",
+          "resumo": "getByRole, getByLabel, getByText e por que não usar seletores CSS.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 11
+        },
+        {
+          "id": "playwright/acoes-e-expect",
+          "titulo": "Ações e verificações",
+          "resumo": "fill, click, check, selectOption, press e as asserções que esperam.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 12
+        },
+        {
+          "id": "playwright/desafio-login",
+          "titulo": "Desafio: testar um login",
+          "resumo": "Escreva os testes da tela de login.",
+          "tipo": "desafio",
+          "nivel": "Intermediário",
+          "minutos": 20
+        },
+        {
+          "id": "playwright/boas-praticas",
+          "titulo": "Testes confiáveis",
+          "resumo": "Isolamento, beforeEach, simular a rede, CI e o trace viewer.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 13
+        },
+        {
+          "id": "playwright/desafio-carrinho",
+          "titulo": "Desafio: testes que pegam o bug",
+          "resumo": "Teste um carrinho de compras e prove que os testes pegam erros.",
+          "tipo": "desafio",
+          "nivel": "Avançado",
+          "minutos": 25
+        }
+      ]
+    },
+    {
+      "id": "github-actions",
+      "titulo": "GitHub Actions",
+      "sigla": "GA",
+      "itens": [
+        {
+          "id": "github-actions/o-que-e-ci",
+          "titulo": "CI, workflows e YAML",
+          "resumo": "O que é integração contínua e como se escreve YAML.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 10
+        },
+        {
+          "id": "github-actions/primeiro-workflow",
+          "titulo": "Testes a cada push",
+          "resumo": "checkout, setup-node, npm ci e npm test.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 10
+        },
+        {
+          "id": "github-actions/desafio-primeiro-workflow",
+          "titulo": "Desafio: workflow de verificação",
+          "resumo": "Escreva um workflow que formata e testa a cada push e pull request.",
+          "tipo": "desafio",
+          "nivel": "Iniciante",
+          "minutos": 15
+        },
+        {
+          "id": "github-actions/gatilhos-e-condicoes",
+          "titulo": "Gatilhos, condições e jobs encadeados",
+          "resumo": "paths, schedule, workflow_dispatch, if, needs e variáveis.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 12
+        },
+        {
+          "id": "github-actions/segredos-e-deploy",
+          "titulo": "Segredos, permissões e deploy",
+          "resumo": "secrets, GITHUB_TOKEN, permissions e publicar no GitHub Pages.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 12
+        },
+        {
+          "id": "github-actions/desafio-publicar",
+          "titulo": "Desafio: testar e publicar",
+          "resumo": "Um workflow com testes, build e deploy no GitHub Pages.",
+          "tipo": "desafio",
+          "nivel": "Intermediário",
+          "minutos": 22
+        },
+        {
+          "id": "github-actions/matriz-e-reuso",
+          "titulo": "Matriz, cache e reaproveitamento",
+          "resumo": "Testar em várias versões, guardar cache, artefatos e workflows reutilizáveis.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 13
+        },
+        {
+          "id": "github-actions/desafio-matriz",
+          "titulo": "Desafio: biblioteca em várias versões",
+          "resumo": "Matriz, concorrência, agendamento e relatório de falhas.",
+          "tipo": "desafio",
+          "nivel": "Avançado",
+          "minutos": 22
+        }
+      ]
     }
   ]
 }

@@ -226,7 +226,8 @@ const MINI_PLAYWRIGHT = String.raw`
     }
     return PAPEIS[el.tagName] || null;
   };
-  const textoDe = el => (el.textContent || '').replace(/\s+/g, ' ').trim();
+  // innerText deixa de fora o conteúdo de <script> e <style>, como o Playwright de verdade
+  const textoDe = el => (el.innerText ?? el.textContent ?? '').replace(/\s+/g, ' ').trim();
   const nomeAcessivel = el => {
     if (el.getAttribute('aria-label')) return el.getAttribute('aria-label').trim();
     if (el.getAttribute('aria-labelledby')) return el.getAttribute('aria-labelledby').split(' ').map(id => textoDe(document.getElementById(id) || document.createElement('i'))).join(' ').trim();
