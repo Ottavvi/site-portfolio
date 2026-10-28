@@ -1,7 +1,8 @@
 // Ambientes do editor ao vivo: transformam o que a pessoa escreveu numa página que roda no resultado (iframe).
 // O padrão é HTML puro. As trilhas que não são só HTML escolhem um ambiente com data-linguagem:
 // sql (SQLite de verdade, com sql.js), python (Pyodide), react (JSX com import), modulos (vários arquivos .js),
-// playwright (um mini Playwright que testa a página do próprio editor) e yaml (workflows do GitHub Actions).
+// playwright (um mini Playwright que testa a página do próprio editor), yaml (workflows do GitHub Actions) e
+// typescript (o compilador de verdade confere os tipos antes de rodar).
 // Todos deixam window.__pronto: uma Promise que os testes dos desafios esperam antes de conferir o resultado.
 
 const SQL_JS = 'https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/';
@@ -130,6 +131,11 @@ function python(codigo) {
     py.setStdout({ batched: texto => { window.__saida.push(texto); escrever(texto); } });
     py.setStderr({ batched: texto => escrever(texto, 'erro') });
     try {
+      // Bibliotecas que não vêm com o Python (pandas, numpy) são baixadas na primeira vez que aparecem num import
+      // (sem os avisos de "Loading...", que iriam para o console e para a __saida que os testes leem)
+      await py.loadPackagesFromImports(CODIGO, { messageCallback: () => {} });
+      // O pandas avisa, a cada import, que vai exigir o pyarrow no futuro: um aviso em vermelho que só confunde
+      py.runPython('import warnings\\nwarnings.filterwarnings("ignore", message="(?s).*Pyarrow", category=DeprecationWarning)');
       await py.runPythonAsync(CODIGO);
       if (!terminal.childNodes.length) escrever('(o programa rodou sem imprimir nada)', 'carregando');
     } catch (erro) {
@@ -450,7 +456,119 @@ function yaml(codigo) {
 </script>`;
 }
 
-// Quanto esperar depois da última tecla para rodar de novo: Python e React carregam bibliotecas grandes
-export const ATRASO = { python: 900, react: 600 };
+// ---------- TypeScript ----------
+// O compilador de verdade confere os tipos (modo strict) e mostra os erros como o tsc mostraria; depois o código,
+// sem os tipos, roda como um <script> comum, mesmo com erro de tipo (o tsc também gera o JavaScript nesse caso).
+// Em vez da lib.dom inteira (pesada), um arquivo pequeno declara console, setTimeout e fetch.
+// Para os testes: __erros (os erros de tipo), __codigo (o texto original) e __checar(trecho), que confere o código com
+// um trecho a mais no fim e devolve os erros (serve para ver se uma chamada errada é barrada).
+const TYPESCRIPT = 'https://cdn.jsdelivr.net/npm/typescript@5.6.3/lib/';
+const LIBS_TS = [
+  'es5',
+  'es2015.core',
+  'es2015.collection',
+  'es2015.iterable',
+  'es2015.generator',
+  'es2015.promise',
+  'es2015.proxy',
+  'es2015.reflect',
+  'es2015.symbol',
+  'es2015.symbol.wellknown',
+  'es2016.array.include',
+  'es2017.object',
+  'es2017.string',
+  'es2018.promise',
+  'es2019.array',
+  'es2019.object',
+  'es2019.string',
+  'es2020.intl',
+  'es2020.string',
+  'es2020.symbol.wellknown',
+  'es2021.promise',
+  'es2021.string',
+  'es2022.array',
+  'es2022.object',
+  'es2022.error',
+  'es2023.array',
+  'decorators',
+  'decorators.legacy'
+];
+const GLOBAIS_TS = `
+declare var console: { log(...dados: any[]): void; info(...dados: any[]): void; warn(...dados: any[]): void;
+  error(...dados: any[]): void; table(dados: any): void };
+declare function setTimeout(funcao: () => void, ms?: number): number;
+declare function clearTimeout(id: number | undefined): void;
+interface Response { ok: boolean; status: number; json(): Promise<any>; text(): Promise<string> }
+declare function fetch(url: string, opcoes?: { method?: string; headers?: Record<string, string>; body?: string }): Promise<Response>;
+declare var document: any;
+`;
 
-export const AMBIENTES = { sql, python, react, modulos, playwright, yaml };
+function typescript(codigo) {
+  return `<div id="tipos"><p class="carregando">Carregando o TypeScript…</p></div>
+<style>
+  #tipos { font: 14px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+  .carregando { color: #66737f; }
+  .ok { color: #0b7a6f; font-weight: 600; }
+  .erro { color: #b42318; margin: 0 0 6px; white-space: pre-wrap; }
+</style>
+<script src="${TYPESCRIPT}typescript.js"></script>
+<script>
+  const CODIGO = ${comoJson(codigo)};
+  const LIBS = ${comoJson(LIBS_TS.map(nome => `lib.${nome}.d.ts`))};
+  const caixa = document.getElementById('tipos');
+  window.__codigo = CODIGO;
+  window.__erros = [];
+  window.__pronto = (async () => {
+    const textos = { 'globais.d.ts': ${comoJson(GLOBAIS_TS)} };
+    await Promise.all(LIBS.map(async nome => {
+      textos[nome] = await (await fetch('${TYPESCRIPT}' + nome)).text();
+    }));
+    const opcoes = { target: ts.ScriptTarget.ES2022, strict: true, noLib: true, noEmit: true, types: [] };
+    const arquivosFixos = {};
+    for (const nome in textos) arquivosFixos[nome] = ts.createSourceFile(nome, textos[nome], ts.ScriptTarget.ES2022);
+    const conferir = texto => {
+      const principal = ts.createSourceFile('main.ts', texto, ts.ScriptTarget.ES2022, true);
+      const achar = nome => (nome = nome.replace(/^\\//, '')) === 'main.ts' ? principal : arquivosFixos[nome];
+      const host = {
+        getSourceFile: achar,
+        getDefaultLibFileName: () => 'lib.es5.d.ts',
+        writeFile: () => {},
+        getCurrentDirectory: () => '/',
+        getDirectories: () => [],
+        fileExists: nome => !!achar(nome),
+        readFile: () => undefined,
+        getCanonicalFileName: nome => nome,
+        useCaseSensitiveFileNames: () => true,
+        getNewLine: () => '\\n'
+      };
+      const programa = ts.createProgram(['main.ts', ...Object.keys(textos)], opcoes, host);
+      // Só os erros do código da pessoa (os das bibliotecas internas não interessam)
+      return ts.getPreEmitDiagnostics(programa).filter(d => d.file === principal).map(d => ({
+        linha: principal.getLineAndCharacterOfPosition(d.start).line + 1,
+        codigo: d.code,
+        mensagem: ts.flattenDiagnosticMessageText(d.messageText, '\\n')
+      }));
+    };
+    window.__checar = trecho => conferir(CODIGO + '\\n' + trecho);
+    window.__erros = conferir(CODIGO);
+    caixa.replaceChildren();
+    if (!window.__erros.length) {
+      caixa.append(Object.assign(document.createElement('p'), { className: 'ok', textContent: '✓ Sem erros de tipo' }));
+    }
+    for (const erro of window.__erros) {
+      caixa.append(Object.assign(document.createElement('p'), { className: 'erro', textContent: 'Linha ' + erro.linha + ': ' + erro.mensagem }));
+    }
+    // Roda o JavaScript gerado num <script>, para as funções e constantes ficarem visíveis aos testes
+    const js = ts.transpileModule(CODIGO, { compilerOptions: { target: ts.ScriptTarget.ES2022 } }).outputText;
+    const script = document.createElement('script');
+    script.textContent = js;
+    document.body.append(script);
+    await new Promise(r => setTimeout(r, 30));
+  })().catch(erro => console.error(erro.message));
+</script>`;
+}
+
+// Quanto esperar depois da última tecla para rodar de novo: Python, React e TypeScript carregam bibliotecas grandes
+export const ATRASO = { python: 900, react: 600, typescript: 900 };
+
+export const AMBIENTES = { sql, python, react, modulos, playwright, yaml, typescript };

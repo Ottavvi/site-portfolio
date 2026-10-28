@@ -558,6 +558,85 @@
       ]
     },
     {
+      "id": "typescript",
+      "titulo": "TypeScript",
+      "sigla": "TS",
+      "itens": [
+        {
+          "id": "typescript/por-que-typescript",
+          "titulo": "Por que TypeScript",
+          "resumo": "O que o compilador faz, tipos básicos e inferência.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 10
+        },
+        {
+          "id": "typescript/objetos-e-interfaces",
+          "titulo": "Objetos, interfaces e uniões de valores",
+          "resumo": "interface, type, propriedades opcionais, readonly e tipos literais.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 12
+        },
+        {
+          "id": "typescript/desafio-tipar-carrinho",
+          "titulo": "Desafio: tipar o carrinho",
+          "resumo": "Crie as interfaces e tipe as funções até zerar os erros.",
+          "tipo": "desafio",
+          "nivel": "Iniciante",
+          "minutos": 18
+        },
+        {
+          "id": "typescript/unioes-e-estreitamento",
+          "titulo": "Uniões e estreitamento",
+          "resumo": "typeof, in, uniões discriminadas e o never para não esquecer casos.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 13
+        },
+        {
+          "id": "typescript/genericos-e-utilitarios",
+          "titulo": "Genéricos e tipos utilitários",
+          "resumo": "Funções que servem para qualquer tipo sem perder a checagem; Partial, Pick, Omit e Record.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 13
+        },
+        {
+          "id": "typescript/desafio-estado-da-tela",
+          "titulo": "Desafio: o estado da tela",
+          "resumo": "Uma união discriminada, um switch completo e um genérico.",
+          "tipo": "desafio",
+          "nivel": "Intermediário",
+          "minutos": 22
+        },
+        {
+          "id": "typescript/dados-de-fora",
+          "titulo": "Dados de fora: unknown e validação",
+          "resumo": "Os tipos não existem em tempo de execução: valide o que vem da API.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 13
+        },
+        {
+          "id": "typescript/typescript-no-projeto",
+          "titulo": "TypeScript num projeto de verdade",
+          "resumo": "tsconfig, strict, tsc --noEmit, Vite, módulos e tipos de bibliotecas.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 11
+        },
+        {
+          "id": "typescript/desafio-validar-api",
+          "titulo": "Desafio: validar o que veio da API",
+          "resumo": "Type guard, unknown e um agrupamento genérico com keyof.",
+          "tipo": "desafio",
+          "nivel": "Avançado",
+          "minutos": 25
+        }
+      ]
+    },
+    {
       "id": "modulos-es",
       "titulo": "Módulos ES",
       "sigla": "ES",
@@ -1032,6 +1111,243 @@
       ]
     },
     {
+      "id": "acessibilidade",
+      "titulo": "Acessibilidade",
+      "sigla": "A11y",
+      "itens": [
+        {
+          "id": "acessibilidade/por-que-acessibilidade",
+          "titulo": "Quem usa e como usa",
+          "resumo": "Deficiências, tecnologias assistivas, WCAG e a LBI.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 9
+        },
+        {
+          "id": "acessibilidade/erros-mais-comuns",
+          "titulo": "Os erros mais comuns",
+          "resumo": "Texto alternativo, idioma, títulos, links, botões falsos e campos sem rótulo.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 12
+        },
+        {
+          "id": "acessibilidade/desafio-consertar-pagina",
+          "titulo": "Desafio: conserte a página",
+          "resumo": "Corrija os seis erros mais comuns numa página de pousada.",
+          "tipo": "desafio",
+          "nivel": "Iniciante",
+          "minutos": 18
+        },
+        {
+          "id": "acessibilidade/teclado-e-foco",
+          "titulo": "Teclado e foco",
+          "resumo": "Ordem do Tab, foco visível, tabindex e link para pular o menu.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 12
+        },
+        {
+          "id": "acessibilidade/contraste-e-formularios",
+          "titulo": "Contraste, cor e formulários",
+          "resumo": "Calcular contraste, não depender só da cor e mensagens de erro acessíveis.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 13
+        },
+        {
+          "id": "acessibilidade/desafio-formulario-acessivel",
+          "titulo": "Desafio: formulário que explica os erros",
+          "resumo": "Marque o campo inválido, ligue a mensagem e leve o foco até ele.",
+          "tipo": "desafio",
+          "nivel": "Intermediário",
+          "minutos": 22
+        },
+        {
+          "id": "acessibilidade/componentes-acessiveis",
+          "titulo": "Componentes: modal, menu e abas",
+          "resumo": "Os padrões do APG: papéis, estados e teclas esperadas.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 14
+        },
+        {
+          "id": "acessibilidade/testar-acessibilidade",
+          "titulo": "Como testar acessibilidade",
+          "resumo": "Ferramentas automáticas, teste com teclado e com leitor de tela.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 11
+        },
+        {
+          "id": "acessibilidade/desafio-abas",
+          "titulo": "Desafio: abas acessíveis",
+          "resumo": "Papéis, estados, tabindex itinerante e setas do teclado.",
+          "tipo": "desafio",
+          "nivel": "Avançado",
+          "minutos": 28
+        }
+      ]
+    },
+    {
+      "id": "regex",
+      "titulo": "Expressões regulares",
+      "sigla": ".*",
+      "itens": [
+        {
+          "id": "regex/o-que-e-regex",
+          "titulo": "O que é uma expressão regular",
+          "resumo": "test, match, classes de caracteres e flags.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 10
+        },
+        {
+          "id": "regex/quantificadores-e-ancoras",
+          "titulo": "Quantificadores, âncoras e alternativas",
+          "resumo": "Quantas vezes, onde começa e termina, e \"isso ou aquilo\".",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 11
+        },
+        {
+          "id": "regex/desafio-validadores",
+          "titulo": "Desafio: validadores de formulário",
+          "resumo": "CEP, placa de carro e horário com regex e âncoras.",
+          "tipo": "desafio",
+          "nivel": "Iniciante",
+          "minutos": 16
+        },
+        {
+          "id": "regex/grupos-e-replace",
+          "titulo": "Grupos, captura e replace",
+          "resumo": "Pegar pedaços do texto, grupos com nome, matchAll e replace com função.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 13
+        },
+        {
+          "id": "regex/guloso-e-lookarounds",
+          "titulo": "Guloso, preguiçoso e lookarounds",
+          "resumo": "Por que .* pega demais e como conferir sem consumir.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 12
+        },
+        {
+          "id": "regex/desafio-limpar-textos",
+          "titulo": "Desafio: limpar e transformar textos",
+          "resumo": "Datas para ISO, hashtags e mascaramento de telefone.",
+          "tipo": "desafio",
+          "nivel": "Intermediário",
+          "minutos": 22
+        },
+        {
+          "id": "regex/unicode-e-desempenho",
+          "titulo": "Unicode, desempenho e limites",
+          "resumo": "Acentos com \\p{L}, retrocesso catastrófico e o que regex não resolve.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 12
+        },
+        {
+          "id": "regex/regex-fora-do-javascript",
+          "titulo": "Regex fora do JavaScript",
+          "resumo": "VS Code, Python, PowerShell, SQL e Power Query.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 10
+        },
+        {
+          "id": "regex/desafio-ler-log",
+          "titulo": "Desafio: ler o log do servidor",
+          "resumo": "Transforme linhas de log em objetos e resuma os erros.",
+          "tipo": "desafio",
+          "nivel": "Avançado",
+          "minutos": 25
+        }
+      ]
+    },
+    {
+      "id": "seo-performance",
+      "titulo": "SEO e performance",
+      "sigla": "SEO",
+      "itens": [
+        {
+          "id": "seo-performance/como-o-google-funciona",
+          "titulo": "Como o Google encontra uma página",
+          "resumo": "Rastrear, indexar e classificar; sitemap, robots.txt e Search Console.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 10
+        },
+        {
+          "id": "seo-performance/metadados",
+          "titulo": "Título, descrição, canônica e Open Graph",
+          "resumo": "O que aparece no Google e no WhatsApp quando alguém compartilha.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 11
+        },
+        {
+          "id": "seo-performance/desafio-cabecalho-completo",
+          "titulo": "Desafio: a página pronta para o Google",
+          "resumo": "Título, descrição, canônica, Open Graph e um h1.",
+          "tipo": "desafio",
+          "nivel": "Iniciante",
+          "minutos": 16
+        },
+        {
+          "id": "seo-performance/dados-estruturados",
+          "titulo": "Dados estruturados com schema.org",
+          "resumo": "JSON-LD para negócio local, perguntas frequentes e trilha de navegação.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 12
+        },
+        {
+          "id": "seo-performance/core-web-vitals",
+          "titulo": "Core Web Vitals e Lighthouse",
+          "resumo": "LCP, INP e CLS: o que medem, os limites e como melhorar cada um.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 13
+        },
+        {
+          "id": "seo-performance/desafio-dados-estruturados",
+          "titulo": "Desafio: dados estruturados da pousada",
+          "resumo": "Escreva o JSON-LD do negócio e das perguntas frequentes.",
+          "tipo": "desafio",
+          "nivel": "Intermediário",
+          "minutos": 20
+        },
+        {
+          "id": "seo-performance/imagens-fontes-e-scripts",
+          "titulo": "Imagens, fontes e scripts",
+          "resumo": "Formatos modernos, srcset, lazy loading, prioridade, preload e defer.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 14
+        },
+        {
+          "id": "seo-performance/medir-e-manter",
+          "titulo": "Medir e manter rápido",
+          "resumo": "Orçamento de performance, Lighthouse CI, PageSpeed e o que olhar na aba Rede.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 10
+        },
+        {
+          "id": "seo-performance/desafio-pagina-rapida",
+          "titulo": "Desafio: deixe a página rápida",
+          "resumo": "Prioridade, lazy loading, dimensões, preload de fonte e defer.",
+          "tipo": "desafio",
+          "nivel": "Avançado",
+          "minutos": 20
+        }
+      ]
+    },
+    {
       "id": "react",
       "titulo": "React",
       "sigla": "Re",
@@ -1234,6 +1550,164 @@
           "tipo": "desafio",
           "nivel": "Avançado",
           "minutos": 25
+        }
+      ]
+    },
+    {
+      "id": "apis-http",
+      "titulo": "APIs e HTTP",
+      "sigla": "API",
+      "itens": [
+        {
+          "id": "apis-http/o-que-e-http",
+          "titulo": "HTTP: pedido e resposta",
+          "resumo": "Métodos, códigos de status e cabeçalhos.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 11
+        },
+        {
+          "id": "apis-http/urls-e-json",
+          "titulo": "URLs, parâmetros e JSON",
+          "resumo": "Montar URLs sem erro com URL e URLSearchParams, e converter JSON.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 10
+        },
+        {
+          "id": "apis-http/desafio-urls-e-status",
+          "titulo": "Desafio: URLs e status",
+          "resumo": "Monte URLs de busca e explique os códigos de status.",
+          "tipo": "desafio",
+          "nivel": "Iniciante",
+          "minutos": 15
+        },
+        {
+          "id": "apis-http/fetch-na-pratica",
+          "titulo": "fetch na prática: erros e envio de dados",
+          "resumo": "response.ok, try/catch, POST com JSON e tempo limite.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 13
+        },
+        {
+          "id": "apis-http/rest",
+          "titulo": "REST: recursos, verbos e paginação",
+          "resumo": "Como uma API bem desenhada organiza as rotas e as respostas.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 11
+        },
+        {
+          "id": "apis-http/desafio-cliente-da-api",
+          "titulo": "Desafio: o cliente da API de tarefas",
+          "resumo": "GET com verificação de erro e POST com JSON.",
+          "tipo": "desafio",
+          "nivel": "Intermediário",
+          "minutos": 20
+        },
+        {
+          "id": "apis-http/autenticacao-e-cors",
+          "titulo": "Autenticação, chaves e CORS",
+          "resumo": "Tokens, onde guardar chaves e por que o navegador bloqueia pedidos.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 13
+        },
+        {
+          "id": "apis-http/chamadas-resilientes",
+          "titulo": "Chamadas resilientes",
+          "resumo": "Tentar de novo com espera crescente, 429, chamadas em paralelo e cache.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 13
+        },
+        {
+          "id": "apis-http/desafio-todas-as-paginas",
+          "titulo": "Desafio: retentativas e paginação",
+          "resumo": "Repita só o que vale a pena e junte todas as páginas de uma API.",
+          "tipo": "desafio",
+          "nivel": "Avançado",
+          "minutos": 25
+        }
+      ]
+    },
+    {
+      "id": "ia-agentes",
+      "titulo": "IA e agentes com LLM",
+      "sigla": "IA",
+      "itens": [
+        {
+          "id": "ia-agentes/o-que-e-um-llm",
+          "titulo": "O que é um LLM",
+          "resumo": "Tokens, contexto, por que ele erra com confiança e quanto custa.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 10
+        },
+        {
+          "id": "ia-agentes/prompts-que-funcionam",
+          "titulo": "Prompts que funcionam",
+          "resumo": "Instruções claras, contexto, exemplos, formato e o prompt de sistema.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 12
+        },
+        {
+          "id": "ia-agentes/desafio-montar-pedido",
+          "titulo": "Desafio: montar o pedido e ler a resposta",
+          "resumo": "O corpo de um pedido à Messages API e o texto da resposta.",
+          "tipo": "desafio",
+          "nivel": "Iniciante",
+          "minutos": 18
+        },
+        {
+          "id": "ia-agentes/chamar-a-api",
+          "titulo": "Chamar a API",
+          "resumo": "O pedido HTTP, o SDK, o formato da resposta, uso de tokens e erros.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 13
+        },
+        {
+          "id": "ia-agentes/saida-estruturada",
+          "titulo": "Saída estruturada e extração de dados",
+          "resumo": "JSON garantido por um esquema, validação e casos de uso do dia a dia.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 12
+        },
+        {
+          "id": "ia-agentes/desafio-extrair-reservas",
+          "titulo": "Desafio: extrair reservas e calcular o custo",
+          "resumo": "Converta e valide a saída do modelo e some o custo das chamadas.",
+          "tipo": "desafio",
+          "nivel": "Intermediário",
+          "minutos": 22
+        },
+        {
+          "id": "ia-agentes/ferramentas-e-agentes",
+          "titulo": "Ferramentas e o laço do agente",
+          "resumo": "tools, tool_use, tool_result e o laço que transforma um modelo num agente.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 14
+        },
+        {
+          "id": "ia-agentes/agentes-em-producao",
+          "titulo": "Agentes em produção, com responsabilidade",
+          "resumo": "Quando usar, injeção de prompt, confirmação humana, avaliações, custos e LGPD.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 12
+        },
+        {
+          "id": "ia-agentes/desafio-laco-do-agente",
+          "titulo": "Desafio: o laço do agente",
+          "resumo": "Escreva o laço que chama o modelo, executa as ferramentas e devolve os resultados.",
+          "tipo": "desafio",
+          "nivel": "Avançado",
+          "minutos": 28
         }
       ]
     },
@@ -1448,6 +1922,85 @@
           "tipo": "desafio",
           "nivel": "Avançado",
           "minutos": 25
+        }
+      ]
+    },
+    {
+      "id": "git",
+      "titulo": "Git e GitHub",
+      "sigla": "Git",
+      "itens": [
+        {
+          "id": "git/o-que-e-git",
+          "titulo": "O que é Git e o primeiro repositório",
+          "resumo": "Controle de versão, instalação, configuração e git init.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 9
+        },
+        {
+          "id": "git/commits-e-historico",
+          "titulo": "Commits, diff e .gitignore",
+          "resumo": "Ver o que mudou, escrever boas mensagens e ignorar arquivos.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 11
+        },
+        {
+          "id": "git/pratica-primeiro-repositorio",
+          "titulo": "Prática: o primeiro repositório",
+          "resumo": "Crie um repositório de teste, faça commits separados e leia o histórico.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 15
+        },
+        {
+          "id": "git/branches-e-merge",
+          "titulo": "Branches, merge e conflitos",
+          "resumo": "Trabalhar numa ideia sem mexer na main e juntar depois.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 13
+        },
+        {
+          "id": "git/github-e-pull-requests",
+          "titulo": "GitHub, push, pull e pull requests",
+          "resumo": "Repositório remoto, clone, sincronizar e revisar mudanças.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 12
+        },
+        {
+          "id": "git/pratica-ramo-e-conflito",
+          "titulo": "Prática: ramo, conflito e merge",
+          "resumo": "Provoque um conflito de propósito e resolva.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 18
+        },
+        {
+          "id": "git/desfazer",
+          "titulo": "Desfazer: restore, revert, reset e reflog",
+          "resumo": "Qual comando usar em cada tipo de arrependimento.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 14
+        },
+        {
+          "id": "git/rebase-e-historico-limpo",
+          "titulo": "Rebase, tags e um fluxo de trabalho",
+          "resumo": "Rebase, juntar commits, cherry-pick, tags de versão e boas práticas.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 13
+        },
+        {
+          "id": "git/pratica-resgate",
+          "titulo": "Prática: resgatar um histórico bagunçado",
+          "resumo": "Corrija um commit, junte três em um e recupere um commit \"perdido\".",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 20
         }
       ]
     },
@@ -1809,6 +2362,164 @@
           "id": "lgpd/pratica-anonimizar",
           "titulo": "Prática: anonimizar uma base",
           "resumo": "Prepare uma base de atendimentos para ser compartilhada com uma consultoria.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 25
+        }
+      ]
+    },
+    {
+      "id": "seguranca-web",
+      "titulo": "Segurança web",
+      "sigla": "Seg",
+      "itens": [
+        {
+          "id": "seguranca-web/pensar-como-atacante",
+          "titulo": "Pensar como quem ataca",
+          "resumo": "Nunca confiar na entrada, o OWASP Top 10 e defesa em camadas.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 9
+        },
+        {
+          "id": "seguranca-web/xss",
+          "titulo": "XSS: quando texto vira código",
+          "resumo": "innerHTML, textContent, escapar a saída e links com javascript:.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 12
+        },
+        {
+          "id": "seguranca-web/desafio-comentarios",
+          "titulo": "Desafio: mural de comentários seguro",
+          "resumo": "Escape o HTML, mostre os comentários sem XSS e só aceite links seguros.",
+          "tipo": "desafio",
+          "nivel": "Iniciante",
+          "minutos": 18
+        },
+        {
+          "id": "seguranca-web/injecao-de-sql",
+          "titulo": "Injeção de SQL e consultas parametrizadas",
+          "resumo": "Por que nunca montar SQL somando textos, e o que fazer no lugar.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 12
+        },
+        {
+          "id": "seguranca-web/senhas-e-sessoes",
+          "titulo": "Senhas, sessões e cookies",
+          "resumo": "Hash com sal, limite de tentativas, mensagens genéricas e cookies seguros.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 13
+        },
+        {
+          "id": "seguranca-web/desafio-consulta-segura",
+          "titulo": "Desafio: a busca de produtos segura",
+          "resumo": "Monte SQL com parâmetros e uma lista de colunas permitidas.",
+          "tipo": "desafio",
+          "nivel": "Intermediário",
+          "minutos": 22
+        },
+        {
+          "id": "seguranca-web/cabecalhos-de-seguranca",
+          "titulo": "Cabeçalhos de segurança e CSP",
+          "resumo": "HTTPS, HSTS, Content-Security-Policy, SRI e redirecionamentos abertos.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 14
+        },
+        {
+          "id": "seguranca-web/segredos-e-dependencias",
+          "titulo": "Segredos, dependências e registros",
+          "resumo": ".env, chaves vazadas no Git, npm audit, Dependabot e logs sem dados pessoais.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 11
+        },
+        {
+          "id": "seguranca-web/desafio-configuracao-segura",
+          "titulo": "Desafio: configuração segura do servidor",
+          "resumo": "Monte os cabeçalhos de segurança e proteja o redirecionamento do login.",
+          "tipo": "desafio",
+          "nivel": "Avançado",
+          "minutos": 22
+        }
+      ]
+    },
+    {
+      "id": "docker",
+      "titulo": "Docker",
+      "sigla": "Dk",
+      "itens": [
+        {
+          "id": "docker/o-que-e-docker",
+          "titulo": "O que é um contêiner",
+          "resumo": "Imagem, contêiner, registro e a diferença para uma máquina virtual.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 9
+        },
+        {
+          "id": "docker/comandos-basicos",
+          "titulo": "Os comandos do dia a dia",
+          "resumo": "run, ps, logs, exec, portas, variáveis de ambiente e volumes.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 13
+        },
+        {
+          "id": "docker/pratica-primeiros-conteineres",
+          "titulo": "Prática: um site e um banco em contêineres",
+          "resumo": "Sirva uma pasta com o nginx e suba um Postgres com dados que sobrevivem.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 18
+        },
+        {
+          "id": "docker/dockerfile",
+          "titulo": "Dockerfile: a sua imagem",
+          "resumo": "FROM, WORKDIR, COPY, RUN, CMD, camadas, cache e .dockerignore.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 13
+        },
+        {
+          "id": "docker/docker-compose",
+          "titulo": "Docker Compose: vários serviços juntos",
+          "resumo": "A API, o banco e a rede entre eles num arquivo só.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 13
+        },
+        {
+          "id": "docker/pratica-api-com-banco",
+          "titulo": "Prática: a API e o banco com Compose",
+          "resumo": "Escreva o Dockerfile e o compose.yaml de uma API em Node com Postgres.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 25
+        },
+        {
+          "id": "docker/imagens-menores-e-seguras",
+          "titulo": "Imagens menores e mais seguras",
+          "resumo": "Build em estágios, usuário sem privilégios, versões fixas e varredura.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 13
+        },
+        {
+          "id": "docker/do-computador-para-a-nuvem",
+          "titulo": "Do computador para a nuvem",
+          "resumo": "Registro, build no GitHub Actions e onde rodar os contêineres.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 12
+        },
+        {
+          "id": "docker/pratica-imagem-de-producao",
+          "titulo": "Prática: a imagem de produção",
+          "resumo": "Multi-stage, usuário sem privilégios e publicação automática no GHCR.",
           "tipo": "aula",
           "nivel": "Avançado",
           "minutos": 25
@@ -2222,6 +2933,243 @@
           "titulo": "Prática: curva ABC dos produtos",
           "resumo": "Classifique os produtos e confira os percentuais.",
           "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 25
+        }
+      ]
+    },
+    {
+      "id": "sql-analise",
+      "titulo": "SQL para análise",
+      "sigla": "SQL+",
+      "itens": [
+        {
+          "id": "sql-analise/da-pergunta-a-consulta",
+          "titulo": "Da pergunta à consulta",
+          "resumo": "Granularidade, faixas com CASE e contagens condicionais.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 11
+        },
+        {
+          "id": "sql-analise/percentuais-e-combinacoes",
+          "titulo": "Percentuais, UNION e EXISTS",
+          "resumo": "Participação no total, juntar resultados e perguntar \"existe algum?\".",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 12
+        },
+        {
+          "id": "sql-analise/desafio-raio-x",
+          "titulo": "Desafio: raio-x da loja",
+          "resumo": "Faixas, contagens condicionais e percentuais em três consultas.",
+          "tipo": "desafio",
+          "nivel": "Iniciante",
+          "minutos": 18
+        },
+        {
+          "id": "sql-analise/evolucao-no-tempo",
+          "titulo": "Evolução mês a mês",
+          "resumo": "LAG, variação percentual, acumulado e média móvel.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 13
+        },
+        {
+          "id": "sql-analise/ranking-e-top-n",
+          "titulo": "Ranking, top N e o último de cada um",
+          "resumo": "ROW_NUMBER, RANK, DENSE_RANK, NTILE e remover duplicados.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 12
+        },
+        {
+          "id": "sql-analise/desafio-evolucao-e-ranking",
+          "titulo": "Desafio: relatório mensal",
+          "resumo": "Evolução com LAG e os campeões de cada mês com ROW_NUMBER.",
+          "tipo": "desafio",
+          "nivel": "Intermediário",
+          "minutos": 22
+        },
+        {
+          "id": "sql-analise/coortes-e-rfm",
+          "titulo": "Coortes e segmentação RFM",
+          "resumo": "Agrupar clientes pelo mês de entrada e classificar pelo comportamento.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 14
+        },
+        {
+          "id": "sql-analise/qualidade-dos-dados",
+          "titulo": "Qualidade dos dados",
+          "resumo": "Achar órfãos, duplicados, valores impossíveis e conferir totais.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 12
+        },
+        {
+          "id": "sql-analise/desafio-segmentacao",
+          "titulo": "Desafio: segmentar os clientes",
+          "resumo": "Monte a base RFM, classifique e confira a qualidade.",
+          "tipo": "desafio",
+          "nivel": "Avançado",
+          "minutos": 25
+        }
+      ]
+    },
+    {
+      "id": "pandas",
+      "titulo": "Python para dados",
+      "sigla": "pd",
+      "itens": [
+        {
+          "id": "pandas/dataframes",
+          "titulo": "DataFrame: a tabela do Python",
+          "resumo": "Ler um CSV, conhecer os dados, escolher colunas, filtrar e ordenar.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 12
+        },
+        {
+          "id": "pandas/limpar-dados",
+          "titulo": "Limpar dados",
+          "resumo": "Valores faltando, tipos errados, textos bagunçados e linhas repetidas.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 13
+        },
+        {
+          "id": "pandas/desafio-limpeza",
+          "titulo": "Desafio: limpar a exportação do sistema",
+          "resumo": "Uma função que deixa a planilha de vendas pronta para análise.",
+          "tipo": "desafio",
+          "nivel": "Iniciante",
+          "minutos": 18
+        },
+        {
+          "id": "pandas/agrupar-e-resumir",
+          "titulo": "Agrupar e resumir",
+          "resumo": "groupby, agg, tabelas dinâmicas e percentuais.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 13
+        },
+        {
+          "id": "pandas/juntar-e-datas",
+          "titulo": "Juntar tabelas e trabalhar com datas",
+          "resumo": "merge, concat, o acessor .dt e resample por período.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 13
+        },
+        {
+          "id": "pandas/desafio-relatorio-de-vendas",
+          "titulo": "Desafio: o relatório de vendas",
+          "resumo": "groupby, merge e datas em três funções.",
+          "tipo": "desafio",
+          "nivel": "Intermediário",
+          "minutos": 22
+        },
+        {
+          "id": "pandas/encadear-e-vetorizar",
+          "titulo": "Encadear e vetorizar",
+          "resumo": "assign, query, pipe, np.where e por que evitar laços e apply.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 13
+        },
+        {
+          "id": "pandas/do-pandas-para-o-mundo",
+          "titulo": "Do pandas para o Excel, o banco e o Power BI",
+          "resumo": "Salvar CSV que o Excel abre direito, Excel, Parquet, SQL e gráficos.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 11
+        },
+        {
+          "id": "pandas/desafio-clientes",
+          "titulo": "Desafio: análise de clientes",
+          "resumo": "RFM em pandas, segmentos com np.select e os melhores clientes.",
+          "tipo": "desafio",
+          "nivel": "Avançado",
+          "minutos": 25
+        }
+      ]
+    },
+    {
+      "id": "estatistica",
+      "titulo": "Estatística para análise",
+      "sigla": "σ",
+      "itens": [
+        {
+          "id": "estatistica/media-mediana-moda",
+          "titulo": "Média, mediana e moda",
+          "resumo": "Qual \"valor típico\" usar, e por que a média engana com valores extremos.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 10
+        },
+        {
+          "id": "estatistica/dispersao",
+          "titulo": "Dispersão: o quanto os dados variam",
+          "resumo": "Amplitude, desvio padrão, quartis e como achar valores fora da curva.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 12
+        },
+        {
+          "id": "estatistica/desafio-resumo",
+          "titulo": "Desafio: o resumo de um conjunto de números",
+          "resumo": "Uma função de resumo estatístico e um detector de valores fora da curva.",
+          "tipo": "desafio",
+          "nivel": "Iniciante",
+          "minutos": 18
+        },
+        {
+          "id": "estatistica/distribuicoes-e-amostras",
+          "titulo": "Distribuições, escore z e amostras",
+          "resumo": "A curva normal, quão incomum é um valor e por que amostras maiores erram menos.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 13
+        },
+        {
+          "id": "estatistica/correlacao-e-regressao",
+          "titulo": "Correlação e regressão",
+          "resumo": "Medir se duas coisas andam juntas, prever com uma reta e não confundir com causa.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 13
+        },
+        {
+          "id": "estatistica/desafio-relacoes",
+          "titulo": "Desafio: dias incomuns e previsão",
+          "resumo": "Escore z, correlação e uma previsão com regressão linear.",
+          "tipo": "desafio",
+          "nivel": "Intermediário",
+          "minutos": 22
+        },
+        {
+          "id": "estatistica/intervalos-e-testes-ab",
+          "titulo": "Margem de erro e testes A/B",
+          "resumo": "Intervalo de confiança, valor-p e quando uma diferença é real.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 14
+        },
+        {
+          "id": "estatistica/armadilhas",
+          "titulo": "As armadilhas da análise",
+          "resumo": "Paradoxo de Simpson, média de médias, viés de sobrevivência e gráficos enganosos.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 12
+        },
+        {
+          "id": "estatistica/desafio-teste-ab",
+          "titulo": "Desafio: o teste A/B da página de reservas",
+          "resumo": "Intervalo de confiança, teste de duas proporções e a taxa certa de vários meses.",
+          "tipo": "desafio",
           "nivel": "Avançado",
           "minutos": 25
         }

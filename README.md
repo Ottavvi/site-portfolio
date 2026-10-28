@@ -81,6 +81,12 @@ As páginas de `estudos/` são **geradas**: não edite os `.html` de lá à mão
 - `javascript.js`: a trilha de JavaScript. Os testes pegam as funções da pessoa com `doc.defaultView.eval('nome')`
   (enxerga até `const` e `class`) e simulam cliques e envios. O editor roda scripts e mostra um console embaixo do
   resultado (`window.__saida` guarda as linhas). Um código que travou a aba não roda sozinho ao reabrir a página
+- as outras trilhas seguem o mesmo formato, cada uma num arquivo. O comentário no topo de cada uma diz em qual
+  ambiente o editor roda (`linguagem`, definido em `js/estudos-ambientes.js`): `sql`, `python` (baixa o pandas e o
+  numpy quando o código importa), `typescript` (o compilador confere os tipos; os testes leem `__erros` e usam
+  `__checar(trecho)`), `react`, `modulos`, `playwright` ou `yaml`. Sem `linguagem`, é HTML com console
+- os testes viram texto dentro de um `<script>` da página: eles não enxergam funções ou constantes de fora deles
+  (o que for comum vai dentro de cada teste), e um `</script>` num texto do teste precisa ser escrito `<\/script>`
 - `diario.js`: as anotações do diário de estudos
 - `ajuda.js`: `codigo()` para exemplos com botão "Experimente", `trecho()` para código que não roda sozinho (só CSS) e `dica()` para as caixas de dica
 

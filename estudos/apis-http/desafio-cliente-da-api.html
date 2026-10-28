@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Desafio: o cliente da API de tarefas | APIs e HTTP | Estudos</title>
+    <meta name="description" content="GET com verificação de erro e POST com JSON." />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="ottavvi.dev" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:title" content="Desafio: o cliente da API de tarefas | APIs e HTTP | Estudos" />
+    <meta property="og:description" content="GET com verificação de erro e POST com JSON." />
+    <meta
+      property="og:url"
+      content="https://ottavvi.github.io/site-portfolio/estudos/apis-http/desafio-cliente-da-api.html"
+    />
+    <meta property="og:image" content="https://ottavvi.github.io/site-portfolio/imagens/og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#08141a" />
+    <link
+      rel="canonical"
+      href="https://ottavvi.github.io/site-portfolio/estudos/apis-http/desafio-cliente-da-api.html"
+    />
+    <link rel="icon" href="../../favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href="../../fontes/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="../../fontes/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="../../css/style.css?v=11" />
+    <!-- Aplica o tema salvo (ou o do sistema) antes de desenhar a página, para não piscar -->
+    <script>
+      try {
+        const tema =
+          localStorage.getItem('tema') || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        document.documentElement.dataset.theme = tema;
+      } catch {}
+    </script>
+  </head>
+  <body>
+    <div id="app">
+      <header>
+        <div class="wrap nav">
+          <!-- prettier-ignore -->
+          <a class="logo" href="../../index.html#inicio" aria-label="Otávio, início">ottavvi<span>.</span>dev</a>
+          <button class="theme-btn" id="themeBtn" type="button" aria-label="Mudar tema">
+            <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="4" />
+              <path
+                d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"
+              />
+            </svg>
+            <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
+            </svg>
+          </button>
+          <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="navLinks">Menu ☰</button>
+          <nav class="links" id="navLinks" aria-label="Navegação principal">
+            <a href="../../index.html#projetos">Projetos</a>
+            <a href="../../index.html#habilidades">Habilidades</a>
+            <a href="../../estudos/" aria-current="page">Estudos</a>
+            <a href="../../sobre.html">Sobre mim</a>
+            <a href="../../index.html#contato">Contato</a>
+            <a href="../../en/index.html" lang="en" hreflang="en" class="lang-link">EN</a>
+            <a
+              href="../../login.html?volta=estudos%2Fapis-http%2Fdesafio-cliente-da-api.html"
+              id="authLink"
+              data-url-entrar="../../login.html?volta=estudos%2Fapis-http%2Fdesafio-cliente-da-api.html"
+              data-url-area="../../area.html"
+            >
+              Entrar
+            </a>
+          </nav>
+        </div>
+      </header>
+      <main>
+        <div class="wrap aula" id="inicio">
+          <aside class="aula-lateral">
+            <details class="aula-sumario" open>
+              <summary>Trilha de APIs e HTTP</summary>
+              <div
+                class="estudos-progresso"
+                data-progresso="apis-http/o-que-e-http apis-http/urls-e-json apis-http/desafio-urls-e-status apis-http/fetch-na-pratica apis-http/rest apis-http/desafio-cliente-da-api apis-http/autenticacao-e-cors apis-http/chamadas-resilientes apis-http/desafio-todas-as-paginas"
+                data-trilha="apis-http"
+              >
+                <div class="estudos-progresso-barra"><span></span></div>
+                <span class="estudos-progresso-texto">0 de 9 concluídos</span>
+              </div>
+              <p class="aula-sumario-nivel">Iniciante</p>
+              <ol class="trilha-modulos trilha-modulos--compacta">
+                <li class="trilha-modulo">
+                  <h3><span>Módulo 1</span> Como a web conversa</h3>
+                  <ol>
+                    <li class="trilha-item" data-item="apis-http/o-que-e-http">
+                      <a href="o-que-e-http.html">
+                        <span class="trilha-item-icone"
+                          ><svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M4 5h11a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3zM8 9h6M8 13h6" /></svg
+                        ></span>
+                        <span class="trilha-item-texto">
+                          <strong>HTTP: pedido e resposta</strong>
+                          <small>Métodos, códigos de status e cabeçalhos.</small>
+                        </span>
+                        <span class="trilha-item-tempo">11 min</span>
+                      </a>
+                    </li>
+                    <li class="trilha-item" data-item="apis-http/urls-e-json">
+                      <a href="urls-e-json.html">
+                        <span class="trilha-item-icone"
+                          ><svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M4 5h11a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3zM8 9h6M8 13h6" /></svg
+                        ></span>
+                        <span class="trilha-item-texto">
+                          <strong>URLs, parâmetros e JSON</strong>
+                          <small>Montar URLs sem erro com URL e URLSearchParams, e converter JSON.</small>
+                        </span>
+                        <span class="trilha-item-tempo">10 min</span>
+                      </a>
+                    </li>
+                    <li class="trilha-item trilha-item--desafio" data-item="apis-http/desafio-urls-e-status">
+                      <a href="desafio-urls-e-status.html">
+                        <span class="trilha-item-icone"
+                          ><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 8-4 4 4 4M16 8l4 4-4 4" /></svg
+                        ></span>
+                        <span class="trilha-item-texto">
+                          <strong>Desafio: URLs e status</strong>
+                          <small>Monte URLs de busca e explique os códigos de status.</small>
+                        </span>
+                        <span class="trilha-item-tempo">15 min</span>
+                      </a>
+                    </li>
+                  </ol>
+                </li>
+              </ol>
+              <p class="aula-sumario-nivel">Intermediário</p>
+              <ol class="trilha-modulos trilha-modulos--compacta">
+                <li class="trilha-modulo">
+                  <h3><span>Módulo 2</span> fetch e REST</h3>
+                  <ol>
+                    <li class="trilha-item" data-item="apis-http/fetch-na-pratica">
+                      <a href="fetch-na-pratica.html">
+                        <span class="trilha-item-icone"
+                          ><svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M4 5h11a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3zM8 9h6M8 13h6" /></svg
+                        ></span>
+                        <span class="trilha-item-texto">
+                          <strong>fetch na prática: erros e envio de dados</strong>
+                          <small>response.ok, try/catch, POST com JSON e tempo limite.</small>
+                        </span>
+                        <span class="trilha-item-tempo">13 min</span>
+                      </a>
+                    </li>
+                    <li class="trilha-item" data-item="apis-http/rest">
+                      <a href="rest.html">
+                        <span class="trilha-item-icone"
+                          ><svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M4 5h11a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3zM8 9h6M8 13h6" /></svg
+                        ></span>
+                        <span class="trilha-item-texto">
+                          <strong>REST: recursos, verbos e paginação</strong>
+                          <small>Como uma API bem desenhada organiza as rotas e as respostas.</small>
+                        </span>
+                        <span class="trilha-item-tempo">11 min</span>
+                      </a>
+                    </li>
+                    <li class="trilha-item trilha-item--desafio" data-item="apis-http/desafio-cliente-da-api">
+                      <a href="desafio-cliente-da-api.html" aria-current="page">
+                        <span class="trilha-item-icone"
+                          ><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 8-4 4 4 4M16 8l4 4-4 4" /></svg
+                        ></span>
+                        <span class="trilha-item-texto">
+                          <strong>Desafio: o cliente da API de tarefas</strong>
+                          <small>GET com verificação de erro e POST com JSON.</small>
+                        </span>
+                        <span class="trilha-item-tempo">20 min</span>
+                      </a>
+                    </li>
+                  </ol>
+                </li>
+              </ol>
+              <p class="aula-sumario-nivel">Avançado</p>
+              <ol class="trilha-modulos trilha-modulos--compacta">
+                <li class="trilha-modulo">
+                  <h3><span>Módulo 3</span> Segurança e resiliência</h3>
+                  <ol>
+                    <li class="trilha-item" data-item="apis-http/autenticacao-e-cors">
+                      <a href="autenticacao-e-cors.html">
+                        <span class="trilha-item-icone"
+                          ><svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M4 5h11a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3zM8 9h6M8 13h6" /></svg
+                        ></span>
+                        <span class="trilha-item-texto">
+                          <strong>Autenticação, chaves e CORS</strong>
+                          <small>Tokens, onde guardar chaves e por que o navegador bloqueia pedidos.</small>
+                        </span>
+                        <span class="trilha-item-tempo">13 min</span>
+                      </a>
+                    </li>
+                    <li class="trilha-item" data-item="apis-http/chamadas-resilientes">
+                      <a href="chamadas-resilientes.html">
+                        <span class="trilha-item-icone"
+                          ><svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M4 5h11a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3zM8 9h6M8 13h6" /></svg
+                        ></span>
+                        <span class="trilha-item-texto">
+                          <strong>Chamadas resilientes</strong>
+                          <small>Tentar de novo com espera crescente, 429, chamadas em paralelo e cache.</small>
+                        </span>
+                        <span class="trilha-item-tempo">13 min</span>
+                      </a>
+                    </li>
+                    <li class="trilha-item trilha-item--desafio" data-item="apis-http/desafio-todas-as-paginas">
+                      <a href="desafio-todas-as-paginas.html">
+                        <span class="trilha-item-icone"
+                          ><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 8-4 4 4 4M16 8l4 4-4 4" /></svg
+                        ></span>
+                        <span class="trilha-item-texto">
+                          <strong>Desafio: retentativas e paginação</strong>
+                          <small>Repita só o que vale a pena e junte todas as páginas de uma API.</small>
+                        </span>
+                        <span class="trilha-item-tempo">25 min</span>
+                      </a>
+                    </li>
+                  </ol>
+                </li>
+              </ol>
+            </details>
+          </aside>
+          <article class="aula-conteudo">
+            <a class="text-link" href="./">← Trilha de APIs e HTTP</a>
+            <div class="section-kicker case-kicker">Intermediário · Módulo 2 · fetch e REST</div>
+            <h1>Desafio: o cliente da API de tarefas</h1>
+            <p class="aula-meta">Desafio · 20 min</p>
+            <div class="aula-texto">
+              <p>
+                Escreva as funções que o app usa para falar com a API de tarefas em
+                <code>https://api.exemplo.com/tarefas</code>. Os testes trocam o <code>fetch</code> por um servidor de
+                mentira, então nada vai para a internet.
+              </p>
+              <ul>
+                <li>
+                  <code>listarTarefas()</code>: faz um GET em <code>https://api.exemplo.com/tarefas</code> e devolve o
+                  array que veio em JSON. Se a resposta não for ok, lança um <code>Error</code> cuja mensagem contém o
+                  status (por exemplo, "Erro 500").
+                </li>
+                <li>
+                  <code>criarTarefa(titulo)</code>: faz um POST no mesmo endereço, com o cabeçalho
+                  <code>Content-Type: application/json</code> e o corpo <code>{"titulo": ..., "feita": false}</code>.
+                  Devolve a tarefa criada (o JSON da resposta). Se a resposta não for ok, lança um
+                  <code>Error</code> com o status.
+                </li>
+              </ul>
+              <p>As duas são <code>async</code>.</p>
+            </div>
+            <div class="desafio-testes">
+              <h2>O que o código precisa ter</h2>
+              <ul id="desafioTestes">
+                <li data-teste="0">listarTarefas faz GET no endereço certo e devolve o array</li>
+                <li data-teste="1">listarTarefas lança um Error com o status quando a resposta não é ok</li>
+                <li data-teste="2">criarTarefa faz POST com Content-Type JSON e o corpo certo</li>
+                <li data-teste="3">criarTarefa devolve a tarefa criada</li>
+                <li data-teste="4">criarTarefa lança um Error com o status quando a API recusa</li>
+              </ul>
+            </div>
+            <div class="editor" data-desafio="apis-http/desafio-cliente-da-api">
+              <textarea aria-label="Seu código" spellcheck="false">
+&lt;script&gt;
+  const API = 'https://api.exemplo.com/tarefas';
+
+  async function listarTarefas() {
+  }
+
+  async function criarTarefa(titulo) {
+  }
+&lt;/script&gt;
+</textarea>
+            </div>
+            <details class="desafio-solucao">
+              <summary>Ver uma solução possível</summary>
+              <pre class="aula-codigo"><code>&lt;script&gt;
+  const API = 'https://api.exemplo.com/tarefas';
+
+  async function listarTarefas() {
+    const resposta = await fetch(API);
+    if (!resposta.ok) throw new Error(`Erro ${resposta.status}`);
+    return resposta.json();
+  }
+
+  async function criarTarefa(titulo) {
+    const resposta = await fetch(API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ titulo, feita: false })
+    });
+    if (!resposta.ok) throw new Error(`Erro ${resposta.status}`);
+    return resposta.json();
+  }
+&lt;/script&gt;</code></pre>
+            </details>
+            <div class="aula-concluir">
+              <button class="btn btn-ghost" type="button" data-concluir="apis-http/desafio-cliente-da-api">
+                Marcar desafio como concluído
+              </button>
+              <p class="estudos-conta" id="estudosConta" aria-live="polite">
+                Seu progresso fica salvo neste navegador.
+              </p>
+            </div>
+            <nav class="aula-navegacao" aria-label="Aulas">
+              <a href="rest.html"><small>← Anterior</small>REST: recursos, verbos e paginação</a>
+              <a class="aula-proxima" href="autenticacao-e-cors.html"
+                ><small>Próxima →</small>Autenticação, chaves e CORS</a
+              >
+            </nav>
+          </article>
+        </div>
+      </main>
+      <footer>
+        <div class="wrap foot">
+          <span>
+            ©
+            <span id="year"></span>
+            Otávio. Feito com HTML, CSS e JavaScript.
+          </span>
+          <div class="small-links">
+            <a href="https://github.com/Ottavvi" target="_blank" rel="noreferrer">GitHub ↗</a>
+            <a href="#inicio">Voltar ao topo ↑</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+    <script>
+      window.TESTES_DO_DESAFIO = [
+        async doc => {
+          const w = doc.defaultView;
+          const f = w.eval('typeof listarTarefas === "function" ? listarTarefas : null');
+          let pedido;
+          w.fetch = async (url, opcoes = {}) => {
+            pedido = { url: String(url), metodo: (opcoes.method || 'GET').toUpperCase() };
+            return new w.Response('[{"id":1,"titulo":"Estudar","feita":false}]', { status: 200 });
+          };
+          const r = await f();
+          return (
+            pedido.url === 'https://api.exemplo.com/tarefas' &&
+            pedido.metodo === 'GET' &&
+            Array.isArray(r) &&
+            r[0].titulo === 'Estudar'
+          );
+        },
+        async doc => {
+          const w = doc.defaultView;
+          const f = w.eval('typeof listarTarefas === "function" ? listarTarefas : null');
+          w.fetch = async () => new w.Response('{"erro":"fora do ar"}', { status: 503 });
+          try {
+            await f();
+            return false;
+          } catch (erro) {
+            return String(erro.message).includes('503');
+          }
+        },
+        async doc => {
+          const w = doc.defaultView;
+          const f = w.eval('typeof criarTarefa === "function" ? criarTarefa : null');
+          let pedido;
+          w.fetch = async (url, opcoes = {}) => {
+            pedido = { url: String(url), ...opcoes };
+            return new w.Response('{"id":7,"titulo":"Ler","feita":false}', { status: 201 });
+          };
+          await f('Ler');
+          const cabecalhos = new w.Headers(pedido.headers);
+          const corpo = JSON.parse(pedido.body);
+          return (
+            pedido.url === 'https://api.exemplo.com/tarefas' &&
+            String(pedido.method).toUpperCase() === 'POST' &&
+            (cabecalhos.get('content-type') || '').includes('application/json') &&
+            corpo.titulo === 'Ler' &&
+            corpo.feita === false
+          );
+        },
+        async doc => {
+          const w = doc.defaultView;
+          const f = w.eval('typeof criarTarefa === "function" ? criarTarefa : null');
+          w.fetch = async () => new w.Response('{"id":7,"titulo":"Ler","feita":false}', { status: 201 });
+          const r = await f('Ler');
+          return r && r.id === 7;
+        },
+        async doc => {
+          const w = doc.defaultView;
+          const f = w.eval('typeof criarTarefa === "function" ? criarTarefa : null');
+          w.fetch = async () => new w.Response('{"erro":"título vazio"}', { status: 422 });
+          try {
+            await f('');
+            return false;
+          } catch (erro) {
+            return String(erro.message).includes('422');
+          }
+        }
+      ];
+    </script>
+    <script src="../../js/main.js" defer></script>
+    <script src="../../js/paleta.js" defer></script>
+    <script type="module" src="../../js/auth/session.js"></script>
+    <script type="module" src="../../js/estudos.js"></script>
+  </body>
+</html>

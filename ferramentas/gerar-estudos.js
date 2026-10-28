@@ -224,7 +224,7 @@ ${trilhas
             </h1>
             <p class="lead">
               Trilhas para aprender desenvolvimento web, back-end e dados do zero, com aulas curtas, quiz e desafios de
-              código que você resolve no próprio navegador (até em SQL e Python). E um diário com o que eu ando estudando.
+              código que você resolve no próprio navegador (até em SQL, Python e TypeScript). E um diário com o que eu ando estudando.
             </p>
             ${avisoConta}
             <ul class="estudos-numeros" aria-label="A área de estudos em números">
@@ -251,7 +251,7 @@ ${trilhas
               ${trilhas.length} trilhas, cada uma do nível iniciante ao avançado.
               ${
                 prontas === trilhas.length
-                  ? 'Nas de Excel, Power BI, DAX, Power Query, PowerShell e LGPD, os desafios viram práticas para fazer no seu computador, com a resposta para conferir.'
+                  ? 'Nas de Excel, Power BI, DAX, Power Query, PowerShell, LGPD, Git e Docker, os desafios viram práticas para fazer no seu computador, com a resposta para conferir.'
                   : `${prontas === 1 ? 'A primeira já está disponível' : `${prontas} já estão disponíveis`}; as outras vão ganhando aulas aos poucos.`
               }
             </p>

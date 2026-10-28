@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Do pandas para o Excel, o banco e o Power BI | Python para dados | Estudos</title>
+    <meta name="description" content="Salvar CSV que o Excel abre direito, Excel, Parquet, SQL e gráficos." />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="ottavvi.dev" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:title" content="Do pandas para o Excel, o banco e o Power BI | Python para dados | Estudos" />
+    <meta property="og:description" content="Salvar CSV que o Excel abre direito, Excel, Parquet, SQL e gráficos." />
+    <meta
+      property="og:url"
+      content="https://ottavvi.github.io/site-portfolio/estudos/pandas/do-pandas-para-o-mundo.html"
+    />
+    <meta property="og:image" content="https://ottavvi.github.io/site-portfolio/imagens/og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#08141a" />
+    <link rel="canonical" href="https://ottavvi.github.io/site-portfolio/estudos/pandas/do-pandas-para-o-mundo.html" />
+    <link rel="icon" href="../../favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href="../../fontes/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="../../fontes/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="../../css/style.css?v=11" />
+    <!-- Aplica o tema salvo (ou o do sistema) antes de desenhar a página, para não piscar -->
+    <script>
+      try {
+        const tema =
+          localStorage.getItem('tema') || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        document.documentElement.dataset.theme = tema;
+      } catch {}
+    </script>
+  </head>
+  <body>
+    <div id="app">
+      <header>
+        <div class="wrap nav">
+          <!-- prettier-ignore -->
+          <a class="logo" href="../../index.html#inicio" aria-label="Otávio, início">ottavvi<span>.</span>dev</a>
+          <button class="theme-btn" id="themeBtn" type="button" aria-label="Mudar tema">
+            <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="4" />
+              <path
+                d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"
+              />
+            </svg>
+            <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
+            </svg>
+          </button>
+          <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="navLinks">Menu ☰</button>
+          <nav class="links" id="navLinks" aria-label="Navegação principal">
+            <a href="../../index.html#projetos">Projetos</a>
+            <a href="../../index.html#habilidades">Habilidades</a>
+            <a href="../../estudos/" aria-current="page">Estudos</a>
+            <a href="../../sobre.html">Sobre mim</a>
+            <a href="../../index.html#contato">Contato</a>
+            <a href="../../en/index.html" lang="en" hreflang="en" class="lang-link">EN</a>
+            <a
+              href="../../login.html?volta=estudos%2Fpandas%2Fdo-pandas-para-o-mundo.html"
+              id="authLink"
+              data-url-entrar="../../login.html?volta=estudos%2Fpandas%2Fdo-pandas-para-o-mundo.html"
+              data-url-area="../../area.html"
+            >
+              Entrar
+            </a>
+          </nav>
+        </div>
+      </header>
+      <main>
+        <div class="wrap aula" id="inicio">
+          <aside class="aula-lateral">
+            <details class="aula-sumario" open>
+              <summary>Trilha de Python para dados</summary>
+              <div
+                class="estudos-progresso"
+                data-progresso="pandas/dataframes pandas/limpar-dados pandas/desafio-limpeza pandas/agrupar-e-resumir pandas/juntar-e-datas pandas/desafio-relatorio-de-vendas pandas/encadear-e-vetorizar pandas/do-pandas-para-o-mundo pandas/desafio-clientes"
+                data-trilha="pandas"
+              >
+                <div class="estudos-progresso-barra"><span></span></div>
+                <span class="estudos-progresso-texto">0 de 9 concluídos</span>
+              </div>
+              <p class="aula-sumario-nivel">Iniciante</p>
+              <ol class="trilha-modulos trilha-modulos--compacta">
+                <li class="trilha-modulo">
+                  <h3><span>Módulo 1</span> Primeiros DataFrames</h3>
+                  <ol>
+                    <li class="trilha-item" data-item="pandas/dataframes">
+                      <a href="dataframes.html">
+                        <span class="trilha-item-icone"
+                          ><svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M4 5h11a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3zM8 9h6M8 13h6" /></svg
+                        ></span>
+                        <span class="trilha-item-texto">
+                          <strong>DataFrame: a tabela do Python</strong>
+                          <small>Ler um CSV, conhecer os dados, escolher colunas, filtrar e ordenar.</small>
+                        </span>
+                        <span class="trilha-item-tempo">12 min</span>
+                      </a>
+                    </li>
+                    <li class="trilha-item" data-item="pandas/limpar-dados">
+                      <a href="limpar-dados.html">
+                        <span class="trilha-item-icone"
+                          ><svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M4 5h11a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3zM8 9h6M8 13h6" /></svg
+                        ></span>
+                        <span class="trilha-item-texto">
+                          <strong>Limpar dados</strong>
+                          <small>Valores faltando, tipos errados, textos bagunçados e linhas repetidas.</small>
+                        </span>
+                        <span class="trilha-item-tempo">13 min</span>
+                      </a>
+                    </li>
+                    <li class="trilha-item trilha-item--desafio" data-item="pandas/desafio-limpeza">
+                      <a href="desafio-limpeza.html">
+                        <span class="trilha-item-icone"
+                          ><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 8-4 4 4 4M16 8l4 4-4 4" /></svg
+                        ></span>
+                        <span class="trilha-item-texto">
+                          <strong>Desafio: limpar a exportação do sistema</strong>
+                          <small>Uma função que deixa a planilha de vendas pronta para análise.</small>
+                        </span>
+                        <span class="trilha-item-tempo">18 min</span>
+                      </a>
+                    </li>
+                  </ol>
+                </li>
+              </ol>
+              <p class="aula-sumario-nivel">Intermediário</p>
+              <ol class="trilha-modulos trilha-modulos--compacta">
+                <li class="trilha-modulo">
+                  <h3><span>Módulo 2</span> Resumir e cruzar</h3>
+                  <ol>
+                    <li class="trilha-item" data-item="pandas/agrupar-e-resumir">
+                      <a href="agrupar-e-resumir.html">
+                        <span class="trilha-item-icone"
+                          ><svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M4 5h11a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3zM8 9h6M8 13h6" /></svg
+                        ></span>
+                        <span class="trilha-item-texto">
+                          <strong>Agrupar e resumir</strong>
+                          <small>groupby, agg, tabelas dinâmicas e percentuais.</small>
+                        </span>
+                        <span class="trilha-item-tempo">13 min</span>
+                      </a>
+                    </li>
+                    <li class="trilha-item" data-item="pandas/juntar-e-datas">
+                      <a href="juntar-e-datas.html">
+                        <span class="trilha-item-icone"
+                          ><svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M4 5h11a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3zM8 9h6M8 13h6" /></svg
+                        ></span>
+                        <span class="trilha-item-texto">
+                          <strong>Juntar tabelas e trabalhar com datas</strong>
+                          <small>merge, concat, o acessor .dt e resample por período.</small>
+                        </span>
+                        <span class="trilha-item-tempo">13 min</span>
+                      </a>
+                    </li>
+                    <li class="trilha-item trilha-item--desafio" data-item="pandas/desafio-relatorio-de-vendas">
+                      <a href="desafio-relatorio-de-vendas.html">
+                        <span class="trilha-item-icone"
+                          ><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 8-4 4 4 4M16 8l4 4-4 4" /></svg
+                        ></span>
+                        <span class="trilha-item-texto">
+                          <strong>Desafio: o relatório de vendas</strong>
+                          <small>groupby, merge e datas em três funções.</small>
+                        </span>
+                        <span class="trilha-item-tempo">22 min</span>
+                      </a>
+                    </li>
+                  </ol>
+                </li>
+              </ol>
+              <p class="aula-sumario-nivel">Avançado</p>
+              <ol class="trilha-modulos trilha-modulos--compacta">
+                <li class="trilha-modulo">
+                  <h3><span>Módulo 3</span> Análises de verdade</h3>
+                  <ol>
+                    <li class="trilha-item" data-item="pandas/encadear-e-vetorizar">
+                      <a href="encadear-e-vetorizar.html">
+                        <span class="trilha-item-icone"
+                          ><svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M4 5h11a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3zM8 9h6M8 13h6" /></svg
+                        ></span>
+                        <span class="trilha-item-texto">
+                          <strong>Encadear e vetorizar</strong>
+                          <small>assign, query, pipe, np.where e por que evitar laços e apply.</small>
+                        </span>
+                        <span class="trilha-item-tempo">13 min</span>
+                      </a>
+                    </li>
+                    <li class="trilha-item" data-item="pandas/do-pandas-para-o-mundo">
+                      <a href="do-pandas-para-o-mundo.html" aria-current="page">
+                        <span class="trilha-item-icone"
+                          ><svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M4 5h11a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3zM8 9h6M8 13h6" /></svg
+                        ></span>
+                        <span class="trilha-item-texto">
+                          <strong>Do pandas para o Excel, o banco e o Power BI</strong>
+                          <small>Salvar CSV que o Excel abre direito, Excel, Parquet, SQL e gráficos.</small>
+                        </span>
+                        <span class="trilha-item-tempo">11 min</span>
+                      </a>
+                    </li>
+                    <li class="trilha-item trilha-item--desafio" data-item="pandas/desafio-clientes">
+                      <a href="desafio-clientes.html">
+                        <span class="trilha-item-icone"
+                          ><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 8-4 4 4 4M16 8l4 4-4 4" /></svg
+                        ></span>
+                        <span class="trilha-item-texto">
+                          <strong>Desafio: análise de clientes</strong>
+                          <small>RFM em pandas, segmentos com np.select e os melhores clientes.</small>
+                        </span>
+                        <span class="trilha-item-tempo">25 min</span>
+                      </a>
+                    </li>
+                  </ol>
+                </li>
+              </ol>
+            </details>
+          </aside>
+          <article class="aula-conteudo" data-linguagem="python">
+            <a class="text-link" href="./">← Trilha de Python para dados</a>
+            <div class="section-kicker case-kicker">Avançado · Módulo 3 · Análises de verdade</div>
+            <h1>Do pandas para o Excel, o banco e o Power BI</h1>
+            <p class="aula-meta">Aula · 11 min</p>
+            <div class="aula-texto">
+              <p>
+                A análise só vale quando chega em quem decide. Estes comandos rodam no seu computador (com
+                <code>pip install pandas openpyxl pyarrow matplotlib</code> num ambiente virtual):
+              </p>
+
+              <h2>CSV que o Excel em português abre direito</h2>
+              <pre
+                class="aula-codigo"
+              ><code>resumo.to_csv(&quot;resumo.csv&quot;, sep=&quot;;&quot;, decimal=&quot;,&quot;, index=False, encoding=&quot;utf-8-sig&quot;)</code></pre>
+              <p>
+                Ponto e vírgula como separador, vírgula como decimal e o <code>utf-8-sig</code> para os acentos
+                aparecerem certos ao dar dois cliques no arquivo.
+              </p>
+
+              <h2>Excel com várias abas</h2>
+              <pre class="aula-codigo"><code>with pd.ExcelWriter(&quot;relatorio.xlsx&quot;) as arquivo:
+    vendas.to_excel(arquivo, sheet_name=&quot;Vendas&quot;, index=False)
+    resumo.to_excel(arquivo, sheet_name=&quot;Resumo&quot;)</code></pre>
+
+              <h2>Parquet: para dados grandes</h2>
+              <p>
+                O formato <strong>Parquet</strong> guarda os tipos das colunas, é comprimido (um CSV de 1 GB vira
+                algumas dezenas de MB) e é lido muito mais rápido. O Power BI e o Power Query leem Parquet direto.
+              </p>
+              <pre class="aula-codigo"><code>vendas.to_parquet(&quot;vendas.parquet&quot;)
+vendas = pd.read_parquet(&quot;vendas.parquet&quot;)</code></pre>
+
+              <h2>Bancos de dados</h2>
+              <pre class="aula-codigo"><code>import sqlite3
+
+with sqlite3.connect(&quot;loja.db&quot;) as conexao:
+    vendas.to_sql(&quot;vendas&quot;, conexao, if_exists=&quot;replace&quot;, index=False)
+    caros = pd.read_sql(&quot;SELECT * FROM vendas WHERE preco &gt; ?&quot;, conexao, params=(100,))</code></pre>
+              <p>
+                Repare no <code>?</code> com <code>params</code>: a mesma consulta parametrizada da trilha de
+                <a href="../seguranca-web/">segurança web</a>.
+              </p>
+
+              <h2>Gráficos</h2>
+              <pre class="aula-codigo"><code>import matplotlib.pyplot as plt
+
+mensal[&quot;faturamento&quot;].plot(kind=&quot;bar&quot;, title=&quot;Faturamento por mês&quot;)
+plt.ylabel(&quot;R$&quot;)
+plt.tight_layout()
+plt.savefig(&quot;faturamento.png&quot;, dpi=150)</code></pre>
+
+              <h2>Python dentro do Power BI e do Excel</h2>
+              <ul>
+                <li>
+                  No Power BI Desktop, <em>Obter dados → Script Python</em> roda um script e importa cada DataFrame como
+                  uma tabela.
+                </li>
+                <li>
+                  No Excel do Microsoft 365, a função <code>=PY()</code> roda pandas direto na célula (o processamento é
+                  na nuvem da Microsoft).
+                </li>
+                <li>
+                  Para relatórios que se atualizam todo dia, o mais simples costuma ser um script que gera o Parquet ou
+                  o CSV numa pasta, agendado no Agendador de Tarefas (veja a trilha de
+                  <a href="../powershell/">PowerShell</a>), e o Power BI lendo essa pasta.
+                </li>
+              </ul>
+              <aside class="aula-dica">
+                <strong>Dica</strong>
+                <p>
+                  Jupyter Notebook (ou os notebooks do VS Code) é o jeito mais confortável de explorar dados: o código
+                  fica em células, e as tabelas e gráficos aparecem logo abaixo de cada uma.
+                </p>
+              </aside>
+            </div>
+            <section class="quiz" aria-labelledby="quizTitulo">
+              <h2 id="quizTitulo">Teste o que aprendeu</h2>
+              <ol class="quiz-lista">
+                <li
+                  class="quiz-pergunta"
+                  data-certa="1"
+                  data-explicacao="Separador, decimal e codificação no padrão do Excel brasileiro."
+                >
+                  <fieldset>
+                    <legend>Qual combinação gera um CSV que o Excel em português abre certinho?</legend>
+                    <label class="quiz-opcao"
+                      ><input type="radio" name="q0" value="0" /> to_csv(&quot;a.csv&quot;)</label
+                    >
+                    <label class="quiz-opcao"
+                      ><input type="radio" name="q0" value="1" /> to_csv(&quot;a.csv&quot;, sep=&quot;;&quot;,
+                      decimal=&quot;,&quot;, encoding=&quot;utf-8-sig&quot;)</label
+                    >
+                    <label class="quiz-opcao"
+                      ><input type="radio" name="q0" value="2" /> to_excel(&quot;a.csv&quot;)</label
+                    >
+                  </fieldset>
+                  <p class="quiz-retorno" hidden></p>
+                </li>
+                <li
+                  class="quiz-pergunta"
+                  data-certa="1"
+                  data-explicacao="Por isso é o formato padrão de dados analíticos."
+                >
+                  <fieldset>
+                    <legend>Qual a vantagem do Parquet sobre o CSV?</legend>
+                    <label class="quiz-opcao"><input type="radio" name="q1" value="0" /> Abre no Bloco de Notas</label>
+                    <label class="quiz-opcao"
+                      ><input type="radio" name="q1" value="1" /> Guarda os tipos, é comprimido e é lido muito mais
+                      rápido</label
+                    >
+                    <label class="quiz-opcao"><input type="radio" name="q1" value="2" /> Nenhuma</label>
+                  </fieldset>
+                  <p class="quiz-retorno" hidden></p>
+                </li>
+                <li
+                  class="quiz-pergunta"
+                  data-certa="1"
+                  data-explicacao="Cada DataFrame do script vira uma tabela no modelo."
+                >
+                  <fieldset>
+                    <legend>Como o Power BI pode usar um DataFrame do pandas?</legend>
+                    <label class="quiz-opcao"><input type="radio" name="q2" value="0" /> Não pode</label>
+                    <label class="quiz-opcao"
+                      ><input type="radio" name="q2" value="1" /> Por um script Python como fonte de dados, ou lendo o
+                      arquivo que o script gerou</label
+                    >
+                    <label class="quiz-opcao"><input type="radio" name="q2" value="2" /> Só copiando e colando</label>
+                  </fieldset>
+                  <p class="quiz-retorno" hidden></p>
+                </li>
+              </ol>
+              <p class="quiz-placar" aria-live="polite"></p>
+            </section>
+            <div class="aula-concluir">
+              <button class="btn btn-ghost" type="button" data-concluir="pandas/do-pandas-para-o-mundo">
+                Marcar aula como concluída
+              </button>
+              <p class="estudos-conta" id="estudosConta" aria-live="polite">
+                Seu progresso fica salvo neste navegador.
+              </p>
+            </div>
+            <nav class="aula-navegacao" aria-label="Aulas">
+              <a href="encadear-e-vetorizar.html"><small>← Anterior</small>Encadear e vetorizar</a>
+              <a class="aula-proxima" href="desafio-clientes.html"
+                ><small>Próxima →</small>Desafio: análise de clientes</a
+              >
+            </nav>
+          </article>
+        </div>
+      </main>
+      <footer>
+        <div class="wrap foot">
+          <span>
+            ©
+            <span id="year"></span>
+            Otávio. Feito com HTML, CSS e JavaScript.
+          </span>
+          <div class="small-links">
+            <a href="https://github.com/Ottavvi" target="_blank" rel="noreferrer">GitHub ↗</a>
+            <a href="#inicio">Voltar ao topo ↑</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+    <script src="../../js/main.js" defer></script>
+    <script src="../../js/paleta.js" defer></script>
+    <script type="module" src="../../js/auth/session.js"></script>
+    <script type="module" src="../../js/estudos.js"></script>
+  </body>
+</html>

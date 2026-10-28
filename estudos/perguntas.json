@@ -1195,6 +1195,154 @@
       "explicacao": "O clique pode ter sido num ícone dentro do botão; closest sobe até achar."
     }
   ],
+  "typescript/por-que-typescript": [
+    {
+      "pergunta": "O navegador roda TypeScript diretamente?",
+      "opcoes": ["Sim", "Não: o compilador gera JavaScript sem os tipos", "Só o Chrome"],
+      "certa": 1,
+      "explicacao": "Os tipos servem durante o desenvolvimento e somem no JavaScript gerado."
+    },
+    {
+      "pergunta": "O que o TypeScript infere em: const precos = [10, 20]?",
+      "opcoes": ["any", "number[]", "string[]"],
+      "certa": 1,
+      "explicacao": "O valor inicial já diz que é um array de números."
+    },
+    {
+      "pergunta": "O que é recomendado sempre anotar?",
+      "opcoes": ["Todas as variáveis", "Os parâmetros das funções", "Nada"],
+      "certa": 1,
+      "explicacao": "Sem a anotação, o parâmetro vira any implícito, que o modo strict não aceita."
+    }
+  ],
+  "typescript/objetos-e-interfaces": [
+    {
+      "pergunta": "O que o ? em descricao?: string significa?",
+      "opcoes": ["A propriedade é opcional", "A propriedade é nula", "A propriedade é privada"],
+      "certa": 0,
+      "explicacao": "Ela pode faltar; o tipo dela vira string | undefined."
+    },
+    {
+      "pergunta": "Com type Status = 'pago' | 'enviado', o que acontece em status = 'entregue'?",
+      "opcoes": ["Funciona", "Erro de tipo: o valor não está na lista", "Vira string"],
+      "certa": 1,
+      "explicacao": "Tipos literais criam uma lista fechada de valores aceitos."
+    },
+    {
+      "pergunta": "O que readonly impede?",
+      "opcoes": ["Ler a propriedade", "Mudar a propriedade depois de criado o objeto", "Copiar o objeto"],
+      "certa": 1,
+      "explicacao": "A checagem é do compilador; no JavaScript gerado, a propriedade é comum."
+    }
+  ],
+  "typescript/unioes-e-estreitamento": [
+    {
+      "pergunta": "Depois de if (typeof valor === \"number\") return ..., o que valor é no resto da função?",
+      "opcoes": ["number", "string (o que sobrou da união string | number)", "any"],
+      "certa": 1,
+      "explicacao": "O TypeScript acompanha o fluxo e tira da união o que já foi tratado."
+    },
+    {
+      "pergunta": "O que caracteriza uma união discriminada?",
+      "opcoes": [
+        "Todos os tipos são iguais",
+        "Uma propriedade em comum, com valor literal diferente em cada formato",
+        "Usar classes"
+      ],
+      "certa": 1,
+      "explicacao": "A propriedade (tipo, kind, status) diz qual formato é aquele."
+    },
+    {
+      "pergunta": "Para que serve atribuir a never no default?",
+      "opcoes": [
+        "Deixar o código mais rápido",
+        "Dar erro de compilação se algum caso da união não foi tratado",
+        "Ignorar erros"
+      ],
+      "certa": 1,
+      "explicacao": "Se sobrou algum caso, ele não cabe em never e o compilador avisa."
+    }
+  ],
+  "typescript/genericos-e-utilitarios": [
+    {
+      "pergunta": "Qual a vantagem de primeiro<T>(lista: T[]): T sobre usar any?",
+      "opcoes": ["Nenhuma", "O tipo de quem entra é mantido na saída, e a checagem continua", "Fica mais rápido"],
+      "certa": 1,
+      "explicacao": "Com any, o resultado perderia o tipo e os erros voltariam."
+    },
+    {
+      "pergunta": "O que Omit<Cliente, 'id'> produz?",
+      "opcoes": ["Só o id", "Cliente sem a propriedade id", "Cliente com id opcional"],
+      "certa": 1,
+      "explicacao": "Pick escolhe propriedades; Omit tira."
+    },
+    {
+      "pergunta": "O que K extends keyof T exige?",
+      "opcoes": ["Que K seja um número", "Que K seja o nome de uma propriedade de T", "Que T seja um array"],
+      "certa": 1,
+      "explicacao": "Por isso valores(produtos, \"estoque\") dá erro."
+    }
+  ],
+  "typescript/dados-de-fora": [
+    {
+      "pergunta": "O que o TypeScript confere em const p: Pedido = await resposta.json()?",
+      "opcoes": [
+        "Que a API mandou um pedido válido",
+        "Nada: json() devolve any e o tipo é só uma promessa sua",
+        "Só o id"
+      ],
+      "certa": 1,
+      "explicacao": "Em tempo de execução não há tipos. É preciso validar."
+    },
+    {
+      "pergunta": "Qual a diferença entre any e unknown?",
+      "opcoes": [
+        "Nenhuma",
+        "unknown aceita qualquer valor, mas exige checagem antes de usar",
+        "unknown só aceita objetos"
+      ],
+      "certa": 1,
+      "explicacao": "any desliga a checagem; unknown obriga a fazer."
+    },
+    {
+      "pergunta": "O que uma função com retorno x is Pedido faz?",
+      "opcoes": [
+        "Converte x em Pedido",
+        "Quando devolve true, o TypeScript passa a tratar x como Pedido",
+        "Lança erro se não for Pedido"
+      ],
+      "certa": 1,
+      "explicacao": "É um type guard: a checagem que você escreveu vira informação de tipo."
+    }
+  ],
+  "typescript/typescript-no-projeto": [
+    {
+      "pergunta": "Num projeto com Vite, quem confere os tipos?",
+      "opcoes": ["O Vite", "O tsc (por exemplo, tsc --noEmit no build ou no CI)", "O navegador"],
+      "certa": 1,
+      "explicacao": "O Vite só apaga os tipos, para ser rápido."
+    },
+    {
+      "pergunta": "Para que serve o pacote @types/alguma-coisa?",
+      "opcoes": [
+        "Instalar a biblioteca",
+        "Dar tipos a uma biblioteca escrita em JavaScript que não traz os seus",
+        "Converter JavaScript em TypeScript"
+      ],
+      "certa": 1,
+      "explicacao": "São só arquivos .d.ts com as declarações."
+    },
+    {
+      "pergunta": "O que // @ts-check faz num arquivo .js?",
+      "opcoes": [
+        "Converte o arquivo para TypeScript",
+        "Liga a checagem de tipos no editor, com os tipos vindos do JSDoc",
+        "Nada"
+      ],
+      "certa": 1,
+      "explicacao": "Uma porta de entrada sem mudar a linguagem do projeto."
+    }
+  ],
   "modulos-es/por-que-modulos": [
     {
       "pergunta": "O que é obrigatório na tag script para usar import?",
@@ -2067,6 +2215,430 @@
       "explicacao": "Assim uma tradução incompleta não chega ao ar sem aviso."
     }
   ],
+  "acessibilidade/por-que-acessibilidade": [
+    {
+      "pergunta": "Qual nível da WCAG costuma ser exigido?",
+      "opcoes": ["A", "AA", "AAA"],
+      "certa": 1,
+      "explicacao": "O AA é a referência de leis e contratos."
+    },
+    {
+      "pergunta": "Como uma pessoa que usa leitor de tela costuma navegar?",
+      "opcoes": [
+        "Ouvindo a página inteira do começo ao fim, sempre",
+        "Pulando por títulos, links e campos",
+        "Com o mouse"
+      ],
+      "certa": 1,
+      "explicacao": "Por isso títulos bem organizados e links com texto claro fazem tanta diferença."
+    },
+    {
+      "pergunta": "Qual princípio da WCAG trata de usar o site pelo teclado?",
+      "opcoes": ["Perceptível", "Operável", "Robusto"],
+      "certa": 1,
+      "explicacao": "Operável: todas as funções precisam ser acionáveis por qualquer meio."
+    }
+  ],
+  "acessibilidade/erros-mais-comuns": [
+    {
+      "pergunta": "Qual alt usar numa imagem só decorativa?",
+      "opcoes": ["alt=\"imagem\"", "alt=\"\" (vazio)", "Nenhum atributo alt"],
+      "certa": 1,
+      "explicacao": "Vazio diz ao leitor de tela que pode pular. Sem alt, alguns leem o nome do arquivo."
+    },
+    {
+      "pergunta": "Por que evitar <div onclick> no lugar de <button>?",
+      "opcoes": [
+        "A div é mais lenta",
+        "A div não recebe foco pelo teclado nem é anunciada como botão",
+        "Não há diferença"
+      ],
+      "certa": 1,
+      "explicacao": "O button já vem com foco, Enter, Espaço e o papel de botão."
+    },
+    {
+      "pergunta": "Um placeholder substitui o label?",
+      "opcoes": ["Sim", "Não: ele some ao digitar e nem sempre é lido", "Só em campos de e-mail"],
+      "certa": 1,
+      "explicacao": "Use label sempre; o placeholder pode dar um exemplo do formato."
+    }
+  ],
+  "acessibilidade/teclado-e-foco": [
+    {
+      "pergunta": "O que define a ordem do Tab?",
+      "opcoes": ["A posição na tela", "A ordem dos elementos no HTML", "O tamanho dos elementos"],
+      "certa": 1,
+      "explicacao": "Por isso mudar a ordem só no CSS confunde quem usa teclado."
+    },
+    {
+      "pergunta": "Para que serve tabindex=\"-1\"?",
+      "opcoes": [
+        "Deixar o elemento focável pelo JavaScript, sem entrar na ordem do Tab",
+        "Pôr o elemento em primeiro na ordem",
+        "Esconder o elemento"
+      ],
+      "certa": 0,
+      "explicacao": "Útil para mover o foco para um título ou uma mensagem de erro."
+    },
+    {
+      "pergunta": "Por que evitar tabindex=\"3\"?",
+      "opcoes": [
+        "Não funciona em celulares",
+        "Valores positivos passam na frente de tudo e bagunçam a ordem",
+        "Só aceita 0 e 1"
+      ],
+      "certa": 1,
+      "explicacao": "Fica impossível de manter conforme a página cresce."
+    }
+  ],
+  "acessibilidade/contraste-e-formularios": [
+    {
+      "pergunta": "Qual contraste mínimo a WCAG AA pede para texto normal?",
+      "opcoes": ["3:1", "4,5:1", "7:1"],
+      "certa": 1,
+      "explicacao": "3:1 vale para textos grandes e elementos gráficos; 7:1 é o nível AAA."
+    },
+    {
+      "pergunta": "O que aria-describedby faz num campo?",
+      "opcoes": [
+        "Muda a cor do campo",
+        "Liga o campo a textos de ajuda ou erro, lidos pelo leitor de tela",
+        "Valida o campo"
+      ],
+      "certa": 1,
+      "explicacao": "O leitor lê o rótulo e depois as descrições ligadas."
+    },
+    {
+      "pergunta": "O formulário foi enviado com erros. Para onde levar o foco?",
+      "opcoes": ["Para o topo da página", "Para o primeiro campo com erro", "Para o botão de enviar"],
+      "certa": 1,
+      "explicacao": "A pessoa chega direto ao problema e ouve a mensagem."
+    }
+  ],
+  "acessibilidade/componentes-acessiveis": [
+    {
+      "pergunta": "Qual é a primeira regra do ARIA?",
+      "opcoes": [
+        "Usar ARIA em todo elemento",
+        "Se existe um elemento nativo que resolve, use o nativo",
+        "Sempre usar role=\"button\""
+      ],
+      "certa": 1,
+      "explicacao": "Os elementos nativos já trazem o comportamento de teclado e o papel certo."
+    },
+    {
+      "pergunta": "Ao fechar um modal, para onde deve ir o foco?",
+      "opcoes": ["Para o topo da página", "Para o botão que abriu o modal", "Para lugar nenhum"],
+      "certa": 1,
+      "explicacao": "A pessoa continua de onde estava."
+    },
+    {
+      "pergunta": "No padrão de abas, como se muda de aba pelo teclado?",
+      "opcoes": ["Com Tab", "Com as setas", "Só com o mouse"],
+      "certa": 1,
+      "explicacao": "O Tab entra no grupo de abas e sai para o painel; as setas mudam de aba."
+    }
+  ],
+  "acessibilidade/testar-acessibilidade": [
+    {
+      "pergunta": "Ferramentas automáticas encontram todos os problemas?",
+      "opcoes": ["Sim", "Não, uma parte; o resto precisa de teste com gente", "Só o Lighthouse encontra"],
+      "certa": 1,
+      "explicacao": "Elas não sabem, por exemplo, se um alt descreve bem a imagem."
+    },
+    {
+      "pergunta": "No NVDA, qual tecla pula para o próximo título?",
+      "opcoes": ["T", "H", "Tab"],
+      "certa": 1,
+      "explicacao": "H de heading. É o jeito mais comum de \"folhear\" uma página."
+    },
+    {
+      "pergunta": "Como rodar o axe a cada mudança no projeto?",
+      "opcoes": ["Abrindo a extensão todo dia", "Com @axe-core/playwright nos testes automáticos", "Não é possível"],
+      "certa": 1,
+      "explicacao": "Assim um problema novo quebra o build antes de ir para o ar."
+    }
+  ],
+  "regex/o-que-e-regex": [
+    {
+      "pergunta": "O que \\d casa?",
+      "opcoes": ["Uma letra", "Um dígito de 0 a 9", "Um ponto"],
+      "certa": 1,
+      "explicacao": "d de digit. \\D é o contrário: qualquer coisa que não seja dígito."
+    },
+    {
+      "pergunta": "Como casar um ponto de verdade, e não \"qualquer caractere\"?",
+      "opcoes": [".", "\\.", "\\d"],
+      "certa": 1,
+      "explicacao": "A barra invertida tira o poder especial do ponto. Dentro de colchetes, como em [.], ele também já é literal."
+    },
+    {
+      "pergunta": "Para que serve a flag g em texto.replace(/a/g, \"b\")?",
+      "opcoes": ["Ignorar maiúsculas", "Trocar todas as ocorrências, não só a primeira", "Nada"],
+      "certa": 1,
+      "explicacao": "Sem o g, o replace troca só a primeira."
+    }
+  ],
+  "regex/quantificadores-e-ancoras": [
+    {
+      "pergunta": "O que \\d{2,4} casa?",
+      "opcoes": ["Exatamente 2 ou 4 dígitos", "De 2 a 4 dígitos", "O número 24"],
+      "certa": 1,
+      "explicacao": "Chaves com dois números indicam um intervalo de repetições."
+    },
+    {
+      "pergunta": "Por que usar ^ e $ numa validação?",
+      "opcoes": [
+        "Para a regex ficar mais rápida",
+        "Para exigir que o texto INTEIRO siga o padrão",
+        "Para ignorar maiúsculas"
+      ],
+      "certa": 1,
+      "explicacao": "Sem âncoras, basta o padrão aparecer em algum pedaço."
+    },
+    {
+      "pergunta": "O que /^(sim|não)$/ aceita?",
+      "opcoes": ["\"sim\" ou \"não\", exatamente", "Qualquer texto com sim", "\"simnão\""],
+      "certa": 0,
+      "explicacao": "A alternativa fica entre os parênteses, presa pelas âncoras."
+    }
+  ],
+  "regex/grupos-e-replace": [
+    {
+      "pergunta": "Em '28/10'.match(/(\\d+)\\/(\\d+)/), o que está no índice 2?",
+      "opcoes": ["'28/10'", "'28'", "'10'"],
+      "certa": 2,
+      "explicacao": "O 0 é o trecho inteiro, o 1 é o primeiro grupo e o 2 é o segundo."
+    },
+    {
+      "pergunta": "No replace, o que $1 significa?",
+      "opcoes": ["Um real", "O que o primeiro grupo capturou", "A primeira ocorrência"],
+      "certa": 1,
+      "explicacao": "Com grupos nomeados, use $<nome>."
+    },
+    {
+      "pergunta": "Para que serve (?:...)?",
+      "opcoes": ["Agrupar sem guardar a captura", "Tornar o grupo opcional", "Ignorar maiúsculas"],
+      "certa": 0,
+      "explicacao": "É útil para aplicar um quantificador ou uma alternativa a vários caracteres."
+    }
+  ],
+  "regex/guloso-e-lookarounds": [
+    {
+      "pergunta": "Em \"<b>a</b><b>c</b>\", o que /<b>.*<\\/b>/ pega?",
+      "opcoes": ["<b>a</b>", "O texto inteiro, até o último </b>", "Nada"],
+      "certa": 1,
+      "explicacao": "O .* é guloso. Com .*? pegaria só o primeiro."
+    },
+    {
+      "pergunta": "O que (?<=R\\$ )\\d+ devolve em \"R$ 50\"?",
+      "opcoes": ["R$ 50", "50", "R$"],
+      "certa": 1,
+      "explicacao": "O lookbehind confere o \"R$ \" antes, mas não o inclui no resultado."
+    },
+    {
+      "pergunta": "Para que servem os (?=...) no começo da regex de senha?",
+      "opcoes": [
+        "Para exigir várias condições ao mesmo tempo, sem importar a ordem",
+        "Para deixar a senha opcional",
+        "Para trocar letras"
+      ],
+      "certa": 0,
+      "explicacao": "Cada lookahead confere uma exigência a partir do início do texto."
+    }
+  ],
+  "regex/unicode-e-desempenho": [
+    {
+      "pergunta": "Qual padrão casa \"João\" inteiro?",
+      "opcoes": ["/\\w+/", "/\\p{L}+/u", "/[a-z]+/i"],
+      "certa": 1,
+      "explicacao": "\\w e [a-z] não incluem letras com acento."
+    },
+    {
+      "pergunta": "O que causa o retrocesso catastrófico?",
+      "opcoes": ["A flag g", "Quantificadores aninhados, como (a+)+, que geram combinações demais", "Usar âncoras"],
+      "certa": 1,
+      "explicacao": "Cada falha faz o motor tentar outra divisão do texto, e as divisões explodem."
+    },
+    {
+      "pergunta": "Qual é o melhor jeito de ler os links de um trecho de HTML?",
+      "opcoes": ["Uma regex com <a href", "DOMParser e querySelectorAll(\"a\")", "split(\"<\")"],
+      "certa": 1,
+      "explicacao": "HTML tem aninhamento, aspas, comentários: um parser de verdade resolve tudo isso."
+    }
+  ],
+  "regex/regex-fora-do-javascript": [
+    {
+      "pergunta": "Em Python, por que escrever r\"\\d+\"?",
+      "opcoes": ["Para a regex ignorar maiúsculas", "Texto cru: as barras não precisam ser dobradas", "É obrigatório"],
+      "certa": 1,
+      "explicacao": "Sem o r, seria preciso escrever \"\\\\d+\"."
+    },
+    {
+      "pergunta": "No VS Code, como usar o primeiro grupo no campo de troca?",
+      "opcoes": ["\\1", "$1", "{1}"],
+      "certa": 1,
+      "explicacao": "Como no replace do JavaScript."
+    },
+    {
+      "pergunta": "O operador -match do PowerShell diferencia maiúsculas?",
+      "opcoes": ["Sim", "Não; para diferenciar existe o -cmatch", "Depende do Windows"],
+      "certa": 1,
+      "explicacao": "O c de -cmatch vem de case-sensitive."
+    }
+  ],
+  "seo-performance/como-o-google-funciona": [
+    {
+      "pergunta": "Qual a ordem das etapas de um buscador?",
+      "opcoes": ["Classificar, rastrear, indexar", "Rastrear, indexar, classificar", "Indexar, rastrear, classificar"],
+      "certa": 1,
+      "explicacao": "Primeiro encontra, depois entende e guarda, e só então ordena nas pesquisas."
+    },
+    {
+      "pergunta": "O robots.txt protege páginas privadas?",
+      "opcoes": ["Sim", "Não: é só um pedido aos robôs; qualquer pessoa acessa", "Só no Google"],
+      "certa": 1,
+      "explicacao": "Página privada precisa de login, não de robots.txt."
+    },
+    {
+      "pergunta": "Como pedir que uma página não apareça nos resultados?",
+      "opcoes": ["<meta name=\"robots\" content=\"noindex\">", "Deixar o título vazio", "Apagar o sitemap"],
+      "certa": 0,
+      "explicacao": "O noindex é respeitado pelos buscadores sérios."
+    }
+  ],
+  "seo-performance/metadados": [
+    {
+      "pergunta": "De onde o Google costuma tirar o texto do link azul?",
+      "opcoes": ["Do <h1>", "Do <title>", "Da URL"],
+      "certa": 1,
+      "explicacao": "Por isso o título deve ser único e descrever bem a página."
+    },
+    {
+      "pergunta": "Para que serve a URL canônica?",
+      "opcoes": [
+        "Redirecionar visitantes",
+        "Dizer qual é o endereço oficial quando a página abre por vários",
+        "Esconder a página"
+      ],
+      "certa": 1,
+      "explicacao": "Assim a relevância não se divide entre cópias com ?utm e afins."
+    },
+    {
+      "pergunta": "Por que a og:image precisa de endereço absoluto?",
+      "opcoes": [
+        "Porque quem lê é outro site (o WhatsApp), que não sabe de onde \"img/capa.jpg\" é relativo",
+        "Para carregar mais rápido",
+        "Não precisa"
+      ],
+      "certa": 0,
+      "explicacao": "Sem https://domínio, o robô do WhatsApp não acha a imagem."
+    }
+  ],
+  "seo-performance/dados-estruturados": [
+    {
+      "pergunta": "Qual o formato recomendado de dados estruturados?",
+      "opcoes": ["Comentários HTML", "JSON-LD num <script type=\"application/ld+json\">", "Um arquivo .txt"],
+      "certa": 1,
+      "explicacao": "É o formato que o Google recomenda e o mais fácil de manter."
+    },
+    {
+      "pergunta": "Para que serve o @type?",
+      "opcoes": [
+        "Definir a cor",
+        "Dizer o que a coisa descrita é (hospedagem, produto, artigo...)",
+        "Escolher a língua"
+      ],
+      "certa": 1,
+      "explicacao": "O tipo define quais propriedades fazem sentido."
+    },
+    {
+      "pergunta": "Posso marcar avaliações que não aparecem na página?",
+      "opcoes": ["Sim", "Não: os dados precisam corresponder ao conteúdo visível", "Só se forem verdadeiras"],
+      "certa": 1,
+      "explicacao": "Marcação enganosa pode tirar os destaques do site inteiro."
+    }
+  ],
+  "seo-performance/core-web-vitals": [
+    {
+      "pergunta": "O que o LCP mede?",
+      "opcoes": [
+        "O tempo até o maior elemento visível aparecer",
+        "Quanto a página pula",
+        "O tempo de resposta a cliques"
+      ],
+      "certa": 0,
+      "explicacao": "Bom é até 2,5 segundos."
+    },
+    {
+      "pergunta": "Qual atributo evita o CLS de imagens?",
+      "opcoes": ["loading=\"lazy\"", "width e height", "alt"],
+      "certa": 1,
+      "explicacao": "Com as dimensões, o navegador reserva o espaço antes de a imagem chegar."
+    },
+    {
+      "pergunta": "Qual a diferença entre dados de laboratório e de campo?",
+      "opcoes": [
+        "Nenhuma",
+        "Laboratório é uma simulação (Lighthouse); campo são visitantes reais (CrUX)",
+        "Campo é só para computadores"
+      ],
+      "certa": 1,
+      "explicacao": "O Google usa os dados de campo na classificação."
+    }
+  ],
+  "seo-performance/imagens-fontes-e-scripts": [
+    {
+      "pergunta": "Qual atributo usar na imagem principal do topo da página?",
+      "opcoes": ["loading=\"lazy\"", "fetchpriority=\"high\"", "decoding=\"sync\""],
+      "certa": 1,
+      "explicacao": "Ela é o LCP: tem de chegar primeiro. Lazy a atrasaria."
+    },
+    {
+      "pergunta": "O que defer faz num <script>?",
+      "opcoes": [
+        "Não carrega o script",
+        "Baixa em paralelo e roda depois que o HTML foi lido, na ordem",
+        "Roda assim que chegar, fora de ordem"
+      ],
+      "certa": 1,
+      "explicacao": "O async é que roda fora de ordem."
+    },
+    {
+      "pergunta": "Por que o preload de fonte precisa de crossorigin?",
+      "opcoes": [
+        "Porque fontes são sempre buscadas em modo CORS; sem ele, o navegador baixa duas vezes",
+        "Para a fonte funcionar em outros sites",
+        "Não precisa"
+      ],
+      "certa": 0,
+      "explicacao": "O pré-carregamento sem crossorigin não é reaproveitado."
+    }
+  ],
+  "seo-performance/medir-e-manter": [
+    {
+      "pergunta": "O que é um orçamento de performance?",
+      "opcoes": [
+        "Quanto custa a hospedagem",
+        "Um limite combinado de peso ou de nota que as mudanças não podem estourar",
+        "Um tipo de cache"
+      ],
+      "certa": 1,
+      "explicacao": "Com ele automatizado no CI, o site não fica lento aos poucos sem ninguém perceber."
+    },
+    {
+      "pergunta": "Onde ver dados de velocidade de visitantes reais?",
+      "opcoes": ["Só no Lighthouse", "No PageSpeed Insights e no Search Console", "No sitemap"],
+      "certa": 1,
+      "explicacao": "Os dois mostram os dados de campo do Chrome (CrUX)."
+    },
+    {
+      "pergunta": "Na aba Rede, uma cascata de arquivos em sequência indica:",
+      "opcoes": ["Que está tudo certo", "Uma cadeia que poderia baixar em paralelo", "Que falta HTTPS"],
+      "certa": 1,
+      "explicacao": "Cada arquivo esperando o anterior soma os tempos."
+    }
+  ],
   "react/o-que-e-react": [
     {
       "pergunta": "O que é um componente React?",
@@ -2447,6 +3019,310 @@
       "explicacao": "Sem registro no servidor, só a expiração encerra um token roubado."
     }
   ],
+  "apis-http/o-que-e-http": [
+    {
+      "pergunta": "Qual método se usa para criar um cadastro novo?",
+      "opcoes": ["GET", "POST", "DELETE"],
+      "certa": 1,
+      "explicacao": "GET só busca; POST envia dados para criar algo."
+    },
+    {
+      "pergunta": "A API respondeu 404. De quem é o problema?",
+      "opcoes": ["Do servidor, que caiu", "De quem pediu: o recurso não existe", "Da internet"],
+      "certa": 1,
+      "explicacao": "4xx são erros do lado de quem pediu; 5xx, do servidor."
+    },
+    {
+      "pergunta": "O que o status 401 indica?",
+      "opcoes": ["Não autenticado: falta login ou token", "Deu certo", "Servidor fora do ar"],
+      "certa": 0,
+      "explicacao": "401 é \"quem é você?\"; 403 é \"sei quem você é, mas não pode\"."
+    }
+  ],
+  "apis-http/urls-e-json": [
+    {
+      "pergunta": "O que acontece com 'pão & café' numa URL montada somando textos?",
+      "opcoes": ["Nada, funciona", "O & é lido como separador de parâmetros e a busca quebra", "O navegador recusa"],
+      "certa": 1,
+      "explicacao": "searchParams.set codifica o & (vira %26) e o problema some."
+    },
+    {
+      "pergunta": "Qual destes é JSON válido?",
+      "opcoes": ["{ nome: 'Ana' }", "{ \"nome\": \"Ana\" }", "{ \"nome\": \"Ana\", }"],
+      "certa": 1,
+      "explicacao": "Chaves e textos entre aspas duplas, sem vírgula sobrando."
+    },
+    {
+      "pergunta": "Depois de JSON.parse, uma data que veio da API é:",
+      "opcoes": ["Um Date", "Um texto", "Um número"],
+      "certa": 1,
+      "explicacao": "JSON não tem tipo de data; ela viaja e volta como texto."
+    }
+  ],
+  "apis-http/fetch-na-pratica": [
+    {
+      "pergunta": "A API respondeu 500. O que o fetch faz?",
+      "opcoes": ["Rejeita a Promise", "Resolve normalmente; é preciso conferir resposta.ok", "Tenta de novo sozinho"],
+      "certa": 1,
+      "explicacao": "O fetch só rejeita em falha de rede."
+    },
+    {
+      "pergunta": "O que falta neste POST: fetch(url, { method: \"POST\", body: dados })?",
+      "opcoes": ["Nada", "JSON.stringify(dados) e o cabeçalho Content-Type: application/json", "O método GET"],
+      "certa": 1,
+      "explicacao": "O corpo precisa ser texto, e o servidor precisa saber que é JSON."
+    },
+    {
+      "pergunta": "Por que desabilitar o botão enquanto o pedido está em andamento?",
+      "opcoes": [
+        "Para a página ficar mais bonita",
+        "Para evitar que o mesmo pedido seja enviado duas vezes",
+        "É exigência do fetch"
+      ],
+      "certa": 1,
+      "explicacao": "Dois cliques rápidos viram dois pedidos, duas compras, dois cadastros."
+    }
+  ],
+  "apis-http/rest": [
+    {
+      "pergunta": "Qual rota segue o estilo REST para apagar o produto 42?",
+      "opcoes": ["POST /apagarProduto?id=42", "DELETE /produtos/42", "GET /produtos/42/apagar"],
+      "certa": 1,
+      "explicacao": "O recurso na URL, a ação no método."
+    },
+    {
+      "pergunta": "Por que repetir automaticamente um POST que falhou é arriscado?",
+      "opcoes": [
+        "POST não é idempotente: pode criar o mesmo registro duas vezes",
+        "POST não aceita repetição",
+        "Não é arriscado"
+      ],
+      "certa": 0,
+      "explicacao": "Talvez o primeiro tenha chegado e só a resposta se perdeu."
+    },
+    {
+      "pergunta": "Na paginação por cursor, como saber que acabou?",
+      "opcoes": ["Quando dá 404", "Quando o campo proximo vem null", "Depois de 10 páginas"],
+      "certa": 1,
+      "explicacao": "Sem endereço para a próxima página, não há mais dados."
+    }
+  ],
+  "apis-http/autenticacao-e-cors": [
+    {
+      "pergunta": "Onde guardar a chave secreta de uma API paga?",
+      "opcoes": [
+        "No JavaScript do site, escondida",
+        "Num back-end, numa variável de ambiente; o front chama esse back-end",
+        "No localStorage"
+      ],
+      "certa": 1,
+      "explicacao": "Tudo que vai para o navegador pode ser lido por quem visita."
+    },
+    {
+      "pergunta": "Apareceu \"blocked by CORS policy\". Onde se corrige?",
+      "opcoes": ["No fetch do front-end", "No servidor da API, com os cabeçalhos de CORS", "No navegador"],
+      "certa": 1,
+      "explicacao": "É a API que diz quais origens podem ler as respostas dela."
+    },
+    {
+      "pergunta": "Qual cabeçalho leva o token de acesso?",
+      "opcoes": ["Content-Type", "Authorization: Bearer ...", "Accept"],
+      "certa": 1,
+      "explicacao": "O padrão é Authorization com o tipo Bearer."
+    }
+  ],
+  "apis-http/chamadas-resilientes": [
+    {
+      "pergunta": "Qual erro vale a pena tentar de novo?",
+      "opcoes": ["404", "503", "401"],
+      "certa": 1,
+      "explicacao": "503 (servidor indisponível) costuma ser passageiro. Os outros vão continuar iguais."
+    },
+    {
+      "pergunta": "O que é recuo exponencial?",
+      "opcoes": [
+        "Esperar cada vez mais entre as tentativas (0,5 s, 1 s, 2 s...)",
+        "Fazer pedidos cada vez maiores",
+        "Tentar de novo imediatamente"
+      ],
+      "certa": 0,
+      "explicacao": "Dá tempo para o servidor se recuperar."
+    },
+    {
+      "pergunta": "Por que o cache guarda a Promise, e não o resultado?",
+      "opcoes": [
+        "Ocupa menos memória",
+        "Dois pedidos ao mesmo tempo para a mesma URL viram um só",
+        "Promises não expiram"
+      ],
+      "certa": 1,
+      "explicacao": "O segundo pedido recebe a mesma Promise que ainda está em andamento."
+    }
+  ],
+  "ia-agentes/o-que-e-um-llm": [
+    {
+      "pergunta": "Por que um LLM às vezes inventa informações?",
+      "opcoes": [
+        "Porque ele consulta sites errados",
+        "Porque ele gera o texto mais plausível, mesmo quando não sabe a resposta",
+        "Porque está com defeito"
+      ],
+      "certa": 1,
+      "explicacao": "Ele não consulta fatos: prevê texto. Por isso, entregue os fatos no pedido."
+    },
+    {
+      "pergunta": "O que é a janela de contexto?",
+      "opcoes": [
+        "A tela do chat",
+        "Quanto texto cabe num pedido, contando instruções, conversa e resposta",
+        "O tempo de resposta"
+      ],
+      "certa": 1,
+      "explicacao": "É medida em tokens."
+    },
+    {
+      "pergunta": "Como as APIs de LLM costumam cobrar?",
+      "opcoes": ["Por pedido", "Por milhão de tokens, separando entrada e saída", "Por mês, sem limite"],
+      "certa": 1,
+      "explicacao": "Os tokens de saída costumam custar mais que os de entrada."
+    }
+  ],
+  "ia-agentes/prompts-que-funcionam": [
+    {
+      "pergunta": "Para que servem tags como <politicas>...</politicas> no prompt?",
+      "opcoes": [
+        "São obrigatórias na API",
+        "Separam o material (documentos, dados) das instruções",
+        "Deixam a resposta mais curta"
+      ],
+      "certa": 1,
+      "explicacao": "Assim o modelo não confunde o conteúdo de um documento com uma ordem sua."
+    },
+    {
+      "pergunta": "O que vai no prompt de sistema?",
+      "opcoes": [
+        "A pergunta do usuário",
+        "Quem o assistente é e as regras que valem para a conversa toda",
+        "A resposta esperada"
+      ],
+      "certa": 1,
+      "explicacao": "O sistema é seu, desenvolvedor; as mensagens trazem o que o usuário escreveu."
+    },
+    {
+      "pergunta": "Qual o melhor jeito de ensinar um formato de resposta?",
+      "opcoes": ["Pedir \"seja criativo\"", "Mostrar um ou dois exemplos de entrada e saída", "Escrever em maiúsculas"],
+      "certa": 1,
+      "explicacao": "Exemplos mostram formato e tom melhor que descrições longas."
+    }
+  ],
+  "ia-agentes/chamar-a-api": [
+    {
+      "pergunta": "Onde a chave da API deve ficar?",
+      "opcoes": ["No JavaScript do site", "Numa variável de ambiente do servidor", "No localStorage"],
+      "certa": 1,
+      "explicacao": "Tudo que vai para o navegador pode ser lido por quem visita."
+    },
+    {
+      "pergunta": "A API lembra das mensagens anteriores da conversa?",
+      "opcoes": ["Sim, sozinha", "Não: você manda o histórico inteiro em messages a cada pedido", "Só por 5 minutos"],
+      "certa": 1,
+      "explicacao": "Cada pedido é independente; a \"memória\" é o array messages."
+    },
+    {
+      "pergunta": "O stop_reason veio \"max_tokens\". O que aconteceu?",
+      "opcoes": ["A resposta terminou normalmente", "A resposta foi cortada no limite de tokens", "O modelo recusou"],
+      "certa": 1,
+      "explicacao": "Aumente o max_tokens ou peça uma resposta mais curta."
+    }
+  ],
+  "ia-agentes/saida-estruturada": [
+    {
+      "pergunta": "Por que usar saída estruturada em vez de só pedir \"responda em JSON\"?",
+      "opcoes": [
+        "É mais barato",
+        "A API garante que a resposta segue o esquema, sem texto extra nem campos trocados",
+        "O modelo fica mais inteligente"
+      ],
+      "certa": 1,
+      "explicacao": "Sistemas precisam de formato garantido, não de \"quase sempre\"."
+    },
+    {
+      "pergunta": "Com o esquema, o conteúdo está sempre certo?",
+      "opcoes": [
+        "Sim",
+        "Não: o formato é garantido, mas o código ainda deve validar as regras do negócio",
+        "Só com o Opus"
+      ],
+      "certa": 1,
+      "explicacao": "Uma data pode vir no formato certo e ser a data errada."
+    },
+    {
+      "pergunta": "O que additionalProperties: false faz no esquema?",
+      "opcoes": ["Permite campos extras", "Proíbe campos além dos definidos", "Torna tudo opcional"],
+      "certa": 1,
+      "explicacao": "O resultado tem exatamente os campos que o seu código espera."
+    }
+  ],
+  "ia-agentes/ferramentas-e-agentes": [
+    {
+      "pergunta": "Quem executa a ferramenta?",
+      "opcoes": [
+        "O modelo, nos servidores do provedor",
+        "O seu código, quando o modelo pede",
+        "O navegador do usuário"
+      ],
+      "certa": 1,
+      "explicacao": "O modelo só pede (tool_use); o seu programa decide e executa."
+    },
+    {
+      "pergunta": "Como o tool_result se liga ao pedido certo?",
+      "opcoes": ["Pela ordem", "Pelo tool_use_id, igual ao id do bloco tool_use", "Pelo nome da ferramenta"],
+      "certa": 1,
+      "explicacao": "Cada pedido tem um id único."
+    },
+    {
+      "pergunta": "A ferramenta deu erro. O que devolver?",
+      "opcoes": [
+        "Nada; tirar o bloco",
+        "Um tool_result com is_error: true e a mensagem do erro",
+        "Lançar uma exceção e parar tudo"
+      ],
+      "certa": 1,
+      "explicacao": "Com o erro em mãos, o modelo pode corrigir e tentar de novo."
+    }
+  ],
+  "ia-agentes/agentes-em-producao": [
+    {
+      "pergunta": "Qual é a principal defesa contra injeção de prompt?",
+      "opcoes": [
+        "Um filtro de palavras proibidas",
+        "Arquitetura: poucas permissões, confirmação humana para ações e validação da saída",
+        "Pedir para o modelo não obedecer"
+      ],
+      "certa": 1,
+      "explicacao": "Como não há filtro perfeito, limita-se o que um ataque bem-sucedido consegue fazer."
+    },
+    {
+      "pergunta": "O que é uma avaliação (eval)?",
+      "opcoes": [
+        "A nota que o usuário dá",
+        "Um conjunto de casos com o resultado esperado, rodado a cada mudança",
+        "O preço do modelo"
+      ],
+      "certa": 1,
+      "explicacao": "São os testes automáticos de um sistema com IA."
+    },
+    {
+      "pergunta": "Mandar dados de clientes para uma API de IA:",
+      "opcoes": [
+        "Não tem nenhuma implicação",
+        "É tratamento de dados pessoais: exige base legal, transparência e só o necessário",
+        "É proibido pela LGPD"
+      ],
+      "certa": 1,
+      "explicacao": "Não é proibido, mas segue as mesmas regras de qualquer tratamento."
+    }
+  ],
   "sqlite/o-que-e-sql": [
     {
       "pergunta": "Numa tabela, o que é cada linha?",
@@ -2813,6 +3689,178 @@
       "opcoes": ["Rodar Python na nuvem", "Isolar os pacotes de cada projeto", "Deixar o Python mais rápido"],
       "certa": 1,
       "explicacao": "Cada projeto tem as suas versões, sem conflito com os outros."
+    }
+  ],
+  "git/o-que-e-git": [
+    {
+      "pergunta": "Qual a diferença entre Git e GitHub?",
+      "opcoes": [
+        "São a mesma coisa",
+        "Git é o controle de versão; GitHub é um site que hospeda repositórios Git",
+        "GitHub roda no computador e Git na internet"
+      ],
+      "certa": 1,
+      "explicacao": "O Git funciona sozinho no seu computador. O GitHub (como GitLab e Bitbucket) guarda cópias online."
+    },
+    {
+      "pergunta": "O que o git add faz?",
+      "opcoes": [
+        "Grava um commit",
+        "Coloca a mudança na área de preparação, para o próximo commit",
+        "Envia para o GitHub"
+      ],
+      "certa": 1,
+      "explicacao": "O commit grava só o que foi preparado com git add."
+    },
+    {
+      "pergunta": "Onde o Git guarda o histórico?",
+      "opcoes": ["Na pasta oculta .git", "No README", "Só no GitHub"],
+      "certa": 0,
+      "explicacao": "A pasta .git, criada pelo git init, guarda todos os commits."
+    }
+  ],
+  "git/commits-e-historico": [
+    {
+      "pergunta": "Como ver o que vai entrar no próximo commit?",
+      "opcoes": ["git diff", "git diff --staged", "git log"],
+      "certa": 1,
+      "explicacao": "git diff mostra o que ainda não foi preparado; --staged mostra o que já foi."
+    },
+    {
+      "pergunta": "Qual é a melhor mensagem de commit?",
+      "opcoes": ["ajustes", "Corrige o link quebrado do rodapé", "commit 3"],
+      "certa": 1,
+      "explicacao": "Diz o que mudou, no imperativo e de forma específica."
+    },
+    {
+      "pergunta": "O .env com uma senha já foi para um commit. Pôr no .gitignore resolve?",
+      "opcoes": [
+        "Sim, ele some do histórico",
+        "Não: é preciso tirar com git rm --cached e trocar a senha",
+        "Sim, se fizer push"
+      ],
+      "certa": 1,
+      "explicacao": "O .gitignore não age em arquivos já acompanhados, e os commits antigos continuam com a senha."
+    }
+  ],
+  "git/pratica-primeiro-repositorio": [
+    {
+      "pergunta": "O .gitignore deve entrar num commit?",
+      "opcoes": ["Não, ele é pessoal", "Sim, para todos ignorarem os mesmos arquivos", "Só no GitHub"],
+      "certa": 1,
+      "explicacao": "Ele faz parte do projeto. Para ignorar algo só na sua máquina, existe o .git/info/exclude."
+    }
+  ],
+  "git/branches-e-merge": [
+    {
+      "pergunta": "Para que serve um branch?",
+      "opcoes": ["Fazer backup no GitHub", "Desenvolver uma mudança separada, sem mexer na main", "Apagar commits"],
+      "certa": 1,
+      "explicacao": "Cada ramo tem a própria linha de commits; a main continua estável."
+    },
+    {
+      "pergunta": "Quando acontece um conflito?",
+      "opcoes": [
+        "Sempre que se faz merge",
+        "Quando os dois ramos mudaram as mesmas linhas",
+        "Quando o ramo tem mais de 10 commits"
+      ],
+      "certa": 1,
+      "explicacao": "Mudanças em lugares diferentes são juntadas sozinhas."
+    },
+    {
+      "pergunta": "Depois de editar o arquivo com conflito, o que falta?",
+      "opcoes": ["git push", "git add e git commit", "git init"],
+      "certa": 1,
+      "explicacao": "O git add avisa que o conflito foi resolvido e o commit conclui o merge."
+    }
+  ],
+  "git/github-e-pull-requests": [
+    {
+      "pergunta": "O que é origin?",
+      "opcoes": ["O primeiro commit", "O nome padrão do repositório remoto", "O ramo principal"],
+      "certa": 1,
+      "explicacao": "É só um apelido para o endereço do repositório no GitHub."
+    },
+    {
+      "pergunta": "O push foi recusado porque o remoto tem commits novos. O que fazer?",
+      "opcoes": ["git push --force", "git pull, resolver conflitos se houver, e push de novo", "Apagar a pasta"],
+      "certa": 1,
+      "explicacao": "O --force apagaria o trabalho dos outros. Primeiro traga o que é novo."
+    },
+    {
+      "pergunta": "Para que serve um pull request?",
+      "opcoes": [
+        "Baixar o repositório",
+        "Propor que um ramo seja juntado, com revisão e testes antes",
+        "Desfazer um commit"
+      ],
+      "certa": 1,
+      "explicacao": "É o lugar da conversa sobre a mudança antes de ela entrar na main."
+    }
+  ],
+  "git/pratica-ramo-e-conflito": [
+    {
+      "pergunta": "O que git commit -am faz?",
+      "opcoes": [
+        "Prepara os arquivos já acompanhados que mudaram e grava o commit",
+        "Prepara todos os arquivos, até os novos",
+        "Altera o último commit"
+      ],
+      "certa": 0,
+      "explicacao": "Arquivos que o Git ainda não acompanha ficam de fora."
+    }
+  ],
+  "git/desfazer": [
+    {
+      "pergunta": "Um commit com erro já está no GitHub e a equipe já baixou. Como desfazer?",
+      "opcoes": ["git reset --hard e push --force", "git revert", "git commit --amend"],
+      "certa": 1,
+      "explicacao": "O revert cria um commit novo, sem reescrever o histórico dos outros."
+    },
+    {
+      "pergunta": "Qual reset apaga também as mudanças dos arquivos?",
+      "opcoes": ["--soft", "o padrão (--mixed)", "--hard"],
+      "certa": 2,
+      "explicacao": "O --soft e o padrão mantêm as mudanças; o --hard descarta."
+    },
+    {
+      "pergunta": "Onde achar um commit \"perdido\" depois de um reset?",
+      "opcoes": ["git reflog", "git status", "Não tem como"],
+      "certa": 0,
+      "explicacao": "O reflog registra cada posição do HEAD."
+    }
+  ],
+  "git/rebase-e-historico-limpo": [
+    {
+      "pergunta": "Qual a diferença entre merge e rebase?",
+      "opcoes": [
+        "Nenhuma",
+        "O rebase reaplica os commits em cima da main, deixando o histórico em linha reta",
+        "O rebase apaga a main"
+      ],
+      "certa": 1,
+      "explicacao": "O merge preserva os dois caminhos com um commit de merge; o rebase reescreve os commits do ramo."
+    },
+    {
+      "pergunta": "Para que serve squash no rebase interativo?",
+      "opcoes": ["Apagar o commit", "Juntar o commit ao anterior", "Mudar o autor"],
+      "certa": 1,
+      "explicacao": "Vários commits pequenos viram um, com uma mensagem só."
+    },
+    {
+      "pergunta": "Na versão semântica, de 1.4.2 com uma nova função compatível, vai para:",
+      "opcoes": ["1.4.3", "1.5.0", "2.0.0"],
+      "certa": 1,
+      "explicacao": "Novidade compatível sobe a versão menor e zera a correção."
+    }
+  ],
+  "git/pratica-resgate": [
+    {
+      "pergunta": "Qual comando inclui um arquivo esquecido no último commit, sem mudar a mensagem?",
+      "opcoes": ["git commit --amend --no-edit", "git revert HEAD", "git merge --continue"],
+      "certa": 0,
+      "explicacao": "O --amend substitui o último commit; --no-edit mantém a mensagem."
     }
   ],
   "playwright/o-que-e-playwright": [
@@ -3549,6 +4597,370 @@
       ],
       "certa": 1,
       "explicacao": "Com k = 1, a generalização não protegeu ninguém."
+    }
+  ],
+  "seguranca-web/pensar-como-atacante": [
+    {
+      "pergunta": "A validação de um formulário em JavaScript protege o servidor?",
+      "opcoes": [
+        "Sim, totalmente",
+        "Não: ela pode ser contornada; o servidor precisa validar de novo",
+        "Só se o campo for obrigatório"
+      ],
+      "certa": 1,
+      "explicacao": "A validação no front melhora a experiência; a segurança está no servidor."
+    },
+    {
+      "pergunta": "Trocar o id na URL e ver o pedido de outra pessoa é um exemplo de:",
+      "opcoes": ["XSS", "Controle de acesso quebrado", "Injeção de SQL"],
+      "certa": 1,
+      "explicacao": "É o risco número 1 do OWASP Top 10."
+    },
+    {
+      "pergunta": "O que é o princípio do menor privilégio?",
+      "opcoes": [
+        "Dar a cada parte do sistema só as permissões de que ela precisa",
+        "Usar senhas pequenas",
+        "Ter poucos usuários"
+      ],
+      "certa": 0,
+      "explicacao": "Se uma parte for invadida, o estrago fica limitado."
+    }
+  ],
+  "seguranca-web/xss": [
+    {
+      "pergunta": "Qual é o jeito seguro de mostrar um comentário do usuário?",
+      "opcoes": ["innerHTML", "textContent", "document.write"],
+      "certa": 1,
+      "explicacao": "textContent nunca interpreta HTML."
+    },
+    {
+      "pergunta": "Por que um link com href vindo do usuário pode ser perigoso?",
+      "opcoes": [
+        "Porque pode ser javascript:..., que roda código no clique",
+        "Porque links são lentos",
+        "Não é perigoso"
+      ],
+      "certa": 0,
+      "explicacao": "Confira se o protocolo é http: ou https: antes de usar."
+    },
+    {
+      "pergunta": "O usuário precisa enviar HTML formatado. O que usar?",
+      "opcoes": [
+        "Uma regex que tira <script>",
+        "Uma biblioteca de limpeza testada, como o DOMPurify",
+        "innerHTML direto"
+      ],
+      "certa": 1,
+      "explicacao": "Existem dezenas de jeitos de rodar script sem a tag <script>; regex caseira sempre deixa passar algum."
+    }
+  ],
+  "seguranca-web/injecao-de-sql": [
+    {
+      "pergunta": "O que o -- faz no ataque ' OR 1=1 --?",
+      "opcoes": ["Subtrai um número", "Transforma o resto do comando em comentário", "Apaga a tabela"],
+      "certa": 1,
+      "explicacao": "Assim a checagem da senha, que vinha depois, é ignorada."
+    },
+    {
+      "pergunta": "Como evitar injeção de SQL?",
+      "opcoes": [
+        "Tirar as aspas do texto digitado",
+        "Usar consultas parametrizadas: SQL com ? e os valores separados",
+        "Esconder os erros do banco"
+      ],
+      "certa": 1,
+      "explicacao": "Com parâmetros, o valor nunca é lido como comando."
+    },
+    {
+      "pergunta": "O usuário escolhe a coluna do ORDER BY. Como proteger?",
+      "opcoes": [
+        "Passar a coluna como parâmetro ?",
+        "Conferir se ela está numa lista de colunas permitidas",
+        "Não precisa"
+      ],
+      "certa": 1,
+      "explicacao": "Parâmetros só funcionam para valores, não para nomes de colunas."
+    }
+  ],
+  "seguranca-web/senhas-e-sessoes": [
+    {
+      "pergunta": "Qual função usar para guardar senhas?",
+      "opcoes": ["SHA-256", "Argon2 ou bcrypt", "Base64"],
+      "certa": 1,
+      "explicacao": "São lentas de propósito e já usam sal. Base64 nem é hash: desfaz-se em um segundo."
+    },
+    {
+      "pergunta": "Por que responder \"e-mail ou senha incorretos\", sem dizer qual?",
+      "opcoes": [
+        "Para não revelar quais e-mails estão cadastrados",
+        "Para economizar texto",
+        "É exigência do navegador"
+      ],
+      "certa": 0,
+      "explicacao": "Saber quais contas existem é o primeiro passo de um ataque."
+    },
+    {
+      "pergunta": "O que o atributo HttpOnly faz num cookie?",
+      "opcoes": [
+        "Faz o cookie só funcionar em HTTP",
+        "Impede o JavaScript de ler o cookie",
+        "Faz o cookie expirar ao fechar o navegador"
+      ],
+      "certa": 1,
+      "explicacao": "Assim, mesmo com um XSS, o cookie de sessão não é roubado."
+    }
+  ],
+  "seguranca-web/cabecalhos-de-seguranca": [
+    {
+      "pergunta": "Como a CSP ajuda contra o XSS?",
+      "opcoes": [
+        "Escapando o HTML",
+        "Dizendo ao navegador de onde scripts podem vir, e ele recusa os outros",
+        "Criptografando a página"
+      ],
+      "certa": 1,
+      "explicacao": "Um script injetado não está na lista permitida (desde que não haja 'unsafe-inline')."
+    },
+    {
+      "pergunta": "O que o atributo integrity num <script> garante?",
+      "opcoes": [
+        "Que o arquivo baixado é exatamente o esperado",
+        "Que o script roda mais rápido",
+        "Que o CDN está no ar"
+      ],
+      "certa": 0,
+      "explicacao": "Se o hash não bater, o navegador não roda o arquivo."
+    },
+    {
+      "pergunta": "Qual valor de ?volta= é seguro aceitar?",
+      "opcoes": ["https://outro-site.com", "//outro-site.com", "/minha-conta"],
+      "certa": 2,
+      "explicacao": "// é lido como \"outro domínio, mesmo protocolo\"."
+    }
+  ],
+  "seguranca-web/segredos-e-dependencias": [
+    {
+      "pergunta": "Uma chave de API foi para o GitHub num commit. O que fazer primeiro?",
+      "opcoes": [
+        "Apagar o arquivo e fazer outro commit",
+        "Revogar a chave e gerar uma nova",
+        "Deixar o repositório privado"
+      ],
+      "certa": 1,
+      "explicacao": "A chave continua no histórico e pode já ter sido copiada."
+    },
+    {
+      "pergunta": "Para que serve o npm audit?",
+      "opcoes": [
+        "Deixar o projeto mais rápido",
+        "Listar falhas de segurança conhecidas nas dependências",
+        "Formatar o código"
+      ],
+      "certa": 1,
+      "explicacao": "O Dependabot faz o mesmo de forma contínua no GitHub."
+    },
+    {
+      "pergunta": "O que NÃO deve ir para os logs?",
+      "opcoes": ["O id do usuário", "A senha digitada", "O horário do erro"],
+      "certa": 1,
+      "explicacao": "Senhas, tokens e dados de cartão nunca entram em logs."
+    }
+  ],
+  "docker/o-que-e-docker": [
+    {
+      "pergunta": "Qual a diferença entre imagem e contêiner?",
+      "opcoes": [
+        "São a mesma coisa",
+        "A imagem é o pacote pronto; o contêiner é uma imagem rodando",
+        "O contêiner é o pacote; a imagem é o processo"
+      ],
+      "certa": 1,
+      "explicacao": "Da mesma imagem, dá para criar vários contêineres."
+    },
+    {
+      "pergunta": "Por que um contêiner liga mais rápido que uma máquina virtual?",
+      "opcoes": [
+        "Porque compartilha o kernel do sistema e não simula um computador inteiro",
+        "Porque não tem sistema de arquivos",
+        "Porque roda na nuvem"
+      ],
+      "certa": 0,
+      "explicacao": "Por isso pesa megabytes e liga em segundos."
+    },
+    {
+      "pergunta": "O que é o Docker Hub?",
+      "opcoes": ["Um editor de código", "Um registro público de imagens", "Um tipo de contêiner"],
+      "certa": 1,
+      "explicacao": "É de onde vêm as imagens oficiais, como node, python e postgres."
+    }
+  ],
+  "docker/comandos-basicos": [
+    {
+      "pergunta": "O que -p 3000:80 faz?",
+      "opcoes": [
+        "Liga a porta 3000 do computador à porta 80 do contêiner",
+        "Liga a porta 80 do computador à 3000 do contêiner",
+        "Limita o contêiner a 3000 MB"
+      ],
+      "certa": 0,
+      "explicacao": "O formato é porta_do_computador:porta_do_contêiner."
+    },
+    {
+      "pergunta": "Os dados do Postgres somem ao apagar o contêiner. Como evitar?",
+      "opcoes": ["Usar -d", "Usar um volume em /var/lib/postgresql/data", "Usar a tag latest"],
+      "certa": 1,
+      "explicacao": "O volume guarda os dados fora do contêiner."
+    },
+    {
+      "pergunta": "Por que fixar a tag (postgres:17) em vez de usar latest?",
+      "opcoes": ["É mais rápido", "latest muda sem aviso e pode trazer uma versão incompatível", "latest não existe"],
+      "certa": 1,
+      "explicacao": "Com a versão fixa, todo mundo roda exatamente a mesma coisa."
+    }
+  ],
+  "docker/pratica-primeiros-conteineres": [
+    {
+      "pergunta": "Por que o cliente continuou lá depois do docker rm?",
+      "opcoes": ["O Docker não apagou o contêiner", "Os dados estavam no volume, fora do contêiner", "Sorte"],
+      "certa": 1,
+      "explicacao": "O contêiner novo montou o mesmo volume."
+    }
+  ],
+  "docker/dockerfile": [
+    {
+      "pergunta": "Por que copiar o package.json e rodar npm ci antes do COPY . .?",
+      "opcoes": [
+        "É obrigatório",
+        "Para o cache reaproveitar a instalação quando só o código mudou",
+        "Para a imagem ficar menor"
+      ],
+      "certa": 1,
+      "explicacao": "Camadas que não mudaram não são refeitas."
+    },
+    {
+      "pergunta": "O que o EXPOSE 3000 faz?",
+      "opcoes": [
+        "Publica a porta no computador",
+        "Só documenta a porta que a aplicação usa; quem publica é o -p",
+        "Abre o firewall"
+      ],
+      "certa": 1,
+      "explicacao": "Sem -p, ninguém de fora acessa."
+    },
+    {
+      "pergunta": "Por que o .env deve estar no .dockerignore?",
+      "opcoes": [
+        "Para não levar senhas para dentro da imagem",
+        "Porque o Docker não lê .env",
+        "Para o build ser mais rápido"
+      ],
+      "certa": 0,
+      "explicacao": "Quem tiver a imagem conseguiria ler o arquivo."
+    }
+  ],
+  "docker/docker-compose": [
+    {
+      "pergunta": "No Compose, como a API acessa o serviço banco?",
+      "opcoes": ["Por localhost:5432", "Pelo nome do serviço: banco:5432", "Pelo IP do computador"],
+      "certa": 1,
+      "explicacao": "Dentro do contêiner, localhost é ele mesmo."
+    },
+    {
+      "pergunta": "O que depends_on com condition: service_healthy garante?",
+      "opcoes": [
+        "Que o banco nunca cai",
+        "Que a API só sobe depois que o healthcheck do banco passar",
+        "Que os dois usam a mesma imagem"
+      ],
+      "certa": 1,
+      "explicacao": "Sem a condição, a API pode ligar antes de o banco aceitar conexões."
+    },
+    {
+      "pergunta": "Qual comando apaga também os dados do banco?",
+      "opcoes": ["docker compose down", "docker compose down -v", "docker compose stop"],
+      "certa": 1,
+      "explicacao": "O -v apaga os volumes. Use com cuidado."
+    }
+  ],
+  "docker/pratica-api-com-banco": [
+    {
+      "pergunta": "Por que o endereço do banco na DATABASE_URL é banco e não localhost?",
+      "opcoes": [
+        "Porque é o nome do serviço no Compose, que a rede interna resolve",
+        "Porque localhost não existe no Linux",
+        "Por segurança"
+      ],
+      "certa": 0,
+      "explicacao": "Na rede do Compose, cada serviço é encontrado pelo nome."
+    }
+  ],
+  "docker/imagens-menores-e-seguras": [
+    {
+      "pergunta": "Qual a vantagem do build em estágios?",
+      "opcoes": [
+        "O build fica mais lento",
+        "A imagem final leva só o resultado, sem as ferramentas de construção",
+        "Permite usar dois sistemas operacionais"
+      ],
+      "certa": 1,
+      "explicacao": "Menor, mais rápida de baixar e com menos coisa vulnerável."
+    },
+    {
+      "pergunta": "Para que serve USER node no Dockerfile?",
+      "opcoes": [
+        "Instalar o Node",
+        "Rodar a aplicação com um usuário sem privilégios de administrador",
+        "Criar um volume"
+      ],
+      "certa": 1,
+      "explicacao": "Se a aplicação for invadida, o estrago fica limitado."
+    },
+    {
+      "pergunta": "Uma senha em ENV no Dockerfile fica protegida?",
+      "opcoes": ["Sim", "Não: quem tiver a imagem consegue ler", "Só em imagens privadas"],
+      "certa": 1,
+      "explicacao": "Segredos entram quando o contêiner roda, nunca no build."
+    }
+  ],
+  "docker/do-computador-para-a-nuvem": [
+    {
+      "pergunta": "Por que marcar a imagem com o código do commit?",
+      "opcoes": [
+        "É obrigatório no GHCR",
+        "Saber exatamente qual versão está rodando e poder voltar para a anterior",
+        "Para a imagem ficar menor"
+      ],
+      "certa": 1,
+      "explicacao": "latest não diz nada sobre a versão; o sha diz."
+    },
+    {
+      "pergunta": "Um site só com HTML, CSS e JS precisa de Docker?",
+      "opcoes": ["Sim, sempre", "Não: uma hospedagem estática publica a pasta direto", "Só se tiver imagens"],
+      "certa": 1,
+      "explicacao": "Docker vale quando há um servidor rodando."
+    },
+    {
+      "pergunta": "Para onde vão os logs de um contêiner em produção?",
+      "opcoes": [
+        "Para um arquivo dentro do contêiner",
+        "Para a saída padrão, que a plataforma recolhe",
+        "Para o e-mail do administrador"
+      ],
+      "certa": 1,
+      "explicacao": "Arquivos dentro do contêiner somem quando ele é recriado."
+    }
+  ],
+  "docker/pratica-imagem-de-producao": [
+    {
+      "pergunta": "O que COPY --from=build faz?",
+      "opcoes": [
+        "Baixa uma imagem chamada build",
+        "Copia arquivos do estágio build para o estágio atual",
+        "Copia do computador"
+      ],
+      "certa": 1,
+      "explicacao": "É assim que só o resultado do build chega à imagem final."
     }
   ],
   "excel/formulas-e-referencias": [
@@ -4481,6 +5893,442 @@
       ],
       "certa": 1,
       "explicacao": "Linhas com todas as medidas em branco não aparecem nos visuais."
+    }
+  ],
+  "sql-analise/da-pergunta-a-consulta": [
+    {
+      "pergunta": "Em itens, uma linha é um produto de um pedido. COUNT(*) de itens dá:",
+      "opcoes": ["O número de pedidos", "O número de linhas de produtos nos pedidos", "O número de clientes"],
+      "certa": 1,
+      "explicacao": "Para contar pedidos, use COUNT(DISTINCT pedido_id)."
+    },
+    {
+      "pergunta": "O que SUM(CASE WHEN status = 'cancelado' THEN 1 ELSE 0 END) devolve?",
+      "opcoes": ["A soma dos valores cancelados", "Quantos pedidos estão cancelados", "Um erro"],
+      "certa": 1,
+      "explicacao": "Cada linha vale 1 ou 0, e a soma conta as que cumprem a condição."
+    },
+    {
+      "pergunta": "Para que serve definir a granularidade antes de escrever?",
+      "opcoes": [
+        "Para saber o que é uma linha do resultado e acertar o GROUP BY",
+        "Para deixar a consulta mais rápida",
+        "Para criar índices"
+      ],
+      "certa": 0,
+      "explicacao": "Uma linha por mês, por cliente ou por produto: cada escolha é um GROUP BY diferente."
+    }
+  ],
+  "sql-analise/percentuais-e-combinacoes": [
+    {
+      "pergunta": "Quanto dá 100 * 1 / 3 no SQLite?",
+      "opcoes": ["33.33", "33", "0"],
+      "certa": 1,
+      "explicacao": "Tudo inteiro, então a divisão é inteira. Com 100.0, daria 33.33..."
+    },
+    {
+      "pergunta": "Qual a diferença entre UNION e UNION ALL?",
+      "opcoes": ["Nenhuma", "UNION tira as linhas repetidas; UNION ALL mantém todas", "UNION ALL ordena"],
+      "certa": 1,
+      "explicacao": "UNION ALL é mais rápido quando você sabe que não há repetição."
+    },
+    {
+      "pergunta": "Por que usar EXISTS em vez de JOIN para \"clientes que compraram X\"?",
+      "opcoes": [
+        "O JOIN repetiria o cliente para cada compra; EXISTS só pergunta se há alguma",
+        "EXISTS é obrigatório com subconsultas",
+        "JOIN não funciona com 3 tabelas"
+      ],
+      "certa": 0,
+      "explicacao": "Com JOIN, seria preciso um DISTINCT para não repetir."
+    }
+  ],
+  "sql-analise/evolucao-no-tempo": [
+    {
+      "pergunta": "O que LAG(faturamento) OVER (ORDER BY mes) devolve?",
+      "opcoes": ["O faturamento do mês seguinte", "O faturamento do mês anterior", "O maior faturamento"],
+      "certa": 1,
+      "explicacao": "LAG olha para trás; LEAD olha para a frente."
+    },
+    {
+      "pergunta": "O que muda quando o SUM ganha ORDER BY dentro do OVER?",
+      "opcoes": ["Nada", "Vira um total acumulado até a linha atual", "Soma só a linha atual"],
+      "certa": 1,
+      "explicacao": "Com ORDER BY, a moldura padrão vai do começo até a linha atual."
+    },
+    {
+      "pergunta": "Por que a variação do primeiro mês é NULL?",
+      "opcoes": ["É um erro da consulta", "Não existe mês anterior para comparar", "Porque faltou o ROUND"],
+      "certa": 1,
+      "explicacao": "LAG devolve NULL, e qualquer conta com NULL dá NULL."
+    }
+  ],
+  "sql-analise/ranking-e-top-n": [
+    {
+      "pergunta": "Com as notas 10, 9, 9, 8, qual sequência o DENSE_RANK dá?",
+      "opcoes": ["1, 2, 3, 4", "1, 2, 2, 4", "1, 2, 2, 3"],
+      "certa": 2,
+      "explicacao": "O RANK daria 1, 2, 2, 4; o ROW_NUMBER, 1, 2, 3, 4."
+    },
+    {
+      "pergunta": "Por que o filtro posicao = 1 fica numa consulta de fora?",
+      "opcoes": [
+        "Porque funções de janela são calculadas depois do WHERE",
+        "Por estilo",
+        "Porque o SQLite não tem WHERE"
+      ],
+      "certa": 0,
+      "explicacao": "O WHERE roda antes das janelas; a CTE calcula primeiro e a consulta de fora filtra."
+    },
+    {
+      "pergunta": "Como remover registros duplicados mantendo o mais recente?",
+      "opcoes": [
+        "DISTINCT",
+        "ROW_NUMBER particionado pela chave, ordenado pela data DESC, e ficar com o 1",
+        "GROUP BY todas as colunas"
+      ],
+      "certa": 1,
+      "explicacao": "DISTINCT só tira linhas idênticas em todas as colunas."
+    }
+  ],
+  "sql-analise/coortes-e-rfm": [
+    {
+      "pergunta": "O que define a coorte de um cliente aqui?",
+      "opcoes": ["O estado", "O mês da primeira compra", "O total gasto"],
+      "certa": 1,
+      "explicacao": "Clientes que começaram no mesmo mês formam uma coorte."
+    },
+    {
+      "pergunta": "O que significa o R do RFM?",
+      "opcoes": ["Receita", "Recência: há quanto tempo foi a última compra", "Retorno"],
+      "certa": 1,
+      "explicacao": "Recência, Frequência e Monetário."
+    },
+    {
+      "pergunta": "Num LEFT JOIN, pôr a condição no ON em vez do WHERE:",
+      "opcoes": ["Dá sempre o mesmo resultado", "Mantém as linhas da esquerda sem par, em vez de tirá-las", "Dá erro"],
+      "certa": 1,
+      "explicacao": "O WHERE roda depois da junção e descarta as linhas com NULL."
+    }
+  ],
+  "sql-analise/qualidade-dos-dados": [
+    {
+      "pergunta": "Uma consulta de checagem de qualidade deveria devolver:",
+      "opcoes": ["Muitas linhas", "Nenhuma linha (ou zero)", "Sempre uma linha"],
+      "certa": 1,
+      "explicacao": "Cada linha devolvida é um problema encontrado."
+    },
+    {
+      "pergunta": "Como achar itens cujo pedido não existe?",
+      "opcoes": ["INNER JOIN pedidos", "LEFT JOIN pedidos e WHERE p.id IS NULL", "DISTINCT pedido_id"],
+      "certa": 1,
+      "explicacao": "O LEFT JOIN mantém o item e deixa NULL quando não acha o pedido."
+    },
+    {
+      "pergunta": "A soma por categoria deu mais que o total geral. Qual a suspeita?",
+      "opcoes": ["Arredondamento", "Um JOIN duplicando linhas", "Falta de índice"],
+      "certa": 1,
+      "explicacao": "Juntar com uma tabela que tem várias linhas por chave multiplica os valores."
+    }
+  ],
+  "pandas/dataframes": [
+    {
+      "pergunta": "Qual a diferença entre vendas[\"produto\"] e vendas[[\"produto\"]]?",
+      "opcoes": [
+        "Nenhuma",
+        "O primeiro devolve uma Series (uma coluna); o segundo, um DataFrame com uma coluna",
+        "O segundo dá erro"
+      ],
+      "certa": 1,
+      "explicacao": "Colchetes duplos passam uma lista de colunas, e o resultado continua uma tabela."
+    },
+    {
+      "pergunta": "Como filtrar vendas acima de 80 da categoria Casa?",
+      "opcoes": [
+        "vendas[vendas[\"preco\"] > 80 and vendas[\"categoria\"] == \"Casa\"]",
+        "vendas[(vendas[\"preco\"] > 80) & (vendas[\"categoria\"] == \"Casa\")]",
+        "vendas.filter(preco > 80, categoria = \"Casa\")"
+      ],
+      "certa": 1,
+      "explicacao": "& e parênteses em cada condição."
+    },
+    {
+      "pergunta": "Para que serve parse_dates=[\"data\"] no read_csv?",
+      "opcoes": ["Apagar a coluna data", "Converter a coluna de texto em datas de verdade", "Ordenar por data"],
+      "certa": 1,
+      "explicacao": "Com datas de verdade, funcionam .dt.month, comparações e agrupamentos por período."
+    }
+  ],
+  "pandas/limpar-dados": [
+    {
+      "pergunta": "A coluna preco veio como object (texto) por causa da vírgula. Como converter?",
+      "opcoes": [
+        "df[\"preco\"].astype(int)",
+        "df[\"preco\"].str.replace(\",\", \".\").astype(float)",
+        "df[\"preco\"].round()"
+      ],
+      "certa": 1,
+      "explicacao": "Primeiro troca a vírgula por ponto, depois converte para número decimal."
+    },
+    {
+      "pergunta": "O que df.isna().sum() mostra?",
+      "opcoes": ["A soma das colunas", "Quantos valores vazios há em cada coluna", "As linhas repetidas"],
+      "certa": 1,
+      "explicacao": "isna marca os vazios com True, e a soma conta os True de cada coluna."
+    },
+    {
+      "pergunta": "O que dropna(subset=[\"preco\"]) faz?",
+      "opcoes": ["Apaga a coluna preco", "Descarta as linhas em que o preço está vazio", "Preenche os preços vazios"],
+      "certa": 1,
+      "explicacao": "Só olha a coluna preco para decidir quais linhas sair."
+    }
+  ],
+  "pandas/agrupar-e-resumir": [
+    {
+      "pergunta": "Qual é o equivalente do GROUP BY do SQL no pandas?",
+      "opcoes": ["sort_values", "groupby", "merge"],
+      "certa": 1,
+      "explicacao": "Agrupa, calcula e junta os resultados."
+    },
+    {
+      "pergunta": "Qual a diferença entre count e size num grupo?",
+      "opcoes": ["Nenhuma", "count conta só os valores não vazios; size conta todas as linhas", "size soma os valores"],
+      "certa": 1,
+      "explicacao": "Com vazios na coluna, os dois dão números diferentes."
+    },
+    {
+      "pergunta": "O que margins=True faz numa pivot_table?",
+      "opcoes": ["Adiciona a linha e a coluna de totais", "Arredonda os valores", "Tira os vazios"],
+      "certa": 0,
+      "explicacao": "O margins_name dá o nome dessa linha e coluna."
+    }
+  ],
+  "pandas/juntar-e-datas": [
+    {
+      "pergunta": "Qual merge mantém todas as vendas, mesmo as de clientes fora do cadastro?",
+      "opcoes": ["how=\"inner\"", "how=\"left\" (com vendas à esquerda)", "how=\"right\""],
+      "certa": 1,
+      "explicacao": "O left mantém todas as linhas da tabela da esquerda."
+    },
+    {
+      "pergunta": "Para que serve validate=\"many_to_one\"?",
+      "opcoes": [
+        "Deixar o merge mais rápido",
+        "Dar erro se a tabela da direita tiver chaves repetidas, em vez de duplicar linhas",
+        "Remover vazios"
+      ],
+      "certa": 1,
+      "explicacao": "Chave repetida no cadastro multiplicaria as vendas sem aviso."
+    },
+    {
+      "pergunta": "Qual a vantagem do resample sobre agrupar pelo texto do mês?",
+      "opcoes": ["Nenhuma", "Ele inclui os períodos sem nenhuma venda", "Ele ordena ao contrário"],
+      "certa": 1,
+      "explicacao": "Um mês sem vendas aparece com zero, e o pct_change compara com o mês certo."
+    }
+  ],
+  "pandas/encadear-e-vetorizar": [
+    {
+      "pergunta": "Por que evitar apply linha a linha em tabelas grandes?",
+      "opcoes": [
+        "Dá resultado errado",
+        "É muito mais lento que a conta vetorizada na coluna inteira",
+        "Não funciona com números"
+      ],
+      "certa": 1,
+      "explicacao": "A conta vetorizada roda em C; o apply chama uma função Python para cada linha."
+    },
+    {
+      "pergunta": "O que np.where(cond, \"sim\", \"não\") faz?",
+      "opcoes": [
+        "Procura a posição de um valor",
+        "Escolhe \"sim\" ou \"não\" para cada linha, conforme a condição",
+        "Apaga linhas"
+      ],
+      "certa": 1,
+      "explicacao": "É o SE do Excel aplicado à coluna inteira."
+    },
+    {
+      "pergunta": "Qual a vantagem de encadear os passos com assign, query e groupby?",
+      "opcoes": [
+        "Fica mais rápido sempre",
+        "A análise se lê de cima para baixo, sem alterar o DataFrame original",
+        "É obrigatório"
+      ],
+      "certa": 1,
+      "explicacao": "Cada passo devolve um DataFrame novo."
+    }
+  ],
+  "pandas/do-pandas-para-o-mundo": [
+    {
+      "pergunta": "Qual combinação gera um CSV que o Excel em português abre certinho?",
+      "opcoes": [
+        "to_csv(\"a.csv\")",
+        "to_csv(\"a.csv\", sep=\";\", decimal=\",\", encoding=\"utf-8-sig\")",
+        "to_excel(\"a.csv\")"
+      ],
+      "certa": 1,
+      "explicacao": "Separador, decimal e codificação no padrão do Excel brasileiro."
+    },
+    {
+      "pergunta": "Qual a vantagem do Parquet sobre o CSV?",
+      "opcoes": ["Abre no Bloco de Notas", "Guarda os tipos, é comprimido e é lido muito mais rápido", "Nenhuma"],
+      "certa": 1,
+      "explicacao": "Por isso é o formato padrão de dados analíticos."
+    },
+    {
+      "pergunta": "Como o Power BI pode usar um DataFrame do pandas?",
+      "opcoes": [
+        "Não pode",
+        "Por um script Python como fonte de dados, ou lendo o arquivo que o script gerou",
+        "Só copiando e colando"
+      ],
+      "certa": 1,
+      "explicacao": "Cada DataFrame do script vira uma tabela no modelo."
+    }
+  ],
+  "estatistica/media-mediana-moda": [
+    {
+      "pergunta": "Qual medida é menos afetada por um valor extremo?",
+      "opcoes": ["Média", "Mediana", "Soma"],
+      "certa": 1,
+      "explicacao": "A mediana só depende da posição do meio."
+    },
+    {
+      "pergunta": "Para descrever o salário típico de uma empresa, o melhor é:",
+      "opcoes": ["A média", "A mediana", "O maior salário"],
+      "certa": 1,
+      "explicacao": "Salários são assimétricos: poucos muito altos puxam a média para cima."
+    },
+    {
+      "pergunta": "Preços diferentes vendidos em quantidades diferentes: como achar o preço médio pago?",
+      "opcoes": ["Média simples dos preços", "Média ponderada pelas quantidades", "Mediana dos preços"],
+      "certa": 1,
+      "explicacao": "Cada preço pesa conforme quantas vezes foi pago."
+    }
+  ],
+  "estatistica/dispersao": [
+    {
+      "pergunta": "Duas lojas com a mesma média diária. O que o desvio padrão mostra?",
+      "opcoes": ["Qual vende mais", "Qual tem vendas mais estáveis de um dia para o outro", "O lucro"],
+      "certa": 1,
+      "explicacao": "Desvio pequeno: valores perto da média; grande: muita variação."
+    },
+    {
+      "pergunta": "O que é o intervalo interquartil (IQR)?",
+      "opcoes": ["Máximo menos mínimo", "Q3 menos Q1: a faixa dos 50% do meio", "A média dos quartis"],
+      "certa": 1,
+      "explicacao": "Como ignora as pontas, extremos não o distorcem."
+    },
+    {
+      "pergunta": "Um valor ficou fora da curva pela regra de 1,5 × IQR. O que fazer?",
+      "opcoes": ["Apagar sempre", "Investigar: pode ser erro, fraude ou algo importante", "Trocar pela média"],
+      "certa": 1,
+      "explicacao": "Fora da curva não é sinônimo de errado."
+    }
+  ],
+  "estatistica/distribuicoes-e-amostras": [
+    {
+      "pergunta": "Um valor tem escore z igual a 3. O que isso diz?",
+      "opcoes": [
+        "Que é o terceiro maior",
+        "Que está 3 desvios padrão acima da média: muito incomum",
+        "Que vale 3 vezes a média"
+      ],
+      "certa": 1,
+      "explicacao": "Numa distribuição normal, menos de 0,2% dos valores ficam além de 3 desvios."
+    },
+    {
+      "pergunta": "Para cortar o erro de uma estimativa pela metade, a amostra precisa ficar:",
+      "opcoes": ["2 vezes maior", "4 vezes maior", "10 vezes maior"],
+      "certa": 1,
+      "explicacao": "O erro cai com a raiz quadrada do tamanho da amostra."
+    },
+    {
+      "pergunta": "Qual é o principal risco de pesquisar só quem respondeu um e-mail?",
+      "opcoes": ["A amostra ser pequena", "A amostra não representar todos os clientes", "O e-mail ir para o spam"],
+      "certa": 1,
+      "explicacao": "Quem responde costuma ser diferente de quem não responde."
+    }
+  ],
+  "estatistica/correlacao-e-regressao": [
+    {
+      "pergunta": "Uma correlação de −0,9 significa:",
+      "opcoes": ["Nenhuma relação", "Uma relação forte: quando uma sobe, a outra desce", "Um erro de cálculo"],
+      "certa": 1,
+      "explicacao": "O sinal diz a direção; o tamanho, a força."
+    },
+    {
+      "pergunta": "Sorvete e afogamentos têm correlação alta. Sorvete causa afogamento?",
+      "opcoes": ["Sim", "Não: o calor causa os dois", "Só no verão"],
+      "certa": 1,
+      "explicacao": "É o caso clássico de variável escondida."
+    },
+    {
+      "pergunta": "Por que é arriscado usar a reta para prever bem fora da faixa dos dados?",
+      "opcoes": [
+        "A reta só vale onde há dados; fora dali a relação pode mudar",
+        "O Python não deixa",
+        "Não é arriscado"
+      ],
+      "certa": 0,
+      "explicacao": "Nada garante que a relação continue em linha reta."
+    }
+  ],
+  "estatistica/intervalos-e-testes-ab": [
+    {
+      "pergunta": "O que acontece com o intervalo de confiança quando a amostra cresce?",
+      "opcoes": ["Fica mais largo", "Fica mais estreito", "Não muda"],
+      "certa": 1,
+      "explicacao": "O erro padrão diminui com a raiz de n."
+    },
+    {
+      "pergunta": "Um valor-p de 0,01 num teste A/B significa:",
+      "opcoes": [
+        "Que B é 1% melhor",
+        "Que, se A e B fossem iguais, uma diferença assim apareceria só 1% das vezes",
+        "Que há 99% de chance de B ser melhor"
+      ],
+      "certa": 1,
+      "explicacao": "O valor-p fala dos dados supondo que não há diferença, não da chance de B ser melhor."
+    },
+    {
+      "pergunta": "Por que não parar o teste assim que der significativo?",
+      "opcoes": [
+        "Porque gasta menos",
+        "Porque espiar e parar no primeiro p < 0,05 aumenta muito os falsos positivos",
+        "Porque o valor-p sempre cai"
+      ],
+      "certa": 1,
+      "explicacao": "O tamanho do teste deve ser decidido antes de começar."
+    }
+  ],
+  "estatistica/armadilhas": [
+    {
+      "pergunta": "No exemplo, por que Bruno tem a pior taxa total sendo melhor nos dois tipos?",
+      "opcoes": [
+        "Erro de conta",
+        "Ele recebeu muito mais pedidos de grupo, que têm taxa baixa para todos",
+        "Porque a Ana trabalhou mais"
+      ],
+      "certa": 1,
+      "explicacao": "É o paradoxo de Simpson: a composição dos grupos muda o total."
+    },
+    {
+      "pergunta": "Como calcular a taxa do ano a partir dos meses?",
+      "opcoes": [
+        "Média das taxas mensais",
+        "Somar os sucessos e as tentativas do ano e dividir",
+        "Pegar a taxa de dezembro"
+      ],
+      "certa": 1,
+      "explicacao": "A média simples das taxas ignora que os meses tiveram volumes diferentes."
+    },
+    {
+      "pergunta": "Testar 20 métricas com limite de 5% e achar uma \"significativa\" prova algo?",
+      "opcoes": ["Sim", "Não: espera-se uma por acaso", "Só se for a primeira"],
+      "certa": 1,
+      "explicacao": "20 × 5% = 1 falso positivo esperado."
     }
   ]
 }
