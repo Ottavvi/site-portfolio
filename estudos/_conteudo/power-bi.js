@@ -503,6 +503,163 @@ ${resposta(`
               ]
             }
           ]
+        },
+        {
+          titulo: 'Interatividade e acessibilidade',
+          itens: [
+            {
+              id: 'parametros-e-cenarios',
+              titulo: 'Parâmetros de campo e cenários',
+              resumo: 'Deixar a pessoa escolher a métrica e simular "e se o preço subir 10%?".',
+              minutos: 12,
+              corpo: `
+<h2>Parâmetros de campo</h2>
+<p>Em vez de três gráficos iguais (faturamento por mês, vendas por mês, ticket por mês), um gráfico só com um seletor. Em Modelagem, <strong>Novo parâmetro, Campos</strong>: escolha as medidas (ou colunas) que a pessoa poderá trocar. O Power BI cria uma tabela e uma segmentação; ponha o parâmetro no eixo Y (ou X) do visual.</p>
+${trecho(`// O que o Power BI gera (uma tabela calculada):
+Métrica = {
+    ("Faturamento", NAMEOF('_Medidas'[Faturamento]), 0),
+    ("Vendas", NAMEOF('_Medidas'[Vendas]), 1),
+    ("Ticket médio", NAMEOF('_Medidas'[Ticket médio]), 2)
+}`)}
+<p>Funciona também com colunas: um seletor "Ver por: Vendedor / Categoria / Cidade" que troca o eixo do gráfico.</p>
+
+<h2>Parâmetro numérico: cenários</h2>
+<p>Em Modelagem, <strong>Novo parâmetro, Intervalo numérico</strong>: cria uma tabela com valores de um intervalo (0% a 30%, de 5 em 5) e uma medida com o valor escolhido no controle deslizante:</p>
+${trecho(`Aumento de preço = GENERATESERIES(0, 0.3, 0.05)
+Aumento de preço Valor = SELECTEDVALUE('Aumento de preço'[Aumento de preço], 0)
+
+Faturamento simulado = [Faturamento] * (1 + [Aumento de preço Valor])
+Diferença = [Faturamento simulado] - [Faturamento]`)}
+<p><code>SELECTEDVALUE</code> devolve o valor escolhido, ou o padrão (0) quando nada ou mais de um valor estiver selecionado. Dá para combinar parâmetros: aumento de preço e queda esperada nas vendas, por exemplo, para ver o efeito no resultado.</p>
+${dica('A tabela do parâmetro não tem relacionamento com nada, de propósito: ela só serve para guardar a escolha da pessoa. Por isso o filtro dela não atrapalha os outros visuais.')}
+
+<h2>Grupos de cálculo</h2>
+<p>Quando todas as medidas precisam das mesmas variações (mês anterior, acumulado no ano, variação %), em vez de criar 3 × 10 medidas, um <strong>grupo de cálculo</strong> aplica a variação a qualquer medida. Crie no Gerenciador de modelos (Modelagem, Grupo de cálculo):</p>
+${trecho(`Item "Atual":            SELECTEDMEASURE()
+Item "Mês anterior":     CALCULATE(SELECTEDMEASURE(), DATEADD(dCalendario[Date], -1, MONTH))
+Item "Acumulado no ano": CALCULATE(SELECTEDMEASURE(), DATESYTD(dCalendario[Date]))`)}
+`,
+              quiz: [
+                {
+                  pergunta: 'Para que serve um parâmetro de campo?',
+                  opcoes: [
+                    'Filtrar datas',
+                    'Deixar a pessoa trocar a medida ou a coluna mostrada num visual',
+                    'Criar relacionamentos'
+                  ],
+                  certa: 1,
+                  explicacao: 'Um gráfico com seletor no lugar de vários gráficos iguais.'
+                },
+                {
+                  pergunta: 'O que SELECTEDVALUE(coluna, 0) devolve quando nada está selecionado?',
+                  opcoes: ['Um erro', '0, o valor padrão', 'O primeiro valor'],
+                  certa: 1,
+                  explicacao: 'O padrão também vale quando mais de um valor está selecionado.'
+                },
+                {
+                  pergunta: 'Por que a tabela de um parâmetro numérico não tem relacionamento?',
+                  opcoes: [
+                    'Esqueceram de criar',
+                    'Ela só guarda a escolha da pessoa, sem filtrar os dados',
+                    'Relacionamentos não funcionam com números'
+                  ],
+                  certa: 1,
+                  explicacao: 'A medida lê o valor escolhido com SELECTEDVALUE.'
+                }
+              ]
+            },
+            {
+              id: 'acessivel-e-celular',
+              titulo: 'Relatórios acessíveis e no celular',
+              resumo: 'Texto alternativo, ordem de tabulação, cores e o layout para celular.',
+              minutos: 11,
+              corpo: `
+<p>Um relatório é usado por pessoas com baixa visão, daltonismo, que navegam pelo teclado, ou que abrem no celular entre uma reunião e outra. O Power BI tem recursos para todas elas.</p>
+
+<h2>Acessibilidade</h2>
+<ul>
+  <li><strong>Texto alternativo</strong>: em Formatar visual, Geral, Texto alternativo. Leitores de tela leem esse texto. Escreva a conclusão ("Faturamento subiu 12% em outubro"), não "gráfico de linhas". Ele aceita medidas, então pode ser dinâmico.</li>
+  <li><strong>Ordem de tabulação</strong>: em Exibir, Seleção, Ordem de tabulação. Defina a mesma ordem de leitura do layout e esconda da tabulação os elementos decorativos.</li>
+  <li><strong>Não use só a cor</strong>: cerca de 8% dos homens têm alguma forma de daltonismo. Vermelho e verde lado a lado viram a mesma cor para muita gente. Acrescente ícones, rótulos ou formas.</li>
+  <li><strong>Contraste</strong> do texto com o fundo de pelo menos 4,5:1, e tamanho mínimo legível (rótulos de 9 pontos são pequenos demais).</li>
+  <li><strong>Títulos</strong> claros em todos os visuais, e nomes de páginas que dizem o assunto.</li>
+</ul>
+${dica('No Serviço, a pessoa pode ver qualquer visual como tabela (Mostrar como tabela) e navegar com o teclado. Teste: Ctrl+F6 passa pelas regiões da página, Tab pelos visuais.')}
+
+<h2>Layout para celular</h2>
+<p>Em Exibir, <strong>Layout móvel</strong>: uma tela vertical onde você arrasta os visuais que importam no celular, em outra ordem e tamanho. No aplicativo do Power BI, o celular na vertical usa esse layout.</p>
+<ul>
+  <li>Comece pelos números principais (cartões), um embaixo do outro.</li>
+  <li>Poucos visuais: o celular é para consultar, não para explorar.</li>
+  <li>Segmentações com botões grandes, fáceis de tocar.</li>
+</ul>
+
+<h2>Q&amp;A e narrativas</h2>
+<p>O visual de <strong>Perguntas e respostas</strong> deixa a pessoa digitar uma pergunta ("faturamento por vendedor em outubro") e responde com um gráfico. O de <strong>narrativa inteligente</strong> escreve um resumo do que os dados mostram. Os dois dependem de nomes claros nas tabelas, colunas e medidas: "fVendas[vl_tot]" não ajuda ninguém, nem a IA.</p>
+`,
+              quiz: [
+                {
+                  pergunta: 'O que escrever no texto alternativo de um gráfico?',
+                  opcoes: ['"Gráfico de linhas"', 'A conclusão que o gráfico mostra', 'Nada'],
+                  certa: 1,
+                  explicacao: 'É o que a pessoa que não vê o gráfico precisa saber.'
+                },
+                {
+                  pergunta: 'Por que não depender só de vermelho e verde?',
+                  opcoes: [
+                    'São cores feias',
+                    'Muitas pessoas com daltonismo não distinguem as duas',
+                    'O Power BI não aceita'
+                  ],
+                  certa: 1,
+                  explicacao: 'Acrescente ícones, rótulos ou formas.'
+                },
+                {
+                  pergunta: 'Onde se monta a versão do relatório para o celular?',
+                  opcoes: ['Num arquivo separado', 'Em Exibir, Layout móvel', 'Não dá'],
+                  certa: 1,
+                  explicacao: 'É uma tela vertical com os visuais escolhidos, no mesmo arquivo.'
+                }
+              ]
+            },
+            {
+              id: 'pratica-cenarios',
+              titulo: 'Prática: simulador de preço',
+              resumo: 'Um parâmetro de campo e um simulador de aumento de preço.',
+              minutos: 25,
+              corpo: `
+<p>Use o modelo da prática de Power BI (as 8 vendas, faturamento total de R$ 1.130,40, com as medidas Faturamento, Vendas e Ticket médio).</p>
+<h2>Tarefas</h2>
+<ol>
+  <li>Crie um <strong>parâmetro de campo</strong> "Métrica" com Faturamento, Vendas e Ticket médio, e um gráfico de colunas por vendedor que mude com ele.</li>
+  <li>Crie um <strong>parâmetro numérico</strong> "Aumento de preço" de 0% a 30%, de 5 em 5, e a medida <strong>Faturamento simulado</strong>.</li>
+  <li>Quanto seria o faturamento com aumento de 10%? E o da Ana?</li>
+  <li>Suponha que, a cada 10% de aumento, as vendas caiam 6%. Crie a medida <strong>Faturamento com perda</strong> e diga quanto ela dá com 10% de aumento.</li>
+  <li>Escreva um texto alternativo dinâmico para o cartão do faturamento simulado.</li>
+</ol>
+${resposta(`
+<ol>
+  <li>Modelagem, Novo parâmetro, Campos, nome Métrica, com as três medidas. Ponha a coluna Métrica no eixo Y do gráfico e Vendedor no eixo X; a segmentação criada troca a métrica.</li>
+  <li>Modelagem, Novo parâmetro, Intervalo numérico: mínimo 0, máximo 0,3, incremento 0,05, padrão 0. Depois: <code>Faturamento simulado = [Faturamento] * (1 + [Aumento de preço Valor])</code>.</li>
+  <li>Com 10%: 1.130,40 × 1,10 = <strong>R$ 1.243,44</strong>. Ana: 654,70 × 1,10 = <strong>R$ 720,17</strong>.</li>
+  <li><code>Faturamento com perda = [Faturamento] * (1 + [Aumento de preço Valor]) * (1 - 0.6 * [Aumento de preço Valor])</code>. Com 10%: 1.130,40 × 1,10 × 0,94 = <strong>R$ 1.168,83</strong>. Ainda compensa, mas bem menos do que parecia.</li>
+  <li>No cartão, Formatar visual, Geral, Texto alternativo, botão fx, com a medida: <code>Texto alt simulado = "Com aumento de " &amp; FORMAT([Aumento de preço Valor], "0%") &amp; ", o faturamento seria " &amp; FORMAT([Faturamento simulado], "R$ #,##0.00")</code>.</li>
+</ol>`)}
+`,
+              quiz: [
+                {
+                  pergunta: 'Por que o "Faturamento com perda" cresce menos que o simulado simples?',
+                  opcoes: [
+                    'Erro de arredondamento',
+                    'Porque considera que o aumento de preço reduz a quantidade vendida',
+                    'Porque usa outro mês'
+                  ],
+                  certa: 1,
+                  explicacao: 'Simulações realistas consideram a reação das vendas ao preço.'
+                }
+              ]
+            }
+          ]
         }
       ]
     }

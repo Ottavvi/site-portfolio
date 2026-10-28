@@ -1,7 +1,7 @@
 // Trilha de LGPD (Lei 13.709/2018) para quem desenvolve: o que a lei pede e como isso vira decisão de código.
 // Sem editor. Não é aconselhamento jurídico: o texto da lei e as resoluções da ANPD mudam e devem ser consultados
 // na fonte (planalto.gov.br e gov.br/anpd). Depois de editar, rode `node ferramentas/gerar-estudos.js`.
-const { trecho, dica, resposta } = require('./ajuda');
+const { trecho, dica, resposta, tabela } = require('./ajuda');
 
 const AVISO =
   '<p><small>Esta trilha explica a lei do ponto de vista de quem desenvolve e não substitui orientação jurídica. Confira sempre o texto da lei (planalto.gov.br) e as resoluções da ANPD (gov.br/anpd), que são atualizadas.</small></p>';
@@ -497,6 +497,197 @@ ${AVISO}
                   opcoes: ['O horário', 'O motivo da consulta', 'O nome da clínica'],
                   certa: 1,
                   explicacao: 'É dado de saúde, sensível, e o celular pode ser visto por outras pessoas.'
+                }
+              ]
+            }
+          ]
+        },
+        {
+          titulo: 'Casos especiais',
+          itens: [
+            {
+              id: 'criancas-e-dados-publicos',
+              titulo: 'Crianças, adolescentes e dados públicos',
+              resumo: 'O melhor interesse, o consentimento dos pais e o que muda com dados já publicados.',
+              minutos: 11,
+              corpo: `
+<h2>Crianças e adolescentes</h2>
+<p>O artigo 14 exige que o tratamento de dados de crianças (até 12 anos incompletos) e adolescentes seja feito no seu <strong>melhor interesse</strong>. Para crianças, a lei fala em consentimento específico e em destaque dado por pelo menos um dos pais ou responsável, e a ANPD já entendeu (Enunciado CD/ANPD nº 1/2023) que outras bases legais também podem ser usadas, desde que o melhor interesse prevaleça.</p>
+<p>Na prática, para quem desenvolve:</p>
+<ul>
+  <li><strong>Coletar o mínimo</strong>: um app escolar não precisa da localização exata da criança o tempo todo.</li>
+  <li>Não condicionar jogos e atividades a dados além do necessário (o artigo 14 proíbe isso expressamente).</li>
+  <li>Informar de forma simples, adequada à idade, com recursos visuais quando for o caso.</li>
+  <li>Cuidado redobrado com perfis, publicidade direcionada e recursos que expõem a criança (chat aberto, perfil público).</li>
+  <li>Se o serviço não é para crianças, deixe isso claro e tenha um caminho para lidar com cadastros que chegarem mesmo assim.</li>
+</ul>
+
+<h2>Dados "públicos"</h2>
+<p>Um erro comum: "está na internet, então posso usar como quiser". Não pode. O artigo 7º permite tratar dados de acesso público e os tornados públicos pelo próprio titular, mas:</p>
+<ul>
+  <li>respeitando a <strong>finalidade</strong>, a boa-fé e o interesse público que justificaram a publicação;</li>
+  <li>os direitos do titular e os princípios da lei continuam valendo;</li>
+  <li>usar para outra finalidade exige uma base legal legítima e compatível com a original.</li>
+</ul>
+<p>Exemplo: o e-mail de um profissional publicado no site da empresa existe para contato profissional. Copiar milhares deles (<em>scraping</em>) para uma lista de marketing não tem nada a ver com essa finalidade.</p>
+${dica('Antes de coletar dados de outros sites, pergunte: a pessoa esperaria esse uso quando publicou? Se a resposta for não, provavelmente o uso não é compatível.')}
+${AVISO}
+`,
+              quiz: [
+                {
+                  pergunta: 'Qual o princípio central no tratamento de dados de crianças e adolescentes?',
+                  opcoes: [
+                    'O lucro da empresa',
+                    'O melhor interesse da criança ou do adolescente',
+                    'A velocidade do serviço'
+                  ],
+                  certa: 1,
+                  explicacao: 'É o que o artigo 14 coloca em primeiro lugar.'
+                },
+                {
+                  pergunta: 'Dados publicados na internet podem ser usados para qualquer finalidade?',
+                  opcoes: [
+                    'Sim, são públicos',
+                    'Não: o uso precisa respeitar a finalidade e a boa-fé da publicação',
+                    'Só se forem de empresas'
+                  ],
+                  certa: 1,
+                  explicacao: 'Público não quer dizer livre de regras.'
+                },
+                {
+                  pergunta: 'Um jogo infantil pode exigir dados além do necessário para a criança jogar?',
+                  opcoes: [
+                    'Sim, com consentimento',
+                    'Não: a lei proíbe condicionar a participação a isso',
+                    'Só nome e foto'
+                  ],
+                  certa: 1,
+                  explicacao: 'O artigo 14 veda condicionar jogos e aplicações a dados desnecessários.'
+                }
+              ]
+            },
+            {
+              id: 'ia-e-anonimizacao',
+              titulo: 'IA, anonimização e pseudonimização',
+              resumo: 'Usar dados pessoais com ferramentas de IA e tirar a identificação de verdade.',
+              minutos: 13,
+              corpo: `
+<h2>Dados pessoais em ferramentas de IA</h2>
+<p>Colar uma planilha de clientes num chat de IA, mandar reclamações para um modelo resumir, treinar um modelo com conversas de atendimento: tudo isso é <strong>tratamento</strong> de dados pessoais, e as regras valem.</p>
+<ul>
+  <li>O fornecedor da IA é, em geral, um <strong>operador</strong>. Veja o contrato: os dados são usados para treinar o modelo? Onde ficam guardados? Há transferência internacional (e com qual garantia)?</li>
+  <li><strong>Minimize</strong>: para resumir reclamações, o modelo não precisa do CPF nem do telefone. Tire antes de enviar.</li>
+  <li>Decisões tomadas só por meios automatizados que afetem a pessoa (crédito, seleção, preço) podem ter a <strong>revisão</strong> pedida pelo titular (artigo 20), e ele tem direito a informações sobre os critérios.</li>
+  <li>Dados sensíveis (saúde, biometria) exigem muito mais cuidado, e às vezes a resposta certa é não usar.</li>
+</ul>
+
+<h2>Anonimizar de verdade</h2>
+<p>Tirar o nome não basta. Pesquisas clássicas mostraram que a combinação de <strong>CEP, data de nascimento e sexo</strong> identifica a maioria das pessoas de um país. Técnicas comuns:</p>
+<ul>
+  <li><strong>Supressão</strong>: remover colunas que identificam (nome, CPF, e-mail, telefone).</li>
+  <li><strong>Generalização</strong>: trocar o valor exato por uma faixa (idade 34 → 30 a 39; CEP 80010-000 → 80xxx; data → mês e ano).</li>
+  <li><strong>k-anonimato</strong>: garantir que cada combinação de atributos que poderiam identificar (idade, região, sexo) apareça em pelo menos <em>k</em> registros. Com k = 3, ninguém é a única pessoa com aquela combinação.</li>
+  <li><strong>Agregação</strong>: muitas vezes o que se precisa é só o total por grupo, e não as linhas.</li>
+</ul>
+
+<h2>Pseudonimizar</h2>
+<p>Trocar o identificador por um código, guardando a tabela de correspondência à parte, com acesso restrito. Continua sendo dado pessoal (dá para voltar), mas reduz o risco no dia a dia. Um hash simples do CPF <strong>não</strong> protege: há poucos CPFs possíveis, e dá para calcular o hash de todos. Use uma chave secreta (HMAC) ou um código aleatório.</p>
+${trecho(`// Node.js: pseudônimo estável com chave secreta (a chave fica fora do código, no ambiente)
+import { createHmac } from 'node:crypto';
+const pseudonimo = cpf => createHmac('sha256', process.env.CHAVE_PSEUDONIMO).update(cpf).digest('hex').slice(0, 16);`)}
+${dica('Para análises, comece perguntando "preciso mesmo de dados por pessoa?". Muitas vezes um total por mês e por região responde a pergunta inteira, sem nenhum dado pessoal.')}
+${AVISO}
+`,
+              quiz: [
+                {
+                  pergunta: 'Tirar só a coluna de nome torna uma base anônima?',
+                  opcoes: [
+                    'Sim',
+                    'Não necessariamente: combinações como CEP, nascimento e sexo ainda identificam',
+                    'Só se tiver mais de mil linhas'
+                  ],
+                  certa: 1,
+                  explicacao: 'É preciso suprimir e generalizar os atributos que, juntos, identificam.'
+                },
+                {
+                  pergunta: 'Por que um hash simples do CPF não é um bom pseudônimo?',
+                  opcoes: [
+                    'Ele é muito longo',
+                    'Há poucos CPFs possíveis: dá para calcular o hash de todos e descobrir quem é quem',
+                    'Hash não existe em JavaScript'
+                  ],
+                  certa: 1,
+                  explicacao: 'Use HMAC com chave secreta ou um código aleatório com tabela protegida.'
+                },
+                {
+                  pergunta: 'Ao usar uma ferramenta de IA para resumir reclamações, o que fazer com CPF e telefone?',
+                  opcoes: [
+                    'Enviar junto, para contexto',
+                    'Remover antes de enviar (minimização)',
+                    'Criptografar e enviar'
+                  ],
+                  certa: 1,
+                  explicacao: 'O resumo não precisa deles.'
+                }
+              ]
+            },
+            {
+              id: 'pratica-anonimizar',
+              titulo: 'Prática: anonimizar uma base',
+              resumo: 'Prepare uma base de atendimentos para ser compartilhada com uma consultoria.',
+              minutos: 25,
+              corpo: `
+<p>Uma clínica quer mandar para uma consultoria uma base de atendimentos, para estudar o tempo de espera. Os dados (fictícios) são:</p>
+${tabela(
+  ['Nome', 'CPF', 'Nascimento', 'Sexo', 'CEP', 'Especialidade', 'Espera (dias)'],
+  [
+    ['Ana Souza', '123.456.789-00', '14/03/1991', 'F', '80010-000', 'Ortopedia', '12'],
+    ['Bruno Lima', '987.654.321-00', '02/11/1985', 'M', '80020-100', 'Ortopedia', '9'],
+    ['Carla Dias', '111.222.333-44', '30/07/1993', 'F', '80030-200', 'Cardiologia', '21'],
+    ['Diego Rocha', '555.666.777-88', '19/01/1958', 'M', '83005-000', 'Cardiologia', '30'],
+    ['Elisa Melo', '999.888.777-66', '05/05/1990', 'F', '80040-300', 'Ortopedia', '15'],
+    ['Fábio Nunes', '444.333.222-11', '22/09/1987', 'M', '80050-400', 'Cardiologia', '18']
+  ]
+)}
+<h2>Tarefas</h2>
+<ol>
+  <li>Quais colunas devem sair por completo?</li>
+  <li>Como generalizar Nascimento e CEP?</li>
+  <li>Monte a tabela final e confira o k-anonimato para a combinação (faixa de idade, sexo, região). Algum registro ficou único? O que fazer?</li>
+  <li>A consultoria precisa mesmo das linhas? Proponha uma alternativa.</li>
+</ol>
+${resposta(`
+<ol>
+  <li><strong>Nome e CPF</strong> saem: não têm utilidade para estudar tempo de espera.</li>
+  <li>Nascimento vira <strong>faixa de idade</strong> (em 2026: 30 a 39, 40 a 49...). CEP vira <strong>região</strong>: os 2 primeiros dígitos (80 = Curitiba, 83 = região metropolitana).</li>
+  <li>
+    ${tabela(
+      ['Faixa', 'Sexo', 'Região', 'Especialidade', 'Espera'],
+      [
+        ['30-39', 'F', '80', 'Ortopedia', '12'],
+        ['40-49', 'M', '80', 'Ortopedia', '9'],
+        ['30-39', 'F', '80', 'Cardiologia', '21'],
+        ['60+', 'M', '83', 'Cardiologia', '30'],
+        ['30-39', 'F', '80', 'Ortopedia', '15'],
+        ['30-39', 'M', '80', 'Cardiologia', '18']
+      ]
+    )}
+    As mulheres de 30 a 39 da região 80 aparecem 3 vezes (k = 3). Mas o homem de 40 a 49, o de 60+ da região 83 e o homem de 30 a 39 são <strong>únicos</strong>: quem conhece o paciente (um vizinho, um colega) pode reconhecê-lo. Saídas: generalizar mais (faixas maiores, como "até 49" e "50+"; tirar a região ou o sexo, se o estudo não precisar), ou suprimir os registros únicos e informar a consultoria.
+  </li>
+  <li>Para estudar o tempo de espera, provavelmente basta a <strong>média por especialidade</strong>: Ortopedia (12 + 9 + 15) ÷ 3 = 12 dias; Cardiologia (21 + 30 + 18) ÷ 3 = 23 dias. Um relatório agregado não tem dado pessoal nenhum. Se as linhas forem mesmo necessárias, faça um contrato que proíba tentar reidentificar e restrinja o uso.</li>
+</ol>`)}
+${AVISO}
+`,
+              quiz: [
+                {
+                  pergunta: 'Na tabela generalizada, por que o homem de 60+ da região 83 é um problema?',
+                  opcoes: [
+                    'Ele tem a maior espera',
+                    'É o único com essa combinação: pode ser reconhecido por quem o conhece',
+                    'A região está errada'
+                  ],
+                  certa: 1,
+                  explicacao: 'Com k = 1, a generalização não protegeu ninguém.'
                 }
               ]
             }

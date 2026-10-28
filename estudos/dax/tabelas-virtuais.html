@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tabelas virtuais e consultas DAX | DAX | Estudos</title>
+    <meta
+      name="description"
+      content="SUMMARIZE, ADDCOLUMNS, TOPN, FILTER dentro de medidas e a exibição de consulta."
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="ottavvi.dev" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:title" content="Tabelas virtuais e consultas DAX | DAX | Estudos" />
+    <meta
+      property="og:description"
+      content="SUMMARIZE, ADDCOLUMNS, TOPN, FILTER dentro de medidas e a exibição de consulta."
+    />
+    <meta property="og:url" content="https://ottavvi.github.io/site-portfolio/estudos/dax/tabelas-virtuais.html" />
+    <meta property="og:image" content="https://ottavvi.github.io/site-portfolio/imagens/og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#08141a" />
+    <link rel="canonical" href="https://ottavvi.github.io/site-portfolio/estudos/dax/tabelas-virtuais.html" />
+    <link rel="icon" href="../../favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href="../../fontes/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="../../fontes/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="../../css/style.css?v=11" />
+    <!-- Aplica o tema salvo (ou o do sistema) antes de desenhar a página, para não piscar -->
+    <script>
+      try {
+        const tema =
+          localStorage.getItem('tema') || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        document.documentElement.dataset.theme = tema;
+      } catch {}
+    </script>
+  </head>
+  <body>
+    <div id="app">
+      <header>
+        <div class="wrap nav">
+          <!-- prettier-ignore -->
+          <a class="logo" href="../../index.html#inicio" aria-label="Otávio, início">ottavvi<span>.</span>dev</a>
+          <button class="theme-btn" id="themeBtn" type="button" aria-label="Mudar tema">
+            <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="4" />
+              <path
+                d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"
+              />
+            </svg>
+            <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
+            </svg>
+          </button>
+          <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="navLinks">Menu ☰</button>
+          <nav class="links" id="navLinks" aria-label="Navegação principal">
+            <a href="../../index.html#projetos">Projetos</a>
+            <a href="../../index.html#habilidades">Habilidades</a>
+            <a href="../../estudos/" aria-current="page">Estudos</a>
+            <a href="../../sobre.html">Sobre mim</a>
+            <a href="../../index.html#contato">Contato</a>
+            <a href="../../en/index.html" lang="en" hreflang="en" class="lang-link">EN</a>
+            <a
+              href="../../login.html?volta=estudos%2Fdax%2Ftabelas-virtuais.html"
+              id="authLink"
+              data-url-entrar="../../login.html?volta=estudos%2Fdax%2Ftabelas-virtuais.html"
+              data-url-area="../../area.html"
+            >
+              Entrar
+            </a>
+          </nav>
+        </div>
+      </header>
+      <main>
+        <div class="wrap aula" id="inicio">
+          <aside class="aula-lateral">
+            <details class="aula-sumario" open>
+              <summary>Trilha de DAX</summary>
+              <div
+                class="estudos-progresso"
+                data-progresso="dax/medidas-e-colunas dax/contexto-de-filtro dax/pratica-medidas dax/calculate dax/inteligencia-de-tempo dax/pratica-calculate dax/iteradores-e-variaveis dax/contexto-de-linha dax/pratica-avancada dax/tabelas-virtuais dax/abc-e-segmentacao dax/pratica-abc"
+                data-trilha="dax"
+              >
+                <div class="estudos-progresso-barra"><span></span></div>
+                <span class="estudos-progresso-texto">0 de 12 concluídos</span>
+              </div>
+              <p class="aula-sumario-nivel">Iniciante</p>
+              <ol class="trilha-modulos trilha-modulos--compacta">
+                <li class="trilha-modulo">
+                  <h3><span>Módulo 1</span> Primeiras medidas</h3>
+                  <ol>
+                    <li class="trilha-item" data-item="dax/medidas-e-colunas">
+                      <a href="medidas-e-colunas.html">
+                        <span class="trilha-item-icone"
+                          ><svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M4 5h11a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3zM8 9h6M8 13h6" /></svg
+                        ></span>
+                        <span class="trilha-item-texto">
+                          <strong>Medidas e colunas calculadas</strong>
+                          <small>A diferença que mais confunde no começo, e as funções básicas.</small>
+                        </span>
+                        <span class="trilha-item-tempo">11 min</span>
+                      </a>
+                    </li>
+                    <li class="trilha-item" data-item="dax/contexto-de-filtro">
+                      <a href="contexto-de-filtro.html">
+                        <span class="trilha-item-icone"
+                          ><svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M4 5h11a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3zM8 9h6M8 13h6" /></svg
+                        ></span>
+                        <span class="trilha-item-texto">
+                          <strong>O contexto de filtro</strong>
+                          <small>Por que a mesma medida dá um número diferente em cada célula.</small>
+                        </span>
+                        <span class="trilha-item-tempo">11 min</span>
+                      </a>
+                    </li>
+                    <li class="trilha-item" data-item="dax/pratica-medidas">
+                      <a href="pratica-medidas.html">
+                        <span class="trilha-item-icone"
+                          ><svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M4 5h11a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3zM8 9h6M8 13h6" /></svg
+                        ></span>
+                        <span class="trilha-item-texto">
+                          <strong>Prática: as medidas básicas</strong>
+                          <small>Crie as medidas de um painel de vendas e confira os números.</small>
+                        </span>
+                        <span class="trilha-item-tempo">20 min</span>
+                      </a>
+                    </li>
+                  </ol>
+                </li>
+              </ol>
+              <p class="aula-sumario-nivel">Intermediário</p>
+              <ol class="trilha-modulos trilha-modulos--compacta">
+                <li class="trilha-modulo">
+                  <h3><span>Módulo 2</span> CALCULATE e tempo</h3>
+                  <ol>
+                    <li class="trilha-item" data-item="dax/calculate">
+                      <a href="calculate.html">
+                        <span class="trilha-item-icone"
+                          ><svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M4 5h11a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3zM8 9h6M8 13h6" /></svg
+                        ></span>
+                        <span class="trilha-item-texto">
+                          <strong>CALCULATE</strong>
+                          <small>Mudar o contexto de filtro: a função mais importante do DAX.</small>
+                        </span>
+                        <span class="trilha-item-tempo">14 min</span>
+                      </a>
+                    </li>
+                    <li class="trilha-item" data-item="dax/inteligencia-de-tempo">
+                      <a href="inteligencia-de-tempo.html">
+                        <span class="trilha-item-icone"
+                          ><svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M4 5h11a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3zM8 9h6M8 13h6" /></svg
+                        ></span>
+                        <span class="trilha-item-texto">
+                          <strong>Inteligência de tempo</strong>
+                          <small>Acumulado no ano, mês anterior, mesmo período do ano passado e variação.</small>
+                        </span>
+                        <span class="trilha-item-tempo">13 min</span>
+                      </a>
+                    </li>
+                    <li class="trilha-item" data-item="dax/pratica-calculate">
+                      <a href="pratica-calculate.html">
+                        <span class="trilha-item-icone"
+                          ><svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M4 5h11a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3zM8 9h6M8 13h6" /></svg
+                        ></span>
+                        <span class="trilha-item-texto">
+                          <strong>Prática: participação e evolução</strong>
+                          <small>Percentual do total, mês anterior e acumulado no ano.</small>
+                        </span>
+                        <span class="trilha-item-tempo">25 min</span>
+                      </a>
+                    </li>
+                  </ol>
+                </li>
+              </ol>
+              <p class="aula-sumario-nivel">Avançado</p>
+              <ol class="trilha-modulos trilha-modulos--compacta">
+                <li class="trilha-modulo">
+                  <h3><span>Módulo 3</span> Iteradores e contextos</h3>
+                  <ol>
+                    <li class="trilha-item" data-item="dax/iteradores-e-variaveis">
+                      <a href="iteradores-e-variaveis.html">
+                        <span class="trilha-item-icone"
+                          ><svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M4 5h11a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3zM8 9h6M8 13h6" /></svg
+                        ></span>
+                        <span class="trilha-item-texto">
+                          <strong>Iteradores, variáveis e ranking</strong>
+                          <small>SUMX, AVERAGEX, VAR/RETURN e RANKX.</small>
+                        </span>
+                        <span class="trilha-item-tempo">13 min</span>
+                      </a>
+                    </li>
+                    <li class="trilha-item" data-item="dax/contexto-de-linha">
+                      <a href="contexto-de-linha.html">
+                        <span class="trilha-item-icone"
+                          ><svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M4 5h11a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3zM8 9h6M8 13h6" /></svg
+                        ></span>
+                        <span class="trilha-item-texto">
+                          <strong>Contexto de linha e transição de contexto</strong>
+                          <small>Os dois contextos do DAX, a transição e relacionamentos inativos.</small>
+                        </span>
+                        <span class="trilha-item-tempo">14 min</span>
+                      </a>
+                    </li>
+                    <li class="trilha-item" data-item="dax/pratica-avancada">
+                      <a href="pratica-avancada.html">
+                        <span class="trilha-item-icone"
+                          ><svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M4 5h11a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3zM8 9h6M8 13h6" /></svg
+                        ></span>
+                        <span class="trilha-item-texto">
+                          <strong>Prática: ranking e médias</strong>
+                          <small>RANKX, AVERAGEX, VAR e uma medida de destaque para o relatório.</small>
+                        </span>
+                        <span class="trilha-item-tempo">25 min</span>
+                      </a>
+                    </li>
+                  </ol>
+                </li>
+                <li class="trilha-modulo">
+                  <h3><span>Módulo 4</span> Padrões de análise</h3>
+                  <ol>
+                    <li class="trilha-item" data-item="dax/tabelas-virtuais">
+                      <a href="tabelas-virtuais.html" aria-current="page">
+                        <span class="trilha-item-icone"
+                          ><svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M4 5h11a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3zM8 9h6M8 13h6" /></svg
+                        ></span>
+                        <span class="trilha-item-texto">
+                          <strong>Tabelas virtuais e consultas DAX</strong>
+                          <small>SUMMARIZE, ADDCOLUMNS, TOPN, FILTER dentro de medidas e a exibição de consulta.</small>
+                        </span>
+                        <span class="trilha-item-tempo">13 min</span>
+                      </a>
+                    </li>
+                    <li class="trilha-item" data-item="dax/abc-e-segmentacao">
+                      <a href="abc-e-segmentacao.html">
+                        <span class="trilha-item-icone"
+                          ><svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M4 5h11a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3zM8 9h6M8 13h6" /></svg
+                        ></span>
+                        <span class="trilha-item-texto">
+                          <strong>Curva ABC e segmentação dinâmica</strong>
+                          <small>Classificar produtos pelo acumulado e agrupar por faixas que a pessoa escolhe.</small>
+                        </span>
+                        <span class="trilha-item-tempo">13 min</span>
+                      </a>
+                    </li>
+                    <li class="trilha-item" data-item="dax/pratica-abc">
+                      <a href="pratica-abc.html">
+                        <span class="trilha-item-icone"
+                          ><svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M4 5h11a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3zM8 9h6M8 13h6" /></svg
+                        ></span>
+                        <span class="trilha-item-texto">
+                          <strong>Prática: curva ABC dos produtos</strong>
+                          <small>Classifique os produtos e confira os percentuais.</small>
+                        </span>
+                        <span class="trilha-item-tempo">25 min</span>
+                      </a>
+                    </li>
+                  </ol>
+                </li>
+              </ol>
+            </details>
+          </aside>
+          <article class="aula-conteudo">
+            <a class="text-link" href="./">← Trilha de DAX</a>
+            <div class="section-kicker case-kicker">Avançado · Módulo 4 · Padrões de análise</div>
+            <h1>Tabelas virtuais e consultas DAX</h1>
+            <p class="aula-meta">Aula · 13 min</p>
+            <div class="aula-texto">
+              <p>
+                Muitas funções DAX devolvem uma <strong>tabela</strong> em vez de um número. Dentro de uma medida, essa
+                tabela existe só durante o cálculo (uma <strong>tabela virtual</strong>) e serve para responder
+                perguntas que uma soma simples não responde.
+              </p>
+
+              <h2>Contar o que passa num critério</h2>
+              <pre class="aula-codigo"><code>// Quantos vendedores venderam mais de R$ 250 no período filtrado?
+Vendedores acima de 250 =
+COUNTROWS(
+    FILTER(VALUES(fVendas[Vendedor]), [Faturamento] &gt; 250)
+)
+
+// Quantos dias tiveram venda?
+Dias com venda = COUNTROWS(FILTER(VALUES(dCalendario[Date]), [Vendas] &gt; 0))</code></pre>
+              <p>
+                <code>VALUES(coluna)</code> é a lista de valores distintos no contexto atual; <code>FILTER</code> fica
+                com os que passam no teste, e cada <code>[Faturamento]</code> lá dentro é calculado para aquele vendedor
+                (transição de contexto).
+              </p>
+
+              <h2>Montar uma tabela com colunas calculadas</h2>
+              <pre class="aula-codigo"><code>// Ticket médio do melhor mês
+Ticket do melhor mês =
+VAR PorMes =
+    ADDCOLUMNS(
+        VALUES(dCalendario[Ano-Mês]),
+        &quot;@Fat&quot;, [Faturamento],
+        &quot;@Ticket&quot;, [Ticket médio]
+    )
+VAR Melhor = TOPN(1, PorMes, [@Fat], DESC)
+RETURN MAXX(Melhor, [@Ticket])</code></pre>
+              <p>
+                O prefixo <code>@</code> é uma convenção para colunas de tabelas virtuais, para não confundir com
+                medidas. Para agrupar por colunas de tabelas diferentes, use
+                <code>SUMMARIZE(fVendas, dProduto[Categoria], dCalendario[Ano])</code> e acrescente os cálculos com
+                <code>ADDCOLUMNS</code>.
+              </p>
+
+              <h2>A exibição de consulta DAX</h2>
+              <p>
+                No Power BI Desktop, a <strong>exibição de consulta DAX</strong> (na barra da esquerda) roda consultas
+                que devolvem tabelas, ótima para conferir uma tabela virtual antes de usá-la numa medida:
+              </p>
+              <pre class="aula-codigo"><code>EVALUATE
+ADDCOLUMNS(
+    VALUES(fVendas[Vendedor]),
+    &quot;Faturamento&quot;, [Faturamento],
+    &quot;Posição&quot;, RANKX(ALL(fVendas[Vendedor]), [Faturamento])
+)
+ORDER BY [Faturamento] DESC</code></pre>
+              <aside class="aula-dica">
+                <strong>Dica</strong>
+                <p>
+                  Monte medidas complicadas por partes, com VAR, e use a exibição de consulta para ver o conteúdo de
+                  cada variável (devolva ela no RETURN ou rode num EVALUATE). Depurar DAX "no escuro" é o que torna a
+                  linguagem difícil.
+                </p>
+              </aside>
+            </div>
+            <section class="quiz" aria-labelledby="quizTitulo">
+              <h2 id="quizTitulo">Teste o que aprendeu</h2>
+              <ol class="quiz-lista">
+                <li class="quiz-pergunta" data-certa="1" data-explicacao="Com COUNTROWS em volta, vira a quantidade.">
+                  <fieldset>
+                    <legend>O que VALUES(fVendas[Vendedor]) devolve dentro de uma medida?</legend>
+                    <label class="quiz-opcao"><input type="radio" name="q0" value="0" /> O primeiro vendedor</label>
+                    <label class="quiz-opcao"
+                      ><input type="radio" name="q0" value="1" /> Uma tabela com os vendedores distintos no contexto
+                      atual</label
+                    >
+                    <label class="quiz-opcao"
+                      ><input type="radio" name="q0" value="2" /> A quantidade de vendedores</label
+                    >
+                  </fieldset>
+                  <p class="quiz-retorno" hidden></p>
+                </li>
+                <li
+                  class="quiz-pergunta"
+                  data-certa="1"
+                  data-explicacao="EVALUATE mostra a tabela que uma expressão produz."
+                >
+                  <fieldset>
+                    <legend>Para que serve a exibição de consulta DAX?</legend>
+                    <label class="quiz-opcao"><input type="radio" name="q1" value="0" /> Publicar o relatório</label>
+                    <label class="quiz-opcao"
+                      ><input type="radio" name="q1" value="1" /> Rodar consultas que devolvem tabelas, para conferir
+                      cálculos</label
+                    >
+                    <label class="quiz-opcao"><input type="radio" name="q1" value="2" /> Criar relacionamentos</label>
+                  </fieldset>
+                  <p class="quiz-retorno" hidden></p>
+                </li>
+                <li
+                  class="quiz-pergunta"
+                  data-certa="1"
+                  data-explicacao="É uma convenção que deixa as fórmulas mais legíveis."
+                >
+                  <fieldset>
+                    <legend>Por que usar o prefixo @ em colunas de tabelas virtuais?</legend>
+                    <label class="quiz-opcao"><input type="radio" name="q2" value="0" /> É obrigatório</label>
+                    <label class="quiz-opcao"
+                      ><input type="radio" name="q2" value="1" /> Para não confundir com medidas</label
+                    >
+                    <label class="quiz-opcao"><input type="radio" name="q2" value="2" /> Para ordenar</label>
+                  </fieldset>
+                  <p class="quiz-retorno" hidden></p>
+                </li>
+              </ol>
+              <p class="quiz-placar" aria-live="polite"></p>
+            </section>
+            <div class="aula-concluir">
+              <button class="btn btn-ghost" type="button" data-concluir="dax/tabelas-virtuais">
+                Marcar aula como concluída
+              </button>
+              <p class="estudos-conta" id="estudosConta" aria-live="polite">
+                Seu progresso fica salvo neste navegador.
+              </p>
+            </div>
+            <nav class="aula-navegacao" aria-label="Aulas">
+              <a href="pratica-avancada.html"><small>← Anterior</small>Prática: ranking e médias</a>
+              <a class="aula-proxima" href="abc-e-segmentacao.html"
+                ><small>Próxima →</small>Curva ABC e segmentação dinâmica</a
+              >
+            </nav>
+          </article>
+        </div>
+      </main>
+      <footer>
+        <div class="wrap foot">
+          <span>
+            ©
+            <span id="year"></span>
+            Otávio. Feito com HTML, CSS e JavaScript.
+          </span>
+          <div class="small-links">
+            <a href="https://github.com/Ottavvi" target="_blank" rel="noreferrer">GitHub ↗</a>
+            <a href="#inicio">Voltar ao topo ↑</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+    <script src="../../js/main.js" defer></script>
+    <script src="../../js/paleta.js" defer></script>
+    <script type="module" src="../../js/auth/session.js"></script>
+    <script type="module" src="../../js/estudos.js"></script>
+  </body>
+</html>

@@ -383,6 +383,173 @@ ${resposta(`
               ]
             }
           ]
+        },
+        {
+          titulo: 'Datas e textos',
+          itens: [
+            {
+              id: 'funcoes-de-data',
+              titulo: 'Funções de data',
+              resumo: 'HOJE, DATA, FIMMÊS, DATAM, DIATRABALHOTOTAL e como o Excel guarda datas.',
+              minutos: 11,
+              corpo: `
+<p>Para o Excel, uma data é um <strong>número</strong>: a quantidade de dias desde 1º de janeiro de 1900. 31/10/2026 é 46326. Por isso dá para subtrair datas (o resultado é em dias) e somar dias a uma data. O formato da célula só muda a aparência.</p>
+${trecho(`=HOJE()                          a data de hoje (muda a cada dia que o arquivo é aberto)
+=AGORA()                         data e hora
+=DATA(2026; 10; 31)              monta uma data a partir de ano, mês e dia
+=ANO(A2)   =MÊS(A2)   =DIA(A2)   partes de uma data
+=B2-A2                           dias entre duas datas
+=A2+30                           30 dias depois
+=DIA.DA.SEMANA(A2; 2)            1 = segunda ... 7 = domingo
+=TEXTO(A2; "mmmm ""de"" aaaa")    "outubro de 2026"`)}
+
+<h2>Meses e vencimentos</h2>
+${trecho(`=FIMMÊS(A2; 0)          último dia do mês de A2
+=FIMMÊS(A2; -1)+1       primeiro dia do mês de A2
+=DATAM(A2; 3)           a mesma data, 3 meses depois (parcelas, renovações)
+=DATADIF(A2; HOJE(); "a")   anos completos entre as datas (idade, tempo de casa)`)}
+${dica('O DATADIF não aparece na lista de funções do Excel (é uma função "escondida" por compatibilidade), mas funciona. Os códigos são "a" (anos), "m" (meses) e "d" (dias).')}
+
+<h2>Dias úteis</h2>
+<p>Prazos de entrega e de pagamento costumam ser em dias úteis:</p>
+${trecho(`=DIATRABALHOTOTAL(A2; B2; tbFeriados[Data])     dias úteis entre duas datas (contando as duas pontas)
+=DIATRABALHO(A2; 5; tbFeriados[Data])          a data 5 dias úteis depois de A2`)}
+<p>O terceiro argumento é uma lista de feriados (uma Tabela com as datas). Sem ela, o Excel só desconta sábados e domingos. Para escalas com outro fim de semana (um comércio que fecha domingo e segunda), use <code>DIATRABALHOTOTAL.INTL</code>.</p>
+
+<h2>Cuidado com HOJE()</h2>
+<p>Uma planilha que usa <code>HOJE()</code> muda de resultado sozinha a cada dia. Para relatórios que precisam ser reproduzidos ("posição em 31/10"), coloque a data de referência numa célula e use ela nas fórmulas.</p>
+`,
+              quiz: [
+                {
+                  pergunta: 'O que =B2-A2 devolve, com duas datas?',
+                  opcoes: ['Um erro', 'A diferença em dias', 'A diferença em meses'],
+                  certa: 1,
+                  explicacao: 'Datas são números de dias por baixo do formato.'
+                },
+                {
+                  pergunta: 'Qual função dá o último dia do mês?',
+                  opcoes: ['ÚLTIMODIA()', 'FIMMÊS(data; 0)', 'MÊS(data)+30'],
+                  certa: 1,
+                  explicacao: 'Com -1, dá o último dia do mês anterior; somando 1, o primeiro do mês atual.'
+                },
+                {
+                  pergunta: 'Por que DIATRABALHOTOTAL tem um argumento de feriados?',
+                  opcoes: ['Não tem', 'Sem ele, só sábados e domingos são descontados', 'Para contar os feriados'],
+                  certa: 1,
+                  explicacao: 'Os feriados mudam por país e cidade; você informa a lista.'
+                }
+              ]
+            },
+            {
+              id: 'funcoes-de-texto',
+              titulo: 'Funções de texto',
+              resumo: 'Recortar, juntar, limpar e separar textos.',
+              minutos: 11,
+              corpo: `
+<p>Dados de sistemas costumam chegar "grudados": código e nome juntos, nome completo numa célula só, espaços sobrando. As funções de texto separam e limpam.</p>
+
+<h2>Recortar</h2>
+${trecho(`A2: "FORN-0123 Torrefação Serra"
+
+=ESQUERDA(A2; 9)                 "FORN-0123"
+=DIREITA(A2; 5)                  "Serra"
+=EXT.TEXTO(A2; 6; 4)             "0123"       (a partir do 6º caractere, 4 caracteres)
+=NÚM.CARACT(A2)                  26
+=PROCURAR(" "; A2)               10           (posição do primeiro espaço)
+=TEXTOANTES(A2; " ")             "FORN-0123"  (Microsoft 365)
+=TEXTODEPOIS(A2; " ")            "Torrefação Serra"`)}
+<p><code>TEXTOANTES</code> e <code>TEXTODEPOIS</code> resolvem a maioria dos casos de "separar no primeiro espaço/traço". Em versões antigas, a combinação clássica é <code>=ESQUERDA(A2; PROCURAR(" "; A2) - 1)</code>.</p>
+
+<h2>Limpar e padronizar</h2>
+${trecho(`=ARRUMAR(A2)             tira espaços das pontas e espaços duplos no meio
+=MAIÚSCULA(A2)   =MINÚSCULA(A2)   =PRI.MAIÚSCULA(A2)     "ana souza" → "Ana Souza"
+=SUBSTITUIR(A2; "Sao"; "São")      troca um texto por outro
+=VALOR(A2)               "1234,5" (texto) → 1234,5 (número)`)}
+
+<h2>Juntar</h2>
+${trecho(`=A2 & " - " & B2
+=CONCAT(A2:C2)
+=UNIRTEXTO(", "; VERDADEIRO; A2:A10)       junta uma lista com separador, pulando os vazios
+=UNIRTEXTO(", "; VERDADEIRO; FILTRO(tbVendas[Vendedor]; tbVendas[Total]>200))`)}
+
+<h2>Separar em colunas</h2>
+<p>Para uma vez só, use Dados, <strong>Texto para Colunas</strong>, ou o <strong>Preenchimento Relâmpago</strong> (<kbd>Ctrl</kbd>+<kbd>E</kbd>): digite o resultado esperado em uma ou duas linhas e o Excel completa o resto. Com fórmula, que se atualiza: <code>=DIVIDIRTEXTO(A2; " - ")</code> espalha as partes pelas colunas ao lado.</p>
+${dica('Se precisar fazer a mesma limpeza todo mês, use o Power Query (trilha própria): ele grava os passos e repete com um clique.')}
+`,
+              quiz: [
+                {
+                  pergunta: 'O que =ARRUMAR("  Ana   Souza ") devolve?',
+                  opcoes: ['"Ana Souza"', '"  Ana   Souza "', '"AnaSouza"'],
+                  certa: 0,
+                  explicacao: 'Tira os espaços das pontas e reduz os duplos do meio a um.'
+                },
+                {
+                  pergunta: 'Como pegar o que vem antes do primeiro espaço no Microsoft 365?',
+                  opcoes: ['=ANTES(A2)', '=TEXTOANTES(A2; " ")', '=ESQUERDA(A2)'],
+                  certa: 1,
+                  explicacao: 'Em versões antigas: =ESQUERDA(A2; PROCURAR(" "; A2) - 1).'
+                },
+                {
+                  pergunta: 'O que o Preenchimento Relâmpago (Ctrl+E) faz?',
+                  opcoes: [
+                    'Copia a fórmula',
+                    'Descobre o padrão a partir de exemplos digitados e completa a coluna',
+                    'Apaga espaços'
+                  ],
+                  certa: 1,
+                  explicacao: 'Ótimo para separações pontuais; para repetir todo mês, prefira fórmulas ou Power Query.'
+                }
+              ]
+            },
+            {
+              id: 'pratica-contas-a-pagar',
+              titulo: 'Prática: contas a pagar',
+              resumo: 'Status, atraso, multa e o que vence na semana.',
+              minutos: 25,
+              corpo: `
+<p>Monte uma Tabela <code>tbContas</code> com estes dados e, na célula <strong>H1</strong>, a data de referência <strong>31/10/2026</strong> (use essa célula no lugar de HOJE()).</p>
+${tabela(
+  ['Descrição', 'Vencimento', 'Valor', 'Pago em'],
+  [
+    ['FORN-0123 Torrefação Serra', '10/10/2026', '1.200,00', '09/10/2026'],
+    ['FORN-0456 Cerâmicas Sul', '20/10/2026', '850,00', ''],
+    ['FORN-0789 Embalagens Já', '05/11/2026', '320,00', ''],
+    ['FORN-0123 Torrefação Serra', '25/10/2026', '600,00', '28/10/2026']
+  ]
+)}
+<h2>Tarefas</h2>
+<ol>
+  <li>Colunas <strong>Código</strong> (FORN-0123) e <strong>Fornecedor</strong> (Torrefação Serra), a partir da Descrição.</li>
+  <li>Coluna <strong>Status</strong>: "Pago" se tem data de pagamento; "Atrasado" se venceu antes de H1; senão "A vencer".</li>
+  <li>Coluna <strong>Dias de atraso</strong> (só para as atrasadas; 0 nas outras).</li>
+  <li>Coluna <strong>Valor atualizado</strong>: nas atrasadas, multa de 2% mais juros de 0,033% ao dia de atraso.</li>
+  <li>Total <strong>a vencer nos próximos 7 dias</strong>.</li>
+  <li>Quantos <strong>dias úteis</strong> faltam até o vencimento da Embalagens Já? E se considerar o feriado de Finados (02/11/2026)?</li>
+</ol>
+${resposta(`
+<ol>
+  <li><code>=TEXTOANTES([@Descrição]; " ")</code> e <code>=TEXTODEPOIS([@Descrição]; " ")</code>. Sem Microsoft 365: <code>=ESQUERDA([@Descrição]; 9)</code> e <code>=EXT.TEXTO([@Descrição]; 11; 100)</code>.</li>
+  <li><code>=SES([@[Pago em]]&lt;&gt;""; "Pago"; [@Vencimento]&lt;$H$1; "Atrasado"; VERDADEIRO; "A vencer")</code> → Pago, Atrasado, A vencer, Pago. (Nomes de coluna com espaço vão entre colchetes duplos: <code>[@[Pago em]]</code>.)</li>
+  <li><code>=SE([@Status]="Atrasado"; $H$1-[@Vencimento]; 0)</code> → só a Cerâmicas Sul: <strong>11 dias</strong>.</li>
+  <li><code>=SE([@Status]="Atrasado"; [@Valor]*(1+2%+0,033%*[@[Dias de atraso]]); [@Valor])</code> → 850 + 17,00 + 3,09 = <strong>R$ 870,09</strong>.</li>
+  <li><code>=SOMASES(tbContas[Valor]; tbContas[Status]; "A vencer"; tbContas[Vencimento]; "&lt;="&amp;$H$1+7)</code> → <strong>R$ 320,00</strong>.</li>
+  <li><code>=DIATRABALHOTOTAL($H$1; [@Vencimento])</code>: 31/10/2026 é um sábado, então contam 02, 03, 04 e 05/11: <strong>4 dias úteis</strong>. Com o feriado: <code>=DIATRABALHOTOTAL($H$1; [@Vencimento]; DATA(2026;11;2))</code> → <strong>3</strong>.</li>
+</ol>`)}
+`,
+              quiz: [
+                {
+                  pergunta: 'Por que usar a data de referência em H1 em vez de HOJE()?',
+                  opcoes: [
+                    'HOJE() não existe em português',
+                    'Para o resultado não mudar sozinho a cada dia que o arquivo é aberto',
+                    'É mais rápido'
+                  ],
+                  certa: 1,
+                  explicacao: 'Relatórios de posição numa data precisam ser reproduzíveis.'
+                }
+              ]
+            }
+          ]
         }
       ]
     },

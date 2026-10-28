@@ -569,6 +569,198 @@ Grupos = Table.Group(Expandido, {"Cidade", "UF"}, {{"Clientes", each Table.RowCo
               ]
             }
           ]
+        },
+        {
+          titulo: 'APIs e calendário',
+          itens: [
+            {
+              id: 'web-e-apis',
+              titulo: 'Dados da web e de APIs',
+              resumo: 'Web.Contents, Json.Document, paginação e cuidados com chaves e atualização.',
+              minutos: 12,
+              corpo: `
+<p>Além de arquivos, o Power Query lê <strong>páginas da web</strong> (tabelas HTML) e <strong>APIs</strong> que devolvem JSON. Em Obter Dados, <strong>Da Web</strong>, cole o endereço.</p>
+
+<h2>Uma API em JSON</h2>
+${trecho(`let
+    Resposta = Json.Document(Web.Contents("https://viacep.com.br/ws/80010000/json/")),
+    Tabela = Table.FromRecords({Resposta}),
+    Colunas = Table.SelectColumns(Tabela, {"cep", "logradouro", "localidade", "uf"})
+in
+    Colunas`)}
+<ul>
+  <li><code>Web.Contents</code> baixa a resposta; <code>Json.Document</code> transforma o JSON em registros e listas do M.</li>
+  <li>Um objeto JSON vira um <strong>registro</strong>; uma lista de objetos vira uma lista de registros, que <code>Table.FromRecords</code> transforma em tabela.</li>
+  <li>Campos aninhados aparecem como colunas de registro ou de lista: expanda com o botão do cabeçalho.</li>
+</ul>
+
+<h2>Parâmetros, cabeçalhos e chaves</h2>
+<p>Separe o endereço fixo das partes que mudam, usando <code>RelativePath</code> e <code>Query</code>. Além de mais legível, isso permite que o Serviço do Power BI atualize a consulta (endereços montados com texto, às vezes, não são aceitos na atualização agendada):</p>
+${trecho(`Web.Contents("https://api.exemplo.com", [
+    RelativePath = "v1/vendas",
+    Query = [mes = "2026-10", pagina = "1"],
+    Headers = [Accept = "application/json"],
+    ApiKeyName = "api_key"           // a chave fica nas credenciais da fonte, não no código
+])`)}
+${dica('Nunca escreva uma chave de API no código M: quem abre o arquivo vê tudo. Use as credenciais da fonte de dados (o Power Query pergunta na primeira vez) ou um parâmetro que não vai junto quando o arquivo é compartilhado.')}
+
+<h2>Paginação</h2>
+<p>APIs costumam devolver os dados em páginas (100 itens por vez). <code>List.Generate</code> busca página por página até vir uma vazia:</p>
+${trecho(`let
+    Pagina = (n as number) => Json.Document(Web.Contents("https://api.exemplo.com",
+        [RelativePath = "v1/vendas", Query = [pagina = Text.From(n)]])),
+    Paginas = List.Generate(
+        () => [n = 1, dados = Pagina(1)],
+        each List.Count([dados]) > 0,
+        each [n = [n] + 1, dados = Pagina([n] + 1)],
+        each [dados]
+    ),
+    Tudo = Table.FromRecords(List.Combine(Paginas))
+in
+    Tudo`)}
+
+<h2>Tabelas de páginas</h2>
+<p>Para uma tabela HTML (cotações, rankings, a lista de feriados de um site oficial), Obter Dados, Da Web, mostra as tabelas encontradas na página. É frágil: se o site mudar o layout, a consulta quebra. Prefira uma API ou um arquivo para download quando houver.</p>
+`,
+              quiz: [
+                {
+                  pergunta: 'O que Json.Document faz?',
+                  opcoes: [
+                    'Baixa o arquivo',
+                    'Transforma o texto JSON em registros e listas do M',
+                    'Cria uma tabela HTML'
+                  ],
+                  certa: 1,
+                  explicacao: 'Quem baixa é o Web.Contents.'
+                },
+                {
+                  pergunta: 'Onde deve ficar a chave de uma API?',
+                  opcoes: [
+                    'No código M, para não esquecer',
+                    'Nas credenciais da fonte de dados',
+                    'No nome da consulta'
+                  ],
+                  certa: 1,
+                  explicacao: 'Assim ela não vai junto quando o arquivo é compartilhado.'
+                },
+                {
+                  pergunta: 'Para que serve List.Generate na paginação?',
+                  opcoes: [
+                    'Ordenar as páginas',
+                    'Repetir a busca página a página enquanto vierem dados',
+                    'Gerar dados aleatórios'
+                  ],
+                  certa: 1,
+                  explicacao: 'Ele funciona como um laço: estado inicial, condição, próximo passo e o que guardar.'
+                }
+              ]
+            },
+            {
+              id: 'calendario-em-m',
+              titulo: 'Um calendário feito em M',
+              resumo: 'List.Dates, colunas de data em português e marcação de dias úteis e feriados.',
+              minutos: 12,
+              corpo: `
+<p>Toda análise no tempo precisa de uma tabela calendário (a trilha de Power BI explica por quê). Ela pode ser feita em DAX, mas fazer em M tem vantagens: dá para juntar com uma tabela de feriados, reaproveitar no Excel e controlar tudo num lugar.</p>
+${trecho(`let
+    Inicio = #date(2026, 1, 1),
+    Fim = #date(2026, 12, 31),
+    Dias = List.Dates(Inicio, Duration.Days(Fim - Inicio) + 1, #duration(1, 0, 0, 0)),
+    Tabela = Table.FromList(Dias, Splitter.SplitByNothing(), {"Data"}, null, ExtraValues.Error),
+    Tipo = Table.TransformColumnTypes(Tabela, {{"Data", type date}}),
+    Ano = Table.AddColumn(Tipo, "Ano", each Date.Year([Data]), Int64.Type),
+    Mes = Table.AddColumn(Ano, "Mês", each Date.Month([Data]), Int64.Type),
+    NomeMes = Table.AddColumn(Mes, "Nome do mês", each Text.Proper(Date.MonthName([Data], "pt-BR")), type text),
+    AnoMes = Table.AddColumn(NomeMes, "Ano-Mês", each Date.ToText([Data], "yyyy-MM"), type text),
+    DiaSemana = Table.AddColumn(AnoMes, "Dia da semana", each Date.DayOfWeek([Data], Day.Monday) + 1, Int64.Type),
+    FimDeSemana = Table.AddColumn(DiaSemana, "Fim de semana", each [Dia da semana] >= 6, type logical)
+in
+    FimDeSemana`)}
+<ul>
+  <li><code>List.Dates</code> gera a lista de datas: início, quantidade e o passo (um dia).</li>
+  <li><code>Date.DayOfWeek([Data], Day.Monday)</code> devolve 0 para segunda; somando 1, segunda é 1 e domingo é 7, como no Brasil.</li>
+  <li>O <code>"pt-BR"</code> no <code>Date.MonthName</code> garante os nomes em português em qualquer computador.</li>
+</ul>
+
+<h2>Feriados e dias úteis</h2>
+<p>Com uma consulta <code>Feriados</code> (de uma planilha ou de uma API), uma mesclagem marca os feriados, e o dia útil vira uma coluna:</p>
+${trecho(`ComFeriado = Table.AddColumn(FimDeSemana, "Feriado", each List.Contains(Feriados[Data], [Data]), type logical),
+DiaUtil = Table.AddColumn(ComFeriado, "Dia útil", each not [Fim de semana] and not [Feriado], type logical)`)}
+<p>No Power BI, uma medida simples conta os dias úteis de qualquer período filtrado: <code>Dias úteis = CALCULATE(COUNTROWS(dCalendario), dCalendario[Dia útil] = TRUE())</code>.</p>
+${dica('Gere o calendário a partir das datas dos seus dados (List.Min e List.Max da coluna de data da fato, indo do início do primeiro ano ao fim do último). Assim ele nunca fica curto quando entram dados novos.')}
+`,
+              quiz: [
+                {
+                  pergunta: 'O que List.Dates(#date(2026,1,1), 365, #duration(1,0,0,0)) gera?',
+                  opcoes: ['Uma data', 'As 365 datas de 2026, uma por dia', 'Um erro'],
+                  certa: 1,
+                  explicacao: 'Início, quantidade e o passo entre as datas.'
+                },
+                {
+                  pergunta: 'Por que passar "pt-BR" em Date.MonthName?',
+                  opcoes: [
+                    'Para formatar como número',
+                    'Para os nomes saírem em português em qualquer computador',
+                    'É obrigatório'
+                  ],
+                  certa: 1,
+                  explicacao: 'Sem a cultura, vale a do sistema de quem atualiza.'
+                },
+                {
+                  pergunta: 'Como gerar o calendário de modo que ele acompanhe os dados?',
+                  opcoes: [
+                    'Digitando o ano todo ano',
+                    'A partir da menor e da maior data da tabela de fatos',
+                    'Com 100 anos fixos'
+                  ],
+                  certa: 1,
+                  explicacao: 'O intervalo se ajusta sozinho a cada atualização.'
+                }
+              ]
+            },
+            {
+              id: 'pratica-calendario',
+              titulo: 'Prática: calendário com dias úteis',
+              resumo: 'Gere o calendário de 2026, marque feriados e conte os dias úteis por mês.',
+              minutos: 25,
+              corpo: `
+<p>Crie no Excel uma Tabela <code>tbFeriados</code> com os feriados nacionais do segundo semestre de 2026 e leve ao Power Query como a consulta <code>Feriados</code>:</p>
+${tabela(
+  ['Data', 'Feriado'],
+  [
+    ['07/09/2026', 'Independência'],
+    ['12/10/2026', 'Nossa Senhora Aparecida'],
+    ['02/11/2026', 'Finados'],
+    ['15/11/2026', 'Proclamação da República'],
+    ['20/11/2026', 'Dia Nacional de Zumbi e da Consciência Negra'],
+    ['25/12/2026', 'Natal']
+  ]
+)}
+<h2>Tarefas</h2>
+<ol>
+  <li>Gere a consulta <code>Calendario</code> de 2026 com Data, Ano, Mês, Nome do mês, Dia da semana (1 = segunda), Fim de semana, Feriado e Dia útil.</li>
+  <li>Agrupe por Mês contando os dias úteis.</li>
+  <li>Confira: quantos dias úteis tem <strong>outubro</strong>? E <strong>novembro</strong>?</li>
+  <li>Por que o feriado de 15/11 não muda a contagem de novembro?</li>
+</ol>
+${resposta(`
+<ol>
+  <li>Use o código da aula até <code>DiaUtil</code>, com a consulta Feriados com a coluna Data como tipo data.</li>
+  <li>Agrupar Por Mês, operação Contar Linhas depois de filtrar Dia útil = TRUE (ou Soma de uma coluna 1/0). Em M: <code>Table.Group(Table.SelectRows(DiaUtil, each [Dia útil]), {"Mês"}, {{"Dias úteis", each Table.RowCount(_), Int64.Type}})</code>.</li>
+  <li><strong>Outubro: 21</strong>. O mês começa numa quinta-feira e tem 22 dias de segunda a sexta; o dia 12 (uma segunda) é feriado. <strong>Novembro: 19</strong>. Começa num domingo e tem 21 dias de segunda a sexta; saem 02/11 (segunda) e 20/11 (sexta).</li>
+  <li>Porque 15/11/2026 cai num <strong>domingo</strong>: já não era dia útil. A coluna Dia útil exige que não seja fim de semana <em>e</em> não seja feriado, então nada muda.</li>
+</ol>`)}
+`,
+              quiz: [
+                {
+                  pergunta: 'O que a coluna Dia útil precisa conferir?',
+                  opcoes: ['Só se não é feriado', 'Que não é fim de semana e não é feriado', 'Só se não é domingo'],
+                  certa: 1,
+                  explicacao: 'As duas condições juntas, com and.'
+                }
+              ]
+            }
+          ]
         }
       ]
     }

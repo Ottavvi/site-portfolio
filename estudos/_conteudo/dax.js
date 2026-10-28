@@ -549,6 +549,200 @@ RETURN
               ]
             }
           ]
+        },
+        {
+          titulo: 'Padrões de análise',
+          itens: [
+            {
+              id: 'tabelas-virtuais',
+              titulo: 'Tabelas virtuais e consultas DAX',
+              resumo: 'SUMMARIZE, ADDCOLUMNS, TOPN, FILTER dentro de medidas e a exibição de consulta.',
+              minutos: 13,
+              corpo: `
+<p>Muitas funções DAX devolvem uma <strong>tabela</strong> em vez de um número. Dentro de uma medida, essa tabela existe só durante o cálculo (uma <strong>tabela virtual</strong>) e serve para responder perguntas que uma soma simples não responde.</p>
+
+<h2>Contar o que passa num critério</h2>
+${trecho(`// Quantos vendedores venderam mais de R$ 250 no período filtrado?
+Vendedores acima de 250 =
+COUNTROWS(
+    FILTER(VALUES(fVendas[Vendedor]), [Faturamento] > 250)
+)
+
+// Quantos dias tiveram venda?
+Dias com venda = COUNTROWS(FILTER(VALUES(dCalendario[Date]), [Vendas] > 0))`)}
+<p><code>VALUES(coluna)</code> é a lista de valores distintos no contexto atual; <code>FILTER</code> fica com os que passam no teste, e cada <code>[Faturamento]</code> lá dentro é calculado para aquele vendedor (transição de contexto).</p>
+
+<h2>Montar uma tabela com colunas calculadas</h2>
+${trecho(`// Ticket médio do melhor mês
+Ticket do melhor mês =
+VAR PorMes =
+    ADDCOLUMNS(
+        VALUES(dCalendario[Ano-Mês]),
+        "@Fat", [Faturamento],
+        "@Ticket", [Ticket médio]
+    )
+VAR Melhor = TOPN(1, PorMes, [@Fat], DESC)
+RETURN MAXX(Melhor, [@Ticket])`)}
+<p>O prefixo <code>@</code> é uma convenção para colunas de tabelas virtuais, para não confundir com medidas. Para agrupar por colunas de tabelas diferentes, use <code>SUMMARIZE(fVendas, dProduto[Categoria], dCalendario[Ano])</code> e acrescente os cálculos com <code>ADDCOLUMNS</code>.</p>
+
+<h2>A exibição de consulta DAX</h2>
+<p>No Power BI Desktop, a <strong>exibição de consulta DAX</strong> (na barra da esquerda) roda consultas que devolvem tabelas, ótima para conferir uma tabela virtual antes de usá-la numa medida:</p>
+${trecho(`EVALUATE
+ADDCOLUMNS(
+    VALUES(fVendas[Vendedor]),
+    "Faturamento", [Faturamento],
+    "Posição", RANKX(ALL(fVendas[Vendedor]), [Faturamento])
+)
+ORDER BY [Faturamento] DESC`)}
+${dica('Monte medidas complicadas por partes, com VAR, e use a exibição de consulta para ver o conteúdo de cada variável (devolva ela no RETURN ou rode num EVALUATE). Depurar DAX "no escuro" é o que torna a linguagem difícil.')}
+`,
+              quiz: [
+                {
+                  pergunta: 'O que VALUES(fVendas[Vendedor]) devolve dentro de uma medida?',
+                  opcoes: [
+                    'O primeiro vendedor',
+                    'Uma tabela com os vendedores distintos no contexto atual',
+                    'A quantidade de vendedores'
+                  ],
+                  certa: 1,
+                  explicacao: 'Com COUNTROWS em volta, vira a quantidade.'
+                },
+                {
+                  pergunta: 'Para que serve a exibição de consulta DAX?',
+                  opcoes: [
+                    'Publicar o relatório',
+                    'Rodar consultas que devolvem tabelas, para conferir cálculos',
+                    'Criar relacionamentos'
+                  ],
+                  certa: 1,
+                  explicacao: 'EVALUATE mostra a tabela que uma expressão produz.'
+                },
+                {
+                  pergunta: 'Por que usar o prefixo @ em colunas de tabelas virtuais?',
+                  opcoes: ['É obrigatório', 'Para não confundir com medidas', 'Para ordenar'],
+                  certa: 1,
+                  explicacao: 'É uma convenção que deixa as fórmulas mais legíveis.'
+                }
+              ]
+            },
+            {
+              id: 'abc-e-segmentacao',
+              titulo: 'Curva ABC e segmentação dinâmica',
+              resumo: 'Classificar produtos pelo acumulado e agrupar por faixas que a pessoa escolhe.',
+              minutos: 13,
+              corpo: `
+<h2>Curva ABC (Pareto)</h2>
+<p>Em muitos negócios, poucos itens fazem a maior parte do resultado. A <strong>curva ABC</strong> ordena os itens do maior para o menor e soma os percentuais: os que formam os primeiros 80% são <strong>A</strong> (cuidar de perto, nunca faltar estoque), até 95% são <strong>B</strong> e o resto é <strong>C</strong>.</p>
+${trecho(`% acumulado =
+VAR Atual = [Faturamento]
+VAR Total = CALCULATE([Faturamento], ALL(dProduto))
+VAR Acumulado =
+    SUMX(
+        FILTER(ALL(dProduto[Produto]), [Faturamento] >= Atual),
+        [Faturamento]
+    )
+RETURN DIVIDE(Acumulado, Total)
+
+Classe ABC =
+VAR P = [% acumulado]
+RETURN
+    IF(
+        ISBLANK([Faturamento]),
+        BLANK(),
+        SWITCH(TRUE(), P <= 0.8, "A", P <= 0.95, "B", "C")
+    )`)}
+<p>O truque está no <code>Acumulado</code>: para o produto da linha, soma o faturamento de todos os produtos que faturaram <strong>tanto ou mais</strong> que ele. Para o primeiro colocado, é só ele; para o último, são todos (100%).</p>
+
+<h2>Segmentação dinâmica</h2>
+<p>Agrupar vendedores (ou clientes) em faixas ("até R$ 100", "R$ 100 a 300", "acima de 300") pelo faturamento <strong>no período filtrado</strong> não dá para fazer com coluna calculada, que é fixa. A saída: uma tabela de faixas sem relacionamento, e uma medida que conta quem cai em cada uma:</p>
+${trecho(`Faixas = DATATABLE("Faixa", STRING, "Min", CURRENCY, "Max", CURRENCY, "Ordem", INTEGER, {
+    {"Até R$ 100", 0, 100, 1},
+    {"R$ 100 a 300", 100, 300, 2},
+    {"Acima de R$ 300", 300, 999999999, 3}
+})
+
+Vendedores na faixa =
+VAR Min = SELECTEDVALUE(Faixas[Min])
+VAR Max = SELECTEDVALUE(Faixas[Max])
+RETURN COUNTROWS(FILTER(VALUES(fVendas[Vendedor]), [Faturamento] > Min && [Faturamento] <= Max))`)}
+<p>Numa tabela com Faixas[Faixa] nas linhas e a medida nos valores, a contagem muda conforme o período escolhido na segmentação de datas.</p>
+${dica('Use a classificação ABC junto com outros números: um produto C com margem altíssima pode valer mais que um A com margem negativa.')}
+`,
+              quiz: [
+                {
+                  pergunta: 'Na curva ABC, o que define um item A?',
+                  opcoes: [
+                    'Ser o mais caro',
+                    'Estar entre os que somam os primeiros 80% do total, em ordem decrescente',
+                    'Começar com a letra A'
+                  ],
+                  certa: 1,
+                  explicacao: 'Poucos itens que fazem a maior parte do resultado.'
+                },
+                {
+                  pergunta: 'Por que segmentar clientes por faixa com medida, e não com coluna calculada?',
+                  opcoes: [
+                    'Medidas são mais rápidas',
+                    'A faixa depende do período filtrado; a coluna calculada é fixa',
+                    'Colunas não aceitam números'
+                  ],
+                  certa: 1,
+                  explicacao: 'O mesmo cliente pode estar numa faixa em setembro e noutra em outubro.'
+                },
+                {
+                  pergunta: 'No cálculo do acumulado, quais produtos entram para o produto da linha?',
+                  opcoes: ['Só ele', 'Ele e todos os que faturaram tanto ou mais', 'Todos'],
+                  certa: 1,
+                  explicacao: 'É a soma até a posição dele no ranking.'
+                }
+              ]
+            },
+            {
+              id: 'pratica-abc',
+              titulo: 'Prática: curva ABC dos produtos',
+              resumo: 'Classifique os produtos e confira os percentuais.',
+              minutos: 25,
+              corpo: `
+${MODELO}
+<p>Os produtos de cada venda são: Café em grãos (05/07, 03/09 e 10/10), Moedor (18/07 e 15/09), Filtro (02/08) e Caneca (20/08 e 22/10).</p>
+<h2>Tarefas</h2>
+<ol>
+  <li>Monte uma tabela com Produto (de dProduto), Faturamento, % do total, % acumulado e Classe ABC.</li>
+  <li>Quais produtos são A, B e C?</li>
+  <li>Crie a medida <strong>Produtos A</strong>, que conta quantos produtos estão na classe A.</li>
+  <li>Filtre só setembro de 2026. O que acontece com a classificação, e por quê?</li>
+</ol>
+${resposta(`
+${tabela(
+  ['Produto', 'Faturamento', '% do total', '% acumulado', 'Classe'],
+  [
+    ['Moedor', '447,00', '39,5%', '39,5%', 'A'],
+    ['Café em grãos', '377,40', '33,4%', '72,9%', 'A'],
+    ['Caneca', '207,00', '18,3%', '91,2%', 'B'],
+    ['Filtro', '99,00', '8,8%', '100,0%', 'C']
+  ]
+)}
+<ol>
+  <li>Use as medidas da aula, com <code>% do total = DIVIDE([Faturamento], CALCULATE([Faturamento], ALL(dProduto)))</code>. Ordene a tabela pelo Faturamento, decrescente.</li>
+  <li><strong>A</strong>: Moedor e Café em grãos (juntos, 72,9%). <strong>B</strong>: Caneca (chega a 91,2%). <strong>C</strong>: Filtro.</li>
+  <li><code>Produtos A = COUNTROWS(FILTER(VALUES(dProduto[Produto]), [Classe ABC] = "A"))</code> → 2.</li>
+  <li>Em setembro só houve Café (125,80) e Moedor (298,00). Moedor fica com 70,3% (A) e o Café chega a 100% (C). As medidas recalculam tudo no contexto do filtro: a classificação é sempre <strong>do período escolhido</strong>, que é o que se espera de uma análise dinâmica. Produtos sem venda no mês ficam em branco por causa do <code>ISBLANK</code>.</li>
+</ol>`)}
+`,
+              quiz: [
+                {
+                  pergunta: 'Por que Filtro e Caneca somem da tabela ao filtrar setembro?',
+                  opcoes: [
+                    'Foram apagados',
+                    'Não venderam em setembro: o Faturamento fica em branco e a Classe ABC também',
+                    'Erro na medida'
+                  ],
+                  certa: 1,
+                  explicacao: 'Linhas com todas as medidas em branco não aparecem nos visuais.'
+                }
+              ]
+            }
+          ]
         }
       ]
     }

@@ -1693,6 +1693,30 @@
           "tipo": "aula",
           "nivel": "Avançado",
           "minutos": 30
+        },
+        {
+          "id": "powershell/sistema-e-rede",
+          "titulo": "Processos, serviços, disco e rede",
+          "resumo": "Investigar o que está acontecendo no computador e na rede.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 12
+        },
+        {
+          "id": "powershell/objetos-e-paralelo",
+          "titulo": "Objetos próprios, splatting e paralelo",
+          "resumo": "PSCustomObject, hashtables, tarefas em segundo plano e ForEach-Object -Parallel.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 12
+        },
+        {
+          "id": "powershell/pratica-monitor",
+          "titulo": "Prática: monitor do computador",
+          "resumo": "Um script que confere disco, memória e sites e grava um relatório.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 30
         }
       ]
     },
@@ -1764,6 +1788,30 @@
           "tipo": "aula",
           "nivel": "Avançado",
           "minutos": 30
+        },
+        {
+          "id": "lgpd/criancas-e-dados-publicos",
+          "titulo": "Crianças, adolescentes e dados públicos",
+          "resumo": "O melhor interesse, o consentimento dos pais e o que muda com dados já publicados.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 11
+        },
+        {
+          "id": "lgpd/ia-e-anonimizacao",
+          "titulo": "IA, anonimização e pseudonimização",
+          "resumo": "Usar dados pessoais com ferramentas de IA e tirar a identificação de verdade.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 13
+        },
+        {
+          "id": "lgpd/pratica-anonimizar",
+          "titulo": "Prática: anonimizar uma base",
+          "resumo": "Prepare uma base de atendimentos para ser compartilhada com uma consultoria.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 25
         }
       ]
     },
@@ -1816,6 +1864,30 @@
           "id": "excel/pratica-vendas",
           "titulo": "Prática: relatório de vendas",
           "resumo": "Cruze duas tabelas e resuma as vendas por vendedor.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 25
+        },
+        {
+          "id": "excel/funcoes-de-data",
+          "titulo": "Funções de data",
+          "resumo": "HOJE, DATA, FIMMÊS, DATAM, DIATRABALHOTOTAL e como o Excel guarda datas.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 11
+        },
+        {
+          "id": "excel/funcoes-de-texto",
+          "titulo": "Funções de texto",
+          "resumo": "Recortar, juntar, limpar e separar textos.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 11
+        },
+        {
+          "id": "excel/pratica-contas-a-pagar",
+          "titulo": "Prática: contas a pagar",
+          "resumo": "Status, atraso, multa e o que vence na semana.",
           "tipo": "aula",
           "nivel": "Intermediário",
           "minutos": 25
@@ -1922,6 +1994,30 @@
           "tipo": "aula",
           "nivel": "Avançado",
           "minutos": 20
+        },
+        {
+          "id": "power-query/web-e-apis",
+          "titulo": "Dados da web e de APIs",
+          "resumo": "Web.Contents, Json.Document, paginação e cuidados com chaves e atualização.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 12
+        },
+        {
+          "id": "power-query/calendario-em-m",
+          "titulo": "Um calendário feito em M",
+          "resumo": "List.Dates, colunas de data em português e marcação de dias úteis e feriados.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 12
+        },
+        {
+          "id": "power-query/pratica-calendario",
+          "titulo": "Prática: calendário com dias úteis",
+          "resumo": "Gere o calendário de 2026, marque feriados e conte os dias úteis por mês.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 25
         }
       ]
     },
@@ -2001,6 +2097,30 @@
           "tipo": "aula",
           "nivel": "Avançado",
           "minutos": 40
+        },
+        {
+          "id": "power-bi/parametros-e-cenarios",
+          "titulo": "Parâmetros de campo e cenários",
+          "resumo": "Deixar a pessoa escolher a métrica e simular \"e se o preço subir 10%?\".",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 12
+        },
+        {
+          "id": "power-bi/acessivel-e-celular",
+          "titulo": "Relatórios acessíveis e no celular",
+          "resumo": "Texto alternativo, ordem de tabulação, cores e o layout para celular.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 11
+        },
+        {
+          "id": "power-bi/pratica-cenarios",
+          "titulo": "Prática: simulador de preço",
+          "resumo": "Um parâmetro de campo e um simulador de aumento de preço.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 25
         }
       ]
     },
@@ -2077,6 +2197,30 @@
           "id": "dax/pratica-avancada",
           "titulo": "Prática: ranking e médias",
           "resumo": "RANKX, AVERAGEX, VAR e uma medida de destaque para o relatório.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 25
+        },
+        {
+          "id": "dax/tabelas-virtuais",
+          "titulo": "Tabelas virtuais e consultas DAX",
+          "resumo": "SUMMARIZE, ADDCOLUMNS, TOPN, FILTER dentro de medidas e a exibição de consulta.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 13
+        },
+        {
+          "id": "dax/abc-e-segmentacao",
+          "titulo": "Curva ABC e segmentação dinâmica",
+          "resumo": "Classificar produtos pelo acumulado e agrupar por faixas que a pessoa escolhe.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 13
+        },
+        {
+          "id": "dax/pratica-abc",
+          "titulo": "Prática: curva ABC dos produtos",
+          "resumo": "Classifique os produtos e confira os percentuais.",
           "tipo": "aula",
           "nivel": "Avançado",
           "minutos": 25

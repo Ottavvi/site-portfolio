@@ -3271,6 +3271,66 @@
       "explicacao": "Garante que o log seja fechado em qualquer caso."
     }
   ],
+  "powershell/sistema-e-rede": [
+    {
+      "pergunta": "Como ver o espaço livre dos discos?",
+      "opcoes": ["Get-Disk -Free", "Get-CimInstance Win32_LogicalDisk", "Get-Space"],
+      "certa": 1,
+      "explicacao": "FreeSpace e Size vêm em bytes: divida por 1GB."
+    },
+    {
+      "pergunta": "Como testar se um site responde na porta 443?",
+      "opcoes": ["ping site -p 443", "Test-NetConnection site -Port 443", "Get-Port 443"],
+      "certa": 1,
+      "explicacao": "O ping não testa portas; Test-NetConnection sim."
+    },
+    {
+      "pergunta": "O que -WhatIf faz no Stop-Process?",
+      "opcoes": ["Fecha à força", "Mostra o que seria fechado, sem fechar", "Pede senha"],
+      "certa": 1,
+      "explicacao": "Sempre útil antes de comandos que encerram ou apagam."
+    }
+  ],
+  "powershell/objetos-e-paralelo": [
+    {
+      "pergunta": "Por que devolver [PSCustomObject] em vez de texto num script?",
+      "opcoes": [
+        "É mais bonito",
+        "O resultado pode ser filtrado, ordenado e exportado como qualquer objeto",
+        "É obrigatório"
+      ],
+      "certa": 1,
+      "explicacao": "Texto precisaria ser recortado; objetos têm propriedades."
+    },
+    {
+      "pergunta": "O que é splatting?",
+      "opcoes": [
+        "Dividir um arquivo",
+        "Passar os parâmetros de um comando a partir de uma hashtable, com @",
+        "Rodar em paralelo"
+      ],
+      "certa": 1,
+      "explicacao": "Comando @parametros em vez de uma linha enorme."
+    },
+    {
+      "pergunta": "Como usar uma variável de fora dentro de ForEach-Object -Parallel?",
+      "opcoes": ["Normalmente", "Com $using:nome", "Não dá"],
+      "certa": 1,
+      "explicacao": "Cada execução paralela roda isolada."
+    }
+  ],
+  "powershell/pratica-monitor": [
+    {
+      "pergunta": "Por que terminar com exit 1 quando há problema?",
+      "opcoes": [
+        "Para fechar a janela",
+        "O código de saída diferente de 0 sinaliza falha para quem rodou (o Agendador, um CI)",
+        "É obrigatório no PowerShell"
+      ],
+      "certa": 1,
+      "explicacao": "0 é sucesso; qualquer outro número, falha."
+    }
+  ],
   "lgpd/o-que-e-lgpd": [
     {
       "pergunta": "O endereço IP de quem acessa o site é dado pessoal?",
@@ -3427,6 +3487,70 @@
       "explicacao": "É dado de saúde, sensível, e o celular pode ser visto por outras pessoas."
     }
   ],
+  "lgpd/criancas-e-dados-publicos": [
+    {
+      "pergunta": "Qual o princípio central no tratamento de dados de crianças e adolescentes?",
+      "opcoes": ["O lucro da empresa", "O melhor interesse da criança ou do adolescente", "A velocidade do serviço"],
+      "certa": 1,
+      "explicacao": "É o que o artigo 14 coloca em primeiro lugar."
+    },
+    {
+      "pergunta": "Dados publicados na internet podem ser usados para qualquer finalidade?",
+      "opcoes": [
+        "Sim, são públicos",
+        "Não: o uso precisa respeitar a finalidade e a boa-fé da publicação",
+        "Só se forem de empresas"
+      ],
+      "certa": 1,
+      "explicacao": "Público não quer dizer livre de regras."
+    },
+    {
+      "pergunta": "Um jogo infantil pode exigir dados além do necessário para a criança jogar?",
+      "opcoes": ["Sim, com consentimento", "Não: a lei proíbe condicionar a participação a isso", "Só nome e foto"],
+      "certa": 1,
+      "explicacao": "O artigo 14 veda condicionar jogos e aplicações a dados desnecessários."
+    }
+  ],
+  "lgpd/ia-e-anonimizacao": [
+    {
+      "pergunta": "Tirar só a coluna de nome torna uma base anônima?",
+      "opcoes": [
+        "Sim",
+        "Não necessariamente: combinações como CEP, nascimento e sexo ainda identificam",
+        "Só se tiver mais de mil linhas"
+      ],
+      "certa": 1,
+      "explicacao": "É preciso suprimir e generalizar os atributos que, juntos, identificam."
+    },
+    {
+      "pergunta": "Por que um hash simples do CPF não é um bom pseudônimo?",
+      "opcoes": [
+        "Ele é muito longo",
+        "Há poucos CPFs possíveis: dá para calcular o hash de todos e descobrir quem é quem",
+        "Hash não existe em JavaScript"
+      ],
+      "certa": 1,
+      "explicacao": "Use HMAC com chave secreta ou um código aleatório com tabela protegida."
+    },
+    {
+      "pergunta": "Ao usar uma ferramenta de IA para resumir reclamações, o que fazer com CPF e telefone?",
+      "opcoes": ["Enviar junto, para contexto", "Remover antes de enviar (minimização)", "Criptografar e enviar"],
+      "certa": 1,
+      "explicacao": "O resumo não precisa deles."
+    }
+  ],
+  "lgpd/pratica-anonimizar": [
+    {
+      "pergunta": "Na tabela generalizada, por que o homem de 60+ da região 83 é um problema?",
+      "opcoes": [
+        "Ele tem a maior espera",
+        "É o único com essa combinação: pode ser reconhecido por quem o conhece",
+        "A região está errada"
+      ],
+      "certa": 1,
+      "explicacao": "Com k = 1, a generalização não protegeu ninguém."
+    }
+  ],
   "excel/formulas-e-referencias": [
     {
       "pergunta": "O que acontece com =A1*$B$1 ao ser copiada uma linha abaixo?",
@@ -3541,6 +3665,62 @@
       "opcoes": ["Não dá", "Trazer a categoria para tbVendas com uma busca e depois contar", "Copiar e colar à mão"],
       "certa": 1,
       "explicacao": "Buscar e depois resumir é o padrão. No Power BI, um relacionamento faz isso sem coluna extra."
+    }
+  ],
+  "excel/funcoes-de-data": [
+    {
+      "pergunta": "O que =B2-A2 devolve, com duas datas?",
+      "opcoes": ["Um erro", "A diferença em dias", "A diferença em meses"],
+      "certa": 1,
+      "explicacao": "Datas são números de dias por baixo do formato."
+    },
+    {
+      "pergunta": "Qual função dá o último dia do mês?",
+      "opcoes": ["ÚLTIMODIA()", "FIMMÊS(data; 0)", "MÊS(data)+30"],
+      "certa": 1,
+      "explicacao": "Com -1, dá o último dia do mês anterior; somando 1, o primeiro do mês atual."
+    },
+    {
+      "pergunta": "Por que DIATRABALHOTOTAL tem um argumento de feriados?",
+      "opcoes": ["Não tem", "Sem ele, só sábados e domingos são descontados", "Para contar os feriados"],
+      "certa": 1,
+      "explicacao": "Os feriados mudam por país e cidade; você informa a lista."
+    }
+  ],
+  "excel/funcoes-de-texto": [
+    {
+      "pergunta": "O que =ARRUMAR(\"  Ana   Souza \") devolve?",
+      "opcoes": ["\"Ana Souza\"", "\"  Ana   Souza \"", "\"AnaSouza\""],
+      "certa": 0,
+      "explicacao": "Tira os espaços das pontas e reduz os duplos do meio a um."
+    },
+    {
+      "pergunta": "Como pegar o que vem antes do primeiro espaço no Microsoft 365?",
+      "opcoes": ["=ANTES(A2)", "=TEXTOANTES(A2; \" \")", "=ESQUERDA(A2)"],
+      "certa": 1,
+      "explicacao": "Em versões antigas: =ESQUERDA(A2; PROCURAR(\" \"; A2) - 1)."
+    },
+    {
+      "pergunta": "O que o Preenchimento Relâmpago (Ctrl+E) faz?",
+      "opcoes": [
+        "Copia a fórmula",
+        "Descobre o padrão a partir de exemplos digitados e completa a coluna",
+        "Apaga espaços"
+      ],
+      "certa": 1,
+      "explicacao": "Ótimo para separações pontuais; para repetir todo mês, prefira fórmulas ou Power Query."
+    }
+  ],
+  "excel/pratica-contas-a-pagar": [
+    {
+      "pergunta": "Por que usar a data de referência em H1 em vez de HOJE()?",
+      "opcoes": [
+        "HOJE() não existe em português",
+        "Para o resultado não mudar sozinho a cada dia que o arquivo é aberto",
+        "É mais rápido"
+      ],
+      "certa": 1,
+      "explicacao": "Relatórios de posição numa data precisam ser reproduzíveis."
     }
   ],
   "excel/tabelas-dinamicas": [
@@ -3763,6 +3943,66 @@
       "explicacao": "Um valor por coluna exigiria chamar a função duas vezes."
     }
   ],
+  "power-query/web-e-apis": [
+    {
+      "pergunta": "O que Json.Document faz?",
+      "opcoes": ["Baixa o arquivo", "Transforma o texto JSON em registros e listas do M", "Cria uma tabela HTML"],
+      "certa": 1,
+      "explicacao": "Quem baixa é o Web.Contents."
+    },
+    {
+      "pergunta": "Onde deve ficar a chave de uma API?",
+      "opcoes": ["No código M, para não esquecer", "Nas credenciais da fonte de dados", "No nome da consulta"],
+      "certa": 1,
+      "explicacao": "Assim ela não vai junto quando o arquivo é compartilhado."
+    },
+    {
+      "pergunta": "Para que serve List.Generate na paginação?",
+      "opcoes": [
+        "Ordenar as páginas",
+        "Repetir a busca página a página enquanto vierem dados",
+        "Gerar dados aleatórios"
+      ],
+      "certa": 1,
+      "explicacao": "Ele funciona como um laço: estado inicial, condição, próximo passo e o que guardar."
+    }
+  ],
+  "power-query/calendario-em-m": [
+    {
+      "pergunta": "O que List.Dates(#date(2026,1,1), 365, #duration(1,0,0,0)) gera?",
+      "opcoes": ["Uma data", "As 365 datas de 2026, uma por dia", "Um erro"],
+      "certa": 1,
+      "explicacao": "Início, quantidade e o passo entre as datas."
+    },
+    {
+      "pergunta": "Por que passar \"pt-BR\" em Date.MonthName?",
+      "opcoes": [
+        "Para formatar como número",
+        "Para os nomes saírem em português em qualquer computador",
+        "É obrigatório"
+      ],
+      "certa": 1,
+      "explicacao": "Sem a cultura, vale a do sistema de quem atualiza."
+    },
+    {
+      "pergunta": "Como gerar o calendário de modo que ele acompanhe os dados?",
+      "opcoes": [
+        "Digitando o ano todo ano",
+        "A partir da menor e da maior data da tabela de fatos",
+        "Com 100 anos fixos"
+      ],
+      "certa": 1,
+      "explicacao": "O intervalo se ajusta sozinho a cada atualização."
+    }
+  ],
+  "power-query/pratica-calendario": [
+    {
+      "pergunta": "O que a coluna Dia útil precisa conferir?",
+      "opcoes": ["Só se não é feriado", "Que não é fim de semana e não é feriado", "Só se não é domingo"],
+      "certa": 1,
+      "explicacao": "As duas condições juntas, com and."
+    }
+  ],
   "power-bi/o-que-e-power-bi": [
     {
       "pergunta": "Onde o relatório é construído?",
@@ -3929,6 +4169,66 @@
       ],
       "certa": 1,
       "explicacao": "O campo em \"Detalhamento\" define o que é levado como filtro."
+    }
+  ],
+  "power-bi/parametros-e-cenarios": [
+    {
+      "pergunta": "Para que serve um parâmetro de campo?",
+      "opcoes": [
+        "Filtrar datas",
+        "Deixar a pessoa trocar a medida ou a coluna mostrada num visual",
+        "Criar relacionamentos"
+      ],
+      "certa": 1,
+      "explicacao": "Um gráfico com seletor no lugar de vários gráficos iguais."
+    },
+    {
+      "pergunta": "O que SELECTEDVALUE(coluna, 0) devolve quando nada está selecionado?",
+      "opcoes": ["Um erro", "0, o valor padrão", "O primeiro valor"],
+      "certa": 1,
+      "explicacao": "O padrão também vale quando mais de um valor está selecionado."
+    },
+    {
+      "pergunta": "Por que a tabela de um parâmetro numérico não tem relacionamento?",
+      "opcoes": [
+        "Esqueceram de criar",
+        "Ela só guarda a escolha da pessoa, sem filtrar os dados",
+        "Relacionamentos não funcionam com números"
+      ],
+      "certa": 1,
+      "explicacao": "A medida lê o valor escolhido com SELECTEDVALUE."
+    }
+  ],
+  "power-bi/acessivel-e-celular": [
+    {
+      "pergunta": "O que escrever no texto alternativo de um gráfico?",
+      "opcoes": ["\"Gráfico de linhas\"", "A conclusão que o gráfico mostra", "Nada"],
+      "certa": 1,
+      "explicacao": "É o que a pessoa que não vê o gráfico precisa saber."
+    },
+    {
+      "pergunta": "Por que não depender só de vermelho e verde?",
+      "opcoes": ["São cores feias", "Muitas pessoas com daltonismo não distinguem as duas", "O Power BI não aceita"],
+      "certa": 1,
+      "explicacao": "Acrescente ícones, rótulos ou formas."
+    },
+    {
+      "pergunta": "Onde se monta a versão do relatório para o celular?",
+      "opcoes": ["Num arquivo separado", "Em Exibir, Layout móvel", "Não dá"],
+      "certa": 1,
+      "explicacao": "É uma tela vertical com os visuais escolhidos, no mesmo arquivo."
+    }
+  ],
+  "power-bi/pratica-cenarios": [
+    {
+      "pergunta": "Por que o \"Faturamento com perda\" cresce menos que o simulado simples?",
+      "opcoes": [
+        "Erro de arredondamento",
+        "Porque considera que o aumento de preço reduz a quantidade vendida",
+        "Porque usa outro mês"
+      ],
+      "certa": 1,
+      "explicacao": "Simulações realistas consideram a reação das vendas ao preço."
     }
   ],
   "dax/medidas-e-colunas": [
@@ -4113,6 +4413,74 @@
       ],
       "certa": 1,
       "explicacao": "Meses sem venda dão vazio, que fica fora da média."
+    }
+  ],
+  "dax/tabelas-virtuais": [
+    {
+      "pergunta": "O que VALUES(fVendas[Vendedor]) devolve dentro de uma medida?",
+      "opcoes": [
+        "O primeiro vendedor",
+        "Uma tabela com os vendedores distintos no contexto atual",
+        "A quantidade de vendedores"
+      ],
+      "certa": 1,
+      "explicacao": "Com COUNTROWS em volta, vira a quantidade."
+    },
+    {
+      "pergunta": "Para que serve a exibição de consulta DAX?",
+      "opcoes": [
+        "Publicar o relatório",
+        "Rodar consultas que devolvem tabelas, para conferir cálculos",
+        "Criar relacionamentos"
+      ],
+      "certa": 1,
+      "explicacao": "EVALUATE mostra a tabela que uma expressão produz."
+    },
+    {
+      "pergunta": "Por que usar o prefixo @ em colunas de tabelas virtuais?",
+      "opcoes": ["É obrigatório", "Para não confundir com medidas", "Para ordenar"],
+      "certa": 1,
+      "explicacao": "É uma convenção que deixa as fórmulas mais legíveis."
+    }
+  ],
+  "dax/abc-e-segmentacao": [
+    {
+      "pergunta": "Na curva ABC, o que define um item A?",
+      "opcoes": [
+        "Ser o mais caro",
+        "Estar entre os que somam os primeiros 80% do total, em ordem decrescente",
+        "Começar com a letra A"
+      ],
+      "certa": 1,
+      "explicacao": "Poucos itens que fazem a maior parte do resultado."
+    },
+    {
+      "pergunta": "Por que segmentar clientes por faixa com medida, e não com coluna calculada?",
+      "opcoes": [
+        "Medidas são mais rápidas",
+        "A faixa depende do período filtrado; a coluna calculada é fixa",
+        "Colunas não aceitam números"
+      ],
+      "certa": 1,
+      "explicacao": "O mesmo cliente pode estar numa faixa em setembro e noutra em outubro."
+    },
+    {
+      "pergunta": "No cálculo do acumulado, quais produtos entram para o produto da linha?",
+      "opcoes": ["Só ele", "Ele e todos os que faturaram tanto ou mais", "Todos"],
+      "certa": 1,
+      "explicacao": "É a soma até a posição dele no ranking."
+    }
+  ],
+  "dax/pratica-abc": [
+    {
+      "pergunta": "Por que Filtro e Caneca somem da tabela ao filtrar setembro?",
+      "opcoes": [
+        "Foram apagados",
+        "Não venderam em setembro: o Faturamento fica em branco e a Classe ABC também",
+        "Erro na medida"
+      ],
+      "certa": 1,
+      "explicacao": "Linhas com todas as medidas em branco não aparecem nos visuais."
     }
   ]
 }

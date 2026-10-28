@@ -527,6 +527,222 @@ Start-ScheduledTask -TaskName 'Resumo semanal'`)}
               ]
             }
           ]
+        },
+        {
+          titulo: 'Sistema, rede e paralelo',
+          itens: [
+            {
+              id: 'sistema-e-rede',
+              titulo: 'Processos, serviços, disco e rede',
+              resumo: 'Investigar o que está acontecendo no computador e na rede.',
+              minutos: 12,
+              corpo: `
+<h2>Processos</h2>
+${trecho(`# Os 5 processos que mais usam memória, em MB
+Get-Process | Sort-Object WorkingSet64 -Descending | Select-Object -First 5 Name, Id,
+    @{ Name = 'MB'; Expression = { [math]::Round($_.WorkingSet64 / 1MB) } }
+
+Get-Process chrome | Measure-Object WorkingSet64 -Sum      # quanto todas as abas somam
+Stop-Process -Name notepad -WhatIf                         # simula antes de fechar de verdade`)}
+
+<h2>Serviços</h2>
+${trecho(`Get-Service | Where-Object Status -eq 'Running' | Sort-Object DisplayName
+Get-Service -Name Spooler | Select-Object Name, Status, StartType
+Restart-Service -Name Spooler        # a fila de impressão travou? (precisa de administrador)`)}
+
+<h2>Disco e informações do sistema</h2>
+<p>O <strong>CIM</strong> (<code>Get-CimInstance</code>) dá acesso a centenas de informações do Windows:</p>
+${trecho(`Get-CimInstance Win32_LogicalDisk -Filter "DriveType = 3" | Select-Object DeviceID,
+    @{ Name = 'Livre GB'; Expression = { [math]::Round($_.FreeSpace / 1GB, 1) } },
+    @{ Name = 'Livre %'; Expression = { [math]::Round($_.FreeSpace / $_.Size * 100) } }
+
+Get-CimInstance Win32_OperatingSystem | Select-Object Caption, Version, LastBootUpTime
+Get-ComputerInfo -Property CsName, OsName, CsTotalPhysicalMemory`)}
+
+<h2>Eventos do Windows</h2>
+${trecho(`# Erros do sistema nas últimas 24 horas
+Get-WinEvent -FilterHashtable @{ LogName = 'System'; Level = 2; StartTime = (Get-Date).AddDays(-1) } |
+    Select-Object TimeCreated, ProviderName, Message -First 10`)}
+
+<h2>Rede</h2>
+${trecho(`Test-NetConnection google.com -Port 443        # o site responde na porta do HTTPS?
+Resolve-DnsName ottavvi.github.io               # para qual IP o nome aponta
+Get-NetIPAddress -AddressFamily IPv4 | Select-Object InterfaceAlias, IPAddress
+Invoke-WebRequest https://ottavvi.github.io/site-portfolio/ -Method Head | Select-Object StatusCode`)}
+${dica('Antes de chamar o suporte com "a internet não funciona", três comandos dizem muito: <code>Test-NetConnection</code> (chega no site?), <code>Resolve-DnsName</code> (o nome resolve?) e <code>Get-NetIPAddress</code> (o computador tem um IP válido?).')}
+`,
+              quiz: [
+                {
+                  pergunta: 'Como ver o espaço livre dos discos?',
+                  opcoes: ['Get-Disk -Free', 'Get-CimInstance Win32_LogicalDisk', 'Get-Space'],
+                  certa: 1,
+                  explicacao: 'FreeSpace e Size vêm em bytes: divida por 1GB.'
+                },
+                {
+                  pergunta: 'Como testar se um site responde na porta 443?',
+                  opcoes: ['ping site -p 443', 'Test-NetConnection site -Port 443', 'Get-Port 443'],
+                  certa: 1,
+                  explicacao: 'O ping não testa portas; Test-NetConnection sim.'
+                },
+                {
+                  pergunta: 'O que -WhatIf faz no Stop-Process?',
+                  opcoes: ['Fecha à força', 'Mostra o que seria fechado, sem fechar', 'Pede senha'],
+                  certa: 1,
+                  explicacao: 'Sempre útil antes de comandos que encerram ou apagam.'
+                }
+              ]
+            },
+            {
+              id: 'objetos-e-paralelo',
+              titulo: 'Objetos próprios, splatting e paralelo',
+              resumo: 'PSCustomObject, hashtables, tarefas em segundo plano e ForEach-Object -Parallel.',
+              minutos: 12,
+              corpo: `
+<h2>Seus próprios objetos</h2>
+<p>Scripts ficam muito mais úteis quando devolvem <strong>objetos</strong> em vez de texto: aí o resultado pode ser filtrado, ordenado e exportado como qualquer outro.</p>
+${trecho(`$relatorio = foreach ($disco in Get-CimInstance Win32_LogicalDisk -Filter "DriveType = 3") {
+    [PSCustomObject]@{
+        Disco   = $disco.DeviceID
+        LivreGB = [math]::Round($disco.FreeSpace / 1GB, 1)
+        Alerta  = ($disco.FreeSpace / $disco.Size) -lt 0.15
+    }
+}
+$relatorio | Where-Object Alerta | Export-Csv alertas.csv -NoTypeInformation -Encoding UTF8`)}
+
+<h2>Hashtables e splatting</h2>
+<p>Comandos com muitos parâmetros ficam ilegíveis numa linha. O <strong>splatting</strong> passa os parâmetros a partir de uma hashtable, com <code>@</code> no lugar do <code>$</code>:</p>
+${trecho(`$email = @{
+    To         = 'equipe@empresa.com'
+    Subject    = 'Relatório semanal'
+    Body       = $texto
+    Attachments = 'relatorio.csv'
+}
+Send-MailMessage @email -SmtpServer 'smtp.empresa.com'   # (comando legado, só como exemplo de splatting)
+
+$config = @{ Pasta = "$HOME\\Downloads"; Dias = 30 }
+$config.Pasta
+$config['Dias'] += 7`)}
+
+<h2>Em segundo plano</h2>
+${trecho(`$tarefa = Start-Job { Get-ChildItem C:\\ -Recurse -File -ErrorAction SilentlyContinue | Measure-Object Length -Sum }
+# ... o terminal continua livre ...
+Receive-Job $tarefa -Wait -AutoRemoveJob`)}
+
+<h2>Em paralelo (PowerShell 7)</h2>
+<p>Para muitas operações lentas e independentes (conferir 50 sites, processar 200 arquivos), <code>ForEach-Object -Parallel</code> roda várias ao mesmo tempo:</p>
+${trecho(`$sites = 'https://github.com', 'https://ottavvi.github.io', 'https://www.gov.br'
+$sites | ForEach-Object -Parallel {
+    $inicio = Get-Date
+    try {
+        $r = Invoke-WebRequest $_ -Method Head -TimeoutSec 10
+        [PSCustomObject]@{ Site = $_; Status = $r.StatusCode; Ms = ((Get-Date) - $inicio).TotalMilliseconds }
+    } catch {
+        [PSCustomObject]@{ Site = $_; Status = 'ERRO'; Ms = $null }
+    }
+} -ThrottleLimit 5`)}
+<p>Dentro do bloco paralelo, variáveis de fora só entram com <code>$using:</code> (<code>$using:limite</code>), porque cada execução roda isolada.</p>
+${dica('Para administrar outros computadores da rede, o PowerShell tem o <strong>remoting</strong>: <code>Invoke-Command -ComputerName PC01, PC02 -ScriptBlock { Get-Service Spooler }</code> roda o bloco nos dois ao mesmo tempo (exige o WinRM habilitado e permissão de administrador lá).')}
+`,
+              quiz: [
+                {
+                  pergunta: 'Por que devolver [PSCustomObject] em vez de texto num script?',
+                  opcoes: [
+                    'É mais bonito',
+                    'O resultado pode ser filtrado, ordenado e exportado como qualquer objeto',
+                    'É obrigatório'
+                  ],
+                  certa: 1,
+                  explicacao: 'Texto precisaria ser recortado; objetos têm propriedades.'
+                },
+                {
+                  pergunta: 'O que é splatting?',
+                  opcoes: [
+                    'Dividir um arquivo',
+                    'Passar os parâmetros de um comando a partir de uma hashtable, com @',
+                    'Rodar em paralelo'
+                  ],
+                  certa: 1,
+                  explicacao: 'Comando @parametros em vez de uma linha enorme.'
+                },
+                {
+                  pergunta: 'Como usar uma variável de fora dentro de ForEach-Object -Parallel?',
+                  opcoes: ['Normalmente', 'Com $using:nome', 'Não dá'],
+                  certa: 1,
+                  explicacao: 'Cada execução paralela roda isolada.'
+                }
+              ]
+            },
+            {
+              id: 'pratica-monitor',
+              titulo: 'Prática: monitor do computador',
+              resumo: 'Um script que confere disco, memória e sites e grava um relatório.',
+              minutos: 30,
+              corpo: `
+<h2>Tarefas</h2>
+<p>Escreva <code>monitor.ps1</code>, que:</p>
+<ol>
+  <li>Lista cada disco fixo com o espaço livre em GB e em %, marcando <code>Alerta</code> quando estiver abaixo de 15%.</li>
+  <li>Lista os 5 processos que mais usam memória.</li>
+  <li>Confere se uma lista de sites responde (status HTTP ou "ERRO").</li>
+  <li>Junta tudo num arquivo de texto com data e hora no nome, em <code>Documents\\Monitor</code>.</li>
+  <li>Se algum disco estiver em alerta ou algum site com erro, mostra um aviso com <code>Write-Warning</code> e termina com código de saída 1 (<code>exit 1</code>), para o Agendador de Tarefas registrar a falha.</li>
+</ol>
+${resposta(`
+${trecho(`# monitor.ps1 (UTF-8 com BOM no PowerShell 5.1)
+$ErrorActionPreference = 'Stop'
+$sites = 'https://github.com', 'https://ottavvi.github.io/site-portfolio/'
+
+$discos = foreach ($d in Get-CimInstance Win32_LogicalDisk -Filter "DriveType = 3") {
+    $pct = [math]::Round($d.FreeSpace / $d.Size * 100)
+    [PSCustomObject]@{ Disco = $d.DeviceID; LivreGB = [math]::Round($d.FreeSpace / 1GB, 1); LivrePct = $pct; Alerta = $pct -lt 15 }
+}
+
+$processos = Get-Process | Sort-Object WorkingSet64 -Descending | Select-Object -First 5 Name,
+    @{ Name = 'MB'; Expression = { [math]::Round($_.WorkingSet64 / 1MB) } }
+
+$verificados = foreach ($site in $sites) {
+    try {
+        $status = (Invoke-WebRequest $site -Method Head -TimeoutSec 10 -UseBasicParsing).StatusCode
+    } catch {
+        $status = 'ERRO'
+    }
+    [PSCustomObject]@{ Site = $site; Status = $status }
+}
+
+$pasta = Join-Path ([Environment]::GetFolderPath('MyDocuments')) 'Monitor'
+New-Item -ItemType Directory $pasta -Force | Out-Null
+$arquivo = Join-Path $pasta ("monitor-{0:yyyy-MM-dd_HHmm}.txt" -f (Get-Date))
+
+@(
+    "Monitor de $(Get-Date -Format 'dd/MM/yyyy HH:mm')"
+    ''
+    'DISCOS'; $discos | Format-Table -AutoSize | Out-String
+    'PROCESSOS'; $processos | Format-Table -AutoSize | Out-String
+    'SITES'; $verificados | Format-Table -AutoSize | Out-String
+) | Set-Content $arquivo -Encoding UTF8
+
+$problemas = @($discos | Where-Object Alerta) + @($verificados | Where-Object Status -eq 'ERRO')
+if ($problemas.Count -gt 0) {
+    Write-Warning "$($problemas.Count) problema(s). Veja $arquivo"
+    exit 1
+}
+Write-Output "Tudo certo. Relatório em $arquivo"`)}
+<p><code>Format-Table | Out-String</code> transforma as tabelas em texto para o arquivo. Os <code>@()</code> garantem que <code>$problemas</code> seja sempre uma lista, mesmo com zero ou um item. O <code>-UseBasicParsing</code> evita depender do Internet Explorer no PowerShell 5.1.</p>`)}
+`,
+              quiz: [
+                {
+                  pergunta: 'Por que terminar com exit 1 quando há problema?',
+                  opcoes: [
+                    'Para fechar a janela',
+                    'O código de saída diferente de 0 sinaliza falha para quem rodou (o Agendador, um CI)',
+                    'É obrigatório no PowerShell'
+                  ],
+                  certa: 1,
+                  explicacao: '0 é sucesso; qualquer outro número, falha.'
+                }
+              ]
+            }
+          ]
         }
       ]
     }
