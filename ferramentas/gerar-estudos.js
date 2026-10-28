@@ -214,7 +214,7 @@ ${trilhas
       caminho: 'index.html',
       titulo: 'Estudos | Otávio',
       descricao:
-        'Trilhas para aprender desenvolvimento web do zero, com aulas, quiz e desafios de código no navegador, e um diário do que estou estudando.',
+        'Trilhas para aprender desenvolvimento web, back-end e dados do zero, com aulas, quiz e desafios de código no navegador, e um diário do que estou estudando.',
       corpo: `        <section class="hero" id="inicio">
           <div class="wrap">
             <div class="section-kicker">Estudos</div>
@@ -223,15 +223,15 @@ ${trilhas
               <em>fazendo.</em>
             </h1>
             <p class="lead">
-              Trilhas para aprender desenvolvimento web do zero, com aulas curtas, quiz e desafios de código que você
-              resolve no próprio navegador. E um diário com o que eu ando estudando.
+              Trilhas para aprender desenvolvimento web, back-end e dados do zero, com aulas curtas, quiz e desafios de
+              código que você resolve no próprio navegador (até em SQL e Python). E um diário com o que eu ando estudando.
             </p>
             ${avisoConta}
             <ul class="estudos-numeros" aria-label="A área de estudos em números">
               <li><strong>${numeros.aulas}</strong> aulas</li>
               <li><strong>${numeros.desafios}</strong> desafios de código</li>
               <li><strong>${numeros.perguntas}</strong> perguntas de quiz</li>
-              <li><strong>${prontas}</strong> de ${trilhas.length} trilhas prontas</li>
+              <li>${prontas === trilhas.length ? `<strong>${prontas}</strong> trilhas` : `<strong>${prontas}</strong> de ${trilhas.length} trilhas prontas`}</li>
             </ul>
           </div>
         </section>
@@ -249,8 +249,11 @@ ${trilhas
             <h2>Escolha por onde começar.</h2>
             <p class="section-intro">
               ${trilhas.length} trilhas, cada uma do nível iniciante ao avançado.
-              ${prontas === 1 ? 'A primeira já está disponível' : `${prontas} já estão disponíveis`}; as outras vão
-              ganhando aulas aos poucos.
+              ${
+                prontas === trilhas.length
+                  ? 'Nas de Excel, Power BI, DAX, Power Query, PowerShell e LGPD, os desafios viram práticas para fazer no seu computador, com a resposta para conferir.'
+                  : `${prontas === 1 ? 'A primeira já está disponível' : `${prontas} já estão disponíveis`}; as outras vão ganhando aulas aos poucos.`
+              }
             </p>
 ${cartoes}
           </div>
