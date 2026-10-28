@@ -2042,6 +2042,333 @@ ${dica('Herança parece elegante, mas cadeias longas ficam difíceis de entender
 </script>`
             }
           ]
+        },
+        {
+          titulo: 'Estruturas e desempenho',
+          itens: [
+            {
+              id: 'map-e-set',
+              titulo: 'Map, Set e agrupamentos',
+              resumo: 'As coleções além de arrays e objetos, e Object.groupBy.',
+              minutos: 11,
+              corpo: `
+<h2>Set: valores sem repetição</h2>
+<p>Um <code>Set</code> guarda cada valor uma vez só. É o jeito mais curto de tirar duplicados e de perguntar "já vi isto?" rapidamente:</p>
+${codigo(`<script>
+  const tags = ['js', 'css', 'js', 'html', 'css'];
+  const unicas = new Set(tags);
+  console.log(unicas.size, [...unicas]);
+
+  unicas.add('react');
+  console.log(unicas.has('css'), unicas.has('python'));
+
+  // Interseção: tags que aparecem nas duas listas
+  const minhas = new Set(['js', 'react', 'node']);
+  console.log([...unicas].filter(t => minhas.has(t)));
+</script>`)}
+<p><code>has</code> num Set é instantâneo mesmo com milhares de itens, enquanto <code>includes</code> num array percorre a lista inteira. Para conferir muitos valores, transforme a lista num Set antes.</p>
+
+<h2>Map: chave e valor de qualquer tipo</h2>
+<p>Um <code>Map</code> é parecido com um objeto, mas a chave pode ser qualquer coisa (até um elemento do DOM), a ordem de inserção é mantida e ele tem <code>size</code>:</p>
+${codigo(`<script>
+  const estoque = new Map();
+  estoque.set('café', 40).set('chá', 0).set('filtro', 120);
+
+  estoque.set('café', estoque.get('café') - 2);
+  console.log(estoque.get('café'), estoque.size, estoque.has('caneca'));
+
+  for (const [produto, quantidade] of estoque) {
+    console.log(produto, quantidade);
+  }
+
+  const semEstoque = [...estoque].filter(([, q]) => q === 0).map(([p]) => p);
+  console.log('Sem estoque:', semEstoque);
+</script>`)}
+${dica('Use objeto para dados com formato fixo (um produto com nome e preço) e Map para coleções que crescem, com chaves vindas dos dados (contagem por categoria, cache por id).')}
+
+<h2>Agrupar</h2>
+<p>Agrupar uma lista por uma propriedade é tão comum que ganhou função própria, <code>Object.groupBy</code> (e <code>Map.groupBy</code>, que devolve um Map):</p>
+${codigo(`<script>
+  const vendas = [
+    { vendedor: 'Ana', valor: 188.7 },
+    { vendedor: 'Bruno', valor: 149 },
+    { vendedor: 'Ana', valor: 99 },
+    { vendedor: 'Carla', valor: 138 }
+  ];
+
+  const porVendedor = Object.groupBy(vendas, v => v.vendedor);
+  console.log(Object.keys(porVendedor));
+
+  const totais = Object.fromEntries(
+    Object.entries(porVendedor).map(([nome, lista]) => [nome, lista.reduce((s, v) => s + v.valor, 0)])
+  );
+  console.log(totais);
+</script>`)}
+`,
+              quiz: [
+                {
+                  pergunta: 'Qual o jeito mais curto de tirar duplicados de um array?',
+                  opcoes: ['[...new Set(lista)]', 'lista.unique()', 'lista.filter(x => x)'],
+                  certa: 0,
+                  explicacao: 'O Set guarda cada valor uma vez; o spread volta para array.'
+                },
+                {
+                  pergunta: 'Qual a vantagem de Map sobre objeto para uma coleção que cresce?',
+                  opcoes: [
+                    'Nenhuma',
+                    'Chaves de qualquer tipo, ordem garantida e size',
+                    'Map é mais curto de escrever'
+                  ],
+                  certa: 1,
+                  explicacao: 'E não há risco de colidir com propriedades herdadas, como toString.'
+                },
+                {
+                  pergunta: 'O que Object.groupBy(lista, fn) devolve?',
+                  opcoes: [
+                    'Um array ordenado',
+                    'Um objeto com uma lista de itens para cada chave devolvida por fn',
+                    'A soma dos itens'
+                  ],
+                  certa: 1,
+                  explicacao: 'Cada chave reúne os itens daquele grupo.'
+                }
+              ]
+            },
+            {
+              id: 'delegacao-e-debounce',
+              titulo: 'Delegação de eventos e debounce',
+              resumo: 'Um ouvinte para muitos elementos e esperar a pessoa parar de digitar.',
+              minutos: 12,
+              corpo: `
+<h2>Delegação de eventos</h2>
+<p>Numa lista com 500 itens, pôr um <code>addEventListener</code> em cada botão gasta memória e não funciona para itens criados depois. Como os eventos <strong>sobem</strong> pela árvore (<em>bubbling</em>), basta um ouvinte no pai e descobrir onde foi o clique com <code>event.target.closest()</code>:</p>
+${codigo(`<ul id="lista">
+  <li data-id="1">Café <button data-acao="remover">×</button></li>
+  <li data-id="2">Chá <button data-acao="remover">×</button></li>
+</ul>
+<button id="novo">Adicionar item</button>
+
+<script>
+  const lista = document.querySelector('#lista');
+  let proximo = 3;
+
+  lista.addEventListener('click', evento => {
+    const botao = evento.target.closest('[data-acao="remover"]');
+    if (!botao) return;                       // o clique não foi num botão de remover
+    botao.closest('li').remove();
+  });
+
+  document.querySelector('#novo').addEventListener('click', () => {
+    lista.insertAdjacentHTML('beforeend',
+      \`<li data-id="\${proximo}">Item \${proximo++} <button data-acao="remover">×</button></li>\`);
+  });
+</script>`)}
+<p>Os itens novos funcionam sem nenhum código extra, porque o ouvinte está na lista, não neles.</p>
+
+<h2>Debounce</h2>
+<p>Uma busca que consulta o servidor a cada tecla dispara 10 pedidos para "cafeteira". Com <strong>debounce</strong>, a função só roda depois que a pessoa <strong>parou</strong> de digitar por um tempo:</p>
+${codigo(`<input id="busca" placeholder="Digite rápido...">
+<p id="log"></p>
+
+<script>
+  function debounce(funcao, espera) {
+    let timer;
+    return (...argumentos) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => funcao(...argumentos), espera);
+    };
+  }
+
+  let chamadas = 0;
+  const buscar = debounce(texto => {
+    chamadas++;
+    document.querySelector('#log').textContent = \`Buscou "\${texto}" (\${chamadas} busca(s) no total)\`;
+  }, 400);
+
+  document.querySelector('#busca').addEventListener('input', e => buscar(e.target.value));
+</script>`)}
+<p>Cada tecla cancela o timer anterior e começa outro. Só quando passam 400 ms sem teclas a busca acontece. A função devolvida é um <strong>closure</strong>: ela lembra a variável <code>timer</code> entre as chamadas.</p>
+${dica('O primo do debounce é o <strong>throttle</strong>: em vez de esperar parar, ele roda no máximo uma vez a cada intervalo. Bom para eventos que disparam sem parar, como scroll e redimensionar a janela.')}
+
+<h2>Medir antes de otimizar</h2>
+<p><code>performance.now()</code> mede o tempo com precisão, e a aba <strong>Performance</strong> das ferramentas de desenvolvedor mostra o que trava a página. Na maioria das vezes, o lento não é o JavaScript, mas mexer no DOM demais: monte os elementos e insira de uma vez (com um <code>DocumentFragment</code> ou <code>replaceChildren</code>), em vez de um por um.</p>
+`,
+              quiz: [
+                {
+                  pergunta: 'Por que a delegação funciona para itens criados depois?',
+                  opcoes: [
+                    'O navegador copia os ouvintes',
+                    'O ouvinte está no pai, e os eventos dos filhos sobem até ele',
+                    'Não funciona'
+                  ],
+                  certa: 1,
+                  explicacao: 'É o bubbling: o clique num filho também é um clique no pai.'
+                },
+                {
+                  pergunta: 'O que o debounce faz?',
+                  opcoes: [
+                    'Roda a função a cada evento',
+                    'Roda a função só depois que os eventos param por um tempo',
+                    'Roda uma vez por segundo, sempre'
+                  ],
+                  certa: 1,
+                  explicacao: 'Rodar no máximo uma vez por intervalo é o throttle.'
+                },
+                {
+                  pergunta: 'Para que serve event.target.closest("li")?',
+                  opcoes: [
+                    'Fechar o item',
+                    'Achar o <li> mais próximo subindo a partir do elemento clicado',
+                    'Criar um <li>'
+                  ],
+                  certa: 1,
+                  explicacao: 'O clique pode ter sido num ícone dentro do botão; closest sobe até achar.'
+                }
+              ]
+            },
+            {
+              id: 'desafio-busca-de-contatos',
+              tipo: 'desafio',
+              titulo: 'Desafio: busca de contatos',
+              resumo: 'Debounce, Set e delegação numa agenda de contatos.',
+              minutos: 25,
+              enunciado: `
+<p>Complete a agenda de contatos:</p>
+<ul>
+  <li><code>debounce(funcao, espera)</code>: devolve uma função que só chama <code>funcao</code> (com os últimos argumentos) depois de <code>espera</code> ms sem novas chamadas.</li>
+  <li><code>filtrar(contatos, texto)</code>: devolve os contatos cujo nome contém o texto, sem diferenciar maiúsculas, minúsculas e <strong>acentos</strong> ("jose" acha "José").</li>
+  <li>A lista <code>#lista</code> usa <strong>um único ouvinte de clique</strong> (delegação): clicar no botão ★ de um contato marca e desmarca ele como favorito, guardando os ids num <code>Set</code> chamado <code>favoritos</code>, e o <code>li</code> ganha a classe <code>favorito</code>.</li>
+</ul>`,
+              inicial: `<input id="busca" placeholder="Buscar contato">
+<ul id="lista"></ul>
+
+<script>
+  const contatos = [
+    { id: 1, nome: 'Ana Souza' }, { id: 2, nome: 'José Lima' },
+    { id: 3, nome: 'Márcia Dias' }, { id: 4, nome: 'Joana Reis' }
+  ];
+  const favoritos = new Set();
+
+  function debounce(funcao, espera) {
+  }
+
+  function filtrar(lista, texto) {
+    return lista;
+  }
+
+  function desenhar(lista) {
+    document.querySelector('#lista').innerHTML = lista
+      .map(c => \`<li data-id="\${c.id}" class="\${favoritos.has(c.id) ? 'favorito' : ''}">\${c.nome} <button>★</button></li>\`)
+      .join('');
+  }
+
+  desenhar(contatos);
+</script>
+`,
+              testes: [
+                [
+                  'debounce chama só uma vez, com os últimos argumentos, depois da espera',
+                  async doc => {
+                    const w = doc.defaultView;
+                    const chamadas = [];
+                    const f = w.eval('debounce')(v => chamadas.push(v), 60);
+                    f('a');
+                    f('ab');
+                    f('abc');
+                    const antes = chamadas.length;
+                    await w.__esperar(130);
+                    return antes === 0 && chamadas.join() === 'abc';
+                  }
+                ],
+                [
+                  'filtrar ignora maiúsculas e acentos',
+                  doc => {
+                    const w = doc.defaultView;
+                    const nomes = texto =>
+                      w
+                        .eval('filtrar')(w.eval('contatos'), texto)
+                        .map(c => c.nome)
+                        .join('|');
+                    return (
+                      nomes('jose') === 'José Lima' &&
+                      nomes('MARCIA') === 'Márcia Dias' &&
+                      nomes('jo') === 'José Lima|Joana Reis' &&
+                      nomes('').split('|').length === 4
+                    );
+                  }
+                ],
+                [
+                  'Clicar em ★ marca e desmarca o favorito (classe e Set)',
+                  doc => {
+                    const w = doc.defaultView;
+                    const li = () => doc.querySelector('#lista li[data-id="3"]');
+                    const favoritos = w.eval('favoritos');
+                    li().querySelector('button').click();
+                    const marcou = favoritos.has(3) && li().classList.contains('favorito');
+                    li().querySelector('button').click();
+                    return marcou && !favoritos.has(3) && !li().classList.contains('favorito');
+                  }
+                ],
+                [
+                  'Delegação: os botões continuam funcionando depois de a lista ser redesenhada',
+                  doc => {
+                    const w = doc.defaultView;
+                    w.eval('desenhar')(w.eval('filtrar')(w.eval('contatos'), 'a'));
+                    doc.querySelector('#lista li[data-id="1"] button').click();
+                    const funcionou = w.eval('favoritos').has(1);
+                    doc.querySelector('#lista li[data-id="1"] button').click();
+                    return funcionou;
+                  }
+                ]
+              ],
+              solucao: `<input id="busca" placeholder="Buscar contato">
+<ul id="lista"></ul>
+
+<script>
+  const contatos = [
+    { id: 1, nome: 'Ana Souza' }, { id: 2, nome: 'José Lima' },
+    { id: 3, nome: 'Márcia Dias' }, { id: 4, nome: 'Joana Reis' }
+  ];
+  const favoritos = new Set();
+
+  function debounce(funcao, espera) {
+    let timer;
+    return (...argumentos) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => funcao(...argumentos), espera);
+    };
+  }
+
+  // Tira os acentos: "Márcia" vira "marcia"
+  const normalizar = texto => texto.normalize('NFD').replace(/[\\u0300-\\u036f]/g, '').toLowerCase();
+
+  function filtrar(lista, texto) {
+    const busca = normalizar(texto);
+    return lista.filter(c => normalizar(c.nome).includes(busca));
+  }
+
+  function desenhar(lista) {
+    document.querySelector('#lista').innerHTML = lista
+      .map(c => \`<li data-id="\${c.id}" class="\${favoritos.has(c.id) ? 'favorito' : ''}">\${c.nome} <button>★</button></li>\`)
+      .join('');
+  }
+
+  document.querySelector('#lista').addEventListener('click', evento => {
+    const li = evento.target.closest('button') && evento.target.closest('li');
+    if (!li) return;
+    const id = Number(li.dataset.id);
+    if (favoritos.has(id)) favoritos.delete(id);
+    else favoritos.add(id);
+    li.classList.toggle('favorito', favoritos.has(id));
+  });
+
+  const buscar = debounce(texto => desenhar(filtrar(contatos, texto)), 250);
+  document.querySelector('#busca').addEventListener('input', e => buscar(e.target.value));
+
+  desenhar(contatos);
+</script>`
+            }
+          ]
         }
       ]
     }

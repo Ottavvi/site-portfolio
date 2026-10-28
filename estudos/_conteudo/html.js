@@ -1337,6 +1337,279 @@ ${codigo(`<!-- A imagem principal: carrega com prioridade -->
 </html>`
             }
           ]
+        },
+        {
+          titulo: 'Interatividade nativa',
+          itens: [
+            {
+              id: 'dialog-details-popover',
+              titulo: 'dialog, details e popover',
+              resumo: 'Modais, sanfonas e menus com o que o HTML já tem, quase sem JavaScript.',
+              minutos: 11,
+              corpo: `
+<p>Por muito tempo, abrir um modal ou uma sanfona exigia uma biblioteca de JavaScript. Hoje o HTML tem elementos prontos para isso, que já vêm acessíveis pelo teclado e por leitores de tela.</p>
+
+<h2>details e summary</h2>
+<p>Uma área que abre e fecha. O <code>&lt;summary&gt;</code> é o título clicável; o resto aparece quando aberto:</p>
+${codigo(`<details>
+  <summary>Qual o prazo de entrega?</summary>
+  <p>De 2 a 5 dias úteis para as capitais.</p>
+</details>
+
+<details open>
+  <summary>Posso trocar o produto?</summary>
+  <p>Sim, em até 30 dias, com a etiqueta.</p>
+</details>`)}
+<p>Com o mesmo atributo <code>name</code> em vários <code>&lt;details&gt;</code>, eles viram uma <strong>sanfona exclusiva</strong>: abrir um fecha os outros, sem nenhuma linha de JavaScript.</p>
+${codigo(`<details name="faq"><summary>Entrega</summary><p>De 2 a 5 dias úteis.</p></details>
+<details name="faq"><summary>Trocas</summary><p>Em até 30 dias.</p></details>
+<details name="faq"><summary>Pagamento</summary><p>Pix, cartão ou boleto.</p></details>`)}
+
+<h2>dialog</h2>
+<p>O <code>&lt;dialog&gt;</code> é uma janela sobre a página. Aberto com <code>showModal()</code>, ele vira um <strong>modal</strong> de verdade: escurece o fundo (o <code>::backdrop</code>), prende o foco do teclado dentro dele e fecha com <kbd>Esc</kbd>. Um formulário com <code>method="dialog"</code> fecha o diálogo ao ser enviado:</p>
+${codigo(`<style>
+  dialog::backdrop { background: rgb(0 0 0 / 0.5); }
+  dialog { border: 0; border-radius: 12px; padding: 20px; }
+</style>
+
+<button onclick="document.querySelector('#confirmar').showModal()">Excluir conta</button>
+
+<dialog id="confirmar">
+  <h2>Excluir a conta?</h2>
+  <p>Esta ação não pode ser desfeita.</p>
+  <form method="dialog">
+    <button value="cancelar">Cancelar</button>
+    <button value="excluir">Excluir</button>
+  </form>
+</dialog>
+
+<p id="resultado"></p>
+<script>
+  const dialogo = document.querySelector('#confirmar');
+  dialogo.addEventListener('close', () => {
+    document.querySelector('#resultado').textContent = 'Você escolheu: ' + dialogo.returnValue;
+  });
+</script>`)}
+<p>O <code>value</code> do botão usado para fechar fica em <code>dialogo.returnValue</code>. Prefira o <code>&lt;dialog&gt;</code> a uma <code>&lt;div&gt;</code> com <code>position: fixed</code>: manter o foco preso e devolver o foco ao botão que abriu, à mão, é trabalhoso e fácil de errar.</p>
+
+<h2>popover</h2>
+<p>O atributo <code>popover</code> transforma qualquer elemento numa camada que aparece por cima de tudo, ligada a um botão com <code>popovertarget</code>. Fecha ao clicar fora ou com <kbd>Esc</kbd>. Ideal para menus e dicas:</p>
+${codigo(`<button popovertarget="menu">Menu ▾</button>
+<div id="menu" popover>
+  <a href="#">Meu perfil</a><br>
+  <a href="#">Pedidos</a><br>
+  <a href="#">Sair</a>
+</div>`)}
+${dica('Diferença rápida: o popover não bloqueia o resto da página (a pessoa continua clicando em outras coisas); o dialog com showModal bloqueia até ser fechado. Use modal só quando a pessoa realmente precisa decidir antes de continuar.')}
+`,
+              quiz: [
+                {
+                  pergunta: 'Como fazer vários <details> virarem uma sanfona em que só um fica aberto?',
+                  opcoes: ['Com JavaScript', 'Dando o mesmo atributo name a todos', 'Com a classe accordion'],
+                  certa: 1,
+                  explicacao: 'O name agrupa: abrir um fecha os outros do mesmo grupo.'
+                },
+                {
+                  pergunta: 'Qual a vantagem de dialog.showModal() sobre uma div fixa na tela?',
+                  opcoes: [
+                    'É mais bonito',
+                    'Prende o foco, fecha com Esc e bloqueia o fundo sem código extra',
+                    'Carrega mais rápido'
+                  ],
+                  certa: 1,
+                  explicacao: 'A acessibilidade de teclado já vem pronta.'
+                },
+                {
+                  pergunta: 'O que um <form method="dialog"> faz dentro de um dialog?',
+                  opcoes: ['Envia ao servidor', 'Fecha o dialog, guardando o value do botão em returnValue', 'Nada'],
+                  certa: 1,
+                  explicacao: 'É o jeito nativo de fechar com uma resposta.'
+                }
+              ]
+            },
+            {
+              id: 'templates-e-web-components',
+              titulo: 'template e web components',
+              resumo: 'Moldes de HTML reaproveitáveis e suas próprias tags.',
+              minutos: 12,
+              corpo: `
+<h2>template</h2>
+<p>O conteúdo de um <code>&lt;template&gt;</code> não aparece na página: é um <strong>molde</strong> que o JavaScript copia quantas vezes quiser. É mais seguro e mais legível do que montar HTML com textos:</p>
+${codigo(`<template id="cartao-produto">
+  <article class="cartao">
+    <h3></h3>
+    <p class="preco"></p>
+  </article>
+</template>
+
+<div id="vitrine"></div>
+
+<script>
+  const produtos = [{ nome: 'Café', preco: 'R$ 62,90' }, { nome: 'Caneca', preco: 'R$ 34,50' }];
+  const molde = document.querySelector('#cartao-produto');
+
+  for (const p of produtos) {
+    const copia = molde.content.cloneNode(true);
+    copia.querySelector('h3').textContent = p.nome;     // textContent: nada de HTML injetado
+    copia.querySelector('.preco').textContent = p.preco;
+    document.querySelector('#vitrine').append(copia);
+  }
+</script>`)}
+
+<h2>Web components</h2>
+<p>Com <strong>elementos personalizados</strong> (<em>custom elements</em>), você cria tags novas, como <code>&lt;contador-cliques&gt;</code>, que funcionam em qualquer página, com ou sem framework. O nome precisa ter um hífen:</p>
+${codigo(`<contador-cliques inicio="5"></contador-cliques>
+<contador-cliques></contador-cliques>
+
+<script>
+  class ContadorCliques extends HTMLElement {
+    connectedCallback() {
+      let valor = Number(this.getAttribute('inicio') ?? 0);
+      const botao = document.createElement('button');
+      botao.textContent = \`Cliques: \${valor}\`;
+      botao.addEventListener('click', () => (botao.textContent = \`Cliques: \${++valor}\`));
+      this.append(botao);
+    }
+  }
+  customElements.define('contador-cliques', ContadorCliques);
+</script>`)}
+<p><code>connectedCallback</code> roda quando a tag entra na página. Também existem <code>disconnectedCallback</code> (quando sai) e <code>attributeChangedCallback</code> (quando um atributo observado muda).</p>
+
+<h2>Shadow DOM e slots</h2>
+<p>O <strong>Shadow DOM</strong> dá ao componente uma árvore própria: o CSS de dentro não vaza para fora, e o da página não entra. O <code>&lt;slot&gt;</code> marca onde o conteúdo escrito entre as tags do componente aparece:</p>
+${codigo(`<aviso-caixa tipo="erro">Não foi possível salvar.</aviso-caixa>
+<aviso-caixa>Alterações salvas.</aviso-caixa>
+
+<script>
+  customElements.define('aviso-caixa', class extends HTMLElement {
+    connectedCallback() {
+      const sombra = this.attachShadow({ mode: 'open' });
+      const erro = this.getAttribute('tipo') === 'erro';
+      sombra.innerHTML = \`
+        <style>
+          p { padding: 10px 14px; border-radius: 8px; margin: 6px 0;
+              background: \${erro ? '#fde8e8' : '#e6f6f2'}; color: \${erro ? '#9b1c1c' : '#0b5f55'}; }
+        </style>
+        <p role="\${erro ? 'alert' : 'status'}"><slot></slot></p>\`;
+    }
+  });
+</script>`)}
+${dica('Web components são ótimos para peças reaproveitadas em vários sites (um botão de compartilhar, um player). Para uma aplicação inteira com muito estado, um framework como o React costuma ser mais produtivo.')}
+`,
+              quiz: [
+                {
+                  pergunta: 'O conteúdo de um <template> aparece na página?',
+                  opcoes: ['Sim', 'Não: é um molde para o JavaScript copiar', 'Só no celular'],
+                  certa: 1,
+                  explicacao: 'Use template.content.cloneNode(true) para fazer cópias.'
+                },
+                {
+                  pergunta: 'Qual nome é válido para um elemento personalizado?',
+                  opcoes: ['contador', 'meu-contador', 'MeuContador'],
+                  certa: 1,
+                  explicacao: 'O hífen é obrigatório, para não colidir com tags futuras do HTML.'
+                },
+                {
+                  pergunta: 'Para que serve o Shadow DOM?',
+                  opcoes: [
+                    'Deixar o componente invisível',
+                    'Isolar o HTML e o CSS do componente do resto da página',
+                    'Carregar imagens'
+                  ],
+                  certa: 1,
+                  explicacao: 'O estilo de dentro não vaza e o de fora não entra.'
+                }
+              ]
+            },
+            {
+              id: 'desafio-faq-e-modal',
+              tipo: 'desafio',
+              titulo: 'Desafio: FAQ e modal de contato',
+              resumo: 'Uma página de ajuda com sanfona exclusiva e um dialog que abre e fecha.',
+              minutos: 18,
+              enunciado: `
+<p>Monte a página de ajuda de uma loja:</p>
+<ul>
+  <li>Uma FAQ com pelo menos <strong>3 perguntas</strong>, cada uma num <code>&lt;details&gt;</code> com <code>&lt;summary&gt;</code>, funcionando como <strong>sanfona exclusiva</strong> (só uma aberta por vez).</li>
+  <li>Um botão <strong>Falar com a gente</strong> que abre um <code>&lt;dialog&gt;</code> como modal (<code>showModal</code>).</li>
+  <li>Dentro do dialog, um formulário com <code>method="dialog"</code> e um botão <strong>Fechar</strong> que o fecha.</li>
+</ul>`,
+              inicial: `<h1>Ajuda</h1>
+
+<h2>Perguntas frequentes</h2>
+<p>Qual o prazo de entrega? De 2 a 5 dias úteis.</p>
+
+<button>Falar com a gente</button>
+`,
+              testes: [
+                [
+                  'Pelo menos 3 <details>, cada um com <summary>',
+                  doc => {
+                    const lista = [...doc.querySelectorAll('details')];
+                    return lista.length >= 3 && lista.every(d => d.querySelector(':scope > summary'));
+                  }
+                ],
+                [
+                  'Os <details> formam uma sanfona exclusiva (mesmo name)',
+                  doc => {
+                    const nomes = [...doc.querySelectorAll('details')].map(d => d.getAttribute('name'));
+                    return nomes.length >= 3 && !!nomes[0] && nomes.every(n => n === nomes[0]);
+                  }
+                ],
+                [
+                  'O botão "Falar com a gente" abre um <dialog> como modal',
+                  doc => {
+                    const dialogo = doc.querySelector('dialog');
+                    const botao = [...doc.querySelectorAll('button')].find(
+                      b => !b.closest('dialog') && b.textContent.includes('Falar com a gente')
+                    );
+                    if (!dialogo || !botao) return false;
+                    if (dialogo.open) dialogo.close();
+                    botao.click();
+                    return dialogo.open && dialogo.matches(':modal');
+                  }
+                ],
+                [
+                  'Um form method="dialog" com o botão Fechar fecha o dialog',
+                  doc => {
+                    const dialogo = doc.querySelector('dialog');
+                    const form = dialogo?.querySelector('form[method="dialog"]');
+                    const fechar =
+                      form && [...form.querySelectorAll('button')].find(b => b.textContent.trim() === 'Fechar');
+                    if (!fechar) return false;
+                    if (!dialogo.open) dialogo.showModal();
+                    fechar.click();
+                    return !dialogo.open;
+                  }
+                ]
+              ],
+              solucao: `<h1>Ajuda</h1>
+
+<h2>Perguntas frequentes</h2>
+<details name="faq">
+  <summary>Qual o prazo de entrega?</summary>
+  <p>De 2 a 5 dias úteis.</p>
+</details>
+<details name="faq">
+  <summary>Posso trocar o produto?</summary>
+  <p>Sim, em até 30 dias.</p>
+</details>
+<details name="faq">
+  <summary>Quais as formas de pagamento?</summary>
+  <p>Pix, cartão ou boleto.</p>
+</details>
+
+<button onclick="document.querySelector('#contato').showModal()">Falar com a gente</button>
+
+<dialog id="contato">
+  <h2>Fale com a gente</h2>
+  <p>contato@loja.com · (41) 3333-0000</p>
+  <form method="dialog">
+    <button>Fechar</button>
+  </form>
+</dialog>`
+            }
+          ]
         }
       ]
     }

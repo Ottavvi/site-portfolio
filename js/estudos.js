@@ -351,8 +351,8 @@ function criarEditor(caixa, { codigoInicial, aoAtualizar, chaveSalva, linguagem 
     const doc = resultado.contentDocument;
     // Formulários no resultado: valida como de verdade, mas não envia para lugar nenhum
     doc.addEventListener('submit', event => {
-      // Se o JavaScript da página já cuidou do envio, não se mete
-      if (event.defaultPrevented) return;
+      // Se o JavaScript da página já cuidou do envio, não se mete. Nem com method="dialog", que só fecha um <dialog>
+      if (event.defaultPrevented || event.target.getAttribute('method') === 'dialog') return;
       event.preventDefault();
       const aviso = doc.createElement('p');
       aviso.textContent = '✓ Formulário válido. (O envio é só uma simulação.)';

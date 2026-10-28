@@ -148,6 +148,30 @@
           "tipo": "desafio",
           "nivel": "Avançado",
           "minutos": 20
+        },
+        {
+          "id": "html/dialog-details-popover",
+          "titulo": "dialog, details e popover",
+          "resumo": "Modais, sanfonas e menus com o que o HTML já tem, quase sem JavaScript.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 11
+        },
+        {
+          "id": "html/templates-e-web-components",
+          "titulo": "template e web components",
+          "resumo": "Moldes de HTML reaproveitáveis e suas próprias tags.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 12
+        },
+        {
+          "id": "html/desafio-faq-e-modal",
+          "titulo": "Desafio: FAQ e modal de contato",
+          "resumo": "Uma página de ajuda com sanfona exclusiva e um dialog que abre e fecha.",
+          "tipo": "desafio",
+          "nivel": "Avançado",
+          "minutos": 18
         }
       ]
     },
@@ -307,6 +331,30 @@
           "tipo": "desafio",
           "nivel": "Avançado",
           "minutos": 25
+        },
+        {
+          "id": "css/container-queries",
+          "titulo": "Container queries",
+          "resumo": "Componentes que mudam conforme o espaço que têm, não o tamanho da tela.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 11
+        },
+        {
+          "id": "css/preferencias-do-usuario",
+          "titulo": "Respeitar as preferências da pessoa",
+          "resumo": "Movimento reduzido, tema escuro, foco visível e alto contraste.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 11
+        },
+        {
+          "id": "css/desafio-cartao-adaptavel",
+          "titulo": "Desafio: cartão que se adapta",
+          "resumo": "Um cartão com container query, foco visível e movimento reduzido.",
+          "tipo": "desafio",
+          "nivel": "Avançado",
+          "minutos": 20
         }
       ]
     },
@@ -482,6 +530,30 @@
           "tipo": "desafio",
           "nivel": "Avançado",
           "minutos": 30
+        },
+        {
+          "id": "javascript/map-e-set",
+          "titulo": "Map, Set e agrupamentos",
+          "resumo": "As coleções além de arrays e objetos, e Object.groupBy.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 11
+        },
+        {
+          "id": "javascript/delegacao-e-debounce",
+          "titulo": "Delegação de eventos e debounce",
+          "resumo": "Um ouvinte para muitos elementos e esperar a pessoa parar de digitar.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 12
+        },
+        {
+          "id": "javascript/desafio-busca-de-contatos",
+          "titulo": "Desafio: busca de contatos",
+          "resumo": "Debounce, Set e delegação numa agenda de contatos.",
+          "tipo": "desafio",
+          "nivel": "Avançado",
+          "minutos": 25
         }
       ]
     },

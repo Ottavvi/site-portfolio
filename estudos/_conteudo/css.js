@@ -1806,6 +1806,265 @@ ${dica('Aninhe pouco: dois ou três níveis no máximo. Aninhamento fundo gera s
 </div>`
             }
           ]
+        },
+        {
+          titulo: 'Componentes que se adaptam',
+          itens: [
+            {
+              id: 'container-queries',
+              titulo: 'Container queries',
+              resumo: 'Componentes que mudam conforme o espaço que têm, não o tamanho da tela.',
+              minutos: 11,
+              corpo: `
+<p>Media queries perguntam o tamanho da <strong>tela</strong>. Mas um mesmo cartão pode estar numa coluna estreita da barra lateral e numa área larga do conteúdo, na mesma tela. As <strong>container queries</strong> perguntam o tamanho do <strong>contêiner</strong> onde o componente está, e ele se adapta sozinho onde quer que seja colocado.</p>
+
+<h2>Como usar</h2>
+<ol>
+  <li>Marque o elemento pai como contêiner: <code>container-type: inline-size</code> (passa a ser possível consultar a largura dele).</li>
+  <li>Escreva as regras com <code>@container</code>, como faria com <code>@media</code>.</li>
+</ol>
+${codigo(`<style>
+  .area { container-type: inline-size; border: 2px dashed #9ab; padding: 8px; margin-bottom: 12px; }
+  .cartao { display: flex; flex-direction: column; gap: 10px; background: #f3f6f8; padding: 12px; border-radius: 10px; }
+  .cartao .foto { background: #0b7a6f; border-radius: 8px; min-height: 80px; flex: 0 0 120px; }
+
+  @container (min-width: 420px) {
+    .cartao { flex-direction: row; align-items: center; }
+  }
+</style>
+
+<div class="area" style="width: 300px">
+  <article class="cartao"><div class="foto"></div><p>Na área estreita, o cartão empilha.</p></article>
+</div>
+<div class="area" style="width: 560px">
+  <article class="cartao"><div class="foto"></div><p>Na área larga, o mesmo cartão fica lado a lado.</p></article>
+</div>`)}
+
+<h2>Nomes e unidades</h2>
+<p>Com contêineres aninhados, dê um nome (<code>container-name: lateral</code>, ou o atalho <code>container: lateral / inline-size</code>) e consulte por ele: <code>@container lateral (min-width: 300px)</code>. Também existem unidades relativas ao contêiner: <code>cqi</code> é 1% da largura dele. Um título com <code>font-size: clamp(1rem, 5cqi, 2rem)</code> cresce com o cartão, não com a tela.</p>
+${dica('Regra prática: media queries para o <strong>layout da página</strong> (quantas colunas, onde fica o menu) e container queries para os <strong>componentes</strong> (cartões, widgets) que aparecem em lugares de larguras diferentes.')}
+
+<h2>O seletor :has()</h2>
+<p>Outro recurso que deixa componentes espertos: <code>:has()</code> estiliza um elemento conforme o que há <em>dentro</em> dele. Um cartão com imagem vira grade; um formulário com campo inválido ganha borda:</p>
+${codigo(`<style>
+  .cartao { padding: 12px; border: 1px solid #ccd; border-radius: 10px; margin: 8px 0; }
+  .cartao:has(img) { display: grid; grid-template-columns: 80px 1fr; gap: 12px; }
+  form:has(input:invalid) button { opacity: 0.5; }
+</style>
+<div class="cartao"><img src="https://picsum.photos/seed/cafe/80" alt="" width="80"><p>Com imagem: grade.</p></div>
+<div class="cartao"><p>Sem imagem: bloco simples.</p></div>
+<form><input type="email" placeholder="E-mail" required> <button>Enviar</button></form>`)}
+`,
+              quiz: [
+                {
+                  pergunta: 'O que uma container query consulta?',
+                  opcoes: ['O tamanho da tela', 'O tamanho do contêiner onde o elemento está', 'A resolução da imagem'],
+                  certa: 1,
+                  explicacao: 'Por isso o componente se adapta em qualquer lugar da página.'
+                },
+                {
+                  pergunta: 'O que é preciso antes de usar @container?',
+                  opcoes: [
+                    'Nada',
+                    'Marcar um elemento pai com container-type (inline-size, por exemplo)',
+                    'Usar display: grid'
+                  ],
+                  certa: 1,
+                  explicacao: 'Sem um contêiner declarado, a regra não tem o que consultar.'
+                },
+                {
+                  pergunta: 'O que .cartao:has(img) seleciona?',
+                  opcoes: ['Imagens dentro de cartões', 'Cartões que têm uma imagem dentro', 'Todo cartão'],
+                  certa: 1,
+                  explicacao: ':has() estiliza o pai conforme o conteúdo.'
+                }
+              ]
+            },
+            {
+              id: 'preferencias-do-usuario',
+              titulo: 'Respeitar as preferências da pessoa',
+              resumo: 'Movimento reduzido, tema escuro, foco visível e alto contraste.',
+              minutos: 11,
+              corpo: `
+<p>O sistema operacional guarda preferências que o CSS consegue ler. Respeitar essas preferências é acessibilidade e também boa educação com quem visita.</p>
+
+<h2>prefers-reduced-motion</h2>
+<p>Para pessoas com distúrbios vestibulares, animações grandes (parallax, zoom, elementos deslizando) causam enjoo e tontura de verdade. Quem ativa "reduzir movimento" no sistema deve receber uma página calma:</p>
+${trecho(`.cartao { transition: transform 0.4s; }
+.cartao:hover { transform: translateY(-6px) scale(1.02); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}`)}
+<p>A regra acima é um "freio geral" usado em muitos sites. Reduzir movimento não precisa tirar todo efeito: uma mudança de cor ou de opacidade costuma continuar confortável.</p>
+
+<h2>prefers-color-scheme</h2>
+${codigo(`<style>
+  :root { --fundo: #ffffff; --texto: #1f2933; color-scheme: light dark; }
+  @media (prefers-color-scheme: dark) {
+    :root { --fundo: #0f1720; --texto: #e6edf3; }
+  }
+  body { background: var(--fundo); color: var(--texto); }
+</style>
+<p>Mude o tema do seu sistema e veja esta página acompanhar.</p>
+<input placeholder="Até os campos acompanham">`)}
+<p><code>color-scheme: light dark</code> avisa ao navegador que a página suporta os dois temas, e ele ajusta sozinho barras de rolagem e campos de formulário.</p>
+
+<h2>Foco visível</h2>
+<p>Quem navega pelo teclado precisa ver onde está. Nunca remova o contorno de foco sem colocar outro no lugar. <code>:focus-visible</code> mostra o anel só quando a navegação é pelo teclado, e não a cada clique do mouse:</p>
+${codigo(`<style>
+  button { padding: 8px 14px; border: 0; border-radius: 8px; background: #0b7a6f; color: #fff; }
+  button:focus { outline: none; }
+  button:focus-visible { outline: 3px solid #f5a524; outline-offset: 3px; }
+</style>
+<button>Primeiro</button> <button>Segundo</button>
+<p>Clique e depois use Tab: o anel aparece só com o teclado.</p>`)}
+
+<h2>Contraste e cores forçadas</h2>
+<ul>
+  <li>Texto comum precisa de contraste de pelo menos <strong>4,5:1</strong> com o fundo (WCAG AA); texto grande, 3:1. As ferramentas de desenvolvedor mostram o contraste ao inspecionar uma cor.</li>
+  <li><code>@media (prefers-contrast: more)</code> permite reforçar bordas e cores para quem pediu mais contraste.</li>
+  <li>No modo de alto contraste do Windows (<code>forced-colors: active</code>), o sistema troca as cores. Sombras somem: use bordas transparentes onde a borda importa, porque elas ganham cor nesse modo.</li>
+</ul>
+${dica('Teste rápido de acessibilidade: navegue pela página só com Tab, Enter e Esc. Se alguma coisa não dá para usar ou o foco some, há trabalho a fazer.')}
+`,
+              quiz: [
+                {
+                  pergunta: 'Por que respeitar prefers-reduced-motion?',
+                  opcoes: [
+                    'Para economizar bateria',
+                    'Animações grandes causam enjoo e tontura em algumas pessoas',
+                    'Porque animações são proibidas'
+                  ],
+                  certa: 1,
+                  explicacao: 'É uma necessidade de acessibilidade, não uma questão de gosto.'
+                },
+                {
+                  pergunta: 'Qual a diferença entre :focus e :focus-visible?',
+                  opcoes: [
+                    'Nenhuma',
+                    ':focus-visible aparece quando o navegador acha que o anel é útil, como na navegação por teclado',
+                    ':focus-visible é só para links'
+                  ],
+                  certa: 1,
+                  explicacao: 'Assim o anel não aparece a cada clique, mas nunca falta para quem usa Tab.'
+                },
+                {
+                  pergunta: 'Qual o contraste mínimo para texto comum no nível AA?',
+                  opcoes: ['2:1', '4,5:1', '10:1'],
+                  certa: 1,
+                  explicacao: 'Texto grande (a partir de 24px, ou 18,66px em negrito) pode ter 3:1.'
+                }
+              ]
+            },
+            {
+              id: 'desafio-cartao-adaptavel',
+              tipo: 'desafio',
+              titulo: 'Desafio: cartão que se adapta',
+              resumo: 'Um cartão com container query, foco visível e movimento reduzido.',
+              minutos: 20,
+              enunciado: `
+<p>Deixe o cartão de produto pronto para qualquer lugar e qualquer pessoa:</p>
+<ul>
+  <li>Cada <code>.area</code> é um contêiner (<code>container-type: inline-size</code>).</li>
+  <li>O <code>.cartao</code> é flex em coluna; quando o contêiner tem <strong>pelo menos 420px</strong>, fica em linha (<code>flex-direction: row</code>).</li>
+  <li>O botão tem um contorno visível em <code>:focus-visible</code> (<code>outline</code> com pelo menos 2px).</li>
+  <li>O efeito de hover (que move o cartão) é desligado para quem prefere menos movimento: dentro de <code>@media (prefers-reduced-motion: reduce)</code>, o cartão fica sem <code>transition</code> e sem <code>transform</code>.</li>
+</ul>`,
+              inicial: `<style>
+  .cartao { background: #f3f6f8; padding: 12px; border-radius: 10px; gap: 12px; transition: transform 0.3s; }
+  .cartao:hover { transform: translateY(-4px); }
+  .foto { background: #0b7a6f; border-radius: 8px; min-height: 90px; flex: 0 0 140px; }
+  button { padding: 8px 14px; border: 0; border-radius: 8px; background: #0b7a6f; color: #fff; }
+  button:focus { outline: none; }
+</style>
+
+<div class="area" style="width: 320px">
+  <article class="cartao">
+    <div class="foto"></div>
+    <div>
+      <h3>Café em grãos</h3>
+      <p>R$ 62,90</p>
+      <button>Comprar</button>
+    </div>
+  </article>
+</div>
+`,
+              testes: [
+                [
+                  '.area é um contêiner de largura',
+                  doc => doc.defaultView.getComputedStyle(doc.querySelector('.area')).containerType === 'inline-size'
+                ],
+                [
+                  'O cartão fica em coluna num contêiner estreito e em linha a partir de 420px',
+                  doc => {
+                    const area = doc.querySelector('.area');
+                    const cartao = doc.querySelector('.cartao');
+                    const largura = area.style.width;
+                    const estilo = () => doc.defaultView.getComputedStyle(cartao);
+                    area.style.width = '320px';
+                    const estreito = estilo().display === 'flex' && estilo().flexDirection === 'column';
+                    area.style.width = '600px';
+                    const largo = estilo().flexDirection === 'row';
+                    area.style.width = largura;
+                    return estreito && largo;
+                  }
+                ],
+                [
+                  'O botão tem outline de pelo menos 2px em :focus-visible',
+                  doc => {
+                    const css = [...doc.querySelectorAll('style:not([data-base])')].map(s => s.textContent).join('\n');
+                    const regra = css.match(/button:focus-visible\s*\{([^}]*)\}/);
+                    const largura = regra && regra[1].match(/outline(?:-width)?\s*:[^;]*?(\d+(?:\.\d+)?)px/);
+                    return !!largura && Number(largura[1]) >= 2;
+                  }
+                ],
+                [
+                  'Com movimento reduzido, o cartão fica sem transition e sem transform',
+                  doc => {
+                    const css = [...doc.querySelectorAll('style:not([data-base])')].map(s => s.textContent).join('\n');
+                    const bloco = css.match(
+                      /@media\s*\(\s*prefers-reduced-motion\s*:\s*reduce\s*\)\s*\{([\s\S]*?\})\s*\}/
+                    );
+                    return !!bloco && /transition\s*:\s*none/.test(bloco[1]) && /transform\s*:\s*none/.test(bloco[1]);
+                  }
+                ]
+              ],
+              solucao: `<style>
+  .area { container-type: inline-size; }
+  .cartao { display: flex; flex-direction: column; background: #f3f6f8; padding: 12px; border-radius: 10px; gap: 12px; transition: transform 0.3s; }
+  .cartao:hover { transform: translateY(-4px); }
+  .foto { background: #0b7a6f; border-radius: 8px; min-height: 90px; flex: 0 0 140px; }
+  button { padding: 8px 14px; border: 0; border-radius: 8px; background: #0b7a6f; color: #fff; }
+  button:focus { outline: none; }
+  button:focus-visible { outline: 3px solid #f5a524; outline-offset: 3px; }
+
+  @container (min-width: 420px) {
+    .cartao { flex-direction: row; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cartao, .cartao:hover { transition: none; transform: none; }
+  }
+</style>
+
+<div class="area" style="width: 320px">
+  <article class="cartao">
+    <div class="foto"></div>
+    <div>
+      <h3>Café em grãos</h3>
+      <p>R$ 62,90</p>
+      <button>Comprar</button>
+    </div>
+  </article>
+</div>`
+            }
+          ]
         }
       ]
     }
