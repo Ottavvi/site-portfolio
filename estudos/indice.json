@@ -486,6 +486,116 @@
       ]
     },
     {
+      "id": "modulos-es",
+      "titulo": "Módulos ES",
+      "sigla": "ES",
+      "itens": [
+        {
+          "id": "modulos-es/por-que-modulos",
+          "titulo": "Por que dividir em módulos",
+          "resumo": "type=\"module\", export e import, e como o editor desta trilha simula arquivos.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 9
+        },
+        {
+          "id": "modulos-es/formas-de-exportar",
+          "titulo": "Formas de exportar e importar",
+          "resumo": "Exportação padrão, renomear com as, import * e reexportar.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 10
+        },
+        {
+          "id": "modulos-es/como-modulos-funcionam",
+          "titulo": "Como os módulos funcionam",
+          "resumo": "Modo estrito, execução única, defer e await no topo.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 11
+        },
+        {
+          "id": "modulos-es/desafio-loja-modular",
+          "titulo": "Desafio: carrinho em módulos",
+          "resumo": "Divida o código de um carrinho em três módulos.",
+          "tipo": "desafio",
+          "nivel": "Intermediário",
+          "minutos": 20
+        },
+        {
+          "id": "modulos-es/import-dinamico",
+          "titulo": "import() e import maps",
+          "resumo": "Carregar módulos sob demanda e usar bibliotecas pelo nome.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 12
+        },
+        {
+          "id": "modulos-es/desafio-sob-demanda",
+          "titulo": "Desafio: abas carregadas sob demanda",
+          "resumo": "Cada aba carrega o seu módulo com import() só quando é aberta.",
+          "tipo": "desafio",
+          "nivel": "Avançado",
+          "minutos": 22
+        }
+      ]
+    },
+    {
+      "id": "localstorage",
+      "titulo": "LocalStorage",
+      "sigla": "LS",
+      "itens": [
+        {
+          "id": "localstorage/guardar-e-ler",
+          "titulo": "Guardar e ler",
+          "resumo": "setItem, getItem, removeItem e o que o localStorage é.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 8
+        },
+        {
+          "id": "localstorage/objetos-com-json",
+          "titulo": "Guardar objetos e listas com JSON",
+          "resumo": "JSON.stringify, JSON.parse e valores padrão seguros.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 9
+        },
+        {
+          "id": "localstorage/preferencias-e-rascunhos",
+          "titulo": "Preferências e rascunhos",
+          "resumo": "Tema salvo, rascunho automático, sessionStorage e o evento storage.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 11
+        },
+        {
+          "id": "localstorage/desafio-lista-que-lembra",
+          "titulo": "Desafio: lista de compras que lembra",
+          "resumo": "Salve a lista no localStorage e mostre de novo ao abrir.",
+          "tipo": "desafio",
+          "nivel": "Intermediário",
+          "minutos": 20
+        },
+        {
+          "id": "localstorage/limites-e-cuidados",
+          "titulo": "Limites, segurança e alternativas",
+          "resumo": "Quanto cabe, o que nunca guardar, versões de dados e IndexedDB.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 12
+        },
+        {
+          "id": "localstorage/desafio-cache-com-validade",
+          "titulo": "Desafio: cache com validade",
+          "resumo": "Guarde dados que expiram sozinhos.",
+          "tipo": "desafio",
+          "nivel": "Avançado",
+          "minutos": 20
+        }
+      ]
+    },
+    {
       "id": "sqlite",
       "titulo": "SQLite",
       "sigla": "SQL",

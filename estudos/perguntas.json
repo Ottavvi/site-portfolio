@@ -1047,6 +1047,182 @@
       "explicacao": "Devolver o próprio array deixaria qualquer um fazer push nele, contornando as regras da classe."
     }
   ],
+  "modulos-es/por-que-modulos": [
+    {
+      "pergunta": "O que é obrigatório na tag script para usar import?",
+      "opcoes": ["defer", "type=\"module\"", "async"],
+      "certa": 1,
+      "explicacao": "Só scripts com type=\"module\" podem usar import e export."
+    },
+    {
+      "pergunta": "No navegador, como importar do arquivo util.js na mesma pasta?",
+      "opcoes": ["from 'util'", "from './util.js'", "from 'util.js'"],
+      "certa": 1,
+      "explicacao": "O caminho precisa começar com ./ e ter a extensão. Nomes sem caminho só funcionam com import map."
+    },
+    {
+      "pergunta": "O que acontece com uma variável não exportada de um módulo?",
+      "opcoes": ["Vira global", "Fica privada daquele arquivo", "Dá erro"],
+      "certa": 1,
+      "explicacao": "Cada módulo tem escopo próprio: só o que é exportado sai dele."
+    }
+  ],
+  "modulos-es/formas-de-exportar": [
+    {
+      "pergunta": "Quantas exportações padrão um módulo pode ter?",
+      "opcoes": ["Nenhuma", "No máximo uma", "Quantas quiser"],
+      "certa": 1,
+      "explicacao": "Uma default e quantas exportações com nome quiser."
+    },
+    {
+      "pergunta": "Como importar a exportação padrão de grafico.js?",
+      "opcoes": [
+        "import { default } from './grafico.js'",
+        "import Grafico from './grafico.js'",
+        "import * from './grafico.js'"
+      ],
+      "certa": 1,
+      "explicacao": "A padrão vem sem chaves, e você escolhe o nome local."
+    },
+    {
+      "pergunta": "Para que serve import { formatar as formatarData }?",
+      "opcoes": ["Copiar a função", "Usar outro nome local para a função importada", "Exportar de novo"],
+      "certa": 1,
+      "explicacao": "O as renomeia, evitando conflito com outro formatar."
+    }
+  ],
+  "modulos-es/como-modulos-funcionam": [
+    {
+      "pergunta": "Dez módulos importam config.js. Quantas vezes ele executa?",
+      "opcoes": ["Dez", "Uma", "Nenhuma"],
+      "certa": 1,
+      "explicacao": "O navegador guarda o módulo depois da primeira vez e entrega a mesma instância para todos."
+    },
+    {
+      "pergunta": "Um script type=\"module\" precisa esperar o DOMContentLoaded para achar elementos?",
+      "opcoes": ["Sim, sempre", "Não: ele já roda depois do HTML ser lido, como defer", "Só no Chrome"],
+      "certa": 1,
+      "explicacao": "Módulos são adiados por padrão."
+    },
+    {
+      "pergunta": "O que acontece ao atribuir a uma variável nunca declarada num módulo?",
+      "opcoes": ["Cria uma global", "Dá ReferenceError (modo estrito)", "Nada"],
+      "certa": 1,
+      "explicacao": "Módulos rodam sempre em modo estrito, que transforma esse descuido em erro."
+    }
+  ],
+  "modulos-es/import-dinamico": [
+    {
+      "pergunta": "O que import('./grafico.js') devolve?",
+      "opcoes": ["O módulo direto", "Uma Promise com as exportações do módulo", "undefined"],
+      "certa": 1,
+      "explicacao": "Por isso usamos await (ou .then) para pegar as exportações."
+    },
+    {
+      "pergunta": "Para que serve um import map?",
+      "opcoes": [
+        "Minificar o código",
+        "Dizer para onde aponta um nome como 'dayjs' num import",
+        "Listar os arquivos do projeto"
+      ],
+      "certa": 1,
+      "explicacao": "Ele traduz nomes \"nus\" para URLs, sem precisar de build."
+    },
+    {
+      "pergunta": "Qual a vantagem de carregar um módulo pesado com import()?",
+      "opcoes": ["Ele roda mais rápido", "Quem nunca usa aquela parte não baixa o código", "Não precisa de export"],
+      "certa": 1,
+      "explicacao": "A página inicial fica mais leve, e o módulo é baixado só quando for usado."
+    }
+  ],
+  "localstorage/guardar-e-ler": [
+    {
+      "pergunta": "O que getItem devolve para uma chave que não existe?",
+      "opcoes": ["undefined", "null", "''"],
+      "certa": 1,
+      "explicacao": "Chave inexistente devolve null. Por isso é comum usar um valor padrão: getItem(x) || 0."
+    },
+    {
+      "pergunta": "Você guarda setItem(\"total\", 10). O que getItem(\"total\") devolve?",
+      "opcoes": ["10 (número)", "'10' (texto)", "null"],
+      "certa": 1,
+      "explicacao": "O localStorage só guarda texto. Converta de volta com Number()."
+    },
+    {
+      "pergunta": "Os dados do localStorage aparecem em outro computador da mesma pessoa?",
+      "opcoes": ["Sim, sincronizam sozinhos", "Não: ficam só naquele navegador", "Só se ela fizer login"],
+      "certa": 1,
+      "explicacao": "Para sincronizar entre aparelhos, é preciso salvar num servidor (numa conta, por exemplo)."
+    }
+  ],
+  "localstorage/objetos-com-json": [
+    {
+      "pergunta": "O que localStorage.setItem(\"x\", { a: 1 }) guarda?",
+      "opcoes": ["O objeto", "'[object Object]'", "'{\"a\":1}'"],
+      "certa": 1,
+      "explicacao": "Sem JSON.stringify, o objeto é convertido para texto do jeito errado."
+    },
+    {
+      "pergunta": "Por que ler com try/catch?",
+      "opcoes": [
+        "Deixa mais rápido",
+        "O texto salvo pode ser inválido ou o acesso pode estar bloqueado",
+        "getItem sempre lança erro"
+      ],
+      "certa": 1,
+      "explicacao": "JSON.parse lança erro com texto inválido. Melhor cair num valor padrão que quebrar a página."
+    },
+    {
+      "pergunta": "Qual o resultado de JSON.parse(null ?? \"[]\")?",
+      "opcoes": ["null", "[] (lista vazia)", "Erro"],
+      "certa": 1,
+      "explicacao": "O ?? troca o null pelo texto \"[]\", que vira uma lista vazia."
+    }
+  ],
+  "localstorage/preferencias-e-rascunhos": [
+    {
+      "pergunta": "Qual a diferença entre localStorage e sessionStorage?",
+      "opcoes": [
+        "Nenhuma",
+        "O sessionStorage some quando a aba fecha e é separado por aba",
+        "O sessionStorage vai para o servidor"
+      ],
+      "certa": 1,
+      "explicacao": "Os métodos são os mesmos; muda quanto tempo os dados duram."
+    },
+    {
+      "pergunta": "Quem recebe o evento storage?",
+      "opcoes": ["A própria aba que mudou", "As outras abas do mesmo site", "O servidor"],
+      "certa": 1,
+      "explicacao": "A aba que fez a mudança já sabe dela; as outras são avisadas pelo evento."
+    },
+    {
+      "pergunta": "Quando apagar o rascunho de um formulário?",
+      "opcoes": ["Nunca", "Depois que a mensagem for enviada com sucesso", "A cada tecla"],
+      "certa": 1,
+      "explicacao": "Senão, o texto antigo volta na próxima vez que a pessoa abrir o formulário."
+    }
+  ],
+  "localstorage/limites-e-cuidados": [
+    {
+      "pergunta": "Onde guardar um token de sessão de forma mais segura?",
+      "opcoes": ["localStorage", "Num cookie HttpOnly", "sessionStorage"],
+      "certa": 1,
+      "explicacao": "O JavaScript não lê cookies HttpOnly, então um script injetado não consegue roubá-los."
+    },
+    {
+      "pergunta": "O que acontece ao passar do limite de espaço?",
+      "opcoes": ["O navegador apaga dados antigos", "setItem lança QuotaExceededError", "Nada"],
+      "certa": 1,
+      "explicacao": "O erro precisa ser tratado: a gravação não acontece."
+    },
+    {
+      "pergunta": "Para um app offline com milhares de registros, o mais adequado é:",
+      "opcoes": ["localStorage", "IndexedDB", "Cookies"],
+      "certa": 1,
+      "explicacao": "IndexedDB é assíncrono, guarda objetos e tem muito mais espaço."
+    }
+  ],
   "sqlite/o-que-e-sql": [
     {
       "pergunta": "Numa tabela, o que é cada linha?",

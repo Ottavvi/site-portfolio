@@ -616,6 +616,10 @@ paginaDeRevisao();
 paginaDoCertificado();
 dadosParaOJavaScript();
 
-// Formata com o Prettier, como o resto do site
-execSync(`npx --yes prettier@3 --write ${gerados.map(g => `"${g}"`).join(' ')}`, { stdio: 'ignore' });
+// Formata com o Prettier, como o resto do site. Vai a pasta inteira (só HTML e JSON, sem o _conteudo): a lista de
+// arquivos passou do tamanho máximo de uma linha de comando no Windows
+execSync(`npx --yes prettier@3 --write "estudos/**/*.{html,json}" "!estudos/_conteudo/**"`, {
+  cwd: RAIZ,
+  stdio: 'ignore'
+});
 console.log(`✔ ${gerados.length} páginas geradas em estudos/`);

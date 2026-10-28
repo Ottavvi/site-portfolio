@@ -5,22 +5,8 @@ module.exports = [
   require('./html'),
   require('./css'),
   require('./javascript'),
-  {
-    id: 'modulos-es',
-    area: 'Desenvolvimento web',
-    titulo: 'Módulos ES',
-    sigla: 'ES',
-    resumo: 'import e export para dividir o código em arquivos, sem ferramenta de build.',
-    emBreve: true
-  },
-  {
-    id: 'localstorage',
-    area: 'Desenvolvimento web',
-    titulo: 'LocalStorage',
-    sigla: 'LS',
-    resumo: 'Guardar dados no navegador: preferências, rascunhos e listas que sobrevivem ao fechar a aba.',
-    emBreve: true
-  },
+  require('./modulos-es'),
+  require('./localstorage'),
   {
     id: 'web-audio',
     area: 'Desenvolvimento web',

@@ -195,7 +195,9 @@ function modulos(codigo) {
     }
     faltam = faltam.filter(nome => !urls[nome]);
   }
+  // __arquivos: o código de cada arquivo, para os testes conferirem os import e export
   return `<script>
+  window.__arquivos = ${comoJson(arquivos)};
   window.__pronto = new Promise(pronto => addEventListener('load', () => setTimeout(pronto, 50)));
   addEventListener('error', e => {
     if (e.target !== window && e.target.tagName === 'SCRIPT') console.error('Não foi possível carregar um módulo. Confira os nomes dos arquivos nos import.');
