@@ -1264,6 +1264,243 @@
           "minutos": 22
         }
       ]
+    },
+    {
+      "id": "excel",
+      "titulo": "Excel",
+      "sigla": "XL",
+      "itens": [
+        {
+          "id": "excel/formulas-e-referencias",
+          "titulo": "Fórmulas e referências",
+          "resumo": "O sinal de igual, operadores, SOMA, MÉDIA e o famoso cifrão.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 10
+        },
+        {
+          "id": "excel/tabelas-e-formatos",
+          "titulo": "Tabelas, formatos e validação",
+          "resumo": "Formatar como Tabela, referências estruturadas, formatação condicional e listas.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 11
+        },
+        {
+          "id": "excel/pratica-orcamento",
+          "titulo": "Prática: orçamento do mês",
+          "resumo": "Monte uma tabela de gastos com totais e alertas.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 20
+        },
+        {
+          "id": "excel/condicionais",
+          "titulo": "SE, SES e somas condicionais",
+          "resumo": "Decidir com fórmulas e somar só o que interessa.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 12
+        },
+        {
+          "id": "excel/buscas",
+          "titulo": "Buscas: PROCX, PROCV e ÍNDICE/CORRESP",
+          "resumo": "Trazer informações de outra tabela pelo código.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 12
+        },
+        {
+          "id": "excel/pratica-vendas",
+          "titulo": "Prática: relatório de vendas",
+          "resumo": "Cruze duas tabelas e resuma as vendas por vendedor.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 25
+        },
+        {
+          "id": "excel/tabelas-dinamicas",
+          "titulo": "Tabelas dinâmicas e gráficos",
+          "resumo": "Resumir milhares de linhas em segundos e escolher o gráfico certo.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 12
+        },
+        {
+          "id": "excel/matrizes-dinamicas",
+          "titulo": "Matrizes dinâmicas, LET e LAMBDA",
+          "resumo": "FILTRO, CLASSIFICAR, ÚNICO, LET e funções próprias.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 13
+        },
+        {
+          "id": "excel/pratica-painel",
+          "titulo": "Prática: painel de vendas",
+          "resumo": "Monte um painel que se atualiza sozinho com os dados da prática anterior.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 30
+        }
+      ]
+    },
+    {
+      "id": "power-query",
+      "titulo": "Power Query",
+      "sigla": "PQ",
+      "itens": [
+        {
+          "id": "power-query/o-que-e-power-query",
+          "titulo": "O que é o Power Query",
+          "resumo": "Etapas aplicadas, tipos de dados e carregar o resultado.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 9
+        },
+        {
+          "id": "power-query/limpeza-basica",
+          "titulo": "As limpezas do dia a dia",
+          "resumo": "Cabeçalhos, colunas, espaços, dividir, substituir, preencher e duplicados.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 12
+        },
+        {
+          "id": "power-query/pratica-extrato",
+          "titulo": "Prática: limpar um extrato bancário",
+          "resumo": "Transforme um extrato bagunçado numa tabela pronta para análise.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 20
+        },
+        {
+          "id": "power-query/combinar-consultas",
+          "titulo": "Acrescentar, mesclar e importar uma pasta",
+          "resumo": "Empilhar tabelas, juntar como um PROCX e ler vários arquivos de uma vez.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 12
+        },
+        {
+          "id": "power-query/agrupar-e-despivotar",
+          "titulo": "Agrupar e despivotar",
+          "resumo": "Resumir com Agrupar Por e transformar colunas de meses em linhas.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 12
+        },
+        {
+          "id": "power-query/pratica-consolidar",
+          "titulo": "Prática: consolidar lojas",
+          "resumo": "Empilhe, despivote, mescle e agrupe numa consulta só.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 25
+        },
+        {
+          "id": "power-query/linguagem-m",
+          "titulo": "A linguagem M",
+          "resumo": "let e in, etapas, each, listas, registros e o Editor Avançado.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 13
+        },
+        {
+          "id": "power-query/parametros-e-desempenho",
+          "titulo": "Parâmetros, funções e desempenho",
+          "resumo": "Caminhos configuráveis, funções próprias, dobragem de consulta e erros.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 12
+        },
+        {
+          "id": "power-query/pratica-funcao",
+          "titulo": "Prática: uma função de limpeza",
+          "resumo": "Escreva em M uma função que padroniza nomes de cidades.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 20
+        }
+      ]
+    },
+    {
+      "id": "power-bi",
+      "titulo": "Power BI",
+      "sigla": "BI",
+      "itens": [
+        {
+          "id": "power-bi/o-que-e-power-bi",
+          "titulo": "O que é o Power BI",
+          "resumo": "Desktop e Serviço, o caminho dos dados e as três telas.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 9
+        },
+        {
+          "id": "power-bi/primeiro-relatorio",
+          "titulo": "Visuais, filtros e formatação",
+          "resumo": "Cartões, barras, linhas, matriz, segmentações e um layout que se lê.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 12
+        },
+        {
+          "id": "power-bi/pratica-primeiro-painel",
+          "titulo": "Prática: o primeiro painel",
+          "resumo": "Carregue uma tabela de vendas e monte uma página com 4 visuais.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 30
+        },
+        {
+          "id": "power-bi/modelo-estrela",
+          "titulo": "Modelo estrela e relacionamentos",
+          "resumo": "Fatos e dimensões, cardinalidade e direção do filtro.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 13
+        },
+        {
+          "id": "power-bi/medidas-e-interacoes",
+          "titulo": "Medidas, interações e detalhes",
+          "resumo": "Medidas explícitas, formatação condicional, dicas de ferramenta e detalhamento.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 12
+        },
+        {
+          "id": "power-bi/pratica-modelo",
+          "titulo": "Prática: do tabelão ao modelo estrela",
+          "resumo": "Separe uma tabela única em fato e dimensões e relacione.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 30
+        },
+        {
+          "id": "power-bi/publicar-e-compartilhar",
+          "titulo": "Publicar, atualizar e compartilhar",
+          "resumo": "Workspaces, atualização agendada, gateway, aplicativos e segurança por linha.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 13
+        },
+        {
+          "id": "power-bi/desempenho-e-versionamento",
+          "titulo": "Desempenho e versionamento",
+          "resumo": "Analisador de desempenho, modelo enxuto e o formato PBIP com Git.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 12
+        },
+        {
+          "id": "power-bi/pratica-relatorio-completo",
+          "titulo": "Prática: relatório para a diretoria",
+          "resumo": "Um relatório de duas páginas, com navegação, detalhes e segurança.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 40
+        }
+      ]
     }
   ]
 }

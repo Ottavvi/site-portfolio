@@ -39,30 +39,9 @@ module.exports = [
   },
 
   // ---------- Dados e BI ----------
-  {
-    id: 'excel',
-    area: 'Dados e BI',
-    titulo: 'Excel',
-    sigla: 'XL',
-    resumo: 'Fórmulas, tabelas, PROCX, gráficos e planilhas que outras pessoas conseguem usar.',
-    emBreve: true
-  },
-  {
-    id: 'power-query',
-    area: 'Dados e BI',
-    titulo: 'Power Query',
-    sigla: 'PQ',
-    resumo: 'Importar, limpar e juntar dados de várias fontes sem refazer tudo à mão todo mês.',
-    emBreve: true
-  },
-  {
-    id: 'power-bi',
-    area: 'Dados e BI',
-    titulo: 'Power BI',
-    sigla: 'BI',
-    resumo: 'Modelos de dados, relacionamentos e painéis que respondem às perguntas do negócio.',
-    emBreve: true
-  },
+  require('./excel'),
+  require('./power-query'),
+  require('./power-bi'),
   {
     id: 'dax',
     area: 'Dados e BI',

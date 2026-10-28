@@ -24,7 +24,7 @@
     <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
     <link rel="preload" href="../fontes/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="../fontes/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="stylesheet" href="../css/style.css?v=10" />
+    <link rel="stylesheet" href="../css/style.css?v=11" />
     <!-- Aplica o tema salvo (ou o do sistema) antes de desenhar a página, para não piscar -->
     <script>
       try {
@@ -84,10 +84,10 @@
             </p>
             <p class="estudos-conta" id="estudosConta" aria-live="polite">Seu progresso fica salvo neste navegador.</p>
             <ul class="estudos-numeros" aria-label="A área de estudos em números">
-              <li><strong>101</strong> aulas</li>
+              <li><strong>128</strong> aulas</li>
               <li><strong>44</strong> desafios de código</li>
-              <li><strong>303</strong> perguntas de quiz</li>
-              <li><strong>15</strong> de 21 trilhas prontas</li>
+              <li><strong>366</strong> perguntas de quiz</li>
+              <li><strong>18</strong> de 21 trilhas prontas</li>
             </ul>
           </div>
         </section>
@@ -104,7 +104,7 @@
             <div class="section-kicker">Trilhas</div>
             <h2>Escolha por onde começar.</h2>
             <p class="section-intro">
-              21 trilhas, cada uma do nível iniciante ao avançado. 15 já estão disponíveis; as outras vão ganhando aulas
+              21 trilhas, cada uma do nível iniciante ao avançado. 18 já estão disponíveis; as outras vão ganhando aulas
               aos poucos.
             </p>
             <h3 class="trilhas-area">Desenvolvimento web</h3>
@@ -415,24 +415,63 @@
             </div>
             <h3 class="trilhas-area">Dados e BI</h3>
             <div class="trilhas">
-              <article class="trilha-card trilha-card--breve">
+              <a class="trilha-card" href="excel/">
                 <span class="trilha-sigla" aria-hidden="true">XL</span>
                 <h3>Excel</h3>
-                <p>Fórmulas, tabelas, PROCX, gráficos e planilhas que outras pessoas conseguem usar.</p>
-                <span class="trilha-breve">Em breve</span>
-              </article>
-              <article class="trilha-card trilha-card--breve">
+                <p>Fórmulas, tabelas e painéis: a planilha bem feita que responde perguntas sozinha.</p>
+                <ul class="trilha-niveis" aria-label="Níveis">
+                  <li>Iniciante</li>
+                  <li>Intermediário</li>
+                  <li>Avançado</li>
+                </ul>
+                <span class="trilha-info">3 módulos · 9 aulas</span>
+                <div
+                  class="estudos-progresso"
+                  data-progresso="excel/formulas-e-referencias excel/tabelas-e-formatos excel/pratica-orcamento excel/condicionais excel/buscas excel/pratica-vendas excel/tabelas-dinamicas excel/matrizes-dinamicas excel/pratica-painel"
+                  data-trilha="excel"
+                >
+                  <div class="estudos-progresso-barra"><span></span></div>
+                  <span class="estudos-progresso-texto">0 de 9 concluídos</span>
+                </div>
+              </a>
+              <a class="trilha-card" href="power-query/">
                 <span class="trilha-sigla" aria-hidden="true">PQ</span>
                 <h3>Power Query</h3>
-                <p>Importar, limpar e juntar dados de várias fontes sem refazer tudo à mão todo mês.</p>
-                <span class="trilha-breve">Em breve</span>
-              </article>
-              <article class="trilha-card trilha-card--breve">
+                <p>Limpar e juntar dados bagunçados uma vez, e repetir com um clique no mês seguinte.</p>
+                <ul class="trilha-niveis" aria-label="Níveis">
+                  <li>Iniciante</li>
+                  <li>Intermediário</li>
+                  <li>Avançado</li>
+                </ul>
+                <span class="trilha-info">3 módulos · 9 aulas</span>
+                <div
+                  class="estudos-progresso"
+                  data-progresso="power-query/o-que-e-power-query power-query/limpeza-basica power-query/pratica-extrato power-query/combinar-consultas power-query/agrupar-e-despivotar power-query/pratica-consolidar power-query/linguagem-m power-query/parametros-e-desempenho power-query/pratica-funcao"
+                  data-trilha="power-query"
+                >
+                  <div class="estudos-progresso-barra"><span></span></div>
+                  <span class="estudos-progresso-texto">0 de 9 concluídos</span>
+                </div>
+              </a>
+              <a class="trilha-card" href="power-bi/">
                 <span class="trilha-sigla" aria-hidden="true">BI</span>
                 <h3>Power BI</h3>
-                <p>Modelos de dados, relacionamentos e painéis que respondem às perguntas do negócio.</p>
-                <span class="trilha-breve">Em breve</span>
-              </article>
+                <p>Relatórios interativos: modelo de dados, visuais que contam uma história e publicação.</p>
+                <ul class="trilha-niveis" aria-label="Níveis">
+                  <li>Iniciante</li>
+                  <li>Intermediário</li>
+                  <li>Avançado</li>
+                </ul>
+                <span class="trilha-info">3 módulos · 9 aulas</span>
+                <div
+                  class="estudos-progresso"
+                  data-progresso="power-bi/o-que-e-power-bi power-bi/primeiro-relatorio power-bi/pratica-primeiro-painel power-bi/modelo-estrela power-bi/medidas-e-interacoes power-bi/pratica-modelo power-bi/publicar-e-compartilhar power-bi/desempenho-e-versionamento power-bi/pratica-relatorio-completo"
+                  data-trilha="power-bi"
+                >
+                  <div class="estudos-progresso-barra"><span></span></div>
+                  <span class="estudos-progresso-texto">0 de 9 concluídos</span>
+                </div>
+              </a>
               <article class="trilha-card trilha-card--breve">
                 <span class="trilha-sigla" aria-hidden="true">DAX</span>
                 <h3>DAX</h3>

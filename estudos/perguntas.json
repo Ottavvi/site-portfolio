@@ -2394,5 +2394,509 @@
       "certa": 1,
       "explicacao": "Protege contra uma action comprometida depois que você a adotou."
     }
+  ],
+  "excel/formulas-e-referencias": [
+    {
+      "pergunta": "O que acontece com =A1*$B$1 ao ser copiada uma linha abaixo?",
+      "opcoes": ["=A2*$B$2", "=A2*$B$1", "=A1*$B$1"],
+      "certa": 1,
+      "explicacao": "A1 é relativa e anda; $B$1 é absoluta e fica."
+    },
+    {
+      "pergunta": "Qual separador de argumentos o Excel em português usa?",
+      "opcoes": ["Vírgula", "Ponto e vírgula", "Dois pontos"],
+      "certa": 1,
+      "explicacao": "Porque a vírgula é o separador decimal no Brasil. Dois pontos indicam intervalo (A1:A10)."
+    },
+    {
+      "pergunta": "O que o erro #NOME? costuma indicar?",
+      "opcoes": ["Divisão por zero", "Nome de função escrito errado", "Coluna estreita"],
+      "certa": 1,
+      "explicacao": "Por exemplo, =SUM(A1:A3) num Excel em português, que espera =SOMA(A1:A3)."
+    }
+  ],
+  "excel/tabelas-e-formatos": [
+    {
+      "pergunta": "Qual a vantagem de =SOMA(tbVendas[Total]) sobre =SOMA(F2:F200)?",
+      "opcoes": ["É mais rápida", "Acompanha a tabela quando ela cresce e diz o que está sendo somado", "Nenhuma"],
+      "certa": 1,
+      "explicacao": "O intervalo fixo deixa de fora as linhas novas; a referência estruturada não."
+    },
+    {
+      "pergunta": "Por que não digitar \"R$ 50\" numa célula?",
+      "opcoes": ["Fica feio", "Vira texto e as contas param de funcionar", "O Excel apaga"],
+      "certa": 1,
+      "explicacao": "Digite 50 e aplique o formato Moeda: o valor continua número."
+    },
+    {
+      "pergunta": "Para que serve uma lista suspensa na validação de dados?",
+      "opcoes": [
+        "Deixar a planilha colorida",
+        "Garantir que só valores padronizados sejam digitados",
+        "Esconder colunas"
+      ],
+      "certa": 1,
+      "explicacao": "Categorias escritas de jeitos diferentes viram grupos diferentes nos relatórios."
+    }
+  ],
+  "excel/pratica-orcamento": [
+    {
+      "pergunta": "Na regra =$D2>$E2 aplicada às linhas, por que o $ antes de D e E?",
+      "opcoes": [
+        "Para travar a linha 2",
+        "Para que todas as colunas da linha comparem sempre D com E",
+        "Não faz diferença"
+      ],
+      "certa": 1,
+      "explicacao": "A coluna fica travada e a linha anda: cada linha compara o próprio valor com o próprio orçamento."
+    }
+  ],
+  "excel/condicionais": [
+    {
+      "pergunta": "Qual fórmula soma os valores da categoria \"Saúde\"?",
+      "opcoes": [
+        "=SOMA(tbGastos[Valor]; \"Saúde\")",
+        "=SOMASES(tbGastos[Valor]; tbGastos[Categoria]; \"Saúde\")",
+        "=SE(tbGastos[Categoria]=\"Saúde\"; SOMA())"
+      ],
+      "certa": 1,
+      "explicacao": "Primeiro o que somar, depois os pares de critério."
+    },
+    {
+      "pergunta": "Como escrever o critério \"maior que 100\" no SOMASES?",
+      "opcoes": [">100", "\">100\"", "\"maior 100\""],
+      "certa": 1,
+      "explicacao": "O critério é texto, entre aspas. Com uma célula: \">\"&B1."
+    },
+    {
+      "pergunta": "Qual o risco do SEERRO?",
+      "opcoes": ["Deixar lento", "Esconder erros que você precisaria ver", "Nenhum"],
+      "certa": 1,
+      "explicacao": "Um #REF! por coluna apagada vira 0 sem ninguém perceber."
+    }
+  ],
+  "excel/buscas": [
+    {
+      "pergunta": "Por que o último argumento da PROCV deve ser FALSO?",
+      "opcoes": [
+        "Para deixar mais rápido",
+        "Para fazer busca exata; sem ele, ela pode trazer um valor errado em silêncio",
+        "É opcional e não muda nada"
+      ],
+      "certa": 1,
+      "explicacao": "O padrão da PROCV é a busca aproximada, que só serve para tabelas de faixas ordenadas."
+    },
+    {
+      "pergunta": "Qual vantagem da PROCX sobre a PROCV?",
+      "opcoes": [
+        "Funciona em qualquer Excel antigo",
+        "Procura em qualquer coluna, devolve de qualquer lado e não depende do número da coluna",
+        "Não precisa de tabela"
+      ],
+      "certa": 1,
+      "explicacao": "E ainda tem o argumento \"se não achar\"."
+    },
+    {
+      "pergunta": "A busca devolve #N/D, mas o código parece estar lá. Causa provável?",
+      "opcoes": ["Excel com defeito", "Espaços sobrando ou número guardado como texto", "Falta de memória"],
+      "certa": 1,
+      "explicacao": "Para o Excel, \"CAF01\" e \"CAF01 \" são valores diferentes."
+    }
+  ],
+  "excel/pratica-vendas": [
+    {
+      "pergunta": "A categoria só existe em tbProdutos. Como contar vendas por categoria?",
+      "opcoes": ["Não dá", "Trazer a categoria para tbVendas com uma busca e depois contar", "Copiar e colar à mão"],
+      "certa": 1,
+      "explicacao": "Buscar e depois resumir é o padrão. No Power BI, um relacionamento faz isso sem coluna extra."
+    }
+  ],
+  "excel/tabelas-dinamicas": [
+    {
+      "pergunta": "Qual gráfico mostra melhor a evolução do faturamento em 12 meses?",
+      "opcoes": ["Pizza", "Linhas", "Dispersão"],
+      "certa": 1,
+      "explicacao": "Tempo no eixo horizontal, linha mostrando a tendência."
+    },
+    {
+      "pergunta": "Você mudou os dados. O que fazer para a tabela dinâmica refletir?",
+      "opcoes": ["Nada, ela atualiza sozinha", "Atualizar (Dados, Atualizar Tudo)", "Criar outra"],
+      "certa": 1,
+      "explicacao": "A dinâmica guarda um cache dos dados até ser atualizada."
+    },
+    {
+      "pergunta": "Por que o eixo de um gráfico de barras deve começar em zero?",
+      "opcoes": ["É regra do Excel", "Senão o tamanho das barras exagera as diferenças", "Para caber a legenda"],
+      "certa": 1,
+      "explicacao": "Barras comparam comprimentos; cortar o eixo distorce a comparação."
+    }
+  ],
+  "excel/matrizes-dinamicas": [
+    {
+      "pergunta": "O que =ÚNICO(tbVendas[Vendedor]) devolve?",
+      "opcoes": ["O primeiro vendedor", "A lista de vendedores sem repetição", "Quantos vendedores há"],
+      "certa": 1,
+      "explicacao": "A lista transborda para as células de baixo."
+    },
+    {
+      "pergunta": "No FILTRO, como juntar duas condições com E?",
+      "opcoes": ["Com ; entre elas", "Multiplicando: (cond1)*(cond2)", "Com a função E()"],
+      "certa": 1,
+      "explicacao": "Verdadeiro vale 1 e falso 0: o produto só é 1 quando as duas são verdadeiras."
+    },
+    {
+      "pergunta": "O que o erro #DESPEJAR! indica?",
+      "opcoes": ["Fórmula errada", "Há algo nas células onde o resultado precisa transbordar", "Divisão por zero"],
+      "certa": 1,
+      "explicacao": "Esvazie as células do caminho e o resultado aparece."
+    }
+  ],
+  "excel/pratica-painel": [
+    {
+      "pergunta": "Por que usar ÚNICO e A6# em vez de digitar os nomes dos vendedores?",
+      "opcoes": ["Fica mais bonito", "Um vendedor novo nos dados aparece no painel sem mexer em nada", "É obrigatório"],
+      "certa": 1,
+      "explicacao": "O painel acompanha os dados em vez de depender de manutenção manual."
+    }
+  ],
+  "power-query/o-que-e-power-query": [
+    {
+      "pergunta": "O que acontece com o arquivo original quando você limpa os dados no Power Query?",
+      "opcoes": ["É sobrescrito", "Nada: o Power Query só lê e carrega o resultado em outro lugar", "É apagado"],
+      "certa": 1,
+      "explicacao": "A origem fica intacta, e a limpeza pode ser refeita a qualquer momento."
+    },
+    {
+      "pergunta": "Como repetir a limpeza no relatório do mês seguinte?",
+      "opcoes": ["Refazer todas as etapas", "Trocar o arquivo e clicar em Atualizar", "Copiar e colar as fórmulas"],
+      "certa": 1,
+      "explicacao": "As etapas aplicadas ficam gravadas e rodam de novo."
+    },
+    {
+      "pergunta": "Por que usar \"Alterar Tipo, Usando Localidade\" com datas brasileiras?",
+      "opcoes": [
+        "É mais rápido",
+        "Para 05/10 ser lido como 5 de outubro, mesmo num computador em inglês",
+        "Para traduzir os meses"
+      ],
+      "certa": 1,
+      "explicacao": "Sem a localidade, o formato do sistema decide, e dia e mês podem trocar de lugar."
+    }
+  ],
+  "power-query/limpeza-basica": [
+    {
+      "pergunta": "Por que preferir \"Remover outras colunas\" a remover as que não interessam?",
+      "opcoes": [
+        "É mais rápido",
+        "Se o sistema acrescentar uma coluna nova, ela não entra no resultado sem querer",
+        "Não há diferença"
+      ],
+      "certa": 1,
+      "explicacao": "A etapa diz quais colunas ficam, e o resultado não muda se a origem ganhar colunas."
+    },
+    {
+      "pergunta": "Um relatório mostra a categoria só na primeira linha de cada grupo. Qual operação?",
+      "opcoes": ["Dividir coluna", "Preencher para baixo", "Remover duplicatas"],
+      "certa": 1,
+      "explicacao": "Ela copia o valor de cima para as células vazias abaixo."
+    },
+    {
+      "pergunta": "O que \"Aparar\" faz?",
+      "opcoes": ["Corta o texto pela metade", "Tira os espaços das pontas", "Converte em número"],
+      "certa": 1,
+      "explicacao": "Espaços sobrando fazem \"Café \" e \"Café\" serem valores diferentes."
+    }
+  ],
+  "power-query/pratica-extrato": [
+    {
+      "pergunta": "O total das saídas deu -3.258,20 em vez de -1.758,20. O que faltou?",
+      "opcoes": ["Converter o tipo", "Remover a linha duplicada do aluguel", "Aparar o texto"],
+      "certa": 1,
+      "explicacao": "O aluguel de 1.500 aparece duas vezes no arquivo."
+    }
+  ],
+  "power-query/combinar-consultas": [
+    {
+      "pergunta": "Você tem a mesma planilha de vendas de 12 meses em 12 arquivos. Como juntar?",
+      "opcoes": ["Mesclar", "Obter dados De Pasta e combinar", "Copiar e colar"],
+      "certa": 1,
+      "explicacao": "A importação de pasta empilha todos e inclui os arquivos novos a cada atualização."
+    },
+    {
+      "pergunta": "Qual junção mostra as vendas com código de produto inexistente no cadastro?",
+      "opcoes": ["Interna", "Anti esquerda", "Externa completa"],
+      "certa": 1,
+      "explicacao": "Anti esquerda: linhas da primeira tabela sem par na segunda."
+    },
+    {
+      "pergunta": "Acrescentar consultas casa as colunas por quê?",
+      "opcoes": ["Pela posição", "Pelo nome do cabeçalho", "Pelo tipo"],
+      "certa": 1,
+      "explicacao": "\"Valor\" e \"valor \" viram duas colunas diferentes. Padronize antes."
+    }
+  ],
+  "power-query/agrupar-e-despivotar": [
+    {
+      "pergunta": "Uma planilha tem uma coluna para cada mês. Qual operação deixa ela pronta para análise?",
+      "opcoes": ["Pivotar", "Despivotar outras colunas", "Transpor"],
+      "certa": 1,
+      "explicacao": "Cada combinação produto + mês vira uma linha, com o valor numa coluna só."
+    },
+    {
+      "pergunta": "Por que \"Despivotar outras colunas\" em vez de selecionar os meses?",
+      "opcoes": ["É mais rápido", "Meses novos entram sozinhos na próxima atualização", "Não há diferença"],
+      "certa": 1,
+      "explicacao": "A etapa guarda as colunas que ficam fixas, não a lista de meses."
+    },
+    {
+      "pergunta": "O que Table.RowCount(_) calcula dentro do Agrupar Por?",
+      "opcoes": ["A soma", "Quantas linhas há em cada grupo", "O número da linha"],
+      "certa": 1,
+      "explicacao": "O _ é a tabelinha de cada grupo."
+    }
+  ],
+  "power-query/pratica-consolidar": [
+    {
+      "pergunta": "Por que criar a coluna Loja antes de acrescentar?",
+      "opcoes": [
+        "É obrigatório",
+        "Depois de empilhar, não dá mais para saber de que loja veio cada linha",
+        "Para ordenar"
+      ],
+      "certa": 1,
+      "explicacao": "Marque a origem enquanto as tabelas ainda estão separadas."
+    }
+  ],
+  "power-query/linguagem-m": [
+    {
+      "pergunta": "O que a parte in de uma consulta M define?",
+      "opcoes": ["A primeira etapa", "Qual etapa é o resultado da consulta", "A fonte de dados"],
+      "certa": 1,
+      "explicacao": "Normalmente é a última etapa, mas pode ser qualquer uma."
+    },
+    {
+      "pergunta": "O que each [Valor] > 0 significa?",
+      "opcoes": [
+        "Uma coluna nova",
+        "Uma função que, para cada linha, confere se o Valor dela é maior que zero",
+        "Um erro de sintaxe"
+      ],
+      "certa": 1,
+      "explicacao": "each é o atalho para criar uma função por linha."
+    },
+    {
+      "pergunta": "Table.selectRows funciona?",
+      "opcoes": ["Sim", "Não: M diferencia maiúsculas e minúsculas, o nome é Table.SelectRows", "Só no Power BI"],
+      "certa": 1,
+      "explicacao": "Escreva os nomes exatamente como na documentação."
+    }
+  ],
+  "power-query/parametros-e-desempenho": [
+    {
+      "pergunta": "Por que usar um parâmetro para o caminho do arquivo?",
+      "opcoes": [
+        "Fica mais rápido",
+        "O caminho muda num lugar só, e a consulta funciona em outro computador",
+        "É obrigatório no Power BI"
+      ],
+      "certa": 1,
+      "explicacao": "Caminhos fixos com o nome do seu usuário quebram em qualquer outra máquina."
+    },
+    {
+      "pergunta": "O que é dobragem de consulta?",
+      "opcoes": [
+        "Duplicar a consulta",
+        "O Power Query traduzir as etapas para a linguagem da fonte (SQL) e o banco fazer o trabalho",
+        "Agrupar linhas"
+      ],
+      "certa": 1,
+      "explicacao": "Por isso filtros e remoção de colunas devem vir cedo."
+    },
+    {
+      "pergunta": "Várias consultas partem da mesma limpeza. O que usar?",
+      "opcoes": ["Duplicar", "Referência", "Copiar e colar o M"],
+      "certa": 1,
+      "explicacao": "Com referência, a limpeza fica num lugar só."
+    }
+  ],
+  "power-query/pratica-funcao": [
+    {
+      "pergunta": "Por que a função devolve um registro [Cidade = ..., UF = ...]?",
+      "opcoes": [
+        "É obrigatório em M",
+        "Para criar duas colunas de uma vez, expandindo o registro",
+        "Para ficar mais rápido"
+      ],
+      "certa": 1,
+      "explicacao": "Um valor por coluna exigiria chamar a função duas vezes."
+    }
+  ],
+  "power-bi/o-que-e-power-bi": [
+    {
+      "pergunta": "Onde o relatório é construído?",
+      "opcoes": ["No Serviço (app.powerbi.com)", "No Power BI Desktop", "No Excel"],
+      "certa": 1,
+      "explicacao": "O Desktop constrói; o Serviço publica, atualiza e compartilha."
+    },
+    {
+      "pergunta": "Qual parte do Power BI limpa e transforma os dados?",
+      "opcoes": ["DAX", "Power Query", "O painel de Visualizações"],
+      "certa": 1,
+      "explicacao": "O Power Query prepara; o DAX calcula sobre o modelo pronto."
+    },
+    {
+      "pergunta": "O que acontece ao clicar numa barra de um gráfico do relatório?",
+      "opcoes": ["Nada", "Os outros visuais filtram ou destacam aquela categoria", "Abre o Excel"],
+      "certa": 1,
+      "explicacao": "É a interação entre visuais, que pode ser ajustada em Formatar, Editar interações."
+    }
+  ],
+  "power-bi/primeiro-relatorio": [
+    {
+      "pergunta": "Qual visual equivale à tabela dinâmica do Excel?",
+      "opcoes": ["Tabela", "Matriz", "Cartão"],
+      "certa": 1,
+      "explicacao": "A matriz tem linhas, colunas, valores e subtotais por nível."
+    },
+    {
+      "pergunta": "Onde fica um filtro fixo que vale para o relatório inteiro?",
+      "opcoes": ["Numa segmentação em cada página", "No painel Filtros, em todas as páginas", "Na tabela"],
+      "certa": 1,
+      "explicacao": "Segmentações são para os filtros que a pessoa vai mexer."
+    },
+    {
+      "pergunta": "Quantos visuais por página costumam funcionar bem?",
+      "opcoes": ["1", "4 a 6", "15 ou mais"],
+      "certa": 1,
+      "explicacao": "Mais que isso, a página perde o foco. Divida em páginas por assunto."
+    }
+  ],
+  "power-bi/pratica-primeiro-painel": [
+    {
+      "pergunta": "Ao arrastar uma data para o eixo X, o Power BI cria o quê?",
+      "opcoes": ["Um erro", "Uma hierarquia Ano, Trimestre, Mês e Dia", "Uma medida"],
+      "certa": 1,
+      "explicacao": "É a hierarquia automática de datas; no nível avançado, uma tabela Calendário dá mais controle."
+    }
+  ],
+  "power-bi/modelo-estrela": [
+    {
+      "pergunta": "Num modelo estrela, o que fica na tabela fato?",
+      "opcoes": ["Descrições de produtos", "Os eventos, com os números (vendas, lançamentos)", "Só datas"],
+      "certa": 1,
+      "explicacao": "As dimensões descrevem; a fato registra o que aconteceu."
+    },
+    {
+      "pergunta": "Qual a direção de filtro recomendada entre dimensão e fato?",
+      "opcoes": ["Ambas", "Única, da dimensão para a fato", "Nenhuma"],
+      "certa": 1,
+      "explicacao": "Ambas as direções criam caminhos ambíguos e deixam o modelo lento."
+    },
+    {
+      "pergunta": "Por que \"Nome do mês\" precisa ser classificado pela coluna Mês?",
+      "opcoes": ["Para traduzir", "Senão os meses aparecem em ordem alfabética (abr, ago, dez...)", "Não precisa"],
+      "certa": 1,
+      "explicacao": "Classificar por coluna usa o número do mês para ordenar o texto."
+    }
+  ],
+  "power-bi/medidas-e-interacoes": [
+    {
+      "pergunta": "Qual a vantagem de uma medida sobre arrastar a coluna e deixar o Power BI somar?",
+      "opcoes": [
+        "Nenhuma",
+        "Tem nome e formato, é reaproveitada em todos os visuais e serve de base para outras",
+        "Deixa o arquivo menor"
+      ],
+      "certa": 1,
+      "explicacao": "Ticket médio, margem e comparações com o ano anterior são feitos a partir de medidas."
+    },
+    {
+      "pergunta": "O que o drill through faz?",
+      "opcoes": ["Exporta para Excel", "Abre uma página de detalhes filtrada pelo item clicado", "Atualiza os dados"],
+      "certa": 1,
+      "explicacao": "Ótimo para fichas: um cliente, um produto, um vendedor."
+    },
+    {
+      "pergunta": "Por que DIVIDE em vez de / nas medidas?",
+      "opcoes": ["É mais rápido", "Trata a divisão por zero sem erro", "É obrigatório"],
+      "certa": 1,
+      "explicacao": "DIVIDE devolve vazio (ou um valor alternativo) quando o divisor é zero."
+    }
+  ],
+  "power-bi/pratica-modelo": [
+    {
+      "pergunta": "De qual tabela deve vir a Categoria na matriz?",
+      "opcoes": ["De fVendas", "De dProduto", "Tanto faz"],
+      "certa": 1,
+      "explicacao": "Campos de descrição vêm das dimensões; a fato só tem as chaves e os números."
+    }
+  ],
+  "power-bi/publicar-e-compartilhar": [
+    {
+      "pergunta": "O relatório usa um Excel numa pasta do seu computador. O que é preciso para atualizar no Serviço?",
+      "opcoes": ["Nada", "Um gateway (ou mover o arquivo para OneDrive/SharePoint)", "Licença Premium"],
+      "certa": 1,
+      "explicacao": "O Serviço, na nuvem, não enxerga o seu disco; o gateway faz a ponte."
+    },
+    {
+      "pergunta": "Como fazer cada vendedor ver só as próprias vendas?",
+      "opcoes": [
+        "Um relatório para cada um",
+        "Segurança em nível de linha (RLS) com USERPRINCIPALNAME()",
+        "Filtros na página"
+      ],
+      "certa": 1,
+      "explicacao": "Um relatório só, e o filtro é aplicado conforme quem está logado."
+    },
+    {
+      "pergunta": "Quando usar \"Publicar na web\"?",
+      "opcoes": [
+        "Para compartilhar com a diretoria",
+        "Só com dados que podem ser públicos: qualquer um com o link vê, sem login",
+        "Sempre"
+      ],
+      "certa": 1,
+      "explicacao": "É um link público. Para uso interno, use aplicativos e permissões."
+    }
+  ],
+  "power-bi/desempenho-e-versionamento": [
+    {
+      "pergunta": "Qual ferramenta do Desktop mostra quanto cada visual demora?",
+      "opcoes": ["Exibir como", "Analisador de desempenho", "Gerenciar funções"],
+      "certa": 1,
+      "explicacao": "Ele separa o tempo da consulta DAX, do desenho e da espera."
+    },
+    {
+      "pergunta": "Por que uma coluna de data e hora com segundos deixa o modelo pesado?",
+      "opcoes": [
+        "Datas são grandes",
+        "Ela tem muitos valores diferentes (alta cardinalidade), que comprimem mal",
+        "Não deixa"
+      ],
+      "certa": 1,
+      "explicacao": "O motor comprime melhor colunas com poucos valores distintos."
+    },
+    {
+      "pergunta": "Qual a vantagem do formato PBIP?",
+      "opcoes": [
+        "Abre mais rápido",
+        "Salva o relatório como arquivos de texto, que o Git consegue comparar e juntar",
+        "Funciona no Mac"
+      ],
+      "certa": 1,
+      "explicacao": "O .pbix é binário; o PBIP permite versionar e revisar como código."
+    }
+  ],
+  "power-bi/pratica-relatorio-completo": [
+    {
+      "pergunta": "Para que serve a página de drill through?",
+      "opcoes": [
+        "Exportar dados",
+        "Mostrar os detalhes de um item já filtrado, vindo do clique em outra página",
+        "Fazer login"
+      ],
+      "certa": 1,
+      "explicacao": "O campo em \"Detalhamento\" define o que é levado como filtro."
+    }
   ]
 }

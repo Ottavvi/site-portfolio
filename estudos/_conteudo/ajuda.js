@@ -12,4 +12,14 @@ const trecho = texto => `<pre class="aula-codigo"><code>${escapar(texto)}</code>
 
 const dica = html => `<aside class="aula-dica"><strong>Dica</strong><p>${html}</p></aside>`;
 
-module.exports = { escapar, codigo, trecho, dica };
+// Resposta escondida de um exercício das aulas práticas (trilhas sem editor, como Excel e DAX)
+const resposta = html =>
+  `<details class="desafio-solucao"><summary>Ver a resposta</summary><div class="aula-resposta">${html}</div></details>`;
+
+// Tabela simples com os dados de exemplo de uma prática (dá para copiar e colar no Excel)
+const tabela = (cabecalho, linhas) =>
+  `<div class="aula-tabela"><table><thead><tr>${cabecalho.map(c => `<th>${c}</th>`).join('')}</tr></thead><tbody>${linhas
+    .map(l => `<tr>${l.map(v => `<td>${v}</td>`).join('')}</tr>`)
+    .join('')}</tbody></table></div>`;
+
+module.exports = { escapar, codigo, trecho, dica, resposta, tabela };
