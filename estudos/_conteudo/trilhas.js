@@ -7,22 +7,8 @@ module.exports = [
   require('./javascript'),
   require('./modulos-es'),
   require('./localstorage'),
-  {
-    id: 'web-audio',
-    area: 'Desenvolvimento web',
-    titulo: 'Web Audio',
-    sigla: 'WA',
-    resumo: 'Gerar e tocar sons pelo navegador: alarmes, efeitos e sintetizadores.',
-    emBreve: true
-  },
-  {
-    id: 'notificacoes',
-    area: 'Desenvolvimento web',
-    titulo: 'Notificações',
-    sigla: 'NT',
-    resumo: 'Pedir permissão e avisar a pessoa fora da página, do jeito certo.',
-    emBreve: true
-  },
+  require('./web-audio'),
+  require('./notificacoes'),
   {
     id: 'pwa-offline',
     area: 'Desenvolvimento web',

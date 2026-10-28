@@ -596,6 +596,116 @@
       ]
     },
     {
+      "id": "web-audio",
+      "titulo": "Web Audio",
+      "sigla": "WA",
+      "itens": [
+        {
+          "id": "web-audio/primeiro-som",
+          "titulo": "O primeiro som",
+          "resumo": "AudioContext, osciladores e o grafo de áudio.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 9
+        },
+        {
+          "id": "web-audio/volume-e-envelope",
+          "titulo": "Volume e envelope",
+          "resumo": "GainNode e rampas para um som sem estalos.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 10
+        },
+        {
+          "id": "web-audio/notas-e-tempo",
+          "titulo": "Notas e tempo",
+          "resumo": "De nota para frequência e como agendar uma melodia.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 12
+        },
+        {
+          "id": "web-audio/desafio-teclado",
+          "titulo": "Desafio: teclado musical",
+          "resumo": "Converta nomes de notas em frequências e monte um teclado.",
+          "tipo": "desafio",
+          "nivel": "Intermediário",
+          "minutos": 22
+        },
+        {
+          "id": "web-audio/arquivos-filtros-e-analise",
+          "titulo": "Arquivos, filtros e análise",
+          "resumo": "AudioBuffer, BiquadFilter, AnalyserNode e OfflineAudioContext.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 14
+        },
+        {
+          "id": "web-audio/desafio-alarme",
+          "titulo": "Desafio: som de alarme",
+          "resumo": "Crie um bip com envelope e um alarme de bips repetidos.",
+          "tipo": "desafio",
+          "nivel": "Avançado",
+          "minutos": 25
+        }
+      ]
+    },
+    {
+      "id": "notificacoes",
+      "titulo": "Notificações",
+      "sigla": "NT",
+      "itens": [
+        {
+          "id": "notificacoes/como-funcionam",
+          "titulo": "Como as notificações funcionam",
+          "resumo": "A API Notification, os três estados da permissão e o primeiro aviso.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 9
+        },
+        {
+          "id": "notificacoes/pedir-na-hora-certa",
+          "titulo": "Pedir na hora certa",
+          "resumo": "Por que nunca pedir ao abrir a página, e o que fazer em vez disso.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 8
+        },
+        {
+          "id": "notificacoes/avisos-na-pagina",
+          "titulo": "Avisos dentro da página",
+          "resumo": "Toasts acessíveis, visibilidade da aba e contador no título.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 11
+        },
+        {
+          "id": "notificacoes/desafio-avisar",
+          "titulo": "Desafio: avisar do jeito certo",
+          "resumo": "Escolha entre notificação e toast conforme a permissão e a aba.",
+          "tipo": "desafio",
+          "nivel": "Intermediário",
+          "minutos": 20
+        },
+        {
+          "id": "notificacoes/push",
+          "titulo": "Notificações push",
+          "resumo": "Service worker, inscrição com chave VAPID e o servidor que envia.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 14
+        },
+        {
+          "id": "notificacoes/desafio-lembretes",
+          "titulo": "Desafio: lembretes agendados",
+          "resumo": "Agende e cancele lembretes que avisam na hora certa.",
+          "tipo": "desafio",
+          "nivel": "Avançado",
+          "minutos": 22
+        }
+      ]
+    },
+    {
       "id": "sqlite",
       "titulo": "SQLite",
       "sigla": "SQL",

@@ -1223,6 +1223,210 @@
       "explicacao": "IndexedDB é assíncrono, guarda objetos e tem muito mais espaço."
     }
   ],
+  "web-audio/primeiro-som": [
+    {
+      "pergunta": "Por que criar o AudioContext dentro de um clique?",
+      "opcoes": [
+        "É mais rápido",
+        "Os navegadores só liberam som depois de uma ação da pessoa",
+        "O contexto expira em 1 segundo"
+      ],
+      "certa": 1,
+      "explicacao": "É a política de autoplay: nada de página que começa a fazer barulho sozinha."
+    },
+    {
+      "pergunta": "O que é ctx.destination?",
+      "opcoes": ["A saída de som (as caixas)", "O primeiro oscilador", "Um arquivo de áudio"],
+      "certa": 0,
+      "explicacao": "Todo som precisa chegar nele para ser ouvido."
+    },
+    {
+      "pergunta": "Dá para chamar start() duas vezes no mesmo oscilador?",
+      "opcoes": ["Sim", "Não: cada oscilador toca uma vez; crie outro", "Só depois de stop()"],
+      "certa": 1,
+      "explicacao": "Osciladores são descartáveis e baratos de criar."
+    }
+  ],
+  "web-audio/volume-e-envelope": [
+    {
+      "pergunta": "Por que usar um envelope de volume?",
+      "opcoes": [
+        "Para economizar bateria",
+        "Para evitar o estalo de cortar a onda de repente",
+        "Para mudar a frequência"
+      ],
+      "certa": 1,
+      "explicacao": "Subir e descer o volume suavemente elimina o clique no começo e no fim."
+    },
+    {
+      "pergunta": "Em que unidade está ctx.currentTime?",
+      "opcoes": ["Milissegundos", "Segundos", "Amostras"],
+      "certa": 1,
+      "explicacao": "O relógio de áudio conta em segundos, com casas decimais."
+    },
+    {
+      "pergunta": "Por que exponentialRampToValueAtTime não pode chegar a 0?",
+      "opcoes": ["Por causa da matemática da curva exponencial", "Porque 0 é mudo", "Pode sim"],
+      "certa": 0,
+      "explicacao": "Uma curva exponencial nunca chega exatamente a zero. Use um valor bem pequeno, como 0.0001."
+    }
+  ],
+  "web-audio/notas-e-tempo": [
+    {
+      "pergunta": "O que acontece com a frequência uma oitava acima?",
+      "opcoes": ["Soma 12 Hz", "Dobra", "Aumenta 10%"],
+      "certa": 1,
+      "explicacao": "Uma oitava (12 semitons) multiplica a frequência por 2: A4 é 440 Hz e A5, 880 Hz."
+    },
+    {
+      "pergunta": "Por que agendar as notas com ctx.currentTime em vez de setTimeout?",
+      "opcoes": [
+        "setTimeout não existe em áudio",
+        "O relógio de áudio é preciso; o setTimeout atrasa quando a página está ocupada",
+        "É obrigatório"
+      ],
+      "certa": 1,
+      "explicacao": "Ritmo depende de precisão de milissegundos, que só o relógio de áudio garante."
+    },
+    {
+      "pergunta": "Qual o número MIDI do lá central (A4)?",
+      "opcoes": ["60", "69", "440"],
+      "certa": 1,
+      "explicacao": "O dó central (C4) é 60 e o lá central é 69."
+    }
+  ],
+  "web-audio/arquivos-filtros-e-analise": [
+    {
+      "pergunta": "Que filtro deixa o som abafado, como do outro lado de uma parede?",
+      "opcoes": ["highpass", "lowpass", "bandpass"],
+      "certa": 1,
+      "explicacao": "O passa-baixa deixa passar os graves e corta os agudos."
+    },
+    {
+      "pergunta": "O AnalyserNode altera o som que passa por ele?",
+      "opcoes": ["Sim, deixa mais alto", "Não: só permite ler a onda e o espectro", "Sim, aplica um filtro"],
+      "certa": 1,
+      "explicacao": "Ele é um ponto de observação; o som sai igual."
+    },
+    {
+      "pergunta": "Para que serve o OfflineAudioContext?",
+      "opcoes": [
+        "Tocar sem internet",
+        "Processar o som sem tocar, o mais rápido possível, e receber o resultado",
+        "Gravar o microfone"
+      ],
+      "certa": 1,
+      "explicacao": "Ótimo para gerar arquivos e para testes automáticos de áudio."
+    }
+  ],
+  "notificacoes/como-funcionam": [
+    {
+      "pergunta": "A permissão está \"denied\". O que o site pode fazer?",
+      "opcoes": [
+        "Pedir de novo no próximo clique",
+        "Nada: só a pessoa muda isso nas configurações do navegador",
+        "Mostrar a notificação assim mesmo"
+      ],
+      "certa": 1,
+      "explicacao": "Uma recusa é definitiva para o site. Por isso a hora de pedir importa tanto."
+    },
+    {
+      "pergunta": "Para que serve a opção tag?",
+      "opcoes": [
+        "Mudar a cor do aviso",
+        "Fazer um aviso novo substituir o anterior com a mesma tag",
+        "Marcar o aviso como lido"
+      ],
+      "certa": 1,
+      "explicacao": "Evita empilhar dez avisos do mesmo assunto."
+    },
+    {
+      "pergunta": "Notificações funcionam numa página http:// comum (não localhost)?",
+      "opcoes": ["Sim", "Não: precisam de contexto seguro (https ou localhost)", "Só no celular"],
+      "certa": 1,
+      "explicacao": "A API é restrita a páginas seguras."
+    }
+  ],
+  "notificacoes/pedir-na-hora-certa": [
+    {
+      "pergunta": "Qual o melhor momento para pedir permissão?",
+      "opcoes": [
+        "Assim que a página carrega",
+        "Depois de uma ação da pessoa ligada ao aviso, como criar um lembrete",
+        "Depois de 30 segundos na página"
+      ],
+      "certa": 1,
+      "explicacao": "A pessoa entende o benefício e o pedido vem de um clique dela."
+    },
+    {
+      "pergunta": "Para que serve o convite dentro da página antes do pedido do navegador?",
+      "opcoes": [
+        "Para enfeitar",
+        "Um \"agora não\" no convite não gasta a única chance de pedir",
+        "É obrigatório pela API"
+      ],
+      "certa": 1,
+      "explicacao": "O pedido do navegador só é chamado se a pessoa mostrou interesse."
+    },
+    {
+      "pergunta": "O que fazer se a permissão estiver negada?",
+      "opcoes": [
+        "Pedir de novo a cada visita",
+        "Explicar em uma frase como reativar, sem insistir",
+        "Tentar new Notification mesmo assim"
+      ],
+      "certa": 1,
+      "explicacao": "O site não pode pedir de novo; só pode informar o caminho."
+    }
+  ],
+  "notificacoes/avisos-na-pagina": [
+    {
+      "pergunta": "Quando faz mais sentido uma notificação do sistema em vez de um toast?",
+      "opcoes": ["Sempre", "Quando a aba está escondida", "Quando a aba está visível"],
+      "certa": 1,
+      "explicacao": "Com a página na frente da pessoa, o aviso dentro dela basta."
+    },
+    {
+      "pergunta": "Para que serve role=\"status\" no contêiner dos avisos?",
+      "opcoes": [
+        "Mudar a cor",
+        "Fazer leitores de tela anunciarem o texto novo sem interromper",
+        "Mostrar o aviso fora da página"
+      ],
+      "certa": 1,
+      "explicacao": "É uma região \"viva\": mudanças nela são lidas em voz alta educadamente."
+    },
+    {
+      "pergunta": "Qual evento avisa que a aba ficou escondida ou visível?",
+      "opcoes": ["focus", "visibilitychange", "load"],
+      "certa": 1,
+      "explicacao": "Ele dispara a cada mudança de document.visibilityState."
+    }
+  ],
+  "notificacoes/push": [
+    {
+      "pergunta": "Quem mostra a notificação quando o site está fechado?",
+      "opcoes": ["A página", "O service worker, acordado pelo push", "O servidor diretamente"],
+      "certa": 1,
+      "explicacao": "O servidor envia ao serviço de push, que acorda o service worker, que chama showNotification."
+    },
+    {
+      "pergunta": "Para que servem as chaves VAPID?",
+      "opcoes": [
+        "Criptografar o banco de dados",
+        "Identificar o seu servidor como o remetente autorizado dos pushes",
+        "Fazer login da pessoa"
+      ],
+      "certa": 1,
+      "explicacao": "A chave pública vai na inscrição; a privada assina cada envio."
+    },
+    {
+      "pergunta": "O envio de um push respondeu 410. O que fazer?",
+      "opcoes": ["Tentar de novo a cada minuto", "Apagar essa inscrição do banco", "Pedir permissão de novo"],
+      "certa": 1,
+      "explicacao": "A inscrição não existe mais; guardá-la só gera envios inúteis."
+    }
+  ],
   "sqlite/o-que-e-sql": [
     {
       "pergunta": "Numa tabela, o que é cada linha?",
