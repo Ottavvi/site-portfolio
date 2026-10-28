@@ -12,7 +12,7 @@ const TEXTOS = EN
       placeholder: 'Search pages, projects and actions...',
       vazio: 'Nothing found.',
       abrir: 'Open command palette',
-      grupos: { paginas: 'Pages', projetos: 'Projects', acoes: 'Actions' },
+      grupos: { paginas: 'Pages', projetos: 'Projects', aulas: 'Lessons and challenges (PT)', acoes: 'Actions' },
       dica: 'to navigate',
       copiado: 'Email copied!'
     }
@@ -20,7 +20,7 @@ const TEXTOS = EN
       placeholder: 'Buscar páginas, projetos e ações...',
       vazio: 'Nada encontrado.',
       abrir: 'Abrir paleta de comandos',
-      grupos: { paginas: 'Páginas', projetos: 'Projetos', acoes: 'Ações' },
+      grupos: { paginas: 'Páginas', projetos: 'Projetos', aulas: 'Aulas e desafios', acoes: 'Ações' },
       dica: 'para navegar',
       copiado: 'E-mail copiado!'
     };
@@ -41,6 +41,12 @@ const comandos = [
     'aulas js dom eventos fetch'
   ],
   ['paginas', EN ? 'Study journal (PT)' : 'Diário de estudos', url('estudos/diario/'), 'anotacoes blog journal'],
+  [
+    'paginas',
+    EN ? 'Quiz review (PT)' : 'Revisão das perguntas',
+    url('estudos/revisao.html'),
+    'revisar quiz erradas review'
+  ],
   ['paginas', EN ? 'Contact' : 'Contato', url(`${inicio}#contato`), 'email mensagem message'],
   [
     'projetos',
@@ -103,6 +109,33 @@ const comandos = [
   ]
 ].map(([grupo, titulo, destino, extras]) => ({ grupo, titulo, destino, busca: normalizar(`${titulo} ${extras}`) }));
 
+// Aulas e desafios da área de estudos: vêm do estudos/indice.json (gerado com as páginas) na primeira vez que a
+// paleta abre, e só aparecem quando há algo digitado (são muitas para a lista inicial)
+let aulasCarregadas = false;
+function carregarAulas() {
+  if (aulasCarregadas) return;
+  aulasCarregadas = true;
+  fetch(url('estudos/indice.json'))
+    .then(resposta => resposta.json())
+    .then(({ trilhas }) => {
+      const aulas = trilhas.flatMap(trilha =>
+        trilha.itens.map(item => ({
+          grupo: 'aulas',
+          titulo: `${item.titulo} · ${trilha.titulo}`,
+          destino: url(`estudos/${item.id}.html`),
+          busca: normalizar(`${item.titulo} ${trilha.titulo} ${item.resumo} ${item.tipo} ${item.nivel}`)
+        }))
+      );
+      comandos.splice(
+        comandos.findIndex(c => c.grupo === 'acoes'),
+        0,
+        ...aulas
+      );
+      if (dialogo.open && campo.value) desenhar();
+    })
+    .catch(() => (aulasCarregadas = false));
+}
+
 function normalizar(texto) {
   return texto.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
 }
@@ -146,7 +179,7 @@ let ativo = 0;
 
 function desenhar() {
   const termos = normalizar(campo.value).split(/\s+/).filter(Boolean);
-  visiveis = comandos.filter(c => termos.every(t => c.busca.includes(t)));
+  visiveis = comandos.filter(c => (termos.length || c.grupo !== 'aulas') && termos.every(t => c.busca.includes(t)));
   ativo = Math.min(ativo, Math.max(visiveis.length - 1, 0));
   lista.innerHTML = '';
   if (!visiveis.length) {
@@ -201,6 +234,7 @@ function abrir() {
   desenhar();
   dialogo.showModal();
   campo.focus();
+  carregarAulas();
 }
 
 campo.addEventListener('input', () => {

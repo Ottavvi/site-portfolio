@@ -1,0 +1,1050 @@
+{
+  "html/o-que-e-html": [
+    {
+      "pergunta": "Qual é o papel do HTML numa página?",
+      "opcoes": [
+        "Definir as cores e o layout",
+        "Descrever o conteúdo e a estrutura",
+        "Controlar o que acontece ao clicar"
+      ],
+      "certa": 1,
+      "explicacao": "O HTML descreve o que cada parte é. Aparência é papel do CSS e comportamento, do JavaScript."
+    },
+    {
+      "pergunta": "Onde fica o título que aparece na aba do navegador?",
+      "opcoes": ["No <h1>, dentro do <body>", "No <title>, dentro do <head>", "No atributo lang do <html>"],
+      "certa": 1,
+      "explicacao": "O <title> fica no <head>. O <h1> é o título visível dentro da página, que é outra coisa."
+    },
+    {
+      "pergunta": "Em <a href=\"contato.html\">Fale comigo</a>, o que é href?",
+      "opcoes": ["Uma tag", "Um atributo", "O conteúdo do elemento"],
+      "certa": 1,
+      "explicacao": "href é um atributo da tag <a>: fica na abertura, no formato nome=\"valor\"."
+    }
+  ],
+  "html/textos-e-listas": [
+    {
+      "pergunta": "Como escolher entre <h2> e <h3>?",
+      "opcoes": ["Pelo tamanho de letra que eu quero", "Pela posição na hierarquia do conteúdo", "Tanto faz"],
+      "certa": 1,
+      "explicacao": "Títulos formam o sumário da página. O tamanho visual se ajusta com CSS."
+    },
+    {
+      "pergunta": "Qual lista usar para o passo a passo de uma instalação?",
+      "opcoes": ["<ul>", "<ol>", "Vários <p>"],
+      "certa": 1,
+      "explicacao": "Num passo a passo a ordem importa, então a lista é ordenada: <ol>."
+    },
+    {
+      "pergunta": "Qual é a forma certa de separar dois parágrafos?",
+      "opcoes": ["Dois <br> seguidos", "Um <p> para cada um", "Uma linha em branco no código"],
+      "certa": 1,
+      "explicacao": "Cada bloco de texto é um <p>. O navegador ignora linhas em branco no código, e <br> serve só para quebrar a linha dentro de um mesmo bloco."
+    }
+  ],
+  "html/links-e-imagens": [
+    {
+      "pergunta": "Para que serve o atributo alt de uma imagem?",
+      "opcoes": [
+        "Definir o tamanho da imagem",
+        "Descrever a imagem para quem não pode vê-la",
+        "Mostrar uma legenda embaixo da imagem"
+      ],
+      "certa": 1,
+      "explicacao": "O alt é lido por leitores de tela e aparece se a imagem falhar. Para legenda visível existe o <figcaption>."
+    },
+    {
+      "pergunta": "Você está em blog/post.html e quer um link para index.html, que fica na pasta de cima. Qual href?",
+      "opcoes": ["index.html", "../index.html", "/blog/index.html"],
+      "certa": 1,
+      "explicacao": ".. sobe uma pasta. Só \"index.html\" procuraria dentro da própria pasta blog/."
+    },
+    {
+      "pergunta": "O que fazer com o alt de uma imagem puramente decorativa?",
+      "opcoes": ["Deixar vazio: alt=\"\"", "Escrever \"imagem\"", "Apagar o atributo"],
+      "certa": 0,
+      "explicacao": "alt vazio avisa que a imagem não traz informação, e o leitor de tela pula. Sem o atributo, alguns leitores leem o nome do arquivo."
+    }
+  ],
+  "html/html-semantico": [
+    {
+      "pergunta": "Quantos <main> uma página deve ter?",
+      "opcoes": ["Um", "Um por seção", "Quantos quiser"],
+      "certa": 0,
+      "explicacao": "O <main> marca o conteúdo principal, e cada página tem um só (visível)."
+    },
+    {
+      "pergunta": "Qual elemento combina com um post de blog, que faz sentido sozinho?",
+      "opcoes": ["<section>", "<article>", "<div>"],
+      "certa": 1,
+      "explicacao": "<article> é para conteúdo independente, que poderia ser publicado sozinho."
+    },
+    {
+      "pergunta": "Quando faz sentido usar <div>?",
+      "opcoes": ["Sempre, é o mais comum", "Quando nenhum elemento semântico se encaixa", "Nunca, está ultrapassada"],
+      "certa": 1,
+      "explicacao": "A <div> não está proibida: ela é a escolha certa para agrupar coisas só por causa do layout."
+    }
+  ],
+  "html/tabelas": [
+    {
+      "pergunta": "Qual é a diferença entre <th> e <td>?",
+      "opcoes": [
+        "<th> é uma célula de cabeçalho; <td>, de dado",
+        "<th> é uma linha; <td>, uma coluna",
+        "Nenhuma, só muda o negrito"
+      ],
+      "certa": 0,
+      "explicacao": "<th> identifica o que a linha ou coluna significa; <td> guarda o valor."
+    },
+    {
+      "pergunta": "Tabela é uma boa forma de montar o layout da página em colunas?",
+      "opcoes": ["Sim, é o jeito mais fácil", "Não, tabela é para dados; layout é com CSS", "Só no celular"],
+      "certa": 1,
+      "explicacao": "Tabelas de layout confundem leitores de tela e são difíceis de adaptar ao celular. Para layout existem flexbox e grid, no CSS."
+    },
+    {
+      "pergunta": "Para que serve scope=\"col\" num <th>?",
+      "opcoes": ["Deixar a coluna mais larga", "Dizer que aquele cabeçalho vale para a coluna", "Juntar duas colunas"],
+      "certa": 1,
+      "explicacao": "scope liga o cabeçalho às suas células, e assim o leitor de tela anuncia cada valor com o nome certo. Para juntar colunas existe o colspan."
+    }
+  ],
+  "html/acessibilidade": [
+    {
+      "pergunta": "Um elemento que abre um menu na própria página deve ser...",
+      "opcoes": ["Um <a href=\"#\">", "Um <button>", "Uma <div> com onclick"],
+      "certa": 1,
+      "explicacao": "Ação na própria página é <button>. Link (<a>) é para levar a outro lugar."
+    },
+    {
+      "pergunta": "Por que informar lang=\"pt-BR\" na tag <html>?",
+      "opcoes": [
+        "Para o Google traduzir a página",
+        "Para o leitor de tela usar a pronúncia certa",
+        "É obrigatório para a página abrir"
+      ],
+      "certa": 1,
+      "explicacao": "Sem o idioma, o leitor de tela pode ler o texto em português com pronúncia de inglês."
+    },
+    {
+      "pergunta": "Qual texto de link é mais acessível?",
+      "opcoes": ["Clique aqui", "Saiba mais", "Baixar o cardápio (PDF)"],
+      "certa": 2,
+      "explicacao": "O link deve fazer sentido sozinho, porque leitores de tela costumam listar os links da página fora de contexto."
+    }
+  ],
+  "html/formularios": [
+    {
+      "pergunta": "O que liga um <label> ao seu campo?",
+      "opcoes": [
+        "O for do label igual ao id do campo",
+        "O name do label igual ao name do campo",
+        "Ficar na linha de cima"
+      ],
+      "certa": 0,
+      "explicacao": "for e id precisam ser iguais. (Outra forma é colocar o campo dentro do label.)"
+    },
+    {
+      "pergunta": "Um campo sem o atributo name...",
+      "opcoes": ["Dá erro na página", "Não é enviado junto com o formulário", "Funciona igual"],
+      "certa": 1,
+      "explicacao": "O name é a chave com que o valor é enviado. Sem ele, o valor fica de fora."
+    },
+    {
+      "pergunta": "Qual a vantagem de usar type=\"email\" em vez de type=\"text\"?",
+      "opcoes": [
+        "Nenhuma",
+        "O celular mostra o teclado com @ e o navegador confere o formato",
+        "O e-mail é enviado criptografado"
+      ],
+      "certa": 1,
+      "explicacao": "O tipo certo muda o teclado no celular e ativa a validação do navegador."
+    }
+  ],
+  "html/validacao": [
+    {
+      "pergunta": "Qual atributo torna um campo obrigatório?",
+      "opcoes": ["required", "needed", "mandatory"],
+      "certa": 0,
+      "explicacao": "required impede o envio enquanto o campo estiver vazio."
+    },
+    {
+      "pergunta": "Por que usar inputmode=\"numeric\" num CEP, em vez de type=\"number\"?",
+      "opcoes": [
+        "Porque type=\"number\" não existe",
+        "Porque o CEP não é uma quantidade: pode começar com zero e não deve ter setinhas",
+        "Tanto faz"
+      ],
+      "certa": 1,
+      "explicacao": "type=\"number\" é para quantidades. inputmode só troca o teclado, sem mudar o valor."
+    },
+    {
+      "pergunta": "A validação do HTML é suficiente para proteger o servidor?",
+      "opcoes": ["Sim", "Não, o servidor precisa conferir os dados de novo", "Só com pattern"],
+      "certa": 1,
+      "explicacao": "Qualquer pessoa pode contornar a validação do navegador. Ela existe para ajudar quem usa, não para proteger."
+    }
+  ],
+  "html/imagens-responsivas": [
+    {
+      "pergunta": "No srcset \"foto-800.jpg 800w\", o que significa 800w?",
+      "opcoes": [
+        "A imagem será mostrada com 800px",
+        "O arquivo tem 800px de largura",
+        "A imagem só aparece em telas de 800px"
+      ],
+      "certa": 1,
+      "explicacao": "O w informa a largura real do arquivo. Quem diz o tamanho na tela é o sizes (e o CSS)."
+    },
+    {
+      "pergunta": "Dentro de um <picture>, qual elemento é obrigatório?",
+      "opcoes": ["<source>", "<img>", "<figcaption>"],
+      "certa": 1,
+      "explicacao": "O <img> é o que aparece de fato e leva o alt. Os <source> só oferecem arquivos alternativos."
+    },
+    {
+      "pergunta": "Em qual imagem NÃO vale usar loading=\"lazy\"?",
+      "opcoes": [
+        "Na foto principal do topo da página",
+        "Nas fotos da galeria no fim da página",
+        "Nas imagens dos comentários"
+      ],
+      "certa": 0,
+      "explicacao": "A imagem do topo precisa carregar logo. Atrasá-la deixa a página mais lenta para aparecer."
+    }
+  ],
+  "html/audio-e-video": [
+    {
+      "pergunta": "Para um vídeo começar sozinho, o que os navegadores exigem?",
+      "opcoes": ["Que ele seja curto", "Que ele esteja sem som (muted)", "Que ele tenha legenda"],
+      "certa": 1,
+      "explicacao": "autoplay só funciona com muted. Vídeo com som começando sozinho é bloqueado."
+    },
+    {
+      "pergunta": "Qual elemento liga um arquivo de legendas ao vídeo?",
+      "opcoes": ["<track>", "<caption>", "<source>"],
+      "certa": 0,
+      "explicacao": "<track kind=\"captions\"> aponta para o arquivo .vtt. (<caption> é o título de uma tabela.)"
+    },
+    {
+      "pergunta": "Por que todo <iframe> precisa de title?",
+      "opcoes": [
+        "Para aparecer como dica ao passar o mouse",
+        "Para o leitor de tela dizer o que tem dentro dele",
+        "Para o conteúdo carregar mais rápido"
+      ],
+      "certa": 1,
+      "explicacao": "O iframe é uma página dentro da página. Sem title, quem usa leitor de tela não sabe do que se trata."
+    }
+  ],
+  "html/metadados-e-seo": [
+    {
+      "pergunta": "Para que serve a meta description?",
+      "opcoes": [
+        "Subir a página no ranking do Google",
+        "Ser o texto que aparece embaixo do link no resultado",
+        "Ser o título da aba"
+      ],
+      "certa": 1,
+      "explicacao": "A description não pesa no ranking, mas costuma ser o resumo mostrado no resultado e ajuda a pessoa a decidir se clica."
+    },
+    {
+      "pergunta": "Qual tag diz qual é o endereço oficial de uma página?",
+      "opcoes": ["<link rel=\"canonical\">", "<meta name=\"url\">", "<base href>"],
+      "certa": 0,
+      "explicacao": "O canonical evita que endereços diferentes da mesma página sejam vistos como cópias."
+    },
+    {
+      "pergunta": "De onde vem a imagem do cartão quando o link é compartilhado no WhatsApp?",
+      "opcoes": ["Da primeira <img> da página", "Da meta og:image", "Do favicon"],
+      "certa": 1,
+      "explicacao": "As redes leem as tags Open Graph. Sem og:image, o cartão pode sair sem imagem ou com uma escolhida ao acaso."
+    }
+  ],
+  "html/aria": [
+    {
+      "pergunta": "Qual é a primeira regra do ARIA?",
+      "opcoes": [
+        "Colocar role em todo elemento",
+        "Usar o elemento HTML nativo sempre que ele existir",
+        "Usar aria-label em todos os links"
+      ],
+      "certa": 1,
+      "explicacao": "Elementos nativos já vêm com foco, teclado e anúncio corretos. ARIA é para o que o HTML não cobre."
+    },
+    {
+      "pergunta": "Um botão que abre um menu deve informar se está aberto com...",
+      "opcoes": ["aria-expanded", "aria-hidden", "aria-live"],
+      "certa": 0,
+      "explicacao": "aria-expanded=\"true\" ou \"false\" diz o estado. aria-controls aponta para o menu."
+    },
+    {
+      "pergunta": "Como fazer o leitor de tela ler \"Mensagem enviada!\" assim que a frase aparecer?",
+      "opcoes": [
+        "Colocar a frase num <h1>",
+        "Colocar a frase numa região com aria-live",
+        "Usar aria-label no botão de enviar"
+      ],
+      "certa": 1,
+      "explicacao": "Regiões aria-live (ou role=\"status\") são lidas quando o conteúdo delas muda."
+    }
+  ],
+  "html/desempenho": [
+    {
+      "pergunta": "O que o atributo defer faz num script?",
+      "opcoes": [
+        "Executa o script só depois que o HTML inteiro foi lido, sem travar a página",
+        "Impede o script de rodar",
+        "Executa o script antes de tudo"
+      ],
+      "certa": 0,
+      "explicacao": "O script baixa em paralelo e só roda no fim, na ordem em que aparece."
+    },
+    {
+      "pergunta": "Por que informar width e height nas imagens?",
+      "opcoes": [
+        "Para a imagem ficar mais nítida",
+        "Para o navegador reservar o espaço e a página não pular",
+        "Para a imagem baixar mais rápido"
+      ],
+      "certa": 1,
+      "explicacao": "Com as dimensões, o espaço fica reservado antes de a imagem chegar, e o texto não é empurrado."
+    },
+    {
+      "pergunta": "Qual imagem deve ter fetchpriority=\"high\"?",
+      "opcoes": ["Todas", "A imagem principal, no topo da página", "As do rodapé"],
+      "certa": 1,
+      "explicacao": "Prioridade alta é para o que precisa aparecer primeiro. Se tudo for prioridade, nada é."
+    }
+  ],
+  "css/o-que-e-css": [
+    {
+      "pergunta": "Em \"p { color: gray; }\", o que é color?",
+      "opcoes": ["O seletor", "A propriedade", "O valor"],
+      "certa": 1,
+      "explicacao": "p é o seletor, color é a propriedade e gray é o valor."
+    },
+    {
+      "pergunta": "Qual é a melhor forma de ligar o CSS num site com várias páginas?",
+      "opcoes": [
+        "Um arquivo .css separado, com <link>",
+        "Uma tag <style> em cada página",
+        "O atributo style em cada elemento"
+      ],
+      "certa": 0,
+      "explicacao": "Um arquivo só serve todas as páginas, fica em cache no navegador e concentra o visual num lugar."
+    },
+    {
+      "pergunta": "O que acontece se faltar o ponto e vírgula entre duas declarações?",
+      "opcoes": [
+        "Nada, ele é opcional",
+        "O navegador junta as duas e ignora a declaração quebrada",
+        "A página inteira para de carregar"
+      ],
+      "certa": 1,
+      "explicacao": "Sem o ;, o valor da primeira \"engole\" a segunda, e o navegador descarta o que não entende. O resto da página segue normal."
+    }
+  ],
+  "css/seletores": [
+    {
+      "pergunta": "Qual seletor pega todos os elementos com class=\"card\"?",
+      "opcoes": ["card", "#card", ".card"],
+      "certa": 2,
+      "explicacao": "O ponto indica classe. O # indica id, e o nome sozinho seria uma tag <card>."
+    },
+    {
+      "pergunta": "Qual a diferença entre \"nav a\" e \"nav, a\"?",
+      "opcoes": [
+        "Nenhuma",
+        "\"nav a\" pega links dentro do nav; \"nav, a\" pega o nav e todos os links",
+        "\"nav a\" pega o nav e todos os links; \"nav, a\" pega links dentro do nav"
+      ],
+      "certa": 1,
+      "explicacao": "O espaço significa \"dentro de\". A vírgula significa \"e também\"."
+    },
+    {
+      "pergunta": "Por que preferir classe a id para estilizar?",
+      "opcoes": [
+        "Classes carregam mais rápido",
+        "Classes podem ser reaproveitadas e não têm força exagerada",
+        "Id não funciona em CSS"
+      ],
+      "certa": 1,
+      "explicacao": "Id funciona, mas é único e muito forte na cascata, o que dificulta sobrescrever depois. Classes são reutilizáveis."
+    }
+  ],
+  "css/cores-e-unidades": [
+    {
+      "pergunta": "Qual propriedade muda a cor do texto?",
+      "opcoes": ["background-color", "color", "font-color"],
+      "certa": 1,
+      "explicacao": "É color. font-color não existe, e background-color muda o fundo."
+    },
+    {
+      "pergunta": "Por que usar rem em vez de px para o tamanho dos textos?",
+      "opcoes": [
+        "rem é mais preciso",
+        "rem acompanha o tamanho de fonte que a pessoa escolheu no navegador",
+        "px não funciona no celular"
+      ],
+      "certa": 1,
+      "explicacao": "Quem aumenta a fonte padrão por dificuldade de visão vê os textos em rem crescerem junto. Em px, ficam travados."
+    },
+    {
+      "pergunta": "Em hsl(210 70% 50%), o que mudar para deixar a cor mais escura sem mudar o tom?",
+      "opcoes": ["O 210", "O 70%", "O 50%"],
+      "certa": 2,
+      "explicacao": "O último número é a luminosidade. Baixando de 50% para 30%, a cor escurece e continua azul."
+    }
+  ],
+  "css/tipografia": [
+    {
+      "pergunta": "Por que a lista do font-family termina em algo como sans-serif?",
+      "opcoes": [
+        "É obrigatório pela especificação",
+        "É a reserva caso nenhuma das fontes da lista exista",
+        "Deixa a fonte mais leve"
+      ],
+      "certa": 1,
+      "explicacao": "Se nenhuma fonte da lista estiver disponível, o navegador usa a genérica, que sempre existe."
+    },
+    {
+      "pergunta": "Qual line-height é mais confortável para um parágrafo longo?",
+      "opcoes": ["1", "1.6", "3"],
+      "certa": 1,
+      "explicacao": "Entre 1.5 e 1.7 é o ponto doce para texto corrido. 1 aperta as linhas, 3 separa demais."
+    },
+    {
+      "pergunta": "Para que serve max-width: 65ch num parágrafo?",
+      "opcoes": [
+        "Limitar o texto a 65 caracteres no total",
+        "Limitar o comprimento de cada linha para facilitar a leitura",
+        "Aumentar a letra"
+      ],
+      "certa": 1,
+      "explicacao": "ch é a largura de um caractere. 65ch deixa cada linha com uns 65 caracteres."
+    }
+  ],
+  "css/modelo-de-caixa": [
+    {
+      "pergunta": "Qual camada fica entre o conteúdo e a borda?",
+      "opcoes": ["margin", "padding", "outline"],
+      "certa": 1,
+      "explicacao": "O padding é o espaço interno. A margem fica do lado de fora da borda."
+    },
+    {
+      "pergunta": "Com box-sizing: border-box, uma caixa com width: 200px e padding: 20px ocupa quanto de largura?",
+      "opcoes": ["200px", "220px", "240px"],
+      "certa": 0,
+      "explicacao": "Com border-box, padding e borda ficam dentro dos 200px. Sem ele, seriam 240px."
+    },
+    {
+      "pergunta": "O que faz margin: 0 auto numa caixa com max-width?",
+      "opcoes": ["Tira todas as margens", "Centraliza a caixa na horizontal", "Centraliza o texto"],
+      "certa": 1,
+      "explicacao": "auto divide o espaço que sobra igualmente entre esquerda e direita. Para centralizar o texto, use text-align."
+    }
+  ],
+  "css/cascata-e-especificidade": [
+    {
+      "pergunta": "Quem vence: \".menu a\" ou \"#topo\"?",
+      "opcoes": [
+        ".menu a, porque tem dois seletores",
+        "#topo, porque um id pesa mais que classes",
+        "O que vier por último"
+      ],
+      "certa": 1,
+      "explicacao": ".menu a vale 0-1-1 e #topo vale 1-0-0. A casa do id é comparada primeiro."
+    },
+    {
+      "pergunta": "Duas regras .card mudam o background. Qual vence?",
+      "opcoes": ["A primeira", "A última", "Nenhuma, dá erro"],
+      "certa": 1,
+      "explicacao": "Com a mesma especificidade, o critério de desempate é a ordem: a última vence."
+    },
+    {
+      "pergunta": "Qual destas propriedades é herdada pelos filhos?",
+      "opcoes": ["padding", "border", "color"],
+      "certa": 2,
+      "explicacao": "Propriedades de texto, como color e font-family, são herdadas. As de caixa, não."
+    }
+  ],
+  "css/display-e-position": [
+    {
+      "pergunta": "Qual display deixa um elemento na linha do texto, mas aceitando largura e padding vertical?",
+      "opcoes": ["inline", "inline-block", "none"],
+      "certa": 1,
+      "explicacao": "inline-block mistura os dois: fica na linha como o inline e aceita medidas como o block."
+    },
+    {
+      "pergunta": "Um elemento com position: absolute se posiciona em relação a quê?",
+      "opcoes": ["Sempre à tela", "Ao ancestral mais próximo com position diferente de static", "Ao elemento anterior"],
+      "certa": 1,
+      "explicacao": "Se nenhum ancestral estiver posicionado, ele usa a página. Por isso o pai costuma receber relative."
+    },
+    {
+      "pergunta": "Qual position faz um menu acompanhar a rolagem só depois de chegar ao topo da tela?",
+      "opcoes": ["fixed", "sticky", "relative"],
+      "certa": 1,
+      "explicacao": "sticky segue o fluxo até o limite definido (top: 0, por exemplo) e então gruda."
+    }
+  ],
+  "css/flexbox": [
+    {
+      "pergunta": "Num contêiner com flex-direction: row, qual propriedade centraliza os itens na horizontal?",
+      "opcoes": ["align-items: center", "justify-content: center", "text-align: center"],
+      "certa": 1,
+      "explicacao": "Em row, o eixo principal é o horizontal, e quem cuida dele é o justify-content."
+    },
+    {
+      "pergunta": "Qual valor de justify-content encosta o primeiro e o último item nas pontas?",
+      "opcoes": ["space-between", "space-around", "center"],
+      "certa": 0,
+      "explicacao": "space-between põe todo o espaço livre entre os itens, nada nas pontas. Ideal para logo de um lado e menu do outro."
+    },
+    {
+      "pergunta": "O que flex: 1 faz num item?",
+      "opcoes": [
+        "Deixa o item com 1px",
+        "Faz o item ocupar o espaço que sobra no contêiner",
+        "Coloca o item em primeiro lugar"
+      ],
+      "certa": 1,
+      "explicacao": "flex: 1 faz o item crescer para preencher o espaço livre, dividido com outros itens que também tenham flex."
+    }
+  ],
+  "css/grid": [
+    {
+      "pergunta": "O que significa grid-template-columns: 2fr 1fr?",
+      "opcoes": [
+        "Duas colunas de 2px e 1px",
+        "Duas colunas, a primeira com o dobro da largura da segunda",
+        "Três colunas"
+      ],
+      "certa": 1,
+      "explicacao": "fr divide o espaço livre em frações: 2 partes para a primeira, 1 para a segunda."
+    },
+    {
+      "pergunta": "O que repeat(auto-fit, minmax(200px, 1fr)) faz?",
+      "opcoes": [
+        "Cria sempre 200 colunas",
+        "Cria quantas colunas de pelo menos 200px couberem",
+        "Cria uma coluna de 200px"
+      ],
+      "certa": 1,
+      "explicacao": "O número de colunas muda com a largura disponível, sem precisar de media query."
+    },
+    {
+      "pergunta": "Quando preferir grid a flexbox?",
+      "opcoes": [
+        "Quando o layout tem linhas e colunas ao mesmo tempo",
+        "Sempre, flexbox está ultrapassado",
+        "Só para tabelas"
+      ],
+      "certa": 0,
+      "explicacao": "Os dois são atuais. Flexbox alinha numa direção (um menu, uma barra); grid monta grades em duas dimensões."
+    }
+  ],
+  "css/media-queries": [
+    {
+      "pergunta": "No mobile first, o CSS sem media query é para qual tela?",
+      "opcoes": ["A tela grande", "A tela pequena", "Só para impressão"],
+      "certa": 1,
+      "explicacao": "Escreve-se primeiro para o celular, e as media queries com min-width acrescentam o layout das telas maiores."
+    },
+    {
+      "pergunta": "O que @media (min-width: 700px) significa?",
+      "opcoes": ["Até 700px de largura", "A partir de 700px de largura", "Exatamente 700px"],
+      "certa": 1,
+      "explicacao": "min-width: 700px vale para larguras de 700px para cima."
+    },
+    {
+      "pergunta": "Como escolher onde colocar um ponto de quebra?",
+      "opcoes": ["Pela largura do iPhone mais vendido", "Onde o conteúdo começa a ficar ruim", "Sempre em 768px"],
+      "certa": 1,
+      "explicacao": "Aparelhos mudam todo ano. O conteúdo é que diz quando o layout precisa mudar."
+    }
+  ],
+  "css/medidas-fluidas": [
+    {
+      "pergunta": "Por que max-width: 900px é melhor que width: 900px num contêiner?",
+      "opcoes": ["Carrega mais rápido", "Deixa a caixa encolher em telas menores que 900px", "Centraliza a caixa"],
+      "certa": 1,
+      "explicacao": "width trava em 900px e estoura o celular. max-width só define o limite de cima."
+    },
+    {
+      "pergunta": "Em clamp(1rem, 4vw, 3rem), qual é o tamanho numa tela muito pequena?",
+      "opcoes": ["1rem", "4vw", "3rem"],
+      "certa": 0,
+      "explicacao": "Quando 4vw fica menor que o mínimo, o clamp usa o mínimo: 1rem."
+    },
+    {
+      "pergunta": "Qual regra impede uma imagem de passar da largura da tela?",
+      "opcoes": ["img { width: 100vw; }", "img { max-width: 100%; height: auto; }", "img { overflow: hidden; }"],
+      "certa": 1,
+      "explicacao": "max-width: 100% limita a imagem ao contêiner, e height: auto mantém a proporção."
+    }
+  ],
+  "css/variaveis-e-temas": [
+    {
+      "pergunta": "Como se usa a variável --cor-marca numa propriedade?",
+      "opcoes": ["color: --cor-marca;", "color: var(--cor-marca);", "color: $cor-marca;"],
+      "certa": 1,
+      "explicacao": "O valor é lido com var(). $ é a sintaxe do Sass, não do CSS."
+    },
+    {
+      "pergunta": "Por que declarar as variáveis em :root?",
+      "opcoes": ["Porque é obrigatório", "Para que valham na página inteira, por herança", "Para carregar mais rápido"],
+      "certa": 1,
+      "explicacao": ":root é o elemento <html>, o ancestral de todos. As variáveis declaradas nele são herdadas por toda a página."
+    },
+    {
+      "pergunta": "Qual o jeito mais simples de fazer um tema escuro com variáveis?",
+      "opcoes": [
+        "Duplicar todas as regras do CSS",
+        "Redefinir os valores das variáveis dentro de @media (prefers-color-scheme: dark)",
+        "Usar filter: invert(1) na página"
+      ],
+      "certa": 1,
+      "explicacao": "As regras continuam as mesmas; só os valores das variáveis mudam."
+    }
+  ],
+  "css/transicoes-e-animacoes": [
+    {
+      "pergunta": "Quais propriedades são mais leves para animar?",
+      "opcoes": ["width e height", "top e left", "transform e opacity"],
+      "certa": 2,
+      "explicacao": "transform e opacity não recalculam o layout da página, então o navegador anima sem engasgos."
+    },
+    {
+      "pergunta": "Quando usar @keyframes em vez de transition?",
+      "opcoes": [
+        "Quando o movimento tem várias etapas ou se repete sozinho",
+        "Sempre que houver hover",
+        "Nunca, transition faz tudo"
+      ],
+      "certa": 0,
+      "explicacao": "transition vai de um estado a outro quando algo muda. @keyframes descreve uma sequência que roda por conta própria."
+    },
+    {
+      "pergunta": "Para que serve @media (prefers-reduced-motion: reduce)?",
+      "opcoes": [
+        "Deixar o site mais rápido",
+        "Desligar ou suavizar animações para quem pediu menos movimento",
+        "Detectar celulares"
+      ],
+      "certa": 1,
+      "explicacao": "Ela reflete uma configuração de acessibilidade do sistema. Movimento pode causar mal-estar real."
+    }
+  ],
+  "css/seletores-modernos": [
+    {
+      "pergunta": "Qual a vantagem de :focus-visible sobre :focus?",
+      "opcoes": [
+        "Funciona em mais elementos",
+        "Mostra o indicador de foco para quem usa teclado, sem aparecer em todo clique de mouse",
+        "Deixa o foco invisível"
+      ],
+      "certa": 1,
+      "explicacao": "O navegador decide quando o foco precisa ser visto. Assim ninguém tem motivo para apagar o contorno."
+    },
+    {
+      "pergunta": "O que .cartao:has(img) seleciona?",
+      "opcoes": ["Imagens dentro de .cartao", "Os .cartao que contêm uma imagem", "Imagens com a classe cartao"],
+      "certa": 1,
+      "explicacao": ":has() seleciona o elemento de fora com base no que existe dentro dele."
+    },
+    {
+      "pergunta": "Qual a diferença entre :is() e :where()?",
+      "opcoes": [":where() tem especificidade zero", ":is() só aceita tags", "Nenhuma, são sinônimos"],
+      "certa": 0,
+      "explicacao": ":is() assume a especificidade do seletor mais forte da lista. :where() não pesa nada."
+    }
+  ],
+  "javascript/o-que-e-javascript": [
+    {
+      "pergunta": "Qual é o papel do JavaScript numa página?",
+      "opcoes": ["Estrutura do conteúdo", "Aparência", "Comportamento e interação"],
+      "certa": 2,
+      "explicacao": "HTML cuida da estrutura, CSS da aparência e JavaScript do comportamento."
+    },
+    {
+      "pergunta": "Para que serve console.log()?",
+      "opcoes": ["Mostrar um valor no console", "Escrever um texto na página", "Salvar um arquivo"],
+      "certa": 0,
+      "explicacao": "Ele escreve no console, que é invisível para quem visita. É uma ferramenta de quem programa."
+    },
+    {
+      "pergunta": "O que acontece quando uma linha do script tem um erro?",
+      "opcoes": [
+        "O navegador pula só aquela linha",
+        "O script para naquele ponto e o erro aparece no console",
+        "A página fica em branco"
+      ],
+      "certa": 1,
+      "explicacao": "O resto daquele script não roda. A página e outros scripts continuam funcionando."
+    }
+  ],
+  "javascript/variaveis-e-tipos": [
+    {
+      "pergunta": "Quando usar let em vez de const?",
+      "opcoes": ["Sempre", "Quando o valor precisar ser trocado depois", "Para textos"],
+      "certa": 1,
+      "explicacao": "const é o padrão. let é para valores que mudam, como um contador ou um total que vai somando."
+    },
+    {
+      "pergunta": "Qual o resultado de '5' + '5'?",
+      "opcoes": ["10", "'55'", "Um erro"],
+      "certa": 1,
+      "explicacao": "Com dois textos, o + junta os dois. Para somar, converta antes com Number()."
+    },
+    {
+      "pergunta": "Qual linha mostra \"Olá, Ana\" com template string, sendo nome = \"Ana\"?",
+      "opcoes": ["'Olá, ${nome}'", "`Olá, ${nome}`", "\"Olá, \" nome"],
+      "certa": 1,
+      "explicacao": "Só as crases interpretam o ${ }. Com aspas simples, o texto sai literal."
+    }
+  ],
+  "javascript/decisoes": [
+    {
+      "pergunta": "Por que preferir === a ==?",
+      "opcoes": [
+        "=== é mais rápido de digitar",
+        "=== compara sem converter os tipos, evitando resultados estranhos",
+        "== não existe mais"
+      ],
+      "certa": 1,
+      "explicacao": "Com ==, '1' == 1 é verdadeiro. Com ===, tipo e valor precisam bater."
+    },
+    {
+      "pergunta": "Com idade = 20, qual condição é falsa?",
+      "opcoes": ["idade > 18 && idade < 30", "idade < 18 || idade === 20", "idade < 18 && idade === 20"],
+      "certa": 2,
+      "explicacao": "Com &&, as duas partes precisam ser verdadeiras, e idade < 18 é falsa."
+    },
+    {
+      "pergunta": "Qual destes valores é falso num if?",
+      "opcoes": ["'0' (texto com zero)", "'' (texto vazio)", "[] (lista vazia)"],
+      "certa": 1,
+      "explicacao": "Só o texto vazio é falso. '0' é um texto com conteúdo, e listas são sempre verdadeiras."
+    }
+  ],
+  "javascript/funcoes": [
+    {
+      "pergunta": "O que uma função sem return devolve?",
+      "opcoes": ["0", "undefined", "O último valor calculado"],
+      "certa": 1,
+      "explicacao": "Sem return explícito, a função devolve undefined, mesmo que tenha feito contas por dentro."
+    },
+    {
+      "pergunta": "Qual a diferença entre return e console.log dentro de uma função?",
+      "opcoes": [
+        "Nenhuma",
+        "return devolve o valor para quem chamou; console.log só mostra no console",
+        "console.log devolve e return mostra"
+      ],
+      "certa": 1,
+      "explicacao": "Só o return entrega o resultado para o resto do código usar."
+    },
+    {
+      "pergunta": "Qual arrow function devolve o triplo de um número?",
+      "opcoes": ["n => { n * 3 }", "n => n * 3", "n => return n * 3"],
+      "certa": 1,
+      "explicacao": "Sem chaves, a expressão é devolvida. Com chaves, seria preciso escrever return."
+    }
+  ],
+  "javascript/arrays": [
+    {
+      "pergunta": "Em const cores = ['azul', 'verde', 'rosa'], quanto vale cores[1]?",
+      "opcoes": ["'azul'", "'verde'", "'rosa'"],
+      "certa": 1,
+      "explicacao": "Os índices começam em 0: azul é o 0, verde o 1 e rosa o 2."
+    },
+    {
+      "pergunta": "Como acrescentar um item no fim de um array?",
+      "opcoes": ["lista.push(item)", "lista.add(item)", "lista[0] = item"],
+      "certa": 0,
+      "explicacao": "push acrescenta no fim. lista[0] = item trocaria o primeiro."
+    },
+    {
+      "pergunta": "O que indexOf devolve quando o item não está na lista?",
+      "opcoes": ["0", "undefined", "-1"],
+      "certa": 2,
+      "explicacao": "-1 significa \"não encontrei\", porque 0 é uma posição válida."
+    }
+  ],
+  "javascript/objetos": [
+    {
+      "pergunta": "Como ler o preço de const item = { nome: 'Pão', preco: 1.5 }?",
+      "opcoes": ["item[preco]", "item.preco", "item(preco)"],
+      "certa": 1,
+      "explicacao": "item.preco ou item['preco'] (com aspas). Sem aspas, item[preco] procuraria uma variável chamada preco."
+    },
+    {
+      "pergunta": "Quando preferir um objeto a um array?",
+      "opcoes": [
+        "Quando cada valor tem um significado diferente e precisa de nome",
+        "Quando a ordem importa",
+        "Nunca, arrays são mais rápidos"
+      ],
+      "certa": 0,
+      "explicacao": "Nome, preço e estoque são coisas diferentes: objeto. Uma sequência de preços é uma lista: array."
+    },
+    {
+      "pergunta": "Dentro de um método, o que é this?",
+      "opcoes": ["A janela do navegador", "O próprio objeto dono do método", "A função"],
+      "certa": 1,
+      "explicacao": "Chamado como objeto.metodo(), o this aponta para o objeto."
+    }
+  ],
+  "javascript/metodos-de-array": [
+    {
+      "pergunta": "Qual método devolve um array novo só com os itens que passam numa condição?",
+      "opcoes": ["map", "filter", "find"],
+      "certa": 1,
+      "explicacao": "filter filtra. map transforma todos, e find devolve só o primeiro que combina."
+    },
+    {
+      "pergunta": "O que [3, 1, 2].map(n => n * 10) devolve?",
+      "opcoes": ["[30, 10, 20]", "60", "[10, 20, 30]"],
+      "certa": 0,
+      "explicacao": "map mantém a ordem e o tamanho, transformando cada item."
+    },
+    {
+      "pergunta": "Por que [10, 9, 1].sort() dá [1, 10, 9]?",
+      "opcoes": [
+        "É um bug do navegador",
+        "Sem função de comparação, sort compara os itens como texto",
+        "sort ordena do maior para o menor"
+      ],
+      "certa": 1,
+      "explicacao": "Como texto, '10' vem antes de '9'. Use (a, b) => a - b para números."
+    }
+  ],
+  "javascript/o-dom": [
+    {
+      "pergunta": "O que document.querySelector('.card') devolve?",
+      "opcoes": ["Todos os elementos com a classe card", "O primeiro elemento com a classe card", "Um texto"],
+      "certa": 1,
+      "explicacao": "querySelector devolve o primeiro, ou null. Para todos, use querySelectorAll."
+    },
+    {
+      "pergunta": "Por que preferir textContent a innerHTML para mostrar o nome que a pessoa digitou?",
+      "opcoes": [
+        "É mais rápido",
+        "textContent não interpreta HTML, então não executa código malicioso",
+        "innerHTML não funciona com nomes"
+      ],
+      "certa": 1,
+      "explicacao": "Com innerHTML, um texto com tags vira HTML de verdade, o que abre espaço para ataques (XSS)."
+    },
+    {
+      "pergunta": "Qual a forma recomendada de mudar a aparência de um elemento pelo JavaScript?",
+      "opcoes": [
+        "Mudar várias propriedades em element.style",
+        "Adicionar ou remover uma classe com classList",
+        "Recriar o elemento"
+      ],
+      "certa": 1,
+      "explicacao": "O estilo continua no CSS, e o JavaScript só diz em que estado o elemento está."
+    }
+  ],
+  "javascript/eventos": [
+    {
+      "pergunta": "Qual evento avisa a cada tecla digitada num campo?",
+      "opcoes": ["change", "input", "submit"],
+      "certa": 1,
+      "explicacao": "input dispara a cada mudança. change só quando a pessoa termina e sai do campo."
+    },
+    {
+      "pergunta": "O que é event.target?",
+      "opcoes": ["A função que trata o evento", "O elemento onde a ação aconteceu", "O tipo do evento"],
+      "certa": 1,
+      "explicacao": "É o elemento que recebeu o clique, a tecla etc."
+    },
+    {
+      "pergunta": "Qual a vantagem da delegação de eventos?",
+      "opcoes": [
+        "Um ouvinte só no pai atende todos os filhos, inclusive os criados depois",
+        "Os eventos ficam mais rápidos",
+        "Impede que o evento suba"
+      ],
+      "certa": 0,
+      "explicacao": "Como o evento sobe até o pai, basta um ouvinte para a lista inteira."
+    }
+  ],
+  "javascript/formularios-com-js": [
+    {
+      "pergunta": "Por que ouvir o submit do formulário em vez do click do botão?",
+      "opcoes": [
+        "O submit também dispara com Enter e respeita a validação do HTML",
+        "O click não funciona em botões",
+        "Tanto faz"
+      ],
+      "certa": 0,
+      "explicacao": "O submit cobre todos os jeitos de enviar e só acontece se os campos forem válidos."
+    },
+    {
+      "pergunta": "O que event.preventDefault() faz num submit?",
+      "opcoes": ["Valida o formulário", "Impede o envio padrão, que recarregaria a página", "Limpa os campos"],
+      "certa": 1,
+      "explicacao": "Sem ele, o navegador envia o formulário e recarrega. Com ele, o JavaScript cuida de tudo."
+    },
+    {
+      "pergunta": "A validação feita no JavaScript do navegador é suficiente?",
+      "opcoes": ["Sim", "Não: o servidor precisa validar de novo", "Só se usar setCustomValidity"],
+      "certa": 1,
+      "explicacao": "O código do navegador pode ser desligado ou contornado. Ele melhora a experiência, não garante nada."
+    }
+  ],
+  "javascript/erros-e-depuracao": [
+    {
+      "pergunta": "O que costuma causar \"Cannot read properties of null\" logo após um querySelector?",
+      "opcoes": ["O seletor não encontrou nenhum elemento", "O navegador está desatualizado", "Falta ponto e vírgula"],
+      "certa": 0,
+      "explicacao": "querySelector devolve null quando não acha nada, e não dá para chamar métodos em null."
+    },
+    {
+      "pergunta": "Quando o bloco finally é executado?",
+      "opcoes": ["Só se houver erro", "Só se não houver erro", "Sempre"],
+      "certa": 2,
+      "explicacao": "O finally roda em qualquer caso, o que é útil para esconder um \"carregando...\"."
+    },
+    {
+      "pergunta": "Qual é o problema de um catch vazio?",
+      "opcoes": [
+        "Deixa o código mais lento",
+        "Esconde o erro, que continua acontecendo sem ninguém saber",
+        "Não compila"
+      ],
+      "certa": 1,
+      "explicacao": "O erro some do console, mas o bug continua lá. Sempre faça algo no catch."
+    }
+  ],
+  "javascript/assincrono": [
+    {
+      "pergunta": "Em console.log('A'); setTimeout(() => console.log('B'), 0); console.log('C'); qual é a ordem?",
+      "opcoes": ["A, B, C", "A, C, B", "B, A, C"],
+      "certa": 1,
+      "explicacao": "Mesmo com 0 ms, o setTimeout só agenda. O código que já está rodando termina antes."
+    },
+    {
+      "pergunta": "Onde é possível usar await?",
+      "opcoes": ["Em qualquer lugar", "Dentro de funções async (e no topo de módulos)", "Só dentro de setTimeout"],
+      "certa": 1,
+      "explicacao": "await só funciona dentro de funções async ou no nível de cima de um script type=\"module\"."
+    },
+    {
+      "pergunta": "Para que serve Promise.all?",
+      "opcoes": [
+        "Esperar várias Promises que rodam ao mesmo tempo",
+        "Cancelar Promises",
+        "Transformar código síncrono em assíncrono"
+      ],
+      "certa": 0,
+      "explicacao": "Ele inicia tudo junto e devolve os resultados na mesma ordem, economizando tempo."
+    }
+  ],
+  "javascript/fetch-e-json": [
+    {
+      "pergunta": "O que JSON.parse faz?",
+      "opcoes": ["Transforma um objeto em texto", "Transforma um texto JSON em objeto", "Envia dados para uma API"],
+      "certa": 1,
+      "explicacao": "parse lê o texto. stringify faz o caminho contrário."
+    },
+    {
+      "pergunta": "O fetch rejeita a Promise quando o servidor responde 404?",
+      "opcoes": ["Sim", "Não: é preciso conferir resposta.ok", "Só em POST"],
+      "certa": 1,
+      "explicacao": "O fetch só falha sozinho quando não há resposta (sem rede, por exemplo). Códigos de erro precisam ser checados."
+    },
+    {
+      "pergunta": "Por que mostrar um \"Buscando...\" durante a requisição?",
+      "opcoes": [
+        "Porque o fetch exige",
+        "Para a pessoa saber que algo está acontecendo enquanto a rede responde",
+        "Para deixar a requisição mais rápida"
+      ],
+      "certa": 1,
+      "explicacao": "Sem retorno visual, a pessoa clica de novo ou acha que o site quebrou."
+    }
+  ],
+  "javascript/desestruturacao-e-spread": [
+    {
+      "pergunta": "O que const { nome } = pessoa faz?",
+      "opcoes": [
+        "Cria um objeto novo com a chave nome",
+        "Cria a variável nome com o valor de pessoa.nome",
+        "Apaga pessoa.nome"
+      ],
+      "certa": 1,
+      "explicacao": "É o mesmo que const nome = pessoa.nome, só que mais curto."
+    },
+    {
+      "pergunta": "Qual o resultado de { ...{ a: 1, b: 2 }, ...{ b: 3 } }?",
+      "opcoes": ["{ a: 1, b: 2 }", "{ a: 1, b: 3 }", "{ b: 3 }"],
+      "certa": 1,
+      "explicacao": "As propriedades se juntam e, quando repetem, a última vence."
+    },
+    {
+      "pergunta": "Com quantidade = 0, quanto vale quantidade ?? 1?",
+      "opcoes": ["0", "1", "undefined"],
+      "certa": 0,
+      "explicacao": "?? só troca null e undefined. Com ||, o zero seria trocado por 1."
+    }
+  ],
+  "javascript/escopo-e-closures": [
+    {
+      "pergunta": "Uma const criada dentro de um if existe depois do if?",
+      "opcoes": ["Sim", "Não, só dentro do bloco", "Só se for um número"],
+      "certa": 1,
+      "explicacao": "let e const têm escopo de bloco: somem quando o bloco termina."
+    },
+    {
+      "pergunta": "O que é uma closure?",
+      "opcoes": [
+        "Uma função que fecha a página",
+        "Uma função que lembra das variáveis do lugar onde foi criada",
+        "Um bloco try/catch"
+      ],
+      "certa": 1,
+      "explicacao": "A função interna mantém acesso ao escopo de fora, mesmo depois que ele terminou de rodar."
+    },
+    {
+      "pergunta": "No exemplo criarContador, por que visitas e cliques não se misturam?",
+      "opcoes": [
+        "Cada chamada de criarContador cria um novo valor, guardado pela sua closure",
+        "Porque usam const",
+        "Porque estão em linhas diferentes"
+      ],
+      "certa": 0,
+      "explicacao": "Cada chamada cria um escopo novo, com o seu próprio valor."
+    }
+  ],
+  "javascript/classes": [
+    {
+      "pergunta": "Quando o constructor de uma classe é executado?",
+      "opcoes": ["Ao declarar a classe", "Ao criar uma instância com new", "Ao chamar qualquer método"],
+      "certa": 1,
+      "explicacao": "new Conta(...) cria o objeto e roda o constructor para preparar os dados."
+    },
+    {
+      "pergunta": "O que o # na frente de um campo faz?",
+      "opcoes": ["Torna o campo privado à classe", "Transforma o campo num número", "Torna o campo estático"],
+      "certa": 0,
+      "explicacao": "Campos com # só podem ser lidos e escritos de dentro da própria classe."
+    },
+    {
+      "pergunta": "Por que o getter extrato devolve [...this.#extrato] em vez de this.#extrato?",
+      "opcoes": [
+        "Para deixar mais rápido",
+        "Para quem recebe não conseguir mudar a lista interna",
+        "Porque getters só devolvem arrays novos"
+      ],
+      "certa": 1,
+      "explicacao": "Devolver o próprio array deixaria qualquer um fazer push nele, contornando as regras da classe."
+    }
+  ]
+}

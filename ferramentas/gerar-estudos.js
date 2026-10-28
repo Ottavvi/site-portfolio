@@ -25,7 +25,8 @@ const dataPorExtenso = iso =>
   new Date(`${iso}T12:00:00`).toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' });
 
 // ---------- Moldura comum: cabeçalho, rodapé e scripts ----------
-function pagina({ caminho, titulo, descricao, corpo, scripts = '' }) {
+// semIndice: páginas pessoais (revisão, certificado), que dependem do progresso de quem abre e não vão para buscadores
+function pagina({ caminho, titulo, descricao, corpo, scripts = '', semIndice = false }) {
   const prefixo = '../'.repeat(caminho.split('/').length);
   const url = `${BASE}estudos/${caminho.replace(/index\.html$/, '')}`;
   const volta = encodeURIComponent(`estudos/${caminho}`);
@@ -35,7 +36,7 @@ function pagina({ caminho, titulo, descricao, corpo, scripts = '' }) {
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>${escapar(titulo)}</title>
-    <meta name="description" content="${escapar(descricao)}" />
+    <meta name="description" content="${escapar(descricao)}" />${semIndice ? '\n    <meta name="robots" content="noindex" />' : ''}
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="ottavvi.dev" />
     <meta property="og:locale" content="pt_BR" />
@@ -142,12 +143,13 @@ const icone = item =>
     ? '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 8-4 4 4 4M16 8l4 4-4 4" /></svg>'
     : '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h11a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3zM8 9h6M8 13h6" /></svg>';
 
-// Barra de progresso de uma trilha inteira ou, passando um filtro, de um nível só
-function barra(trilha, filtro = () => true) {
+// Barra de progresso de uma trilha inteira ou, passando um filtro, de um nível só. A da trilha inteira leva
+// data-trilha: quando ela chega a 100%, o js/estudos.js guarda a data de conclusão (usada no certificado)
+function barra(trilha, filtro = null) {
   const ids = itensDaTrilha(trilha)
-    .filter(filtro)
+    .filter(filtro || (() => true))
     .map(item => idCompleto(trilha, item));
-  return `<div class="estudos-progresso" data-progresso="${ids.join(' ')}">
+  return `<div class="estudos-progresso" data-progresso="${ids.join(' ')}"${filtro ? '' : ` data-trilha="${trilha.id}"`}>
                 <div class="estudos-progresso-barra"><span></span></div>
                 <span class="estudos-progresso-texto">0 de ${ids.length} concluídos</span>
               </div>`;
@@ -178,6 +180,12 @@ function paginaInicial() {
   // Um bloco por área (Desenvolvimento web, Back-end e dados...), na ordem em que aparecem em trilhas.js
   const areas = [...new Set(trilhas.map(trilha => trilha.area))];
   const prontas = trilhas.filter(trilha => !trilha.emBreve).length;
+  const todos = trilhas.filter(trilha => !trilha.emBreve).flatMap(itensDaTrilha);
+  const numeros = {
+    aulas: todos.filter(item => item.tipo !== 'desafio').length,
+    desafios: todos.filter(item => item.tipo === 'desafio').length,
+    perguntas: todos.reduce((soma, item) => soma + (item.quiz?.length || 0), 0)
+  };
   const cartoes = areas
     .map(
       area => `            <h3 class="trilhas-area">${escapar(area)}</h3>
@@ -219,6 +227,20 @@ ${trilhas
               resolve no próprio navegador. E um diário com o que eu ando estudando.
             </p>
             ${avisoConta}
+            <ul class="estudos-numeros" aria-label="A área de estudos em números">
+              <li><strong>${numeros.aulas}</strong> aulas</li>
+              <li><strong>${numeros.desafios}</strong> desafios de código</li>
+              <li><strong>${numeros.perguntas}</strong> perguntas de quiz</li>
+              <li><strong>${prontas}</strong> de ${trilhas.length} trilhas prontas</li>
+            </ul>
+          </div>
+        </section>
+        <!-- Painel de quem já começou: preenchido pelo js/estudos-paineis.js com o progresso salvo -->
+        <section id="painel" class="painel" data-painel hidden>
+          <div class="wrap">
+            <div class="section-kicker">Seu painel</div>
+            <h2>De onde você parou.</h2>
+            <div class="painel-conteudo" data-painel-conteudo></div>
           </div>
         </section>
         <section id="trilhas">
@@ -295,6 +317,9 @@ function paginaDaTrilha(trilha) {
             ${barra(trilha)}
             <div class="actions">
               <a class="btn btn-primary" href="${itens[0].id}.html" data-continuar>Começar a trilha ↘</a>
+              <a class="btn btn-ghost" href="../certificado.html?trilha=${trilha.id}" data-certificado="${trilha.id}" hidden>
+                Ver meu certificado
+              </a>
             </div>
             ${avisoConta}
           </div>
@@ -485,6 +510,93 @@ ${entrada.tags.map(tag => `            <li>${escapar(tag)}</li>`).join('\n')}
   }
 }
 
+// ---------- Dados para o JavaScript: índice das aulas e perguntas dos quizzes ----------
+// indice.json: trilhas e itens em ordem (painel, certificado e a busca do Ctrl+K)
+// perguntas.json: as perguntas de cada aula, para a página de revisão montar o quiz de novo
+function dadosParaOJavaScript() {
+  const prontas = trilhas.filter(trilha => !trilha.emBreve);
+  const indice = {
+    trilhas: prontas.map(trilha => ({
+      id: trilha.id,
+      titulo: trilha.titulo,
+      sigla: trilha.sigla,
+      itens: itensDaTrilha(trilha).map(item => ({
+        id: idCompleto(trilha, item),
+        titulo: item.titulo,
+        resumo: item.resumo,
+        tipo: item.tipo === 'desafio' ? 'desafio' : 'aula',
+        nivel: item.nivel.titulo,
+        minutos: item.minutos
+      }))
+    }))
+  };
+  const perguntas = Object.fromEntries(
+    prontas.flatMap(trilha =>
+      itensDaTrilha(trilha)
+        .filter(item => item.quiz)
+        .map(item => [
+          idCompleto(trilha, item),
+          item.quiz.map(({ pergunta, opcoes, certa, explicacao }) => ({ pergunta, opcoes, certa, explicacao }))
+        ])
+    )
+  );
+  gravar('indice.json', `${JSON.stringify(indice)}\n`);
+  gravar('perguntas.json', `${JSON.stringify(perguntas)}\n`);
+}
+
+// ---------- Revisão das perguntas erradas ----------
+function paginaDeRevisao() {
+  gravar(
+    'revisao.html',
+    pagina({
+      caminho: 'revisao.html',
+      titulo: 'Revisão | Estudos | Otávio',
+      descricao: 'As perguntas dos quizzes que você errou voltam aqui depois de alguns dias, até ficarem na memória.',
+      semIndice: true,
+      corpo: `        <section class="hero estudos-hero" id="inicio">
+          <div class="wrap">
+            <a class="text-link" href="./">← Todos os estudos</a>
+            <div class="section-kicker case-kicker">Revisão</div>
+            <h1>Revisar o que <em>escapou.</em></h1>
+            <p class="lead">
+              Toda pergunta de quiz que você erra na primeira tentativa volta aqui depois de alguns dias. Se acertar,
+              ela volta cada vez mais tarde. Depois de quatro acertos seguidos, sai da lista.
+            </p>
+            ${avisoConta}
+          </div>
+        </section>
+        <section id="perguntas">
+          <div class="wrap">
+            <div class="revisao" data-revisao aria-live="polite">
+              <p class="revisao-vazia">Carregando as perguntas…</p>
+            </div>
+          </div>
+        </section>`
+    })
+  );
+}
+
+// ---------- Certificado de conclusão (montado no navegador a partir do progresso) ----------
+function paginaDoCertificado() {
+  gravar(
+    'certificado.html',
+    pagina({
+      caminho: 'certificado.html',
+      titulo: 'Certificado | Estudos | Otávio',
+      descricao: 'Certificado de conclusão de uma trilha da área de estudos.',
+      semIndice: true,
+      corpo: `        <section class="certificado-pagina" id="inicio">
+          <div class="wrap" data-certificado-pagina>
+            <a class="text-link certificado-voltar" href="./">← Todos os estudos</a>
+            <div data-certificado-conteudo>
+              <p class="revisao-vazia">Carregando o certificado…</p>
+            </div>
+          </div>
+        </section>`
+    })
+  );
+}
+
 // ---------- Monta tudo ----------
 // Apaga as páginas geradas antes (menos o conteúdo), para não sobrar página de aula removida
 for (const nome of fs.readdirSync(SAIDA)) {
@@ -497,6 +609,9 @@ for (const trilha of trilhas.filter(t => !t.emBreve)) {
   itens.forEach((item, i) => paginaDoItem(trilha, item, itens[i - 1], itens[i + 1]));
 }
 paginasDoDiario();
+paginaDeRevisao();
+paginaDoCertificado();
+dadosParaOJavaScript();
 
 // Formata com o Prettier, como o resto do site
 execSync(`npx --yes prettier@3 --write ${gerados.map(g => `"${g}"`).join(' ')}`, { stdio: 'ignore' });

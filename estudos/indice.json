@@ -1,0 +1,489 @@
+{
+  "trilhas": [
+    {
+      "id": "html",
+      "titulo": "HTML",
+      "sigla": "HTML",
+      "itens": [
+        {
+          "id": "html/o-que-e-html",
+          "titulo": "O que é HTML",
+          "resumo": "Tags, elementos, atributos e o esqueleto de toda página.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 8
+        },
+        {
+          "id": "html/textos-e-listas",
+          "titulo": "Textos e listas",
+          "resumo": "Títulos, parágrafos, ênfase e listas ordenadas e não ordenadas.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 7
+        },
+        {
+          "id": "html/links-e-imagens",
+          "titulo": "Links e imagens",
+          "resumo": "Como ligar páginas, abrir sites externos e mostrar imagens com acessibilidade.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 8
+        },
+        {
+          "id": "html/desafio-sobre-mim",
+          "titulo": "Desafio: página \"Sobre mim\"",
+          "resumo": "Junte tudo do módulo numa pequena página de apresentação.",
+          "tipo": "desafio",
+          "nivel": "Iniciante",
+          "minutos": 15
+        },
+        {
+          "id": "html/html-semantico",
+          "titulo": "HTML semântico",
+          "resumo": "header, nav, main, section, article, aside e footer: dar sentido à estrutura.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 9
+        },
+        {
+          "id": "html/tabelas",
+          "titulo": "Tabelas",
+          "resumo": "table, thead, tbody, tr, th e td para dados em linhas e colunas.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 7
+        },
+        {
+          "id": "html/acessibilidade",
+          "titulo": "Acessibilidade no HTML",
+          "resumo": "O que todo HTML deveria ter para funcionar com teclado e leitor de tela.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 8
+        },
+        {
+          "id": "html/desafio-blog",
+          "titulo": "Desafio: estrutura de um blog",
+          "resumo": "Organize a página de um post com os elementos semânticos certos.",
+          "tipo": "desafio",
+          "nivel": "Iniciante",
+          "minutos": 15
+        },
+        {
+          "id": "html/formularios",
+          "titulo": "Formulários e campos",
+          "resumo": "form, input, label e os tipos de campo para cada informação.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 9
+        },
+        {
+          "id": "html/validacao",
+          "titulo": "Validação nativa",
+          "resumo": "required, minlength, pattern e as mensagens de erro que o navegador já oferece.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 7
+        },
+        {
+          "id": "html/desafio-contato",
+          "titulo": "Desafio: formulário de contato",
+          "resumo": "Um formulário completo, acessível e com validação.",
+          "tipo": "desafio",
+          "nivel": "Intermediário",
+          "minutos": 15
+        },
+        {
+          "id": "html/imagens-responsivas",
+          "titulo": "Imagens responsivas",
+          "resumo": "figure, srcset, sizes e picture: a imagem certa para cada tela.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 10
+        },
+        {
+          "id": "html/audio-e-video",
+          "titulo": "Áudio, vídeo e incorporações",
+          "resumo": "video, audio, legendas com track e conteúdos de outros sites com iframe.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 9
+        },
+        {
+          "id": "html/desafio-galeria",
+          "titulo": "Desafio: galeria de um projeto",
+          "resumo": "Monte a galeria de fotos e o vídeo de apresentação de um projeto.",
+          "tipo": "desafio",
+          "nivel": "Intermediário",
+          "minutos": 15
+        },
+        {
+          "id": "html/metadados-e-seo",
+          "titulo": "Metadados e SEO",
+          "resumo": "title, description, canonical e Open Graph: como a página aparece no Google e nas redes.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 10
+        },
+        {
+          "id": "html/aria",
+          "titulo": "ARIA e acessibilidade avançada",
+          "resumo": "Quando usar aria-label, aria-expanded e aria-live, e por que o HTML nativo vem primeiro.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 11
+        },
+        {
+          "id": "html/desempenho",
+          "titulo": "Desempenho no HTML",
+          "resumo": "Scripts com defer, preload, imagens que não fazem a página pular e o que medir.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 10
+        },
+        {
+          "id": "html/desafio-producao",
+          "titulo": "Desafio: página pronta para publicar",
+          "resumo": "Uma página completa, com head caprichado, acessível e rápida.",
+          "tipo": "desafio",
+          "nivel": "Avançado",
+          "minutos": 20
+        }
+      ]
+    },
+    {
+      "id": "css",
+      "titulo": "CSS",
+      "sigla": "CSS",
+      "itens": [
+        {
+          "id": "css/o-que-e-css",
+          "titulo": "O que é CSS",
+          "resumo": "Regras, propriedades e as três formas de ligar o CSS ao HTML.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 8
+        },
+        {
+          "id": "css/seletores",
+          "titulo": "Seletores",
+          "resumo": "Escolher em quem aplicar o estilo: tag, classe, id, descendentes e grupos.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 9
+        },
+        {
+          "id": "css/cores-e-unidades",
+          "titulo": "Cores e unidades",
+          "resumo": "Nomes, hexadecimal, rgb e hsl; px, rem, em e porcentagem.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 9
+        },
+        {
+          "id": "css/desafio-cartao-de-visita",
+          "titulo": "Desafio: cartão de visita",
+          "resumo": "Dê cor e personalidade a um cartão usando seletores, cores e rem.",
+          "tipo": "desafio",
+          "nivel": "Iniciante",
+          "minutos": 15
+        },
+        {
+          "id": "css/tipografia",
+          "titulo": "Tipografia",
+          "resumo": "Fontes, tamanhos, peso, altura de linha e alinhamento.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 9
+        },
+        {
+          "id": "css/modelo-de-caixa",
+          "titulo": "Modelo de caixa",
+          "resumo": "Conteúdo, padding, borda e margem, e o box-sizing que evita surpresas.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 10
+        },
+        {
+          "id": "css/cascata-e-especificidade",
+          "titulo": "Cascata e especificidade",
+          "resumo": "Quando duas regras brigam, quem vence e por quê.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 10
+        },
+        {
+          "id": "css/desafio-cartao-perfil",
+          "titulo": "Desafio: cartão de perfil",
+          "resumo": "Use tipografia e o modelo de caixa para transformar um bloco de texto num cartão.",
+          "tipo": "desafio",
+          "nivel": "Iniciante",
+          "minutos": 15
+        },
+        {
+          "id": "css/display-e-position",
+          "titulo": "Display e position",
+          "resumo": "Block, inline, none e os quatro tipos de posicionamento.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 10
+        },
+        {
+          "id": "css/flexbox",
+          "titulo": "Flexbox",
+          "resumo": "Alinhar e distribuir itens numa linha ou coluna.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 12
+        },
+        {
+          "id": "css/grid",
+          "titulo": "Grid",
+          "resumo": "Linhas e colunas ao mesmo tempo: galerias, painéis e o esqueleto da página.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 12
+        },
+        {
+          "id": "css/desafio-layout",
+          "titulo": "Desafio: cabeçalho e vitrine",
+          "resumo": "Monte o topo de uma loja com flexbox e a vitrine de produtos com grid.",
+          "tipo": "desafio",
+          "nivel": "Intermediário",
+          "minutos": 20
+        },
+        {
+          "id": "css/media-queries",
+          "titulo": "Media queries",
+          "resumo": "Mudar o layout conforme a tela, começando pelo celular.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 10
+        },
+        {
+          "id": "css/medidas-fluidas",
+          "titulo": "Medidas fluidas",
+          "resumo": "max-width, clamp(), vw e imagens que nunca estouram a tela.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 9
+        },
+        {
+          "id": "css/desafio-responsivo",
+          "titulo": "Desafio: página responsiva",
+          "resumo": "Deixe uma página de receitas boa de ler no celular e no computador.",
+          "tipo": "desafio",
+          "nivel": "Intermediário",
+          "minutos": 20
+        },
+        {
+          "id": "css/variaveis-e-temas",
+          "titulo": "Variáveis e temas",
+          "resumo": "Custom properties, var() e o modo escuro com prefers-color-scheme.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 11
+        },
+        {
+          "id": "css/transicoes-e-animacoes",
+          "titulo": "Transições e animações",
+          "resumo": "transition, @keyframes, transform e o respeito a quem pediu menos movimento.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 11
+        },
+        {
+          "id": "css/seletores-modernos",
+          "titulo": "Seletores modernos",
+          "resumo": ":focus-visible, :is(), :where(), :has() e CSS aninhado.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 11
+        },
+        {
+          "id": "css/desafio-tema",
+          "titulo": "Desafio: tema claro e escuro",
+          "resumo": "Monte um componente com variáveis, modo escuro, transições e foco acessível.",
+          "tipo": "desafio",
+          "nivel": "Avançado",
+          "minutos": 25
+        }
+      ]
+    },
+    {
+      "id": "javascript",
+      "titulo": "JavaScript",
+      "sigla": "JS",
+      "itens": [
+        {
+          "id": "javascript/o-que-e-javascript",
+          "titulo": "O que é JavaScript",
+          "resumo": "Onde o código fica, o console e como o navegador lê um script.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 8
+        },
+        {
+          "id": "javascript/variaveis-e-tipos",
+          "titulo": "Variáveis e tipos",
+          "resumo": "let, const, textos, números, booleanos e template strings.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 10
+        },
+        {
+          "id": "javascript/decisoes",
+          "titulo": "Comparações e decisões",
+          "resumo": "if, else, ===, && e || para o código escolher um caminho.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 10
+        },
+        {
+          "id": "javascript/funcoes",
+          "titulo": "Funções",
+          "resumo": "Parâmetros, return e arrow functions: código com nome para reaproveitar.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 11
+        },
+        {
+          "id": "javascript/desafio-funcoes",
+          "titulo": "Desafio: funções da loja",
+          "resumo": "Escreva quatro funções pequenas usando variáveis, decisões e return.",
+          "tipo": "desafio",
+          "nivel": "Iniciante",
+          "minutos": 20
+        },
+        {
+          "id": "javascript/arrays",
+          "titulo": "Arrays",
+          "resumo": "Listas de valores: índices, length, push e laços com for...of.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 10
+        },
+        {
+          "id": "javascript/objetos",
+          "titulo": "Objetos",
+          "resumo": "Agrupar dados com nome: propriedades, métodos e listas de objetos.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 10
+        },
+        {
+          "id": "javascript/metodos-de-array",
+          "titulo": "Métodos de array",
+          "resumo": "map, filter, find, reduce e sort: transformar listas sem laços manuais.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 12
+        },
+        {
+          "id": "javascript/desafio-lista-de-compras",
+          "titulo": "Desafio: lista de compras",
+          "resumo": "Some, filtre e formate uma lista de objetos com os métodos de array.",
+          "tipo": "desafio",
+          "nivel": "Iniciante",
+          "minutos": 20
+        },
+        {
+          "id": "javascript/o-dom",
+          "titulo": "O DOM",
+          "resumo": "Encontrar, ler, mudar, criar e remover elementos da página.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 11
+        },
+        {
+          "id": "javascript/eventos",
+          "titulo": "Eventos",
+          "resumo": "addEventListener, o objeto do evento e a delegação de eventos.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 11
+        },
+        {
+          "id": "javascript/formularios-com-js",
+          "titulo": "Formulários com JavaScript",
+          "resumo": "submit, preventDefault, ler os campos e mostrar mensagens de erro.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 11
+        },
+        {
+          "id": "javascript/desafio-lista-de-tarefas",
+          "titulo": "Desafio: lista de tarefas",
+          "resumo": "Faça uma lista de tarefas funcionar com eventos e o DOM.",
+          "tipo": "desafio",
+          "nivel": "Intermediário",
+          "minutos": 25
+        },
+        {
+          "id": "javascript/erros-e-depuracao",
+          "titulo": "Erros e depuração",
+          "resumo": "Ler mensagens de erro, try/catch e lançar os próprios erros.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 10
+        },
+        {
+          "id": "javascript/assincrono",
+          "titulo": "Código assíncrono",
+          "resumo": "setTimeout, Promises e async/await: lidar com o que demora.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 12
+        },
+        {
+          "id": "javascript/fetch-e-json",
+          "titulo": "fetch e JSON",
+          "resumo": "Buscar dados de uma API, tratar erros e mostrar o resultado na página.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 12
+        },
+        {
+          "id": "javascript/desafio-dados-da-api",
+          "titulo": "Desafio: tratar dados de uma API",
+          "resumo": "Leia JSON com segurança, valide pedidos e some os valores por cliente.",
+          "tipo": "desafio",
+          "nivel": "Intermediário",
+          "minutos": 20
+        },
+        {
+          "id": "javascript/desestruturacao-e-spread",
+          "titulo": "Desestruturação e spread",
+          "resumo": "Tirar valores de objetos e arrays, copiar, juntar, ?. e ??.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 11
+        },
+        {
+          "id": "javascript/escopo-e-closures",
+          "titulo": "Escopo e closures",
+          "resumo": "Onde cada variável existe e funções que lembram de onde nasceram.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 11
+        },
+        {
+          "id": "javascript/classes",
+          "titulo": "Classes",
+          "resumo": "Moldes de objetos com constructor, métodos, getters e campos privados.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 12
+        },
+        {
+          "id": "javascript/desafio-carrinho",
+          "titulo": "Desafio: carrinho de compras",
+          "resumo": "Escreva uma classe com estado privado, regras e getters.",
+          "tipo": "desafio",
+          "nivel": "Avançado",
+          "minutos": 30
+        }
+      ]
+    }
+  ]
+}

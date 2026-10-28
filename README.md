@@ -92,6 +92,22 @@ O progresso fica no navegador (`estudos-progresso`) e, para quem está logado, t
 documento `usuarios/{uid}` no Firestore (as regras atuais já permitem que cada pessoa grave só o próprio).
 Depois de entrar pelo link de uma aula, o login volta para ela (`login.html?volta=estudos/...`).
 
+O gerador também cria:
+
+- `estudos/indice.json`: trilhas e aulas em ordem. É usado pelo painel, pelo certificado e pela busca do Ctrl+K
+  (`js/paleta.js`, que só mostra as aulas quando há algo digitado)
+- `estudos/perguntas.json`: as perguntas dos quizzes, para a página de revisão
+- `estudos/revisao.html` e `estudos/certificado.html?trilha=<id>`: páginas pessoais, com `noindex`
+
+O `js/estudos-paineis.js` monta o painel da página inicial dos estudos (continuar de onde parou, números, dias
+seguidos e trilhas começadas), a revisão e o certificado. Ele só é baixado nas páginas que têm um deles. Os dados que
+ele usa ficam em `estudos-extra` no navegador e no campo `estudosExtra` do mesmo documento da conta:
+
+- `dias`: os dias em que a pessoa estudou (concluiu algo ou respondeu um quiz)
+- `revisao`: as perguntas erradas na primeira tentativa (`html:tabelas:2` é a pergunta 2 da aula `html/tabelas`).
+  Elas voltam no dia seguinte e, a cada acerto, depois de 3, 7 e 14 dias. No quarto acerto seguido, saem da lista
+- `conclusao`: a data em que cada trilha chegou a 100%, que vai no certificado
+
 ## Verificação automática
 
 A cada envio para a main, o GitHub Actions (`.github/workflows/verificar.yml`) confere os links internos

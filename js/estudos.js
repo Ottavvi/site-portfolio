@@ -22,19 +22,62 @@ const removerLocal = chave => {
 // ---------- Progresso ----------
 const feitos = new Set(JSON.parse(lerLocal(CHAVE_PROGRESSO) || '[]'));
 let nuvem = null; // preenchido quando a pessoa está logada: salva cada mudança na conta
+let usuarioAtual = null; // conta logada (o certificado usa o nome dela)
 
 function marcar(id, feito) {
   if (feitos.has(id) === feito) return;
   feito ? feitos.add(id) : feitos.delete(id);
   gravarLocal(CHAVE_PROGRESSO, JSON.stringify([...feitos]));
   nuvem?.(id, feito).catch(() => {});
+  if (feito) registrarDia();
   atualizarTela();
 }
+
+// ---------- Dados extras: dias de estudo, perguntas para revisar e trilhas concluídas ----------
+// Ficam em "estudos-extra" no navegador e no campo estudosExtra da conta, no formato:
+//   dias:      { '2026-10-28': true }                    dias em que a pessoa estudou (para a sequência)
+//   revisao:   { 'html:tabelas:2': { c, p, t, d } }       pergunta 2 da aula html/tabelas: c = acertos seguidos
+//                                                         na revisão, p = data da próxima, t = quando mudou, d = saiu
+//   conclusao: { html: '2026-10-28' }                    data em que cada trilha chegou a 100% (vai no certificado)
+const CHAVE_EXTRA = 'estudos-extra';
+const hoje = () => new Date().toLocaleDateString('sv-SE'); // AAAA-MM-DD no fuso de quem estuda
+const diaDepois = dias => {
+  const data = new Date();
+  data.setDate(data.getDate() + dias);
+  return data.toLocaleDateString('sv-SE');
+};
+const extra = { dias: {}, revisao: {}, conclusao: {} };
+try {
+  const salvo = JSON.parse(lerLocal(CHAVE_EXTRA) || '{}');
+  for (const grupo of Object.keys(extra)) Object.assign(extra[grupo], salvo[grupo]);
+} catch {}
+let nuvemExtra = null; // como o "nuvem", mas para os dados extras
+
+// Recebe só o que mudou, por exemplo { dias: { '2026-10-28': true } }
+function salvarExtra(mudancas) {
+  for (const [grupo, valores] of Object.entries(mudancas)) Object.assign(extra[grupo], valores);
+  gravarLocal(CHAVE_EXTRA, JSON.stringify(extra));
+  nuvemExtra?.(mudancas).catch(() => {});
+}
+function registrarDia() {
+  if (!extra.dias[hoje()]) salvarExtra({ dias: { [hoje()]: true } });
+}
+// Chave de uma pergunta: id da aula com dois-pontos no lugar da barra (vira nome de campo no Firestore) + número
+const chavePergunta = (aula, indice) => `${aula.replace('/', ':')}:${indice}`;
 
 function atualizarTela() {
   document
     .querySelectorAll('[data-item]')
     .forEach(item => item.classList.toggle('feito', feitos.has(item.dataset.item)));
+  // Trilha que chegou a 100% guarda a data (uma vez só) e libera o link do certificado
+  document.querySelectorAll('[data-trilha][data-progresso]').forEach(barra => {
+    const trilha = barra.dataset.trilha;
+    const completa = barra.dataset.progresso.split(' ').every(id => feitos.has(id));
+    if (completa && !extra.conclusao[trilha]) salvarExtra({ conclusao: { [trilha]: hoje() } });
+  });
+  document.querySelectorAll('[data-certificado]').forEach(link => {
+    link.hidden = !extra.conclusao[link.dataset.certificado];
+  });
   document.querySelectorAll('[data-progresso]').forEach(barra => {
     const ids = barra.dataset.progresso.split(' ');
     const total = ids.filter(id => feitos.has(id)).length;
@@ -97,12 +140,17 @@ async function conectarConta() {
   onAuthStateChanged(auth, async usuario => {
     if (!usuario) {
       nuvem = null;
+      nuvemExtra = null;
+      usuarioAtual = null;
       mostrarConta(null);
       return;
     }
+    usuarioAtual = usuario;
     const ref = doc(db, 'usuarios', usuario.uid);
     try {
-      const remoto = (await getDoc(ref)).data()?.estudos || {};
+      const dados = (await getDoc(ref)).data() || {};
+      const remoto = dados.estudos || {};
+      await juntarExtra(dados.estudosExtra || {}, mudancas => setDoc(ref, { estudosExtra: mudancas }, { merge: true }));
       const soNoNavegador = [...feitos].filter(item => !remoto[campo(item)]);
       Object.keys(remoto).forEach(item => feitos.add(id(item)));
       gravarLocal(CHAVE_PROGRESSO, JSON.stringify([...feitos]));
@@ -119,10 +167,26 @@ async function conectarConta() {
           : updateDoc(ref, new FieldPath('estudos', campo(item)), deleteField());
       mostrarConta(usuario);
       atualizarTela();
+      document.dispatchEvent(new Event('estudos:atualizou'));
     } catch {
       // Sem conexão ou sem permissão: continua só com o progresso do navegador
     }
   });
+}
+
+// Junta os dados extras deste navegador com os da conta: dias somados, a data de conclusão mais antiga de cada
+// trilha e, em cada pergunta da revisão, o registro que mudou por último. Depois grava o resultado nos dois lugares
+async function juntarExtra(remoto, gravarNaConta) {
+  Object.assign(extra.dias, remoto.dias);
+  for (const [trilha, data] of Object.entries(remoto.conclusao || {})) {
+    if (!extra.conclusao[trilha] || data < extra.conclusao[trilha]) extra.conclusao[trilha] = data;
+  }
+  for (const [chave, registro] of Object.entries(remoto.revisao || {})) {
+    if (!extra.revisao[chave] || registro.t > extra.revisao[chave].t) extra.revisao[chave] = registro;
+  }
+  gravarLocal(CHAVE_EXTRA, JSON.stringify(extra));
+  await gravarNaConta(extra);
+  nuvemExtra = gravarNaConta;
 }
 
 // ---------- Quiz ----------
@@ -130,11 +194,22 @@ document.querySelectorAll('.quiz').forEach(quiz => {
   const perguntas = [...quiz.querySelectorAll('.quiz-pergunta')];
   const placar = quiz.querySelector('.quiz-placar');
   const concluir = document.querySelector('[data-concluir]');
-  perguntas.forEach(pergunta => {
+  perguntas.forEach((pergunta, indice) => {
     const retorno = pergunta.querySelector('.quiz-retorno');
+    let tentou = false;
     pergunta.addEventListener('change', event => {
       const escolha = event.target;
       const certo = escolha.value === pergunta.dataset.certa;
+      // Errou na primeira tentativa: a pergunta entra (ou volta do começo) na revisão, para amanhã
+      if (!tentou) {
+        tentou = true;
+        registrarDia();
+        if (!certo && concluir) {
+          salvarExtra({
+            revisao: { [chavePergunta(concluir.dataset.concluir, indice)]: { c: 0, p: diaDepois(1), t: Date.now() } }
+          });
+        }
+      }
       escolha.closest('.quiz-opcao').classList.add(certo ? 'certa' : 'errada');
       retorno.hidden = false;
       retorno.className = `quiz-retorno ${certo ? 'certa' : 'errada'}`;
@@ -329,4 +404,26 @@ if (caixaDesafio && window.TESTES_DO_DESAFIO) {
       if (resultados.every(Boolean)) marcar(id, true);
     }
   });
+}
+
+// ---------- Última aula aberta (o painel usa para o "continuar de onde parou") ----------
+const aulaAberta = document.querySelector('[data-concluir]')?.dataset.concluir;
+if (aulaAberta) gravarLocal('estudos-ultima', aulaAberta);
+
+// ---------- Painel, revisão e certificado: só baixa o código nas páginas que têm um deles ----------
+if (document.querySelector('[data-painel], [data-revisao], [data-certificado-pagina]')) {
+  import('./estudos-paineis.js').then(({ iniciar }) =>
+    iniciar({
+      feitos,
+      extra,
+      salvarExtra,
+      registrarDia,
+      hoje,
+      diaDepois,
+      chavePergunta,
+      ultimaAula: () => lerLocal('estudos-ultima'),
+      usuario: () => usuarioAtual,
+      nome: { ler: () => lerLocal('estudos-nome'), gravar: valor => gravarLocal('estudos-nome', valor) }
+    })
+  );
 }
