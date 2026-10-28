@@ -1619,6 +1619,158 @@
       "explicacao": "As propriedades lógicas seguem a direção do texto."
     }
   ],
+  "react/o-que-e-react": [
+    {
+      "pergunta": "O que é um componente React?",
+      "opcoes": [
+        "Um arquivo CSS",
+        "Uma função que devolve o que deve aparecer na tela",
+        "Uma tag HTML nova do navegador"
+      ],
+      "certa": 1,
+      "explicacao": "Funções com nome em maiúscula, usadas como tags no JSX."
+    },
+    {
+      "pergunta": "Como se escreve o atributo class em JSX?",
+      "opcoes": ["class", "className", "cssClass"],
+      "certa": 1,
+      "explicacao": "class é palavra reservada do JavaScript, então o JSX usa className."
+    },
+    {
+      "pergunta": "Para que serve <>...</>?",
+      "opcoes": [
+        "Comentário",
+        "Agrupar vários elementos sem criar uma tag a mais na página",
+        "Criar um componente vazio"
+      ],
+      "certa": 1,
+      "explicacao": "É o fragmento: ele some na página, só agrupa."
+    }
+  ],
+  "react/props-e-listas": [
+    {
+      "pergunta": "Um componente pode alterar as props que recebeu?",
+      "opcoes": ["Sim", "Não: props são só de leitura", "Só se forem números"],
+      "certa": 1,
+      "explicacao": "Quem muda os dados é quem é dono deles. Para dados que mudam, existe o estado."
+    },
+    {
+      "pergunta": "Para que serve a key nos itens de uma lista?",
+      "opcoes": [
+        "Estilizar cada item",
+        "Ajudar o React a saber qual item é qual quando a lista muda",
+        "Ordenar a lista"
+      ],
+      "certa": 1,
+      "explicacao": "Use um id estável. O índice do array dá problema quando itens são removidos ou reordenados."
+    },
+    {
+      "pergunta": "O que {itens.length && <Lista />} mostra com a lista vazia?",
+      "opcoes": ["Nada", "O número 0", "Um erro"],
+      "certa": 1,
+      "explicacao": "0 é falso, mas o React desenha números. Compare com > 0."
+    }
+  ],
+  "react/estado": [
+    {
+      "pergunta": "O que acontece quando o estado muda?",
+      "opcoes": [
+        "Nada até recarregar a página",
+        "O React chama o componente de novo e atualiza a tela",
+        "A página recarrega"
+      ],
+      "certa": 1,
+      "explicacao": "A tela é sempre o resultado do estado atual."
+    },
+    {
+      "pergunta": "Qual o jeito certo de acrescentar um item a uma lista no estado?",
+      "opcoes": ["lista.push(novo)", "setLista([...lista, novo])", "lista[lista.length] = novo"],
+      "certa": 1,
+      "explicacao": "Criar um array novo é o que faz o React perceber a mudança."
+    },
+    {
+      "pergunta": "Qual a diferença entre onClick={limpar} e onClick={limpar()}?",
+      "opcoes": [
+        "Nenhuma",
+        "A primeira passa a função; a segunda executa na hora de desenhar",
+        "A segunda é mais rápida"
+      ],
+      "certa": 1,
+      "explicacao": "O evento precisa receber uma função para chamar depois, no clique."
+    }
+  ],
+  "react/formularios": [
+    {
+      "pergunta": "O que torna um input \"controlado\"?",
+      "opcoes": ["Ter um id", "O value vir do estado e o onChange atualizar o estado", "Estar dentro de um form"],
+      "certa": 1,
+      "explicacao": "O estado é a fonte da verdade do que está escrito."
+    },
+    {
+      "pergunta": "Dois componentes irmãos precisam do mesmo dado. Onde ele fica?",
+      "opcoes": ["Copiado nos dois", "No pai mais próximo dos dois", "Numa variável global"],
+      "certa": 1,
+      "explicacao": "É o \"levantar o estado\": o pai guarda e distribui por props."
+    },
+    {
+      "pergunta": "Uma lista filtrada a partir de outro estado deve virar estado também?",
+      "opcoes": ["Sim", "Não: calcule a cada desenho", "Só se for grande"],
+      "certa": 1,
+      "explicacao": "Dados derivados calculados na hora nunca ficam fora de sincronia."
+    }
+  ],
+  "react/efeitos": [
+    {
+      "pergunta": "Com useEffect(fn, []), quando fn roda?",
+      "opcoes": ["A cada desenho", "Uma vez, depois do primeiro desenho", "Nunca"],
+      "certa": 1,
+      "explicacao": "Sem dependências que mudem, só roda na montagem."
+    },
+    {
+      "pergunta": "Para que serve a função devolvida pelo efeito?",
+      "opcoes": ["Mostrar um valor", "Desfazer o que o efeito ligou (timers, eventos, buscas)", "Nada"],
+      "certa": 1,
+      "explicacao": "É a limpeza, chamada antes do próximo efeito e quando o componente sai da tela."
+    },
+    {
+      "pergunta": "Por que o AbortController na busca de dados?",
+      "opcoes": [
+        "Deixar a busca mais rápida",
+        "Cancelar a resposta velha se o id mudar antes de ela chegar",
+        "É obrigatório no fetch"
+      ],
+      "certa": 1,
+      "explicacao": "Evita que a resposta de um id antigo apareça depois da do novo."
+    }
+  ],
+  "react/hooks-e-contexto": [
+    {
+      "pergunta": "O que caracteriza um hook próprio?",
+      "opcoes": [
+        "Ser uma classe",
+        "Uma função que começa com use e usa outros hooks",
+        "Ficar num arquivo chamado hooks.js"
+      ],
+      "certa": 1,
+      "explicacao": "O prefixo use avisa o React (e quem lê) que as regras dos hooks valem ali dentro."
+    },
+    {
+      "pergunta": "Que problema o contexto resolve?",
+      "opcoes": [
+        "Deixar a página mais rápida",
+        "Passar um dado global por muitos níveis sem repassar props em cada um",
+        "Guardar dados no servidor"
+      ],
+      "certa": 1,
+      "explicacao": "Qualquer componente dentro do Provider lê o valor com useContext."
+    },
+    {
+      "pergunta": "Qual comando gera os arquivos para publicar num projeto Vite?",
+      "opcoes": ["npm run dev", "npm run build", "npm start"],
+      "certa": 1,
+      "explicacao": "O build gera a pasta dist/, com o código otimizado."
+    }
+  ],
   "sqlite/o-que-e-sql": [
     {
       "pergunta": "Numa tabela, o que é cada linha?",

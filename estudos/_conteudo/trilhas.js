@@ -11,14 +11,7 @@ module.exports = [
   require('./notificacoes'),
   require('./pwa-offline'),
   require('./i18n'),
-  {
-    id: 'react',
-    area: 'Desenvolvimento web',
-    titulo: 'React',
-    sigla: 'Re',
-    resumo: 'Componentes, estado, efeitos e rotas para interfaces que crescem sem virar bagunça.',
-    emBreve: true
-  },
+  require('./react'),
 
   // ---------- Back-end e dados ----------
   {

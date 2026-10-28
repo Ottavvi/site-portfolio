@@ -816,6 +816,85 @@
       ]
     },
     {
+      "id": "react",
+      "titulo": "React",
+      "sigla": "Re",
+      "itens": [
+        {
+          "id": "react/o-que-e-react",
+          "titulo": "Componentes e JSX",
+          "resumo": "Por que React, o que é um componente e as regras do JSX.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 10
+        },
+        {
+          "id": "react/props-e-listas",
+          "titulo": "Props, listas e condições",
+          "resumo": "Passar dados para componentes, desenhar listas com key e mostrar conforme a situação.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 12
+        },
+        {
+          "id": "react/desafio-cardapio",
+          "titulo": "Desafio: cardápio",
+          "resumo": "Monte um cardápio com componentes, props e listas.",
+          "tipo": "desafio",
+          "nivel": "Iniciante",
+          "minutos": 20
+        },
+        {
+          "id": "react/estado",
+          "titulo": "Estado com useState",
+          "resumo": "Dados que mudam, eventos e atualizações sem mutar.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 13
+        },
+        {
+          "id": "react/formularios",
+          "titulo": "Formulários e estado compartilhado",
+          "resumo": "Campos controlados, envio e \"levantar o estado\".",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 12
+        },
+        {
+          "id": "react/desafio-tarefas",
+          "titulo": "Desafio: lista de tarefas em React",
+          "resumo": "Adicionar, marcar e remover tarefas com estado.",
+          "tipo": "desafio",
+          "nivel": "Intermediário",
+          "minutos": 25
+        },
+        {
+          "id": "react/efeitos",
+          "titulo": "Efeitos com useEffect",
+          "resumo": "Sincronizar com o mundo de fora: título, timers e dados de uma API.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 14
+        },
+        {
+          "id": "react/hooks-e-contexto",
+          "titulo": "Hooks próprios, contexto e projeto",
+          "resumo": "Reaproveitar lógica, compartilhar dados sem repassar props e organizar com Vite e rotas.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 13
+        },
+        {
+          "id": "react/desafio-cronometro",
+          "titulo": "Desafio: cronômetro",
+          "resumo": "Um cronômetro com useEffect, limpeza e um hook próprio.",
+          "tipo": "desafio",
+          "nivel": "Avançado",
+          "minutos": 25
+        }
+      ]
+    },
+    {
       "id": "sqlite",
       "titulo": "SQLite",
       "sigla": "SQL",
