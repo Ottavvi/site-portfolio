@@ -151,14 +151,15 @@ document.querySelectorAll('.quiz').forEach(quiz => {
 
 // ---------- Editor ao vivo ----------
 // Estilo básico do resultado, para o HTML sem CSS ficar legível. Vai depois do código, para um <!doctype> escrito
-// pela pessoa continuar sendo a primeira linha (senão o navegador entra em modo de compatibilidade)
-const ESTILO_RESULTADO = `<style>
+// pela pessoa continuar sendo a primeira linha (senão o navegador entra em modo de compatibilidade). Fica numa
+// @layer para perder para qualquer CSS da pessoa, mesmo vindo depois. data-base deixa os desafios de CSS ignorá-lo.
+const ESTILO_RESULTADO = `<style data-base>@layer base {
   body { font-family: system-ui, sans-serif; line-height: 1.5; margin: 16px; color: #1f2933; }
   img { max-width: 100%; height: auto; }
   table, th, td { border: 1px solid #c5ced6; border-collapse: collapse; padding: 4px 8px; }
   label { display: block; margin-top: 10px; }
   fieldset label, label:has(input[type=checkbox]), label:has(input[type=radio]) { display: inline-block; margin-right: 12px; }
-</style>`;
+}</style>`;
 
 function criarEditor(caixa, { codigoInicial, aoAtualizar, chaveSalva }) {
   const salvo = chaveSalva ? lerLocal(chaveSalva) : null;
@@ -166,10 +167,10 @@ function criarEditor(caixa, { codigoInicial, aoAtualizar, chaveSalva }) {
   caixa.innerHTML = `
     <div class="editor-painel">
       <div class="editor-barra">
-        <span>HTML</span>
+        <span>Código</span>
         <button type="button" class="editor-recomecar">Recomeçar</button>
       </div>
-      <textarea spellcheck="false" autocapitalize="off" aria-label="Código HTML (Tab insere espaços; Esc e depois Tab sai do editor)"></textarea>
+      <textarea spellcheck="false" autocapitalize="off" aria-label="Código (Tab insere espaços; Esc e depois Tab sai do editor)"></textarea>
     </div>
     <div class="editor-painel">
       <div class="editor-barra"><span>Resultado</span></div>

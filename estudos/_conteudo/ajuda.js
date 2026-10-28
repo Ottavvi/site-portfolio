@@ -5,6 +5,9 @@ const escapar = texto =>
 // Bloco de código HTML. O gerador transforma em <pre> com um botão que abre o código num editor ao vivo.
 const codigo = texto => `<pre class="aula-codigo" data-experimente><code>${escapar(texto)}</code></pre>`;
 
+// Trecho que não roda sozinho (só CSS, por exemplo): mesmo visual, sem o botão "Experimente".
+const trecho = texto => `<pre class="aula-codigo"><code>${escapar(texto)}</code></pre>`;
+
 const dica = html => `<aside class="aula-dica"><strong>Dica</strong><p>${html}</p></aside>`;
 
-module.exports = { escapar, codigo, dica };
+module.exports = { escapar, codigo, trecho, dica };

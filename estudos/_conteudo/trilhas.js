@@ -3,14 +3,7 @@
 module.exports = [
   // ---------- Desenvolvimento web ----------
   require('./html'),
-  {
-    id: 'css',
-    area: 'Desenvolvimento web',
-    titulo: 'CSS',
-    sigla: 'CSS',
-    resumo: 'Cores, tipografia, caixas, flexbox, grid e páginas que se adaptam ao celular.',
-    emBreve: true
-  },
+  require('./css'),
   {
     id: 'javascript',
     area: 'Desenvolvimento web',

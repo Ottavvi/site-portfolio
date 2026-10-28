@@ -75,8 +75,11 @@ As páginas de `estudos/` são **geradas**: não edite os `.html` de lá à mão
 - `html.js`: a trilha de HTML em três níveis (`niveis`: Iniciante, Intermediário e Avançado), cada um com módulos,
   aulas (texto + quiz) e desafios (enunciado, código inicial, testes e solução). Os módulos são numerados em
   sequência pela trilha toda
+- `css.js`: a trilha de CSS, no mesmo formato. Os testes dos desafios leem `getComputedStyle` do resultado e, quando
+  precisam saber como algo foi escrito (rem, `@media`, `var()`), o texto dos `<style>` (o estilo base do editor tem
+  `data-base` e fica fora)
 - `diario.js`: as anotações do diário de estudos
-- `ajuda.js`: `codigo()` para exemplos com botão "Experimente" e `dica()` para as caixas de dica
+- `ajuda.js`: `codigo()` para exemplos com botão "Experimente", `trecho()` para código que não roda sozinho (só CSS) e `dica()` para as caixas de dica
 
 Depois de editar, rode `node ferramentas/gerar-estudos.js` e faça o commit das páginas geradas (o GitHub Actions
 avisa se esquecer). Os testes de cada desafio são funções que recebem o documento do resultado e devolvem

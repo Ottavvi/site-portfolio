@@ -33,6 +33,7 @@ const comandos = [
   ['paginas', EN ? 'About me' : 'Sobre mim', url(EN ? 'en/about.html' : 'sobre.html'), 'trajetoria journey'],
   ['paginas', EN ? 'Study area (PT)' : 'Estudos', url('estudos/'), 'aprender cursos trilhas learn study'],
   ['paginas', EN ? 'HTML track (PT)' : 'Trilha de HTML', url('estudos/html/'), 'aulas quiz desafios exercicios'],
+  ['paginas', EN ? 'CSS track (PT)' : 'Trilha de CSS', url('estudos/css/'), 'aulas estilo flexbox grid layout'],
   ['paginas', EN ? 'Study journal (PT)' : 'Diário de estudos', url('estudos/diario/'), 'anotacoes blog journal'],
   ['paginas', EN ? 'Contact' : 'Contato', url(`${inicio}#contato`), 'email mensagem message'],
   [
