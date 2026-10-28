@@ -21,33 +21,12 @@ module.exports = [
   // ---------- Qualidade e entrega ----------
   require('./playwright'),
   require('./github-actions'),
-  {
-    id: 'powershell',
-    area: 'Qualidade e entrega',
-    titulo: 'PowerShell',
-    sigla: 'PS',
-    resumo: 'Automatizar o Windows: arquivos, programas e tarefas repetitivas.',
-    emBreve: true
-  },
-  {
-    id: 'lgpd',
-    area: 'Qualidade e entrega',
-    titulo: 'LGPD',
-    sigla: 'LG',
-    resumo: 'Proteção de dados na prática: o que um site ou sistema precisa fazer para cumprir a lei.',
-    emBreve: true
-  },
+  require('./powershell'),
+  require('./lgpd'),
 
   // ---------- Dados e BI ----------
   require('./excel'),
   require('./power-query'),
   require('./power-bi'),
-  {
-    id: 'dax',
-    area: 'Dados e BI',
-    titulo: 'DAX',
-    sigla: 'DAX',
-    resumo: 'Medidas e cálculos no Power BI: contexto de filtro, CALCULATE e inteligência de tempo.',
-    emBreve: true
-  }
+  require('./dax')
 ];

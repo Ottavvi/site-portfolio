@@ -1266,6 +1266,148 @@
       ]
     },
     {
+      "id": "powershell",
+      "titulo": "PowerShell",
+      "sigla": "PS",
+      "itens": [
+        {
+          "id": "powershell/primeiros-comandos",
+          "titulo": "Cmdlets e ajuda",
+          "resumo": "Verbo-Substantivo, navegar por pastas e descobrir comandos sozinho.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 9
+        },
+        {
+          "id": "powershell/pipeline-de-objetos",
+          "titulo": "O pipeline de objetos",
+          "resumo": "Where-Object, Select-Object, Sort-Object e o que passa pelo |.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 11
+        },
+        {
+          "id": "powershell/pratica-relatorio-de-pasta",
+          "titulo": "Prática: raio-x de uma pasta",
+          "resumo": "Descubra o que ocupa espaço na sua pasta de Downloads.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 15
+        },
+        {
+          "id": "powershell/scripts-e-funcoes",
+          "titulo": "Scripts, parâmetros e erros",
+          "resumo": "Arquivos .ps1, política de execução, param, if, foreach e try/catch.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 13
+        },
+        {
+          "id": "powershell/csv-json-e-web",
+          "titulo": "CSV, JSON e APIs",
+          "resumo": "Import-Csv, Export-Csv, ConvertTo-Json e Invoke-RestMethod.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 12
+        },
+        {
+          "id": "powershell/pratica-organizar-downloads",
+          "titulo": "Prática: organizar arquivos por tipo",
+          "resumo": "Um script que move arquivos para pastas por extensão, com simulação.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 25
+        },
+        {
+          "id": "powershell/agendar-e-modulos",
+          "titulo": "Agendar, módulos e boas práticas",
+          "resumo": "Agendador de Tarefas, módulos da PowerShell Gallery e scripts confiáveis.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 13
+        },
+        {
+          "id": "powershell/pratica-relatorio-semanal",
+          "titulo": "Prática: relatório semanal automático",
+          "resumo": "Um script agendado que gera um CSV de resumo e grava log.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 30
+        }
+      ]
+    },
+    {
+      "id": "lgpd",
+      "titulo": "LGPD",
+      "sigla": "LGPD",
+      "itens": [
+        {
+          "id": "lgpd/o-que-e-lgpd",
+          "titulo": "O que é a LGPD",
+          "resumo": "Dado pessoal, dado sensível, titular, controlador, operador e ANPD.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 9
+        },
+        {
+          "id": "lgpd/bases-legais",
+          "titulo": "Bases legais",
+          "resumo": "Consentimento não é a única: as hipóteses que permitem tratar dados.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 11
+        },
+        {
+          "id": "lgpd/direitos-dos-titulares",
+          "titulo": "Direitos dos titulares",
+          "resumo": "Acesso, correção, eliminação, portabilidade, e o que o sistema precisa ter para atender.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 11
+        },
+        {
+          "id": "lgpd/privacidade-desde-a-concepcao",
+          "titulo": "Privacidade desde a concepção",
+          "resumo": "Minimização, cookies, formulários, logs e terceiros: decisões do dia a dia.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 12
+        },
+        {
+          "id": "lgpd/pratica-auditar-formulario",
+          "titulo": "Prática: auditar um cadastro",
+          "resumo": "Encontre os problemas de LGPD num formulário e proponha correções.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 20
+        },
+        {
+          "id": "lgpd/seguranca-e-incidentes",
+          "titulo": "Segurança e incidentes",
+          "resumo": "Medidas técnicas, o que fazer num vazamento e as sanções.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 13
+        },
+        {
+          "id": "lgpd/governanca",
+          "titulo": "Encarregado, registros e relatório de impacto",
+          "resumo": "Inventário de dados, RIPD, encarregado e contratos com operadores.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 11
+        },
+        {
+          "id": "lgpd/pratica-inventario",
+          "titulo": "Prática: inventário e política de um app",
+          "resumo": "Monte o inventário de dados e os pontos da política de privacidade de um app de agendamento.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 30
+        }
+      ]
+    },
+    {
       "id": "excel",
       "titulo": "Excel",
       "sigla": "XL",
@@ -1499,6 +1641,85 @@
           "tipo": "aula",
           "nivel": "Avançado",
           "minutos": 40
+        }
+      ]
+    },
+    {
+      "id": "dax",
+      "titulo": "DAX",
+      "sigla": "DAX",
+      "itens": [
+        {
+          "id": "dax/medidas-e-colunas",
+          "titulo": "Medidas e colunas calculadas",
+          "resumo": "A diferença que mais confunde no começo, e as funções básicas.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 11
+        },
+        {
+          "id": "dax/contexto-de-filtro",
+          "titulo": "O contexto de filtro",
+          "resumo": "Por que a mesma medida dá um número diferente em cada célula.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 11
+        },
+        {
+          "id": "dax/pratica-medidas",
+          "titulo": "Prática: as medidas básicas",
+          "resumo": "Crie as medidas de um painel de vendas e confira os números.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 20
+        },
+        {
+          "id": "dax/calculate",
+          "titulo": "CALCULATE",
+          "resumo": "Mudar o contexto de filtro: a função mais importante do DAX.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 14
+        },
+        {
+          "id": "dax/inteligencia-de-tempo",
+          "titulo": "Inteligência de tempo",
+          "resumo": "Acumulado no ano, mês anterior, mesmo período do ano passado e variação.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 13
+        },
+        {
+          "id": "dax/pratica-calculate",
+          "titulo": "Prática: participação e evolução",
+          "resumo": "Percentual do total, mês anterior e acumulado no ano.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 25
+        },
+        {
+          "id": "dax/iteradores-e-variaveis",
+          "titulo": "Iteradores, variáveis e ranking",
+          "resumo": "SUMX, AVERAGEX, VAR/RETURN e RANKX.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 13
+        },
+        {
+          "id": "dax/contexto-de-linha",
+          "titulo": "Contexto de linha e transição de contexto",
+          "resumo": "Os dois contextos do DAX, a transição e relacionamentos inativos.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 14
+        },
+        {
+          "id": "dax/pratica-avancada",
+          "titulo": "Prática: ranking e médias",
+          "resumo": "RANKX, AVERAGEX, VAR e uma medida de destaque para o relatório.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 25
         }
       ]
     }

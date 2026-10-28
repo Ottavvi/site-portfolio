@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Agendar, módulos e boas práticas | PowerShell | Estudos</title>
+    <meta name="description" content="Agendador de Tarefas, módulos da PowerShell Gallery e scripts confiáveis." />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="ottavvi.dev" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:title" content="Agendar, módulos e boas práticas | PowerShell | Estudos" />
+    <meta
+      property="og:description"
+      content="Agendador de Tarefas, módulos da PowerShell Gallery e scripts confiáveis."
+    />
+    <meta
+      property="og:url"
+      content="https://ottavvi.github.io/site-portfolio/estudos/powershell/agendar-e-modulos.html"
+    />
+    <meta property="og:image" content="https://ottavvi.github.io/site-portfolio/imagens/og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#08141a" />
+    <link rel="canonical" href="https://ottavvi.github.io/site-portfolio/estudos/powershell/agendar-e-modulos.html" />
+    <link rel="icon" href="../../favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href="../../fontes/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="../../fontes/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="../../css/style.css?v=11" />
+    <!-- Aplica o tema salvo (ou o do sistema) antes de desenhar a página, para não piscar -->
+    <script>
+      try {
+        const tema =
+          localStorage.getItem('tema') || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        document.documentElement.dataset.theme = tema;
+      } catch {}
+    </script>
+  </head>
+  <body>
+    <div id="app">
+      <header>
+        <div class="wrap nav">
+          <!-- prettier-ignore -->
+          <a class="logo" href="../../index.html#inicio" aria-label="Otávio, início">ottavvi<span>.</span>dev</a>
+          <button class="theme-btn" id="themeBtn" type="button" aria-label="Mudar tema">
+            <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="4" />
+              <path
+                d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"
+              />
+            </svg>
+            <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
+            </svg>
+          </button>
+          <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="navLinks">Menu ☰</button>
+          <nav class="links" id="navLinks" aria-label="Navegação principal">
+            <a href="../../index.html#projetos">Projetos</a>
+            <a href="../../index.html#habilidades">Habilidades</a>
+            <a href="../../estudos/" aria-current="page">Estudos</a>
+            <a href="../../sobre.html">Sobre mim</a>
+            <a href="../../index.html#contato">Contato</a>
+            <a href="../../en/index.html" lang="en" hreflang="en" class="lang-link">EN</a>
+            <a
+              href="../../login.html?volta=estudos%2Fpowershell%2Fagendar-e-modulos.html"
+              id="authLink"
+              data-url-entrar="../../login.html?volta=estudos%2Fpowershell%2Fagendar-e-modulos.html"
+              data-url-area="../../area.html"
+            >
+              Entrar
+            </a>
+          </nav>
+        </div>
+      </header>
+      <main>
+        <div class="wrap aula" id="inicio">
+          <aside class="aula-lateral">
+            <details class="aula-sumario" open>
+              <summary>Trilha de PowerShell</summary>
+              <div
+                class="estudos-progresso"
+                data-progresso="powershell/primeiros-comandos powershell/pipeline-de-objetos powershell/pratica-relatorio-de-pasta powershell/scripts-e-funcoes powershell/csv-json-e-web powershell/pratica-organizar-downloads powershell/agendar-e-modulos powershell/pratica-relatorio-semanal"
+                data-trilha="powershell"
+              >
+                <div class="estudos-progresso-barra"><span></span></div>
+                <span class="estudos-progresso-texto">0 de 8 concluídos</span>
+              </div>
+              <p class="aula-sumario-nivel">Iniciante</p>
+              <ol class="trilha-modulos trilha-modulos--compacta">
+                <li class="trilha-modulo">
+                  <h3><span>Módulo 1</span> Primeiros comandos</h3>
+                  <ol>
+                    <li class="trilha-item" data-item="powershell/primeiros-comandos">
+                      <a href="primeiros-comandos.html">
+                        <span class="trilha-item-icone"
+                          ><svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M4 5h11a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3zM8 9h6M8 13h6" /></svg
+                        ></span>
+                        <span class="trilha-item-texto">
+                          <strong>Cmdlets e ajuda</strong>
+                          <small>Verbo-Substantivo, navegar por pastas e descobrir comandos sozinho.</small>
+                        </span>
+                        <span class="trilha-item-tempo">9 min</span>
+                      </a>
+                    </li>
+                    <li class="trilha-item" data-item="powershell/pipeline-de-objetos">
+                      <a href="pipeline-de-objetos.html">
+                        <span class="trilha-item-icone"
+                          ><svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M4 5h11a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3zM8 9h6M8 13h6" /></svg
+                        ></span>
+                        <span class="trilha-item-texto">
+                          <strong>O pipeline de objetos</strong>
+                          <small>Where-Object, Select-Object, Sort-Object e o que passa pelo |.</small>
+                        </span>
+                        <span class="trilha-item-tempo">11 min</span>
+                      </a>
+                    </li>
+                    <li class="trilha-item" data-item="powershell/pratica-relatorio-de-pasta">
+                      <a href="pratica-relatorio-de-pasta.html">
+                        <span class="trilha-item-icone"
+                          ><svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M4 5h11a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3zM8 9h6M8 13h6" /></svg
+                        ></span>
+                        <span class="trilha-item-texto">
+                          <strong>Prática: raio-x de uma pasta</strong>
+                          <small>Descubra o que ocupa espaço na sua pasta de Downloads.</small>
+                        </span>
+                        <span class="trilha-item-tempo">15 min</span>
+                      </a>
+                    </li>
+                  </ol>
+                </li>
+              </ol>
+              <p class="aula-sumario-nivel">Intermediário</p>
+              <ol class="trilha-modulos trilha-modulos--compacta">
+                <li class="trilha-modulo">
+                  <h3><span>Módulo 2</span> Scripts</h3>
+                  <ol>
+                    <li class="trilha-item" data-item="powershell/scripts-e-funcoes">
+                      <a href="scripts-e-funcoes.html">
+                        <span class="trilha-item-icone"
+                          ><svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M4 5h11a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3zM8 9h6M8 13h6" /></svg
+                        ></span>
+                        <span class="trilha-item-texto">
+                          <strong>Scripts, parâmetros e erros</strong>
+                          <small>Arquivos .ps1, política de execução, param, if, foreach e try/catch.</small>
+                        </span>
+                        <span class="trilha-item-tempo">13 min</span>
+                      </a>
+                    </li>
+                    <li class="trilha-item" data-item="powershell/csv-json-e-web">
+                      <a href="csv-json-e-web.html">
+                        <span class="trilha-item-icone"
+                          ><svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M4 5h11a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3zM8 9h6M8 13h6" /></svg
+                        ></span>
+                        <span class="trilha-item-texto">
+                          <strong>CSV, JSON e APIs</strong>
+                          <small>Import-Csv, Export-Csv, ConvertTo-Json e Invoke-RestMethod.</small>
+                        </span>
+                        <span class="trilha-item-tempo">12 min</span>
+                      </a>
+                    </li>
+                    <li class="trilha-item" data-item="powershell/pratica-organizar-downloads">
+                      <a href="pratica-organizar-downloads.html">
+                        <span class="trilha-item-icone"
+                          ><svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M4 5h11a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3zM8 9h6M8 13h6" /></svg
+                        ></span>
+                        <span class="trilha-item-texto">
+                          <strong>Prática: organizar arquivos por tipo</strong>
+                          <small>Um script que move arquivos para pastas por extensão, com simulação.</small>
+                        </span>
+                        <span class="trilha-item-tempo">25 min</span>
+                      </a>
+                    </li>
+                  </ol>
+                </li>
+              </ol>
+              <p class="aula-sumario-nivel">Avançado</p>
+              <ol class="trilha-modulos trilha-modulos--compacta">
+                <li class="trilha-modulo">
+                  <h3><span>Módulo 3</span> Automação</h3>
+                  <ol>
+                    <li class="trilha-item" data-item="powershell/agendar-e-modulos">
+                      <a href="agendar-e-modulos.html" aria-current="page">
+                        <span class="trilha-item-icone"
+                          ><svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M4 5h11a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3zM8 9h6M8 13h6" /></svg
+                        ></span>
+                        <span class="trilha-item-texto">
+                          <strong>Agendar, módulos e boas práticas</strong>
+                          <small>Agendador de Tarefas, módulos da PowerShell Gallery e scripts confiáveis.</small>
+                        </span>
+                        <span class="trilha-item-tempo">13 min</span>
+                      </a>
+                    </li>
+                    <li class="trilha-item" data-item="powershell/pratica-relatorio-semanal">
+                      <a href="pratica-relatorio-semanal.html">
+                        <span class="trilha-item-icone"
+                          ><svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M4 5h11a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3zM8 9h6M8 13h6" /></svg
+                        ></span>
+                        <span class="trilha-item-texto">
+                          <strong>Prática: relatório semanal automático</strong>
+                          <small>Um script agendado que gera um CSV de resumo e grava log.</small>
+                        </span>
+                        <span class="trilha-item-tempo">30 min</span>
+                      </a>
+                    </li>
+                  </ol>
+                </li>
+              </ol>
+            </details>
+          </aside>
+          <article class="aula-conteudo">
+            <a class="text-link" href="./">← Trilha de PowerShell</a>
+            <div class="section-kicker case-kicker">Avançado · Módulo 3 · Automação</div>
+            <h1>Agendar, módulos e boas práticas</h1>
+            <p class="aula-meta">Aula · 13 min</p>
+            <div class="aula-texto">
+              <h2>Rodar sozinho</h2>
+              <p>
+                O <strong>Agendador de Tarefas</strong> do Windows roda um script num horário ou num evento (ao ligar o
+                computador, ao fazer login). Pelo próprio PowerShell:
+              </p>
+              <pre
+                class="aula-codigo"
+              ><code>$acao = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument '-NoProfile -ExecutionPolicy Bypass -File &quot;C:\Scripts\organizar.ps1&quot; -Pasta &quot;C:\Users\ana\Downloads&quot;'
+$quando = New-ScheduledTaskTrigger -Weekly -DaysOfWeek Monday -At 9am
+Register-ScheduledTask -TaskName 'Organizar Downloads' -Action $acao -Trigger $quando
+
+Get-ScheduledTask -TaskName 'Organizar Downloads'
+Start-ScheduledTask -TaskName 'Organizar Downloads'      # rodar agora, para testar
+Unregister-ScheduledTask -TaskName 'Organizar Downloads' -Confirm:$false</code></pre>
+              <aside class="aula-dica">
+                <strong>Dica</strong>
+                <p>
+                  Um script agendado roda sem ninguém olhando: grave o que aconteceu num arquivo de log (<code
+                    >Start-Transcript</code
+                  >
+                  no começo e <code>Stop-Transcript</code> no fim), senão um erro passa despercebido por meses.
+                </p>
+              </aside>
+
+              <h2>Módulos</h2>
+              <p>Módulos acrescentam comandos. A <strong>PowerShell Gallery</strong> tem milhares:</p>
+              <pre class="aula-codigo"><code>Find-Module ImportExcel
+Install-Module ImportExcel -Scope CurrentUser    # lê e escreve .xlsx sem ter o Excel instalado
+Export-Excel -Path .\relatorio.xlsx -InputObject $vendas -AutoSize -TableName tbVendas</code></pre>
+              <p>
+                Seus próprios scripts também podem virar módulo: um arquivo <code>.psm1</code> com funções, numa pasta
+                com o mesmo nome dentro de <code>Documents\PowerShell\Modules</code> (ou
+                <code>WindowsPowerShell\Modules</code> no 5.1).
+              </p>
+
+              <h2>Controlar programas</h2>
+              <p>
+                Para automatizar o próprio Excel, o Word ou o Outlook instalados, o PowerShell usa <strong>COM</strong>:
+              </p>
+              <pre class="aula-codigo"><code>$excel = New-Object -ComObject Excel.Application
+$livro = $excel.Workbooks.Open(&quot;$HOME\Desktop\vendas.xlsx&quot;)
+$livro.RefreshAll()               # atualiza consultas e tabelas dinâmicas
+$livro.Save(); $livro.Close(); $excel.Quit()
+[System.Runtime.InteropServices.Marshal]::ReleaseComObject($excel) | Out-Null</code></pre>
+              <p>
+                Num Excel em português, as propriedades da API são em inglês, mas algumas coisas seguem o idioma:
+                formatos de número com <code>NumberFormatLocal</code> esperam o padrão brasileiro
+                (<code>#.##0,00</code>), e fórmulas em <code>FormulaLocal</code> usam os nomes em português.
+              </p>
+
+              <h2>Script confiável</h2>
+              <ul>
+                <li><code>$ErrorActionPreference = 'Stop'</code> no começo, para erros não passarem batidos.</li>
+                <li><code>-WhatIf</code> e um modo de simulação em tudo o que apaga ou move.</li>
+                <li>
+                  Caminhos com <code>Join-Path</code> e <code>$HOME</code>, nunca com o nome do seu usuário escrito no
+                  código.
+                </li>
+                <li>
+                  Comentário de ajuda no topo (<code>&lt;# .SYNOPSIS ... #&gt;</code>): aí o
+                  <code>Get-Help</code> funciona no seu script.
+                </li>
+                <li>
+                  Guarde os scripts num repositório Git. O módulo <strong>PSScriptAnalyzer</strong> aponta problemas
+                  comuns, como um linter.
+                </li>
+              </ul>
+            </div>
+            <section class="quiz" aria-labelledby="quizTitulo">
+              <h2 id="quizTitulo">Teste o que aprendeu</h2>
+              <ol class="quiz-lista">
+                <li
+                  class="quiz-pergunta"
+                  data-certa="1"
+                  data-explicacao="Junto com New-ScheduledTaskAction e New-ScheduledTaskTrigger."
+                >
+                  <fieldset>
+                    <legend>Qual cmdlet registra uma tarefa no Agendador do Windows?</legend>
+                    <label class="quiz-opcao"><input type="radio" name="q0" value="0" /> New-Task</label>
+                    <label class="quiz-opcao"><input type="radio" name="q0" value="1" /> Register-ScheduledTask</label>
+                    <label class="quiz-opcao"><input type="radio" name="q0" value="2" /> Start-Job</label>
+                  </fieldset>
+                  <p class="quiz-retorno" hidden></p>
+                </li>
+                <li
+                  class="quiz-pergunta"
+                  data-certa="1"
+                  data-explicacao="Start-Transcript grava tudo o que o script mostraria na tela."
+                >
+                  <fieldset>
+                    <legend>Por que gravar um log num script agendado?</legend>
+                    <label class="quiz-opcao"><input type="radio" name="q1" value="0" /> É obrigatório</label>
+                    <label class="quiz-opcao"
+                      ><input type="radio" name="q1" value="1" /> Ninguém está olhando quando ele roda: o log mostra o
+                      que aconteceu</label
+                    >
+                    <label class="quiz-opcao"><input type="radio" name="q1" value="2" /> Fica mais rápido</label>
+                  </fieldset>
+                  <p class="quiz-retorno" hidden></p>
+                </li>
+                <li
+                  class="quiz-pergunta"
+                  data-certa="0"
+                  data-explicacao="Instale com Install-Module ImportExcel -Scope CurrentUser."
+                >
+                  <fieldset>
+                    <legend>Qual módulo lê e escreve .xlsx sem o Excel instalado?</legend>
+                    <label class="quiz-opcao"><input type="radio" name="q2" value="0" /> ImportExcel</label>
+                    <label class="quiz-opcao"><input type="radio" name="q2" value="1" /> PSExcel.dll</label>
+                    <label class="quiz-opcao"><input type="radio" name="q2" value="2" /> Nenhum</label>
+                  </fieldset>
+                  <p class="quiz-retorno" hidden></p>
+                </li>
+              </ol>
+              <p class="quiz-placar" aria-live="polite"></p>
+            </section>
+            <div class="aula-concluir">
+              <button class="btn btn-ghost" type="button" data-concluir="powershell/agendar-e-modulos">
+                Marcar aula como concluída
+              </button>
+              <p class="estudos-conta" id="estudosConta" aria-live="polite">
+                Seu progresso fica salvo neste navegador.
+              </p>
+            </div>
+            <nav class="aula-navegacao" aria-label="Aulas">
+              <a href="pratica-organizar-downloads.html"
+                ><small>← Anterior</small>Prática: organizar arquivos por tipo</a
+              >
+              <a class="aula-proxima" href="pratica-relatorio-semanal.html"
+                ><small>Próxima →</small>Prática: relatório semanal automático</a
+              >
+            </nav>
+          </article>
+        </div>
+      </main>
+      <footer>
+        <div class="wrap foot">
+          <span>
+            ©
+            <span id="year"></span>
+            Otávio. Feito com HTML, CSS e JavaScript.
+          </span>
+          <div class="small-links">
+            <a href="https://github.com/Ottavvi" target="_blank" rel="noreferrer">GitHub ↗</a>
+            <a href="#inicio">Voltar ao topo ↑</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+    <script src="../../js/main.js" defer></script>
+    <script src="../../js/paleta.js" defer></script>
+    <script type="module" src="../../js/auth/session.js"></script>
+    <script type="module" src="../../js/estudos.js"></script>
+  </body>
+</html>

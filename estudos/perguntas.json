@@ -2395,6 +2395,306 @@
       "explicacao": "Protege contra uma action comprometida depois que você a adotou."
     }
   ],
+  "powershell/primeiros-comandos": [
+    {
+      "pergunta": "Qual o padrão do nome dos cmdlets?",
+      "opcoes": ["Substantivo_Verbo", "Verbo-Substantivo", "tudo-minusculo"],
+      "certa": 1,
+      "explicacao": "Get-ChildItem, Set-Location, Remove-Item: o verbo diz a ação."
+    },
+    {
+      "pergunta": "Como ver o que um Remove-Item com * apagaria, sem apagar?",
+      "opcoes": ["-Force", "-WhatIf", "-Confirm:$false"],
+      "certa": 1,
+      "explicacao": "-WhatIf simula e lista o que seria feito."
+    },
+    {
+      "pergunta": "Como ver exemplos de uso de um comando?",
+      "opcoes": ["Get-Help Comando -Examples", "Comando --help", "man Comando -e"],
+      "certa": 0,
+      "explicacao": "Get-Help tem também -Detailed, -Full e -Online."
+    }
+  ],
+  "powershell/pipeline-de-objetos": [
+    {
+      "pergunta": "O que passa pelo | no PowerShell?",
+      "opcoes": ["Texto", "Objetos, com propriedades", "Arquivos"],
+      "certa": 1,
+      "explicacao": "Por isso dá para ordenar por Length ou filtrar por Extension sem recortar texto."
+    },
+    {
+      "pergunta": "Como se escreve \"maior que\" no PowerShell?",
+      "opcoes": [">", "-gt", "gt"],
+      "certa": 1,
+      "explicacao": "> no PowerShell é redirecionar a saída para um arquivo."
+    },
+    {
+      "pergunta": "O que $_ representa dentro de Where-Object { ... }?",
+      "opcoes": ["O primeiro objeto", "O objeto atual do pipeline", "Uma variável vazia"],
+      "certa": 1,
+      "explicacao": "Também pode ser escrito $PSItem."
+    }
+  ],
+  "powershell/pratica-relatorio-de-pasta": [
+    {
+      "pergunta": "Por que guardar o resultado do Get-ChildItem em $arquivos?",
+      "opcoes": ["É obrigatório", "Para ler o disco uma vez e reaproveitar nas outras perguntas", "Para apagar depois"],
+      "certa": 1,
+      "explicacao": "Variáveis guardam os objetos, com todas as propriedades."
+    }
+  ],
+  "powershell/scripts-e-funcoes": [
+    {
+      "pergunta": "Como liberar seus próprios scripts sem administrador?",
+      "opcoes": [
+        "Set-ExecutionPolicy Unrestricted",
+        "Set-ExecutionPolicy -Scope CurrentUser RemoteSigned",
+        "Renomear para .bat"
+      ],
+      "certa": 1,
+      "explicacao": "Vale só para o seu usuário e ainda protege contra scripts baixados."
+    },
+    {
+      "pergunta": "Por que o catch não pegou o erro do Get-Content?",
+      "opcoes": [
+        "O try estava errado",
+        "O erro era não terminal; faltou -ErrorAction Stop",
+        "catch não existe no PowerShell"
+      ],
+      "certa": 1,
+      "explicacao": "Só erros que param a execução chegam ao catch."
+    },
+    {
+      "pergunta": "No PowerShell 5.1, \"Relatório\" virou \"RelatÃ³rio\". O que fazer?",
+      "opcoes": ["Tirar os acentos", "Salvar o script como UTF-8 com BOM", "Usar aspas simples"],
+      "certa": 1,
+      "explicacao": "O 5.1 precisa do BOM para saber que o arquivo é UTF-8."
+    }
+  ],
+  "powershell/csv-json-e-web": [
+    {
+      "pergunta": "O que Import-Csv devolve?",
+      "opcoes": ["Uma linha de texto", "Um objeto por linha, com uma propriedade por coluna", "Uma tabela do Excel"],
+      "certa": 1,
+      "explicacao": "E os valores chegam como texto: converta antes de somar."
+    },
+    {
+      "pergunta": "Por que ConvertTo-Json -Depth 5?",
+      "opcoes": ["Para formatar bonito", "Por padrão ele só converte 2 níveis, e o resto vira texto", "Para comprimir"],
+      "certa": 1,
+      "explicacao": "Objetos aninhados mais fundo precisam de um -Depth maior."
+    },
+    {
+      "pergunta": "Como mostrar $cep.uf dentro de um texto com aspas duplas?",
+      "opcoes": ["\"$cep.uf\"", "\"$($cep.uf)\"", "'$cep.uf'"],
+      "certa": 1,
+      "explicacao": "Sem o $( ), só $cep é substituído e \".uf\" fica como texto."
+    }
+  ],
+  "powershell/pratica-organizar-downloads": [
+    {
+      "pergunta": "Para que serve o parâmetro -Simular nesse script?",
+      "opcoes": [
+        "Deixar mais rápido",
+        "Ver o que seria feito antes de mexer nos arquivos de verdade",
+        "Apagar os originais"
+      ],
+      "certa": 1,
+      "explicacao": "É o mesmo espírito do -WhatIf dos cmdlets."
+    }
+  ],
+  "powershell/agendar-e-modulos": [
+    {
+      "pergunta": "Qual cmdlet registra uma tarefa no Agendador do Windows?",
+      "opcoes": ["New-Task", "Register-ScheduledTask", "Start-Job"],
+      "certa": 1,
+      "explicacao": "Junto com New-ScheduledTaskAction e New-ScheduledTaskTrigger."
+    },
+    {
+      "pergunta": "Por que gravar um log num script agendado?",
+      "opcoes": [
+        "É obrigatório",
+        "Ninguém está olhando quando ele roda: o log mostra o que aconteceu",
+        "Fica mais rápido"
+      ],
+      "certa": 1,
+      "explicacao": "Start-Transcript grava tudo o que o script mostraria na tela."
+    },
+    {
+      "pergunta": "Qual módulo lê e escreve .xlsx sem o Excel instalado?",
+      "opcoes": ["ImportExcel", "PSExcel.dll", "Nenhum"],
+      "certa": 0,
+      "explicacao": "Instale com Install-Module ImportExcel -Scope CurrentUser."
+    }
+  ],
+  "powershell/pratica-relatorio-semanal": [
+    {
+      "pergunta": "Para que serve o bloco finally?",
+      "opcoes": [
+        "Só roda se der erro",
+        "Roda sempre, dando erro ou não: lugar certo para o Stop-Transcript",
+        "Encerra o PowerShell"
+      ],
+      "certa": 1,
+      "explicacao": "Garante que o log seja fechado em qualquer caso."
+    }
+  ],
+  "lgpd/o-que-e-lgpd": [
+    {
+      "pergunta": "O endereço IP de quem acessa o site é dado pessoal?",
+      "opcoes": ["Nunca", "Pode ser: ele pode ajudar a identificar uma pessoa", "Só se for estático"],
+      "certa": 1,
+      "explicacao": "Dado pessoal inclui informação sobre pessoa identificável, não só identificada."
+    },
+    {
+      "pergunta": "Qual destes é dado sensível pela LGPD?",
+      "opcoes": ["E-mail", "Informação de saúde", "Endereço"],
+      "certa": 1,
+      "explicacao": "Saúde, biometria, religião, opinião política, origem racial, entre outros."
+    },
+    {
+      "pergunta": "A loja decide os dados do cadastro; o serviço de e-mail envia as campanhas dela. A loja é:",
+      "opcoes": ["Operadora", "Controladora", "Titular"],
+      "certa": 1,
+      "explicacao": "Quem decide é o controlador; o serviço de e-mail, que trata em nome dela, é o operador."
+    }
+  ],
+  "lgpd/bases-legais": [
+    {
+      "pergunta": "Para usar o endereço do cliente na entrega da compra, a base legal mais adequada é:",
+      "opcoes": ["Consentimento", "Execução de contrato", "Proteção do crédito"],
+      "certa": 1,
+      "explicacao": "O dado é necessário para cumprir o contrato de compra e venda."
+    },
+    {
+      "pergunta": "Uma caixa \"Aceito receber ofertas\" marcada por padrão vale como consentimento?",
+      "opcoes": [
+        "Sim",
+        "Não: o consentimento precisa ser uma ação livre e inequívoca da pessoa",
+        "Só para maiores de 18"
+      ],
+      "certa": 1,
+      "explicacao": "A pessoa precisa marcar; deixar marcado de fábrica não é manifestação dela."
+    },
+    {
+      "pergunta": "Legítimo interesse pode ser usado para dados sensíveis?",
+      "opcoes": ["Sim", "Não: dados sensíveis têm uma lista própria de bases, sem o legítimo interesse", "Só com DPO"],
+      "certa": 1,
+      "explicacao": "O artigo 11 é mais restrito que o artigo 7º."
+    }
+  ],
+  "lgpd/direitos-dos-titulares": [
+    {
+      "pergunta": "Marcar ativo = 0 no cadastro atende a um pedido de eliminação?",
+      "opcoes": ["Sim", "Não: os dados continuam lá; é preciso apagar ou anonimizar", "Só se o login for bloqueado"],
+      "certa": 1,
+      "explicacao": "Esconder não é eliminar. E os operadores (e-mail, CRM) também precisam ser avisados."
+    },
+    {
+      "pergunta": "O que é preciso antes de conseguir atender pedidos de acesso?",
+      "opcoes": ["Um advogado", "Saber onde estão os dados de cada pessoa (um inventário)", "Um certificado SSL"],
+      "certa": 1,
+      "explicacao": "Banco, planilhas, logs, ferramentas de terceiros e backups."
+    },
+    {
+      "pergunta": "Um sistema nega crédito só por um algoritmo. O que a pessoa pode pedir?",
+      "opcoes": ["Nada", "A revisão da decisão automatizada", "A portabilidade do algoritmo"],
+      "certa": 1,
+      "explicacao": "É o direito do artigo 20."
+    }
+  ],
+  "lgpd/privacidade-desde-a-concepcao": [
+    {
+      "pergunta": "Quando carregar o script de analytics de terceiros que usa cookies?",
+      "opcoes": ["Sempre, ao abrir a página", "Depois que a pessoa aceitar esses cookies", "Nunca"],
+      "certa": 1,
+      "explicacao": "Carregar antes do aceite já coleta os dados, e o banner vira enfeite."
+    },
+    {
+      "pergunta": "Qual a forma correta de testar com dados?",
+      "opcoes": [
+        "Uma cópia do banco de produção",
+        "Dados fictícios gerados para o teste",
+        "Os dados da própria equipe"
+      ],
+      "certa": 1,
+      "explicacao": "Ambientes de teste costumam ser menos protegidos que a produção."
+    },
+    {
+      "pergunta": "O que não deve ir para um log?",
+      "opcoes": ["A data do acesso", "Senhas, tokens e documentos completos", "O status da resposta"],
+      "certa": 1,
+      "explicacao": "Logs são lidos por muita gente e guardados por muito tempo."
+    }
+  ],
+  "lgpd/pratica-auditar-formulario": [
+    {
+      "pergunta": "Por que o campo de religião é o problema mais grave do formulário?",
+      "opcoes": [
+        "Ocupa espaço",
+        "É dado sensível sem relação nenhuma com a finalidade do cadastro",
+        "Deveria ser texto livre"
+      ],
+      "certa": 1,
+      "explicacao": "Fere os princípios da finalidade e da necessidade, com um dado que tem proteção especial."
+    }
+  ],
+  "lgpd/seguranca-e-incidentes": [
+    {
+      "pergunta": "Qual o prazo para comunicar um incidente relevante à ANPD, pelo regulamento de 2024?",
+      "opcoes": ["30 dias", "3 dias úteis", "1 ano"],
+      "certa": 1,
+      "explicacao": "Conta a partir de quando o controlador toma conhecimento do incidente."
+    },
+    {
+      "pergunta": "Qual o limite da multa simples por infração?",
+      "opcoes": ["R$ 50 mil", "2% do faturamento no Brasil, até R$ 50 milhões", "10% do faturamento global"],
+      "certa": 1,
+      "explicacao": "Além de outras sanções, como bloqueio e eliminação dos dados."
+    },
+    {
+      "pergunta": "Qual a forma adequada de guardar senhas de usuários?",
+      "opcoes": ["Texto puro", "MD5", "Hash lento com sal (bcrypt, scrypt, argon2)"],
+      "certa": 2,
+      "explicacao": "MD5 e SHA simples são rápidos demais e quebram facilmente."
+    }
+  ],
+  "lgpd/governanca": [
+    {
+      "pergunta": "Para que serve o registro (inventário) das operações de tratamento?",
+      "opcoes": [
+        "Para a contabilidade",
+        "Para saber quais dados, para quê, com qual base, onde e por quanto tempo",
+        "Para o SEO"
+      ],
+      "certa": 1,
+      "explicacao": "É a base para atender direitos, responder incidentes e documentar a conformidade."
+    },
+    {
+      "pergunta": "Quando o RIPD é mais recomendado?",
+      "opcoes": [
+        "Para qualquer formulário de contato",
+        "Em tratamentos de alto risco, como dados sensíveis em volume ou reconhecimento facial",
+        "Nunca"
+      ],
+      "certa": 1,
+      "explicacao": "Ele documenta os riscos e as medidas para reduzi-los."
+    },
+    {
+      "pergunta": "Você desenvolve o sistema de uma clínica e tem acesso ao banco. Seu papel é:",
+      "opcoes": ["Controlador", "Operador", "Titular"],
+      "certa": 1,
+      "explicacao": "Você trata dados em nome da clínica e deve seguir as instruções dela."
+    }
+  ],
+  "lgpd/pratica-inventario": [
+    {
+      "pergunta": "O que não deve aparecer no lembrete de WhatsApp?",
+      "opcoes": ["O horário", "O motivo da consulta", "O nome da clínica"],
+      "certa": 1,
+      "explicacao": "É dado de saúde, sensível, e o celular pode ser visto por outras pessoas."
+    }
+  ],
   "excel/formulas-e-referencias": [
     {
       "pergunta": "O que acontece com =A1*$B$1 ao ser copiada uma linha abaixo?",
@@ -2897,6 +3197,190 @@
       ],
       "certa": 1,
       "explicacao": "O campo em \"Detalhamento\" define o que é levado como filtro."
+    }
+  ],
+  "dax/medidas-e-colunas": [
+    {
+      "pergunta": "Faturamento total, que muda conforme os filtros do relatório, deve ser:",
+      "opcoes": ["Coluna calculada", "Medida", "Tanto faz"],
+      "certa": 1,
+      "explicacao": "Medidas são calculadas na hora, para cada combinação de filtros."
+    },
+    {
+      "pergunta": "Uma classificação \"Grande/Normal\" para usar como filtro em cada venda deve ser:",
+      "opcoes": ["Coluna calculada", "Medida", "Uma tabela nova"],
+      "certa": 0,
+      "explicacao": "Para filtrar e agrupar, o valor precisa existir em cada linha."
+    },
+    {
+      "pergunta": "O que COUNTROWS(fVendas) conta?",
+      "opcoes": ["Colunas", "Linhas da tabela, respeitando os filtros", "Valores diferentes"],
+      "certa": 1,
+      "explicacao": "Para valores diferentes, use DISTINCTCOUNT."
+    }
+  ],
+  "dax/contexto-de-filtro": [
+    {
+      "pergunta": "O que decide o valor de uma medida numa célula da matriz?",
+      "opcoes": ["A fórmula sozinha", "O contexto de filtro daquela célula", "A ordem das linhas"],
+      "certa": 1,
+      "explicacao": "A mesma fórmula, com filtros diferentes, dá resultados diferentes."
+    },
+    {
+      "pergunta": "O total de uma coluna de Ticket médio é:",
+      "opcoes": [
+        "A soma dos tickets das linhas",
+        "A média dos tickets das linhas",
+        "A medida calculada sem o filtro da linha: faturamento total ÷ vendas totais"
+      ],
+      "certa": 2,
+      "explicacao": "O total é sempre a medida recalculada com menos filtros."
+    },
+    {
+      "pergunta": "Uma medida mostra o mesmo número em todas as categorias. Causa provável?",
+      "opcoes": [
+        "Erro do Power BI",
+        "O filtro da categoria não chega na tabela da medida (falta relacionamento)",
+        "Falta formatar"
+      ],
+      "certa": 1,
+      "explicacao": "Sem um caminho de relacionamento, o filtro não alcança a tabela somada."
+    }
+  ],
+  "dax/pratica-medidas": [
+    {
+      "pergunta": "Por que SWITCH(TRUE(), ...) e não SWITCH(fVendas[Valor], ...)?",
+      "opcoes": [
+        "É mais rápido",
+        "Com TRUE(), cada condição é testada em ordem, permitindo faixas com >=",
+        "Não há diferença"
+      ],
+      "certa": 1,
+      "explicacao": "SWITCH com um valor compara igualdade; com TRUE(), procura a primeira condição verdadeira."
+    }
+  ],
+  "dax/calculate": [
+    {
+      "pergunta": "O que CALCULATE faz?",
+      "opcoes": ["Soma uma coluna", "Calcula uma expressão com o contexto de filtro modificado", "Cria uma coluna"],
+      "certa": 1,
+      "explicacao": "Ela acrescenta, troca ou remove filtros e então avalia a expressão."
+    },
+    {
+      "pergunta": "Numa matriz por categoria, o que CALCULATE([Faturamento], dProduto[Categoria] = \"Mercearia\") mostra na linha Casa?",
+      "opcoes": ["Vazio", "O faturamento de Mercearia (o filtro foi trocado)", "O faturamento de Casa"],
+      "certa": 1,
+      "explicacao": "O filtro da coluna Categoria é substituído. Com KEEPFILTERS, daria vazio."
+    },
+    {
+      "pergunta": "Qual o denominador de um \"% do total\" por categoria?",
+      "opcoes": ["[Faturamento]", "CALCULATE([Faturamento], REMOVEFILTERS(dProduto))", "SUM(dProduto[Categoria])"],
+      "certa": 1,
+      "explicacao": "O mesmo faturamento, mas sem o filtro de produto da linha."
+    }
+  ],
+  "dax/inteligencia-de-tempo": [
+    {
+      "pergunta": "O que as funções de inteligência de tempo exigem?",
+      "opcoes": [
+        "Nada",
+        "Uma tabela calendário completa, marcada como tabela de datas e relacionada",
+        "Que a data esteja em texto"
+      ],
+      "certa": 1,
+      "explicacao": "Sem todos os dias contínuos, os deslocamentos dão resultados errados."
+    },
+    {
+      "pergunta": "Qual função calcula o acumulado no ano?",
+      "opcoes": ["SAMEPERIODLASTYEAR", "TOTALYTD", "DATEADD"],
+      "certa": 1,
+      "explicacao": "YTD: year to date, do início do ano até a data do contexto."
+    },
+    {
+      "pergunta": "Num visual por mês, o que DATEADD(dCalendario[Date], -1, MONTH) faz na linha de setembro?",
+      "opcoes": ["Pega setembro", "Pega as datas de agosto", "Pega o ano inteiro"],
+      "certa": 1,
+      "explicacao": "Ela desloca as datas do contexto atual em um mês para trás."
+    }
+  ],
+  "dax/pratica-calculate": [
+    {
+      "pergunta": "Por que a variação de julho fica vazia?",
+      "opcoes": [
+        "Erro na medida",
+        "Não há faturamento em junho: o DIVIDE por vazio devolve vazio",
+        "Julho não está no calendário"
+      ],
+      "certa": 1,
+      "explicacao": "É o comportamento desejado: sem base de comparação, sem variação."
+    }
+  ],
+  "dax/iteradores-e-variaveis": [
+    {
+      "pergunta": "Quando usar SUMX em vez de SUM?",
+      "opcoes": [
+        "Sempre",
+        "Quando o valor a somar precisa ser calculado em cada linha (quantidade × preço)",
+        "Para somar textos"
+      ],
+      "certa": 1,
+      "explicacao": "SUMX itera a tabela, calcula a expressão e soma, sem coluna nova."
+    },
+    {
+      "pergunta": "Por que RANKX(ALL(fVendas[Vendedor]), ...) e não RANKX(VALUES(...))?",
+      "opcoes": [
+        "É mais rápido",
+        "Sem ALL, cada linha compara o vendedor só com ele mesmo e todos ficam em 1º",
+        "Não há diferença"
+      ],
+      "certa": 1,
+      "explicacao": "ALL tira o filtro da linha para que todos os vendedores entrem na comparação."
+    },
+    {
+      "pergunta": "O que RELATED faz?",
+      "opcoes": [
+        "Cria um relacionamento",
+        "Busca um valor na tabela do lado \"1\" para a linha atual",
+        "Remove filtros"
+      ],
+      "certa": 1,
+      "explicacao": "Só funciona onde há uma linha atual (colunas calculadas e iteradores)."
+    }
+  ],
+  "dax/contexto-de-linha": [
+    {
+      "pergunta": "Numa coluna calculada de dProduto, SUM(fVendas[Valor]) mostra:",
+      "opcoes": ["As vendas de cada produto", "O total geral em todas as linhas", "Um erro"],
+      "certa": 1,
+      "explicacao": "O contexto de linha não filtra. É preciso CALCULATE para a transição de contexto."
+    },
+    {
+      "pergunta": "O que a transição de contexto faz?",
+      "opcoes": [
+        "Muda de página",
+        "Transforma a linha atual de um contexto de linha em filtro",
+        "Remove todos os filtros"
+      ],
+      "certa": 1,
+      "explicacao": "É feita pelo CALCULATE, inclusive o invisível que toda medida tem."
+    },
+    {
+      "pergunta": "Para calcular pelo segundo relacionamento (inativo) com o calendário, usa-se:",
+      "opcoes": ["RELATED", "USERELATIONSHIP dentro de CALCULATE", "Criar outra tabela de fatos"],
+      "certa": 1,
+      "explicacao": "Ele ativa o relacionamento só durante aquele cálculo."
+    }
+  ],
+  "dax/pratica-avancada": [
+    {
+      "pergunta": "Por que a média mensal é 282,60 e não 1.130,40 ÷ 24 meses do calendário?",
+      "opcoes": [
+        "Erro de cálculo",
+        "O AVERAGEX ignora os meses em que [Faturamento] é vazio",
+        "O calendário tem só 4 meses"
+      ],
+      "certa": 1,
+      "explicacao": "Meses sem venda dão vazio, que fica fora da média."
     }
   ]
 }
