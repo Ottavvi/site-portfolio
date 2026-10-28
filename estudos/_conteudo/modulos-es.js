@@ -418,7 +418,7 @@ ${trecho(`<script type="importmap">
 <p>O import map precisa vir <strong>antes</strong> de qualquer módulo. Fixe sempre a versão exata da biblioteca na URL, para uma atualização não quebrar o site sem aviso.</p>
 
 <h2>Pré-carregar</h2>
-<p>Num site com muitos módulos, o navegador só descobre que <code>main.js</code> importa <code>api.js</code> depois de baixar <code>main.js</code>. <code>&lt;link rel="modulepreload" href="api.js"&gt;</code> no <code>&lt;head&gt;</code> avisa antes, e os downloads acontecem em paralelo.</p>
+<p>Num site com muitos módulos, o navegador só descobre que <code>main.js</code> importa <code>api.js</code> depois de baixar <code>main.js</code>. <code>&lt;link rel=&quot;modulepreload&quot; href=&quot;api.js&quot;&gt;</code> no <code>&lt;head&gt;</code> avisa antes, e os downloads acontecem em paralelo.</p>
 `,
               quiz: [
                 {
