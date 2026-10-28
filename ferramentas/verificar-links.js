@@ -10,10 +10,28 @@ const IGNORAR_PASTAS = new Set(['.git', 'node_modules', 'ferramentas']);
 // Âncoras que não são elementos da página, e sim rotas lidas pelo JavaScript (abas da central de tempo e telas dos agentes)
 const ROTAS_JS = {
   'projetos/cronometro/index.html': ['cronometro', 'temporizador', 'pomodoro'],
-  'projetos/agente-financeiro/index.html': ['visao', 'transacoes', 'orcamentos', 'previsao', 'metas', 'importar', 'ajustes'],
-  'projetos/agente-contabil/index.html': [
-    'painel', 'lancamentos', 'diario', 'razao', 'balancete', 'dre', 'balanco', 'impostos', 'obrigacoes', 'importar', 'ajustes',
+  'projetos/agente-financeiro/index.html': [
+    'visao',
+    'transacoes',
+    'orcamentos',
+    'previsao',
+    'metas',
+    'importar',
+    'ajustes'
   ],
+  'projetos/agente-contabil/index.html': [
+    'painel',
+    'lancamentos',
+    'diario',
+    'razao',
+    'balancete',
+    'dre',
+    'balanco',
+    'impostos',
+    'obrigacoes',
+    'importar',
+    'ajustes'
+  ]
 };
 
 function listarHtml(pasta) {

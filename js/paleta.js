@@ -90,6 +90,49 @@ const comandos = [
     url('projetos/painel-empresas/'),
     'power bi dax'
   ],
+  [
+    'projetos',
+    EN ? 'Personal Finance Agent' : 'Agente Financeiro',
+    url('projetos/agente-financeiro/'),
+    'agente ia claude financas extrato'
+  ],
+  [
+    'projetos',
+    EN ? 'Accounting Agent' : 'Agente Contábil',
+    url('projetos/agente-contabil/'),
+    'agente ia claude contabilidade simples das dre'
+  ],
+  [
+    'projetos',
+    EN ? 'Bancada: repair orders' : 'Bancada: ordens de serviço',
+    url('projetos/bancada-os/'),
+    'os assistencia tecnica conserto'
+  ],
+  [
+    'projetos',
+    EN ? 'Lumiar Dental' : 'Lumiar Odontologia',
+    url('projetos/lumiar-odontologia/'),
+    'dentista agenda clinica'
+  ],
+  [
+    'projetos',
+    EN ? 'Brasa 47 Burgers' : 'Brasa 47 Hamburgueria',
+    url('projetos/brasa-47-hamburgueria/'),
+    'hamburguer burger pedido delivery'
+  ],
+  [
+    'projetos',
+    EN ? 'Casa Norte Real Estate' : 'Casa Norte Imóveis',
+    url('projetos/casa-norte-imoveis/'),
+    'imobiliaria imoveis aluguel financiamento'
+  ],
+  ['projetos', EN ? 'Studio Alento' : 'Studio Alento', url('projetos/studio-alento/'), 'pilates yoga aula'],
+  [
+    'projetos',
+    EN ? 'Prumo Accounting' : 'Prumo Contabilidade',
+    url('projetos/prumo-contabilidade/'),
+    'contador impostos mei simples'
+  ],
   ['projetos', EN ? 'Barbershop landing page' : 'Landing page para barbearia', url('projetos/barbearia/'), 'barber'],
   ['projetos', EN ? 'Task manager' : 'Gerenciador de tarefas', url('projetos/tarefas/'), 'tarefas todo pwa'],
   ['projetos', EN ? 'Time hub' : 'Central de tempo', url('projetos/cronometro/'), 'cronometro pomodoro timer'],
