@@ -610,6 +610,346 @@ test('conta os itens no botão do carrinho', async ({ page }) => {
 });`
             }
           ]
+        },
+        {
+          titulo: 'Organizar os testes',
+          itens: [
+            {
+              id: 'page-objects',
+              titulo: 'Page Objects',
+              resumo: 'Uma classe por tela, para os testes lerem como uma história.',
+              minutos: 12,
+              corpo: `
+<p>Com dezenas de testes, o mesmo <code>page.getByLabel('E-mail').fill(...)</code> aparece em todo lugar. Se o rótulo mudar para "Seu e-mail", são dezenas de arquivos para corrigir. O padrão <strong>Page Object</strong> resolve: uma classe para cada tela, com métodos que descrevem o que a pessoa faz. Os testes chamam os métodos; os localizadores ficam num lugar só.</p>
+${codigo(`<h1>Entrar</h1>
+<form id="login">
+  <label for="email">E-mail</label> <input id="email">
+  <label for="senha">Senha</label> <input id="senha" type="password">
+  <button>Entrar</button>
+</form>
+<p role="alert" id="msg"></p>
+<script>
+  document.querySelector('#login').addEventListener('submit', e => {
+    e.preventDefault();
+    const ok = document.querySelector('#email').value === 'ana@cafe.com' && document.querySelector('#senha').value === 'cafe123';
+    document.querySelector('#msg').textContent = ok ? 'Bem-vinda, Ana!' : 'E-mail ou senha incorretos';
+  });
+</script>
+
+// --- login.spec.js ---
+import { test, expect } from '@playwright/test';
+
+class PaginaLogin {
+  constructor(page) {
+    this.page = page;
+    this.email = page.getByLabel('E-mail');
+    this.senha = page.getByLabel('Senha');
+    this.botao = page.getByRole('button', { name: 'Entrar' });
+    this.mensagem = page.getByRole('alert');
+  }
+
+  async entrar(email, senha) {
+    await this.email.fill(email);
+    await this.senha.fill(senha);
+    await this.botao.click();
+  }
+}
+
+test('entra com a senha certa', async ({ page }) => {
+  const login = new PaginaLogin(page);
+  await login.entrar('ana@cafe.com', 'cafe123');
+  await expect(login.mensagem).toHaveText('Bem-vinda, Ana!');
+});
+
+test('recusa a senha errada', async ({ page }) => {
+  const login = new PaginaLogin(page);
+  await login.entrar('ana@cafe.com', '123');
+  await expect(login.mensagem).toHaveText('E-mail ou senha incorretos');
+});`)}
+<ul>
+  <li>Os métodos descrevem <strong>ações da pessoa</strong> (<code>entrar</code>, <code>adicionarAoCarrinho</code>), não detalhes da tela (<code>clicarNoBotaoAzul</code>).</li>
+  <li>As <strong>verificações</strong> ficam nos testes, não dentro da classe: cada teste decide o que conferir.</li>
+  <li>Num projeto, cada classe fica no seu arquivo (<code>tests/paginas/login.js</code>) e é importada pelos testes.</li>
+</ul>
+
+<h2>Fixtures</h2>
+<p>O Playwright permite criar <strong>fixtures</strong> próprias: em vez de cada teste escrever <code>new PaginaLogin(page)</code>, ele recebe a página pronta, como recebe o <code>page</code>:</p>
+${trecho(`// tests/fixtures.js
+import { test as base } from '@playwright/test';
+import { PaginaLogin } from './paginas/login.js';
+
+export const test = base.extend({
+  login: async ({ page }, use) => {
+    await page.goto('/entrar');
+    await use(new PaginaLogin(page));
+  }
+});
+
+// num teste:
+test('entra', async ({ login }) => {
+  await login.entrar('ana@cafe.com', 'cafe123');
+});`)}
+${dica('Comece sem Page Objects. Quando o mesmo trecho aparecer em três testes, extraia para uma classe. Abstrair cedo demais deixa os testes difíceis de ler.')}
+`,
+              quiz: [
+                {
+                  pergunta: 'Que problema o Page Object resolve?',
+                  opcoes: [
+                    'Testes lentos',
+                    'Localizadores repetidos em muitos testes: uma mudança na tela vira uma correção num lugar só',
+                    'Falta de navegador'
+                  ],
+                  certa: 1,
+                  explicacao: 'Os testes chamam métodos; os detalhes da tela ficam na classe.'
+                },
+                {
+                  pergunta: 'Onde ficam os expect, num projeto com Page Objects?',
+                  opcoes: ['Dentro das classes', 'Nos testes', 'Num arquivo separado de asserções'],
+                  certa: 1,
+                  explicacao: 'Cada teste decide o que conferir; a classe só sabe usar a tela.'
+                },
+                {
+                  pergunta: 'Qual nome de método combina melhor com um Page Object?',
+                  opcoes: ['clicarNoBotaoVerde()', 'finalizarCompra()', 'getElementById()'],
+                  certa: 1,
+                  explicacao: 'O método descreve a ação da pessoa, não o detalhe visual.'
+                }
+              ]
+            },
+            {
+              id: 'listas-tabelas-e-visual',
+              titulo: 'Listas, tabelas e testes visuais',
+              resumo: 'Achar a linha certa, contar itens, comparar prints e conferir acessibilidade.',
+              minutos: 12,
+              corpo: `
+<h2>A linha certa de uma tabela</h2>
+<p>Em listas e tabelas, o padrão é: achar a linha pelo texto e, dentro dela, o botão ou a célula. <code>filter({ hasText })</code> faz o primeiro passo:</p>
+${codigo(`<table>
+  <thead><tr><th>Pedido</th><th>Cliente</th><th>Status</th><th></th></tr></thead>
+  <tbody>
+    <tr><td>#101</td><td>Ana</td><td>Pago</td><td><button>Enviar</button></td></tr>
+    <tr><td>#102</td><td>Bruno</td><td>Pago</td><td><button>Enviar</button></td></tr>
+    <tr><td>#103</td><td>Carla</td><td>Enviado</td><td></td></tr>
+  </tbody>
+</table>
+<script>
+  document.querySelectorAll('tbody button').forEach(b => b.addEventListener('click', () => {
+    b.closest('tr').children[2].textContent = 'Enviado';
+    b.remove();
+  }));
+</script>
+
+// --- pedidos.spec.js ---
+import { test, expect } from '@playwright/test';
+
+test('envia o pedido do Bruno', async ({ page }) => {
+  const linhas = page.getByRole('row');
+  await expect(linhas).toHaveCount(4);                      // cabeçalho + 3
+
+  const bruno = linhas.filter({ hasText: 'Bruno' });
+  await bruno.getByRole('button', { name: 'Enviar' }).click();
+  await expect(bruno).toContainText('Enviado');
+
+  await expect(page.getByRole('button', { name: 'Enviar' })).toHaveCount(1);   // só o da Ana
+});`)}
+
+<h2>Testes visuais</h2>
+<p>Alguns bugs são só visuais: um botão que sumiu atrás de outro, um CSS que quebrou. O Playwright compara um print da página com um print de referência:</p>
+${trecho(`test('a página inicial não mudou', async ({ page }) => {
+  await page.goto('/');
+  await expect(page).toHaveScreenshot('inicio.png', { maxDiffPixelRatio: 0.01 });
+});
+// primeira execução: grava a referência. Depois: falha se mudar mais que 1%.
+// mudou de propósito? npx playwright test --update-snapshots`)}
+<p>Prints variam entre sistemas (fontes, antialiasing). Gere as referências no mesmo ambiente do CI (em geral, Linux no GitHub Actions) e esconda o que muda sozinho, como datas e anúncios, com a opção <code>mask</code>.</p>
+
+<h2>Acessibilidade automática</h2>
+${trecho(`import AxeBuilder from '@axe-core/playwright';
+
+test('a página não tem problemas de acessibilidade detectáveis', async ({ page }) => {
+  await page.goto('/contato');
+  const resultado = await new AxeBuilder({ page }).analyze();
+  expect(resultado.violations).toEqual([]);
+});`)}
+${dica('Ferramentas automáticas acham por volta de um terço dos problemas de acessibilidade (contraste, rótulos faltando, imagens sem alt). O resto exige testar com teclado e leitor de tela.')}
+`,
+              quiz: [
+                {
+                  pergunta: 'Como clicar no botão Enviar da linha do Bruno?',
+                  opcoes: [
+                    "page.getByRole('button').nth(1).click()",
+                    "page.getByRole('row').filter({ hasText: 'Bruno' }).getByRole('button', { name: 'Enviar' }).click()",
+                    "page.locator('tr:nth-child(2) button').click()"
+                  ],
+                  certa: 1,
+                  explicacao: 'Achar a linha pelo conteúdo resiste a mudanças de ordem.'
+                },
+                {
+                  pergunta: 'O que toHaveScreenshot faz na primeira execução?',
+                  opcoes: ['Falha', 'Grava o print de referência', 'Nada'],
+                  certa: 1,
+                  explicacao: 'Nas seguintes, compara com essa referência.'
+                },
+                {
+                  pergunta:
+                    'Uma verificação automática de acessibilidade (axe) sem violações garante uma página acessível?',
+                  opcoes: ['Sim', 'Não: ela acha só parte dos problemas', 'Só em português'],
+                  certa: 1,
+                  explicacao: 'Teste também com teclado e leitor de tela.'
+                }
+              ]
+            },
+            {
+              id: 'desafio-page-object',
+              tipo: 'desafio',
+              titulo: 'Desafio: Page Object de tarefas',
+              resumo: 'Uma classe para a tela de tarefas e testes que pegam o bug.',
+              minutos: 25,
+              enunciado: `
+<p>Escreva os testes da lista de tarefas usando um Page Object:</p>
+<ul>
+  <li>Uma classe <code>PaginaTarefas</code> com o construtor recebendo <code>page</code> e os métodos <code>adicionar(texto)</code> e <code>concluir(texto)</code>.</li>
+  <li>Pelo menos <strong>dois testes</strong>, todos passando, que criam a página com <code>new PaginaTarefas(page)</code>.</li>
+  <li>Um teste confere que uma tarefa concluída fica com a classe <code>feita</code> (use <code>toHaveClass</code>).</li>
+</ul>
+<p>O último teste deste desafio roda os seus testes numa cópia da página em que <strong>concluir não funciona</strong>. Algum dos seus testes precisa falhar lá.</p>`,
+              inicial: `<form id="nova">
+  <label for="tarefa">Nova tarefa</label>
+  <input id="tarefa">
+  <button>Adicionar</button>
+</form>
+<ul id="lista"></ul>
+
+<script>
+  document.querySelector('#nova').addEventListener('submit', e => {
+    e.preventDefault();
+    const campo = document.querySelector('#tarefa');
+    const li = document.createElement('li');
+    li.innerHTML = '<span></span> <button type="button">Concluir</button>';
+    li.querySelector('span').textContent = campo.value;
+    li.querySelector('button').addEventListener('click', () => li.classList.toggle('feita'));
+    document.querySelector('#lista').append(li);
+    campo.value = '';
+  });
+</script>
+
+// --- tarefas.spec.js ---
+import { test, expect } from '@playwright/test';
+`,
+              testes: [
+                [
+                  'Há uma classe PaginaTarefas com adicionar e concluir, usada nos testes',
+                  doc => {
+                    const spec =
+                      doc.defaultView.frameElement
+                        .closest('.editor')
+                        .querySelector('textarea')
+                        .value.split(/\/\/ --- \S+\.spec\.js ---/)[1] || '';
+                    return (
+                      /class\s+PaginaTarefas/.test(spec) &&
+                      /async\s+adicionar\s*\(/.test(spec) &&
+                      /async\s+concluir\s*\(/.test(spec) &&
+                      /new\s+PaginaTarefas\(\s*page\s*\)/.test(spec)
+                    );
+                  }
+                ],
+                [
+                  'Pelo menos dois testes, todos passando',
+                  doc => {
+                    const t = doc.defaultView.__testes || [];
+                    return t.length >= 2 && t.every(x => x.passou);
+                  }
+                ],
+                [
+                  'Um teste confere a classe feita com toHaveClass',
+                  doc => {
+                    const spec =
+                      doc.defaultView.frameElement
+                        .closest('.editor')
+                        .querySelector('textarea')
+                        .value.split(/\/\/ --- \S+\.spec\.js ---/)[1] || '';
+                    return /toHaveClass\(\s*\/?['"]?feita/.test(spec);
+                  }
+                ],
+                [
+                  'Os testes pegam o bug: com concluir quebrado, algum falha',
+                  async doc => {
+                    const original = doc.defaultView.frameElement.srcdoc;
+                    const comBug = original.replace("li.classList.toggle('feita')", 'null');
+                    if (comBug === original) return false;
+                    const copia = document.createElement('iframe');
+                    copia.sandbox = 'allow-scripts allow-same-origin allow-forms';
+                    copia.hidden = true;
+                    copia.srcdoc = comBug;
+                    const carregou = new Promise(r => (copia.onload = r));
+                    document.body.append(copia);
+                    await carregou;
+                    await copia.contentWindow.__pronto;
+                    const resultado = copia.contentWindow.__testes || [];
+                    copia.remove();
+                    return resultado.length > 0 && resultado.some(t => !t.passou);
+                  }
+                ]
+              ],
+              solucao: `<form id="nova">
+  <label for="tarefa">Nova tarefa</label>
+  <input id="tarefa">
+  <button>Adicionar</button>
+</form>
+<ul id="lista"></ul>
+
+<script>
+  document.querySelector('#nova').addEventListener('submit', e => {
+    e.preventDefault();
+    const campo = document.querySelector('#tarefa');
+    const li = document.createElement('li');
+    li.innerHTML = '<span></span> <button type="button">Concluir</button>';
+    li.querySelector('span').textContent = campo.value;
+    li.querySelector('button').addEventListener('click', () => li.classList.toggle('feita'));
+    document.querySelector('#lista').append(li);
+    campo.value = '';
+  });
+</script>
+
+// --- tarefas.spec.js ---
+import { test, expect } from '@playwright/test';
+
+class PaginaTarefas {
+  constructor(page) {
+    this.page = page;
+    this.campo = page.getByLabel('Nova tarefa');
+    this.botaoAdicionar = page.getByRole('button', { name: 'Adicionar' });
+    this.itens = page.getByRole('listitem');
+  }
+
+  item(texto) {
+    return this.itens.filter({ hasText: texto });
+  }
+
+  async adicionar(texto) {
+    await this.campo.fill(texto);
+    await this.botaoAdicionar.click();
+  }
+
+  async concluir(texto) {
+    await this.item(texto).getByRole('button', { name: 'Concluir' }).click();
+  }
+}
+
+test('adiciona tarefas', async ({ page }) => {
+  const tarefas = new PaginaTarefas(page);
+  await tarefas.adicionar('Estudar Playwright');
+  await expect(tarefas.item('Estudar Playwright')).toBeVisible();
+});
+
+test('conclui uma tarefa', async ({ page }) => {
+  const tarefas = new PaginaTarefas(page);
+  await tarefas.adicionar('Revisar o PR');
+  await tarefas.concluir('Revisar o PR');
+  await expect(tarefas.item('Revisar o PR')).toHaveClass(/feita/);
+});`
+            }
+          ]
         }
       ]
     }

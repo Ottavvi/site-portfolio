@@ -2915,6 +2915,54 @@
       "explicacao": "Testes que continuam passando com o código quebrado não estão conferindo aquilo."
     }
   ],
+  "playwright/page-objects": [
+    {
+      "pergunta": "Que problema o Page Object resolve?",
+      "opcoes": [
+        "Testes lentos",
+        "Localizadores repetidos em muitos testes: uma mudança na tela vira uma correção num lugar só",
+        "Falta de navegador"
+      ],
+      "certa": 1,
+      "explicacao": "Os testes chamam métodos; os detalhes da tela ficam na classe."
+    },
+    {
+      "pergunta": "Onde ficam os expect, num projeto com Page Objects?",
+      "opcoes": ["Dentro das classes", "Nos testes", "Num arquivo separado de asserções"],
+      "certa": 1,
+      "explicacao": "Cada teste decide o que conferir; a classe só sabe usar a tela."
+    },
+    {
+      "pergunta": "Qual nome de método combina melhor com um Page Object?",
+      "opcoes": ["clicarNoBotaoVerde()", "finalizarCompra()", "getElementById()"],
+      "certa": 1,
+      "explicacao": "O método descreve a ação da pessoa, não o detalhe visual."
+    }
+  ],
+  "playwright/listas-tabelas-e-visual": [
+    {
+      "pergunta": "Como clicar no botão Enviar da linha do Bruno?",
+      "opcoes": [
+        "page.getByRole('button').nth(1).click()",
+        "page.getByRole('row').filter({ hasText: 'Bruno' }).getByRole('button', { name: 'Enviar' }).click()",
+        "page.locator('tr:nth-child(2) button').click()"
+      ],
+      "certa": 1,
+      "explicacao": "Achar a linha pelo conteúdo resiste a mudanças de ordem."
+    },
+    {
+      "pergunta": "O que toHaveScreenshot faz na primeira execução?",
+      "opcoes": ["Falha", "Grava o print de referência", "Nada"],
+      "certa": 1,
+      "explicacao": "Nas seguintes, compara com essa referência."
+    },
+    {
+      "pergunta": "Uma verificação automática de acessibilidade (axe) sem violações garante uma página acessível?",
+      "opcoes": ["Sim", "Não: ela acha só parte dos problemas", "Só em português"],
+      "certa": 1,
+      "explicacao": "Teste também com teclado e leitor de tela."
+    }
+  ],
   "github-actions/o-que-e-ci": [
     {
       "pergunta": "Onde ficam os workflows do GitHub Actions?",
@@ -3029,6 +3077,54 @@
       "opcoes": ["Fica mais rápido", "Uma tag pode ser movida para outro código; o SHA não muda", "É obrigatório"],
       "certa": 1,
       "explicacao": "Protege contra uma action comprometida depois que você a adotou."
+    }
+  ],
+  "github-actions/releases": [
+    {
+      "pergunta": "Por que o workflow com on.push.tags não roda num push comum?",
+      "opcoes": [
+        "Erro de configuração",
+        "Ele só dispara quando uma tag que combina é enviada",
+        "Porque falta workflow_dispatch"
+      ],
+      "certa": 1,
+      "explicacao": "git push não envia tags; é preciso git push origin v1.4.0."
+    },
+    {
+      "pergunta": "Você acrescentou um recurso novo, compatível, à versão 2.3.1. Qual a próxima?",
+      "opcoes": ["2.3.2", "2.4.0", "3.0.0"],
+      "certa": 1,
+      "explicacao": "Recurso compatível sobe a versão menor e zera a correção."
+    },
+    {
+      "pergunta": "Que permissão é preciso para criar uma release?",
+      "opcoes": ["pages: write", "contents: write", "id-token: write"],
+      "certa": 1,
+      "explicacao": "Releases e tags fazem parte do conteúdo do repositório."
+    }
+  ],
+  "github-actions/manutencao-automatica": [
+    {
+      "pergunta": "Onde fica a configuração do Dependabot?",
+      "opcoes": [".github/workflows/dependabot.yml", ".github/dependabot.yml", "package.json"],
+      "certa": 1,
+      "explicacao": "É um arquivo de configuração, não um workflow."
+    },
+    {
+      "pergunta": "Para que serve uma verificação agendada de links?",
+      "opcoes": [
+        "Deixar o site mais rápido",
+        "Achar links externos que quebraram sem ninguém mexer no código",
+        "Gerar o sitemap"
+      ],
+      "certa": 1,
+      "explicacao": "Links de terceiros mudam ou saem do ar com o tempo."
+    },
+    {
+      "pergunta": "Que gatilho permite que um workflow seja chamado por outros?",
+      "opcoes": ["workflow_dispatch", "workflow_call", "repository_dispatch"],
+      "certa": 1,
+      "explicacao": "O chamador usa uses: dono/repo/.github/workflows/arquivo.yml@ref."
     }
   ],
   "powershell/primeiros-comandos": [

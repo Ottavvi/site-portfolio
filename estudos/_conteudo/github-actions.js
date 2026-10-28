@@ -770,6 +770,269 @@ jobs:
           path: logs/`
             }
           ]
+        },
+        {
+          titulo: 'Releases e manutenção',
+          itens: [
+            {
+              id: 'releases',
+              titulo: 'Versões e releases',
+              resumo: 'Tags, versionamento semântico e publicar uma release com arquivos.',
+              minutos: 11,
+              corpo: `
+<p>Uma <strong>release</strong> é uma versão marcada do projeto, com número, notas do que mudou e, às vezes, arquivos para baixar (um .zip do site, um instalador). No Git, ela parte de uma <strong>tag</strong>: um nome fixo apontando para um commit.</p>
+${trecho(`git tag v1.4.0                 # marca o commit atual
+git push origin v1.4.0         # envia a tag (o push normal não envia tags)`)}
+
+<h2>Versionamento semântico</h2>
+<p><code>MAIOR.MENOR.CORREÇÃO</code>, como nos pacotes do npm: corrigiu um bug sem mudar nada visível, sobe a correção (1.4.1); acrescentou algo compatível, a menor (1.5.0); quebrou algo para quem usa, a maior (2.0.0).</p>
+
+<h2>Um workflow disparado por tag</h2>
+${codigo(`name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: npm run build
+      - run: cd dist && zip -r ../site-\${{ github.ref_name }}.zip .
+      - name: Criar a release
+        run: gh release create \${{ github.ref_name }} site-\${{ github.ref_name }}.zip --generate-notes
+        env:
+          GH_TOKEN: \${{ github.token }}`)}
+<ul>
+  <li><code>tags: ['v*']</code>: roda quando uma tag que começa com "v" é enviada. Pushes comuns não disparam.</li>
+  <li><code>github.ref_name</code> é o nome da tag (<code>v1.4.0</code>).</li>
+  <li><code>permissions: contents: write</code> é necessário para criar a release.</li>
+  <li>O <code>gh</code> (a linha de comando do GitHub) já vem nas máquinas do Actions. <code>--generate-notes</code> monta as notas a partir dos pull requests desde a última versão. A action <code>softprops/action-gh-release</code> é uma alternativa bem usada.</li>
+</ul>
+${dica('Escreva commits e pull requests com títulos claros ("Corrige o total do carrinho com cupom"). Eles viram as notas da versão, e quem lê agradece.')}
+`,
+              quiz: [
+                {
+                  pergunta: 'Por que o workflow com on.push.tags não roda num push comum?',
+                  opcoes: [
+                    'Erro de configuração',
+                    'Ele só dispara quando uma tag que combina é enviada',
+                    'Porque falta workflow_dispatch'
+                  ],
+                  certa: 1,
+                  explicacao: 'git push não envia tags; é preciso git push origin v1.4.0.'
+                },
+                {
+                  pergunta: 'Você acrescentou um recurso novo, compatível, à versão 2.3.1. Qual a próxima?',
+                  opcoes: ['2.3.2', '2.4.0', '3.0.0'],
+                  certa: 1,
+                  explicacao: 'Recurso compatível sobe a versão menor e zera a correção.'
+                },
+                {
+                  pergunta: 'Que permissão é preciso para criar uma release?',
+                  opcoes: ['pages: write', 'contents: write', 'id-token: write'],
+                  certa: 1,
+                  explicacao: 'Releases e tags fazem parte do conteúdo do repositório.'
+                }
+              ]
+            },
+            {
+              id: 'manutencao-automatica',
+              titulo: 'Manutenção automática',
+              resumo: 'Dependabot, verificações agendadas e workflows reutilizáveis.',
+              minutos: 11,
+              corpo: `
+<h2>Dependabot</h2>
+<p>O Dependabot abre pull requests sozinho quando sai versão nova de uma dependência. Não é um workflow: é um arquivo de configuração em <code>.github/dependabot.yml</code>:</p>
+${trecho(`version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      dependencias-de-desenvolvimento:
+        dependency-type: development   # junta as de desenvolvimento num PR só
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly`)}
+<p>Com os testes rodando em cada pull request, atualizar vira clicar em "Merge" quando fica verde.</p>
+
+<h2>Verificações agendadas</h2>
+<p>Algumas coisas quebram sem ninguém mexer no código: um link externo que saiu do ar, um certificado vencendo, uma API que mudou. Um workflow agendado confere de tempos em tempos:</p>
+${codigo(`name: Links externos
+
+on:
+  schedule:
+    - cron: '0 8 * * 1'      # segunda, 8h UTC
+  workflow_dispatch:
+
+jobs:
+  links:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Conferir links
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: --no-progress './**/*.html'
+          fail: true`)}
+${dica('Workflows agendados em repositórios sem atividade por 60 dias são desativados pelo GitHub. Se parar de rodar, é isso: reative na aba Actions.')}
+
+<h2>Workflows reutilizáveis</h2>
+<p>Vários repositórios com o mesmo processo de testes? Escreva uma vez, com <code>on: workflow_call</code>, e chame dos outros:</p>
+${trecho(`# .github/workflows/testes-node.yml (no repositório "padroes")
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        type: string
+        default: '22'
+
+jobs:
+  testes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: \${{ inputs.node-version }}
+      - run: npm ci
+      - run: npm test
+
+# em qualquer outro repositório:
+jobs:
+  testes:
+    uses: minha-org/padroes/.github/workflows/testes-node.yml@main
+    with:
+      node-version: '20'`)}
+`,
+              quiz: [
+                {
+                  pergunta: 'Onde fica a configuração do Dependabot?',
+                  opcoes: ['.github/workflows/dependabot.yml', '.github/dependabot.yml', 'package.json'],
+                  certa: 1,
+                  explicacao: 'É um arquivo de configuração, não um workflow.'
+                },
+                {
+                  pergunta: 'Para que serve uma verificação agendada de links?',
+                  opcoes: [
+                    'Deixar o site mais rápido',
+                    'Achar links externos que quebraram sem ninguém mexer no código',
+                    'Gerar o sitemap'
+                  ],
+                  certa: 1,
+                  explicacao: 'Links de terceiros mudam ou saem do ar com o tempo.'
+                },
+                {
+                  pergunta: 'Que gatilho permite que um workflow seja chamado por outros?',
+                  opcoes: ['workflow_dispatch', 'workflow_call', 'repository_dispatch'],
+                  certa: 1,
+                  explicacao: 'O chamador usa uses: dono/repo/.github/workflows/arquivo.yml@ref.'
+                }
+              ]
+            },
+            {
+              id: 'desafio-release',
+              tipo: 'desafio',
+              titulo: 'Desafio: release automática',
+              resumo: 'Um workflow que testa, gera e publica uma release a cada tag.',
+              minutos: 20,
+              enunciado: `
+<p>Escreva o workflow <strong>Release</strong>:</p>
+<ul>
+  <li>Roda só quando uma tag que começa com <code>v</code> é enviada (<code>tags: ['v*']</code>).</li>
+  <li><code>permissions</code> no topo com <code>contents: write</code>.</li>
+  <li>Um job <code>release</code> em <code>ubuntu-latest</code> com: checkout, setup-node (22), <code>npm ci</code>, <code>npm test</code>, <code>npm run build</code>, um passo que compacta a pasta <code>dist</code> com <code>zip</code>, e por último um passo que cria a release com <code>gh release create</code> usando <code>github.ref_name</code>.</li>
+  <li>O passo do <code>gh</code> recebe o token pela variável de ambiente <code>GH_TOKEN</code>.</li>
+</ul>`,
+              inicial: `name: Release
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm run build
+`,
+              testes: [
+                [
+                  'Roda só em tags v*',
+                  doc => {
+                    const on = doc.defaultView.__yaml?.on || {};
+                    return (on.push?.tags || []).includes('v*') && !on.push?.branches && !('pull_request' in on);
+                  }
+                ],
+                ['permissions: contents write', doc => doc.defaultView.__yaml.permissions?.contents === 'write'],
+                [
+                  'Testa antes de gerar, compacta o dist e cria a release por último',
+                  doc => {
+                    const passos = doc.defaultView.__yaml.jobs?.release?.steps || [];
+                    const i = t => passos.findIndex(p => String(p.run || p.uses || '').includes(t));
+                    const ultimo = passos.at(-1) || {};
+                    return (
+                      i('actions/checkout') === 0 &&
+                      i('actions/setup-node') > 0 &&
+                      i('npm ci') > 0 &&
+                      i('npm test') > i('npm ci') &&
+                      i('npm run build') > i('npm test') &&
+                      /zip\b/.test(String(passos[i('zip')]?.run)) &&
+                      i('zip') > i('npm run build') &&
+                      /gh release create[\s\S]*github\.ref_name/.test(String(ultimo.run))
+                    );
+                  }
+                ],
+                [
+                  'O gh recebe o token por GH_TOKEN',
+                  doc => {
+                    const ultimo = (doc.defaultView.__yaml.jobs?.release?.steps || []).at(-1) || {};
+                    return /\$\{\{\s*(github\.token|secrets\.GITHUB_TOKEN)\s*\}\}/.test(String(ultimo.env?.GH_TOKEN));
+                  }
+                ]
+              ],
+              solucao: `name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+      - name: Compactar o site
+        run: cd dist && zip -r ../site.zip .
+      - name: Criar a release
+        run: gh release create \${{ github.ref_name }} site.zip --generate-notes
+        env:
+          GH_TOKEN: \${{ github.token }}`
+            }
+          ]
         }
       ]
     }

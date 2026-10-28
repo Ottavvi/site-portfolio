@@ -1503,6 +1503,30 @@
           "tipo": "desafio",
           "nivel": "Avançado",
           "minutos": 25
+        },
+        {
+          "id": "playwright/page-objects",
+          "titulo": "Page Objects",
+          "resumo": "Uma classe por tela, para os testes lerem como uma história.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 12
+        },
+        {
+          "id": "playwright/listas-tabelas-e-visual",
+          "titulo": "Listas, tabelas e testes visuais",
+          "resumo": "Achar a linha certa, contar itens, comparar prints e conferir acessibilidade.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 12
+        },
+        {
+          "id": "playwright/desafio-page-object",
+          "titulo": "Desafio: Page Object de tarefas",
+          "resumo": "Uma classe para a tela de tarefas e testes que pegam o bug.",
+          "tipo": "desafio",
+          "nivel": "Avançado",
+          "minutos": 25
         }
       ]
     },
@@ -1574,6 +1598,30 @@
           "tipo": "desafio",
           "nivel": "Avançado",
           "minutos": 22
+        },
+        {
+          "id": "github-actions/releases",
+          "titulo": "Versões e releases",
+          "resumo": "Tags, versionamento semântico e publicar uma release com arquivos.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 11
+        },
+        {
+          "id": "github-actions/manutencao-automatica",
+          "titulo": "Manutenção automática",
+          "resumo": "Dependabot, verificações agendadas e workflows reutilizáveis.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 11
+        },
+        {
+          "id": "github-actions/desafio-release",
+          "titulo": "Desafio: release automática",
+          "resumo": "Um workflow que testa, gera e publica uma release a cada tag.",
+          "tipo": "desafio",
+          "nivel": "Avançado",
+          "minutos": 20
         }
       ]
     },
