@@ -251,7 +251,7 @@ ${trilhas
               ${trilhas.length} trilhas, cada uma do nível iniciante ao avançado.
               ${
                 prontas === trilhas.length
-                  ? 'Nas de Excel, Power BI, DAX, Power Query, PowerShell, LGPD, Git e Docker, os desafios viram práticas para fazer no seu computador, com a resposta para conferir.'
+                  ? 'Nas trilhas que não rodam no navegador (Excel, Power BI, C#, Java, Flutter, Bash e outras), os desafios viram práticas para fazer no seu computador, com a resposta para conferir.'
                   : `${prontas === 1 ? 'A primeira já está disponível' : `${prontas} já estão disponíveis`}; as outras vão ganhando aulas aos poucos.`
               }
             </p>

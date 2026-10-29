@@ -3495,6 +3495,182 @@
       "explicacao": "Por isso ela sempre mostra os dados atuais."
     }
   ],
+  "postgresql/instalar-e-psql": [
+    {
+      "pergunta": "Qual a principal diferença entre SQLite e PostgreSQL?",
+      "opcoes": [
+        "Só o nome",
+        "O Postgres é um servidor acessado por muitos usuários e aplicações ao mesmo tempo",
+        "O SQLite não usa SQL"
+      ],
+      "certa": 1,
+      "explicacao": "O SQLite é um arquivo embutido no programa."
+    },
+    {
+      "pergunta": "O que faz \\d reservas no psql?",
+      "opcoes": ["Apaga a tabela", "Mostra a estrutura da tabela", "Baixa os dados"],
+      "certa": 1,
+      "explicacao": "Colunas, tipos, índices e restrições."
+    },
+    {
+      "pergunta": "O psql ficou esperando depois do comando. O que faltou provavelmente?",
+      "opcoes": ["O ponto e vírgula", "Reiniciar o servidor", "Aspas"],
+      "certa": 0,
+      "explicacao": "O SQL só é enviado quando termina com ;."
+    }
+  ],
+  "postgresql/tabelas-e-tipos": [
+    {
+      "pergunta": "Qual tipo usar para valores em dinheiro no Postgres?",
+      "opcoes": ["float", "numeric", "text"],
+      "certa": 1,
+      "explicacao": "numeric é exato; float tem erros de arredondamento."
+    },
+    {
+      "pergunta": "O que faz ON DELETE CASCADE em hospede_id?",
+      "opcoes": ["Impede apagar o hóspede", "Apaga as reservas quando o hóspede é apagado", "Copia as reservas"],
+      "certa": 1,
+      "explicacao": "Sem ele, apagar um hóspede com reservas daria erro."
+    },
+    {
+      "pergunta": "Para que serve o RETURNING?",
+      "opcoes": [
+        "Desfazer o insert",
+        "Devolver as linhas inseridas, com valores gerados como o id",
+        "Repetir o comando"
+      ],
+      "certa": 1,
+      "explicacao": "Evita uma segunda consulta para descobrir o id."
+    }
+  ],
+  "postgresql/pratica-modelar-pousada": [
+    {
+      "pergunta": "O que date '2026-12-24' - date '2026-12-20' devolve?",
+      "opcoes": ["4", "Um intervalo de texto", "Erro"],
+      "certa": 0,
+      "explicacao": "A diferença entre duas datas é um inteiro de dias."
+    }
+  ],
+  "postgresql/indices-e-explain": [
+    {
+      "pergunta": "O Postgres cria índice automaticamente para chaves estrangeiras?",
+      "opcoes": ["Sim", "Não", "Só se a tabela for grande"],
+      "certa": 1,
+      "explicacao": "Só para PRIMARY KEY e UNIQUE."
+    },
+    {
+      "pergunta": "Um índice em (quarto_id, entrada) ajuda num WHERE só com entrada?",
+      "opcoes": ["Sim, sempre", "Em geral não: a primeira coluna do índice é quarto_id", "Só no domingo"],
+      "certa": 1,
+      "explicacao": "Índices compostos servem a partir da primeira coluna."
+    },
+    {
+      "pergunta": "Qual a diferença entre EXPLAIN e EXPLAIN ANALYZE?",
+      "opcoes": ["Nenhuma", "ANALYZE executa a consulta e mostra os tempos reais", "ANALYZE cria índices"],
+      "certa": 1,
+      "explicacao": "Cuidado: com ANALYZE, um DELETE apaga de verdade (use dentro de uma transação com ROLLBACK)."
+    }
+  ],
+  "postgresql/transacoes-e-concorrencia": [
+    {
+      "pergunta": "O que acontece se um comando falhar no meio de uma transação?",
+      "opcoes": ["O que veio antes fica gravado", "Nada é gravado, a transação é desfeita", "O banco trava"],
+      "certa": 1,
+      "explicacao": "Atomicidade: tudo ou nada."
+    },
+    {
+      "pergunta": "O que SELECT ... FOR UPDATE faz?",
+      "opcoes": [
+        "Atualiza a linha",
+        "Trava a linha até o fim da transação; outros que queiram travá-la esperam",
+        "Nada além de um SELECT"
+      ],
+      "certa": 1,
+      "explicacao": "Serializa quem disputa o mesmo recurso."
+    },
+    {
+      "pergunta": "Qual a vantagem da restrição EXCLUDE para reservas?",
+      "opcoes": [
+        "Deixa as consultas mais rápidas",
+        "O próprio banco impede períodos sobrepostos, mesmo com acessos simultâneos",
+        "Apaga reservas antigas"
+      ],
+      "certa": 1,
+      "explicacao": "A regra vale independentemente da aplicação."
+    }
+  ],
+  "postgresql/pratica-relatorios": [
+    {
+      "pergunta": "Por que LEFT JOIN em vez de JOIN no relatório de ocupação diária?",
+      "opcoes": ["É mais rápido", "Para os dias sem reserva aparecerem com 0", "O JOIN não funciona com datas"],
+      "certa": 1,
+      "explicacao": "Com JOIN, os dias vazios sumiriam do resultado."
+    }
+  ],
+  "postgresql/jsonb-e-busca": [
+    {
+      "pergunta": "Qual a diferença entre -> e ->> no JSONB?",
+      "opcoes": ["Nenhuma", "-> devolve jsonb; ->> devolve texto", "->> é mais lento"],
+      "certa": 1,
+      "explicacao": "Use ->> para comparar com texto ou exibir."
+    },
+    {
+      "pergunta": "Que tipo de índice acelera consultas @> em jsonb e busca textual?",
+      "opcoes": ["B-tree", "GIN", "Hash"],
+      "certa": 1,
+      "explicacao": "GIN indexa os elementos de dentro do documento ou do tsvector."
+    },
+    {
+      "pergunta": "Por que a busca textual acha \"varanda\" ao procurar \"varandas\"?",
+      "opcoes": ["Por sorte", "O dicionário do idioma reduz as palavras ao radical", "Porque usa LIKE"],
+      "certa": 1,
+      "explicacao": "É o stemming."
+    }
+  ],
+  "postgresql/funcoes-permissoes-operacao": [
+    {
+      "pergunta": "Qual a diferença entre VIEW e MATERIALIZED VIEW?",
+      "opcoes": [
+        "Nenhuma",
+        "A view roda a consulta a cada uso; a materializada guarda o resultado até o REFRESH",
+        "A materializada é só para JSON"
+      ],
+      "certa": 1,
+      "explicacao": "Materializada é rápida de ler, mas pode estar desatualizada."
+    },
+    {
+      "pergunta": "Por que a aplicação não deve usar o usuário postgres?",
+      "opcoes": [
+        "É mais lento",
+        "Superusuário pode tudo; um bug ou ataque teria acesso total",
+        "O postgres não aceita conexões externas"
+      ],
+      "certa": 1,
+      "explicacao": "Princípio do menor privilégio."
+    },
+    {
+      "pergunta": "O que o Row Level Security faz?",
+      "opcoes": [
+        "Criptografa as linhas",
+        "Filtra quais linhas cada usuário pode ver ou alterar",
+        "Faz backup das linhas"
+      ],
+      "certa": 1,
+      "explicacao": "É a base da segurança em serviços como o Supabase."
+    }
+  ],
+  "postgresql/pratica-auditoria": [
+    {
+      "pergunta": "Por que o papel relatorios consegue ler a view, mas não a tabela hospedes?",
+      "opcoes": [
+        "Erro do Postgres",
+        "A view roda com as permissões do dono dela; o papel só recebeu acesso à view",
+        "Views não têm permissões"
+      ],
+      "certa": 1,
+      "explicacao": "Views são uma forma clássica de expor só parte dos dados."
+    }
+  ],
   "python/primeiros-passos": [
     {
       "pergunta": "Como se escreve verdadeiro em Python?",
@@ -3689,6 +3865,1082 @@
       "opcoes": ["Rodar Python na nuvem", "Isolar os pacotes de cada projeto", "Deixar o Python mais rápido"],
       "certa": 1,
       "explicacao": "Cada projeto tem as suas versões, sem conflito com os outros."
+    }
+  ],
+  "php/primeiro-script": [
+    {
+      "pergunta": "Onde o PHP é executado?",
+      "opcoes": ["No navegador do visitante", "No servidor, antes de a página ser enviada", "No banco de dados"],
+      "certa": 1,
+      "explicacao": "O navegador recebe só o HTML que o PHP gerou."
+    },
+    {
+      "pergunta": "Qual a diferença entre \"Olá, $nome\" e 'Olá, $nome'?",
+      "opcoes": ["Nenhuma", "Aspas duplas trocam a variável pelo valor; simples, não", "Aspas simples dão erro"],
+      "certa": 1,
+      "explicacao": "Só as aspas duplas fazem interpolação."
+    },
+    {
+      "pergunta": "Para que serve htmlspecialchars?",
+      "opcoes": ["Deixar o texto bonito", "Impedir que texto do usuário vire HTML ou script (XSS)", "Traduzir acentos"],
+      "certa": 1,
+      "explicacao": "Ele troca < por &lt; e afins."
+    }
+  ],
+  "php/arrays-e-funcoes": [
+    {
+      "pergunta": "Como acrescentar um item no fim de $lista?",
+      "opcoes": ["$lista.push(x)", "$lista[] = x", "add($lista, x)"],
+      "certa": 1,
+      "explicacao": "Os colchetes vazios acrescentam no fim (ou use array_push)."
+    },
+    {
+      "pergunta": "O que o operador <=> devolve?",
+      "opcoes": ["true ou false", "-1, 0 ou 1", "O maior dos dois"],
+      "certa": 1,
+      "explicacao": "Menor, igual ou maior: o formato que as funções de ordenação esperam."
+    },
+    {
+      "pergunta": "O que muda com declare(strict_types=1)?",
+      "opcoes": [
+        "O PHP para de converter tipos automaticamente nas chamadas",
+        "O código fica mais rápido",
+        "Variáveis precisam de $"
+      ],
+      "certa": 0,
+      "explicacao": "Tipos errados viram TypeError em vez de conversões silenciosas."
+    }
+  ],
+  "php/pratica-tabela-de-precos": [
+    {
+      "pergunta": "O que array_column($quartos, 'diaria') devolve?",
+      "opcoes": ["O primeiro quarto", "Uma lista só com as diárias", "A soma das diárias"],
+      "certa": 1,
+      "explicacao": "Extrai a mesma chave de cada item."
+    }
+  ],
+  "php/formularios-e-sessoes": [
+    {
+      "pergunta": "Por que redirecionar depois de processar um POST?",
+      "opcoes": ["Para o F5 não reenviar o formulário", "Para ficar mais rápido", "Porque o PHP exige"],
+      "certa": 0,
+      "explicacao": "É o padrão Post/Redirect/Get."
+    },
+    {
+      "pergunta": "Como guardar senhas de usuários?",
+      "opcoes": ["Em texto puro", "Com md5", "Com password_hash e conferir com password_verify"],
+      "certa": 2,
+      "explicacao": "password_hash usa um algoritmo lento e com sal, feito para senhas."
+    },
+    {
+      "pergunta": "A validação required do HTML basta?",
+      "opcoes": ["Sim", "Não: o servidor precisa validar de novo", "Só no celular"],
+      "certa": 1,
+      "explicacao": "Qualquer um pode enviar uma requisição sem passar pelo formulário."
+    }
+  ],
+  "php/pdo-e-composer": [
+    {
+      "pergunta": "O que protege contra injeção de SQL?",
+      "opcoes": ["Usar aspas duplas", "Consultas preparadas com ? ou :nome", "Colocar o SQL em maiúsculas"],
+      "certa": 1,
+      "explicacao": "Os valores vão separados do comando."
+    },
+    {
+      "pergunta": "O que faz rollBack numa transação?",
+      "opcoes": ["Desfaz todas as alterações desde o beginTransaction", "Apaga o banco", "Repete a última consulta"],
+      "certa": 0,
+      "explicacao": "Ou tudo é gravado (commit), ou nada."
+    },
+    {
+      "pergunta": "Por que a pasta vendor/ não vai para o Git?",
+      "opcoes": ["É secreta", "O composer install recria a partir do composer.lock", "O Git não aceita PHP"],
+      "certa": 1,
+      "explicacao": "O lock garante as mesmas versões em qualquer máquina."
+    }
+  ],
+  "php/pratica-livro-de-reservas": [
+    {
+      "pergunta": "Por que validar a data no servidor se o campo já é type=\"date\"?",
+      "opcoes": ["Não precisa", "Porque o navegador pode ser contornado", "Para formatar em pt-BR"],
+      "certa": 1,
+      "explicacao": "O servidor é a última palavra sobre o que é válido."
+    }
+  ],
+  "php/oop-moderno": [
+    {
+      "pergunta": "O que a promoção de construtor faz?",
+      "opcoes": [
+        "Declara e preenche a propriedade direto nos parâmetros do construtor",
+        "Torna a classe pública",
+        "Cria uma subclasse"
+      ],
+      "certa": 0,
+      "explicacao": "Menos código repetido: sem declarar a propriedade e atribuir à parte."
+    },
+    {
+      "pergunta": "Qual a vantagem de um enum para status?",
+      "opcoes": ["Ocupa menos memória", "Só aceita os valores definidos", "Grava sozinho no banco"],
+      "certa": 1,
+      "explicacao": "Erros de digitação viram erros de código, não dados errados."
+    },
+    {
+      "pergunta": "O que o autoload PSR-4 resolve?",
+      "opcoes": ["Carrega classes pelo namespace, sem require manual", "Comprime o código", "Cria o banco"],
+      "certa": 0,
+      "explicacao": "O namespace aponta para a pasta, e o nome da classe para o arquivo."
+    }
+  ],
+  "php/laravel-e-wordpress": [
+    {
+      "pergunta": "No Laravel, o que faz $request->validate([...]) quando os dados são inválidos?",
+      "opcoes": ["Grava assim mesmo", "Volta ao formulário com os erros", "Mostra uma página em branco"],
+      "certa": 1,
+      "explicacao": "O redirecionamento e as mensagens são automáticos."
+    },
+    {
+      "pergunta": "Qual a diferença entre add_action e add_filter no WordPress?",
+      "opcoes": [
+        "Nenhuma",
+        "Ação executa algo num momento; filtro recebe um valor e devolve alterado",
+        "Filtro só serve para buscas"
+      ],
+      "certa": 1,
+      "explicacao": "O filtro sempre precisa devolver o valor."
+    },
+    {
+      "pergunta": "Onde colocar mudanças num site WordPress?",
+      "opcoes": ["Nos arquivos do núcleo", "Num plugin próprio ou tema filho", "No banco direto"],
+      "certa": 1,
+      "explicacao": "Assim as atualizações não apagam o seu trabalho."
+    }
+  ],
+  "php/pratica-api-json": [
+    {
+      "pergunta": "Onde ler o corpo JSON de uma requisição POST em PHP?",
+      "opcoes": ["$_POST", "file_get_contents('php://input')", "$_GET"],
+      "certa": 1,
+      "explicacao": "$_POST só é preenchido para formulários (form-urlencoded ou multipart)."
+    }
+  ],
+  "csharp/primeiro-programa": [
+    {
+      "pergunta": "Qual comando cria um projeto de console novo?",
+      "opcoes": ["dotnet new console -o Nome", "dotnet run console", "csharp init"],
+      "certa": 0,
+      "explicacao": "dotnet new cria a partir de um modelo; dotnet run compila e executa."
+    },
+    {
+      "pergunta": "O que faz o $ em $\"Olá, {nome}\"?",
+      "opcoes": ["Marca a variável como dinheiro", "Interpola: troca {nome} pelo valor", "Deixa o texto em maiúsculas"],
+      "certa": 1,
+      "explicacao": "É a interpolação de strings."
+    },
+    {
+      "pergunta": "Quando um erro de tipo aparece em C#?",
+      "opcoes": ["Só quando o usuário clica", "Na compilação, antes de rodar", "Nunca, C# aceita tudo"],
+      "certa": 1,
+      "explicacao": "O compilador confere os tipos antes de gerar o programa."
+    }
+  ],
+  "csharp/tipos-e-controle": [
+    {
+      "pergunta": "Qual tipo usar para valores em reais?",
+      "opcoes": ["double", "decimal", "int"],
+      "certa": 1,
+      "explicacao": "decimal guarda frações decimais exatas, sem os erros de arredondamento do double."
+    },
+    {
+      "pergunta": "Qual a vantagem do int.TryParse sobre o int.Parse?",
+      "opcoes": ["É mais rápido", "Não quebra o programa quando o texto não é número", "Aceita letras"],
+      "certa": 1,
+      "explicacao": "Ele devolve false em vez de lançar uma exceção."
+    },
+    {
+      "pergunta": "O que significa o _ numa expressão switch?",
+      "opcoes": ["Qualquer outro caso", "Erro", "Valor vazio"],
+      "certa": 0,
+      "explicacao": "É o descarte: pega tudo o que não casou antes."
+    }
+  ],
+  "csharp/pratica-caixa": [
+    {
+      "pergunta": "Para que serve o CultureInfo(\"pt-BR\") na prática?",
+      "opcoes": [
+        "Traduzir as mensagens",
+        "Ler e formatar números no padrão brasileiro (vírgula, R$)",
+        "Deixar o programa mais rápido"
+      ],
+      "certa": 1,
+      "explicacao": "A cultura define separadores, moeda e formato de datas."
+    }
+  ],
+  "csharp/classes-e-records": [
+    {
+      "pergunta": "O que garante o private set na propriedade Saldo?",
+      "opcoes": ["Que ninguém lê o saldo", "Que só a própria classe altera o saldo", "Que o saldo nunca é negativo"],
+      "certa": 1,
+      "explicacao": "Leitura pública, escrita só por dentro: é o encapsulamento."
+    },
+    {
+      "pergunta": "Dois records com os mesmos valores, comparados com ==, dão...",
+      "opcoes": ["True", "False", "Erro de compilação"],
+      "certa": 0,
+      "explicacao": "Records comparam pelo conteúdo, não pela posição na memória."
+    },
+    {
+      "pergunta": "Para que serve uma interface?",
+      "opcoes": ["Desenhar a tela", "Definir um contrato que várias classes podem cumprir", "Guardar dados no banco"],
+      "certa": 1,
+      "explicacao": "Quem usa a interface não depende de uma implementação específica."
+    }
+  ],
+  "csharp/colecoes-e-linq": [
+    {
+      "pergunta": "Quando uma consulta LINQ roda de fato?",
+      "opcoes": [
+        "Na linha do Where",
+        "Quando o resultado é percorrido ou materializado (ToList, Count...)",
+        "Na compilação"
+      ],
+      "certa": 1,
+      "explicacao": "É a execução adiada (deferred execution)."
+    },
+    {
+      "pergunta": "Qual coleção acha um valor pela chave sem percorrer tudo?",
+      "opcoes": ["List", "Array", "Dictionary"],
+      "certa": 2,
+      "explicacao": "O Dictionary usa uma tabela de hash."
+    },
+    {
+      "pergunta": "O que faz FirstOrDefault quando nada combina?",
+      "opcoes": ["Lança exceção", "Devolve o valor padrão (null para objetos)", "Devolve o primeiro da lista"],
+      "certa": 1,
+      "explicacao": "O First sem Default é que lança exceção."
+    }
+  ],
+  "csharp/pratica-relatorio-vendas": [
+    {
+      "pergunta": "O que MaxBy(g => g.Count()) devolve?",
+      "opcoes": ["O maior número de vendas", "O grupo com mais vendas", "Uma lista ordenada"],
+      "certa": 1,
+      "explicacao": "MaxBy devolve o elemento; Max devolveria o número."
+    }
+  ],
+  "csharp/async-e-api": [
+    {
+      "pergunta": "O que o await faz?",
+      "opcoes": [
+        "Trava o programa até terminar",
+        "Espera a Task terminar sem bloquear a thread",
+        "Roda o código em outro computador"
+      ],
+      "certa": 1,
+      "explicacao": "A thread fica livre para outras coisas enquanto a operação está pendente."
+    },
+    {
+      "pergunta": "Qual o tipo de retorno de um método async que devolve um int?",
+      "opcoes": ["int", "Task<int>", "async int"],
+      "certa": 1,
+      "explicacao": "Quem chama faz await para obter o int."
+    },
+    {
+      "pergunta": "O que faz app.MapGet(\"/produtos\", ...)?",
+      "opcoes": ["Cria uma tabela", "Responde requisições GET em /produtos", "Baixa produtos da internet"],
+      "certa": 1,
+      "explicacao": "Liga a rota e o método HTTP à função."
+    }
+  ],
+  "csharp/ef-core-e-testes": [
+    {
+      "pergunta": "O que o Entity Framework faz com uma consulta LINQ em db.Produtos?",
+      "opcoes": [
+        "Baixa a tabela inteira e filtra em memória",
+        "Traduz para SQL e roda no banco",
+        "Nada, LINQ não funciona com banco"
+      ],
+      "certa": 1,
+      "explicacao": "O Where e o OrderBy viram WHERE e ORDER BY."
+    },
+    {
+      "pergunta": "Para que servem as migrations?",
+      "opcoes": ["Mover o banco de servidor", "Versionar as mudanças na estrutura das tabelas", "Fazer backup"],
+      "certa": 1,
+      "explicacao": "Cada migration é um passo da evolução do esquema."
+    },
+    {
+      "pergunta": "Qual a diferença entre [Fact] e [Theory] no xUnit?",
+      "opcoes": ["Nenhuma", "[Theory] roda o mesmo teste com vários dados", "[Fact] é só para números"],
+      "certa": 1,
+      "explicacao": "Cada [InlineData] é uma execução do teste."
+    }
+  ],
+  "csharp/pratica-api-tarefas": [
+    {
+      "pergunta": "Que status HTTP devolver ao criar um recurso com sucesso?",
+      "opcoes": ["200 OK", "201 Created", "204 No Content"],
+      "certa": 1,
+      "explicacao": "Results.Created devolve 201 com o endereço do recurso novo."
+    }
+  ],
+  "java/primeiro-programa": [
+    {
+      "pergunta": "Onde um programa Java começa a rodar?",
+      "opcoes": ["Na primeira linha do arquivo", "No método main", "Na classe Program"],
+      "certa": 1,
+      "explicacao": "public static void main(String[] args) é o ponto de entrada."
+    },
+    {
+      "pergunta": "O que o javac gera?",
+      "opcoes": ["Um .exe", "Bytecode (.class) que roda na JVM", "Código JavaScript"],
+      "certa": 1,
+      "explicacao": "A JVM executa o bytecode em qualquer sistema."
+    },
+    {
+      "pergunta": "Qual regra vale para o nome do arquivo?",
+      "opcoes": ["Qualquer nome", "Igual ao da classe pública que ele contém", "Sempre Main.java"],
+      "certa": 1,
+      "explicacao": "public class Ola precisa estar em Ola.java."
+    }
+  ],
+  "java/tipos-e-controle": [
+    {
+      "pergunta": "Como comparar o conteúdo de duas Strings?",
+      "opcoes": ["a == b", "a.equals(b)", "a = b"],
+      "certa": 1,
+      "explicacao": "== compara referências, não o texto."
+    },
+    {
+      "pergunta": "Qual tipo usar para valores monetários com precisão exata?",
+      "opcoes": ["double", "float", "BigDecimal"],
+      "certa": 2,
+      "explicacao": "double tem erros de arredondamento em frações decimais."
+    },
+    {
+      "pergunta": "O que significa void num método?",
+      "opcoes": ["Que ele é vazio", "Que não devolve valor", "Que é privado"],
+      "certa": 1,
+      "explicacao": "O tipo antes do nome é o do retorno."
+    }
+  ],
+  "java/pratica-adivinhacao": [
+    {
+      "pergunta": "Qual exceção Integer.parseInt lança com \"abc\"?",
+      "opcoes": ["NullPointerException", "NumberFormatException", "IOException"],
+      "certa": 1,
+      "explicacao": "Capturá-la permite pedir o número de novo."
+    }
+  ],
+  "java/classes-e-interfaces": [
+    {
+      "pergunta": "Quantas classes uma classe Java pode estender?",
+      "opcoes": ["Quantas quiser", "Uma", "Nenhuma"],
+      "certa": 1,
+      "explicacao": "Herança simples; interfaces podem ser várias."
+    },
+    {
+      "pergunta": "Como se lê o campo nome de um record Produto?",
+      "opcoes": ["p.getNome()", "p.nome()", "p.nome"],
+      "certa": 1,
+      "explicacao": "Records geram acessores com o mesmo nome do componente."
+    },
+    {
+      "pergunta": "O que é polimorfismo?",
+      "opcoes": [
+        "Ter vários construtores",
+        "Tratar objetos diferentes pelo mesmo tipo, cada um respondendo do seu jeito",
+        "Copiar uma classe"
+      ],
+      "certa": 1,
+      "explicacao": "O código depende da interface, não da implementação."
+    }
+  ],
+  "java/colecoes-e-streams": [
+    {
+      "pergunta": "O que acontece ao chamar add numa lista criada com List.of?",
+      "opcoes": ["Funciona", "UnsupportedOperationException: a lista é imutável", "Erro de compilação"],
+      "certa": 1,
+      "explicacao": "Use new ArrayList<>(List.of(...)) para uma lista mutável."
+    },
+    {
+      "pergunta": "O que Produto::nome significa?",
+      "opcoes": ["Uma referência ao método nome, igual a p -> p.nome()", "Um campo estático", "Um comentário"],
+      "certa": 0,
+      "explicacao": "É uma referência de método."
+    },
+    {
+      "pergunta": "Para que serve Collectors.groupingBy?",
+      "opcoes": ["Ordenar", "Agrupar elementos por uma chave num Map", "Somar números"],
+      "certa": 1,
+      "explicacao": "Com um segundo coletor, conta, soma ou faz média por grupo."
+    }
+  ],
+  "java/pratica-biblioteca": [
+    {
+      "pergunta": "Por que maisAntigo devolve Optional<Livro>?",
+      "opcoes": ["Porque a biblioteca pode estar vazia", "Por desempenho", "Porque records exigem"],
+      "certa": 0,
+      "explicacao": "Optional obriga quem chama a tratar o caso \"nenhum\"."
+    }
+  ],
+  "java/maven-e-testes": [
+    {
+      "pergunta": "O que mvn package gera?",
+      "opcoes": ["Um instalador", "Um .jar com o programa compilado", "O pom.xml"],
+      "certa": 1,
+      "explicacao": "O .jar fica em target/ e roda com java -jar."
+    },
+    {
+      "pergunta": "O que o try-with-resources garante?",
+      "opcoes": ["Que não haverá erro", "Que o recurso é fechado no fim, com ou sem erro", "Que o arquivo existe"],
+      "certa": 1,
+      "explicacao": "Evita arquivos e conexões abertos esquecidos."
+    },
+    {
+      "pergunta": "IOException é uma exceção...",
+      "opcoes": ["Verificada: o compilador obriga a tratar ou declarar", "Não verificada", "Que nunca acontece"],
+      "certa": 0,
+      "explicacao": "RuntimeException e filhas é que são não verificadas."
+    }
+  ],
+  "java/spring-boot": [
+    {
+      "pergunta": "O que faz um método findByPrecoLessThan num JpaRepository?",
+      "opcoes": ["Nada até ser implementado", "O Spring gera a consulta a partir do nome", "Busca na internet"],
+      "certa": 1,
+      "explicacao": "São as query methods do Spring Data."
+    },
+    {
+      "pergunta": "Como o controller recebe o repositório?",
+      "opcoes": ["Criando com new", "Pelo construtor, injetado pelo Spring", "Por uma variável global"],
+      "certa": 1,
+      "explicacao": "Injeção de dependência pelo construtor."
+    },
+    {
+      "pergunta": "O que @Valid faz no parâmetro?",
+      "opcoes": [
+        "Confere as anotações de validação e rejeita com 400 se falhar",
+        "Salva no banco",
+        "Converte para JSON"
+      ],
+      "certa": 0,
+      "explicacao": "Faz parte do Bean Validation."
+    }
+  ],
+  "java/pratica-api-reservas": [
+    {
+      "pergunta": "Por que colocar a regra de sobreposição no Service e não no Controller?",
+      "opcoes": [
+        "O Controller não aceita if",
+        "Para a regra valer em qualquer entrada e ser fácil de testar",
+        "Por desempenho"
+      ],
+      "certa": 1,
+      "explicacao": "O controller só traduz HTTP; a regra de negócio fica no serviço."
+    }
+  ],
+  "go/primeiro-programa": [
+    {
+      "pergunta": "O que := faz?",
+      "opcoes": ["Compara valores", "Declara uma variável nova e atribui, deduzindo o tipo", "Cria uma constante"],
+      "certa": 1,
+      "explicacao": "Para reatribuir uma variável que já existe, use só =."
+    },
+    {
+      "pergunta": "O que acontece com uma variável declarada e nunca usada?",
+      "opcoes": ["Nada", "Erro de compilação", "Aviso amarelo"],
+      "certa": 1,
+      "explicacao": "Go não compila com variáveis ou imports sobrando."
+    },
+    {
+      "pergunta": "Qual o valor de var n int antes de qualquer atribuição?",
+      "opcoes": ["nil", "0", "Indefinido"],
+      "certa": 1,
+      "explicacao": "Todo tipo tem um valor zero."
+    }
+  ],
+  "go/controle-funcoes-erros": [
+    {
+      "pergunta": "Como se escreve um \"while\" em Go?",
+      "opcoes": ["while cond { }", "for cond { }", "loop cond { }"],
+      "certa": 1,
+      "explicacao": "for é o único laço do Go."
+    },
+    {
+      "pergunta": "Como as funções em Go costumam avisar que algo deu errado?",
+      "opcoes": ["Lançando exceção", "Devolvendo um error como último valor", "Imprimindo na tela"],
+      "certa": 1,
+      "explicacao": "Quem chama confere com if err != nil."
+    },
+    {
+      "pergunta": "Para que serve o %w no fmt.Errorf?",
+      "opcoes": ["Formatar em largura", "Embrulhar o erro original, acrescentando contexto", "Ignorar o erro"],
+      "certa": 1,
+      "explicacao": "errors.Is e errors.As ainda encontram o erro original."
+    }
+  ],
+  "go/pratica-conversor": [
+    {
+      "pergunta": "O que há em os.Args[0]?",
+      "opcoes": ["O primeiro argumento", "O nome (caminho) do próprio programa", "Vazio"],
+      "certa": 1,
+      "explicacao": "Os argumentos do usuário começam em os.Args[1]."
+    }
+  ],
+  "go/slices-maps-structs": [
+    {
+      "pergunta": "Quando usar um receptor ponteiro (*Produto)?",
+      "opcoes": ["Sempre", "Quando o método precisa alterar o original", "Nunca"],
+      "certa": 1,
+      "explicacao": "Com receptor por valor, o método mexe numa cópia."
+    },
+    {
+      "pergunta": "Como um tipo implementa uma interface em Go?",
+      "opcoes": ["Com implements", "Tendo os métodos dela, implicitamente", "Herdando de uma classe"],
+      "certa": 1,
+      "explicacao": "Interfaces em Go são satisfeitas implicitamente."
+    },
+    {
+      "pergunta": "Um campo chamado nome (minúsculo) numa struct é...",
+      "opcoes": ["Público", "Privado ao pacote", "Constante"],
+      "certa": 1,
+      "explicacao": "A primeira letra define a visibilidade."
+    }
+  ],
+  "go/json-e-arquivos": [
+    {
+      "pergunta": "Para que serve a tag json:\"hospede\"?",
+      "opcoes": ["Validar o campo", "Definir o nome do campo no JSON", "Criptografar"],
+      "certa": 1,
+      "explicacao": "Sem tag, o JSON usa o nome do campo em Go."
+    },
+    {
+      "pergunta": "Por que json.Unmarshal(conteudo, &lida) usa &?",
+      "opcoes": ["Por estilo", "Para passar o endereço e a função preencher a variável", "Para copiar"],
+      "certa": 1,
+      "explicacao": "Sem o ponteiro, ela receberia uma cópia."
+    },
+    {
+      "pergunta": "Como o Go encontra os testes?",
+      "opcoes": ["Arquivos _test.go com funções TestXxx(t *testing.T)", "Uma pasta tests/", "Anotações @Test"],
+      "certa": 0,
+      "explicacao": "go test procura esse padrão."
+    }
+  ],
+  "go/pratica-tarefas-cli": [
+    {
+      "pergunta": "Por que alterar tarefas[i].Feita e não t.Feita no range?",
+      "opcoes": ["Por estilo", "No range, t é uma cópia do elemento", "t é somente leitura por regra"],
+      "certa": 1,
+      "explicacao": "Alterar a cópia não muda o slice."
+    }
+  ],
+  "go/goroutines-channels": [
+    {
+      "pergunta": "Para que serve o sync.WaitGroup?",
+      "opcoes": ["Limitar a velocidade", "Esperar um grupo de goroutines terminar", "Trocar mensagens"],
+      "certa": 1,
+      "explicacao": "Add antes, Done em cada uma, Wait no fim."
+    },
+    {
+      "pergunta": "O que faz <-canal?",
+      "opcoes": ["Envia um valor", "Recebe um valor, esperando se ainda não chegou", "Fecha o canal"],
+      "certa": 1,
+      "explicacao": "canal <- v envia; <-canal recebe."
+    },
+    {
+      "pergunta": "O que o select com time.After permite?",
+      "opcoes": ["Ordenar resultados", "Desistir de esperar depois de um tempo", "Criar goroutines"],
+      "certa": 1,
+      "explicacao": "O caso que ficar pronto primeiro ganha."
+    }
+  ],
+  "go/servidor-http": [
+    {
+      "pergunta": "Como ler o {id} da rota \"GET /produtos/{id}\"?",
+      "opcoes": ["r.URL.Query().Get(\"id\")", "r.PathValue(\"id\")", "r.Form[\"id\"]"],
+      "certa": 1,
+      "explicacao": "PathValue existe desde o Go 1.22."
+    },
+    {
+      "pergunta": "Por que proteger um map compartilhado entre handlers?",
+      "opcoes": [
+        "Cada requisição roda numa goroutine; acesso simultâneo corrompe o map",
+        "Por estilo",
+        "O map é só leitura"
+      ],
+      "certa": 0,
+      "explicacao": "Escrita concorrente num map faz o programa parar com erro."
+    },
+    {
+      "pergunta": "Para que serve context.WithTimeout?",
+      "opcoes": ["Medir o tempo", "Cancelar operações que passem de um prazo", "Atrasar a resposta"],
+      "certa": 1,
+      "explicacao": "Quem respeita o ctx para quando ele é cancelado."
+    }
+  ],
+  "go/pratica-verificador-links": [
+    {
+      "pergunta": "O que acontece com for u := range trabalhos quando o channel é fechado?",
+      "opcoes": ["Dá erro", "O laço termina depois de consumir o que restava", "Fica esperando para sempre"],
+      "certa": 1,
+      "explicacao": "Fechar o channel é o sinal de \"não vem mais nada\"."
+    }
+  ],
+  "rust/primeiro-programa": [
+    {
+      "pergunta": "Como declarar uma variável que pode mudar?",
+      "opcoes": ["var x = 1", "let mut x = 1", "let x = 1"],
+      "certa": 1,
+      "explicacao": "Sem mut, a variável é imutável."
+    },
+    {
+      "pergunta": "O que acontece ao somar um f64 com um u32 sem conversão?",
+      "opcoes": ["O Rust converte sozinho", "Erro de compilação", "O resultado é arredondado"],
+      "certa": 1,
+      "explicacao": "Conversões são sempre explícitas, com as."
+    },
+    {
+      "pergunta": "O que o ! em println! indica?",
+      "opcoes": ["Urgência", "Que é uma macro", "Que pode falhar"],
+      "certa": 1,
+      "explicacao": "Macros geram código na compilação."
+    }
+  ],
+  "rust/controle-e-funcoes": [
+    {
+      "pergunta": "O que uma função devolve quando a última linha é x * 2 sem ponto e vírgula?",
+      "opcoes": ["Nada", "O valor de x * 2", "Erro"],
+      "certa": 1,
+      "explicacao": "A última expressão sem ; é o retorno."
+    },
+    {
+      "pergunta": "Quais números 1..5 percorre?",
+      "opcoes": ["1 a 5", "1 a 4", "0 a 5"],
+      "certa": 1,
+      "explicacao": "1..=5 incluiria o 5."
+    },
+    {
+      "pergunta": "O que acontece se um match não cobrir todos os casos?",
+      "opcoes": ["Ignora os que faltam", "Não compila", "Quebra ao rodar"],
+      "certa": 1,
+      "explicacao": "O compilador exige que o match seja exaustivo."
+    }
+  ],
+  "rust/pratica-fizzbuzz-primos": [
+    {
+      "pergunta": "Por que testar divisores só até a raiz quadrada?",
+      "opcoes": [
+        "Porque é mais bonito",
+        "Se n tem um divisor maior que a raiz, tem também um menor",
+        "Por limitação do Rust"
+      ],
+      "certa": 1,
+      "explicacao": "Os divisores vêm em pares."
+    }
+  ],
+  "rust/ownership": [
+    {
+      "pergunta": "Depois de let b = a; com a sendo uma String, o que acontece com a?",
+      "opcoes": ["Continua válida", "Não pode mais ser usada: a posse foi movida", "Vira uma cópia"],
+      "certa": 1,
+      "explicacao": "Para ter as duas, use clone."
+    },
+    {
+      "pergunta": "Quantos empréstimos &mut do mesmo valor podem existir ao mesmo tempo?",
+      "opcoes": ["Quantos quiser", "Um", "Nenhum"],
+      "certa": 1,
+      "explicacao": "Ou vários & de leitura, ou um único &mut."
+    },
+    {
+      "pergunta": "Qual tipo de parâmetro aceita tanto String quanto literais de texto?",
+      "opcoes": ["String", "&str", "char"],
+      "certa": 1,
+      "explicacao": "Uma &String vira &str automaticamente."
+    }
+  ],
+  "rust/structs-enums-erros": [
+    {
+      "pergunta": "Como Rust representa \"pode não ter valor\"?",
+      "opcoes": ["null", "Option: Some(valor) ou None", "undefined"],
+      "certa": 1,
+      "explicacao": "Não existe null em Rust seguro."
+    },
+    {
+      "pergunta": "O que o operador ? faz num Result?",
+      "opcoes": ["Ignora o erro", "Pega o valor se for Ok; se for Err, retorna o erro da função", "Imprime o erro"],
+      "certa": 1,
+      "explicacao": "Propaga o erro sem if repetido."
+    },
+    {
+      "pergunta": "Qual a diferença entre &self e &mut self num método?",
+      "opcoes": ["Nenhuma", "&self só lê; &mut self pode alterar a struct", "&mut self é mais rápido"],
+      "certa": 1,
+      "explicacao": "As regras de empréstimo valem para self também."
+    }
+  ],
+  "rust/pratica-estoque": [
+    {
+      "pergunta": "Para que serve ok_or_else em get_mut(...).ok_or_else(...)?",
+      "opcoes": ["Transformar o Option em Result, com um erro para o caso None", "Ordenar o mapa", "Criar o produto"],
+      "certa": 0,
+      "explicacao": "Com Result, dá para usar o ?."
+    }
+  ],
+  "rust/traits-e-iteradores": [
+    {
+      "pergunta": "O que é uma trait?",
+      "opcoes": ["Um tipo de variável", "Um conjunto de métodos que tipos podem implementar", "Um laço"],
+      "certa": 1,
+      "explicacao": "Parecida com interface em outras linguagens."
+    },
+    {
+      "pergunta": "Quando usar Vec<Box<dyn Frete>>?",
+      "opcoes": ["Para guardar tipos diferentes que implementam Frete na mesma lista", "Sempre", "Para números"],
+      "certa": 0,
+      "explicacao": "Com genéricos, a lista teria um tipo só."
+    },
+    {
+      "pergunta": "Iteradores em Rust são mais lentos que laços?",
+      "opcoes": ["Sim, bem mais", "Não: compilam para código equivalente", "Só em modo release"],
+      "certa": 1,
+      "explicacao": "São abstrações de custo zero."
+    }
+  ],
+  "rust/crates-async-testes": [
+    {
+      "pergunta": "Para que serve o serde?",
+      "opcoes": ["Testes", "Converter structs para JSON (e outros formatos) e de volta", "Servidor web"],
+      "certa": 1,
+      "explicacao": "Serialize e Deserialize via derive."
+    },
+    {
+      "pergunta": "O que é o tokio?",
+      "opcoes": ["Um banco de dados", "O runtime que executa código async", "Um formatador"],
+      "certa": 1,
+      "explicacao": "Rust define async/await, mas precisa de um runtime para rodar."
+    },
+    {
+      "pergunta": "O que o cargo clippy faz?",
+      "opcoes": ["Compila mais rápido", "Aponta padrões de código que podem ser melhorados", "Publica o crate"],
+      "certa": 1,
+      "explicacao": "É um linter com centenas de regras."
+    }
+  ],
+  "rust/pratica-cli-csv": [
+    {
+      "pergunta": "Numa função que devolve Option, o que faz o ? em linha.split_once(',')?",
+      "opcoes": ["Quebra o programa", "Devolve None se não houver vírgula", "Ignora a linha e continua"],
+      "certa": 1,
+      "explicacao": "O ? funciona com Option e Result."
+    }
+  ],
+  "kotlin/primeiros-passos": [
+    {
+      "pergunta": "Qual a diferença entre val e var?",
+      "opcoes": ["Nenhuma", "val não pode ser reatribuído; var pode", "var é só para números"],
+      "certa": 1,
+      "explicacao": "Prefira val: menos coisas mudando, menos bugs."
+    },
+    {
+      "pergunta": "O que String? significa?",
+      "opcoes": ["Uma String opcional, que aceita null", "Uma String vazia", "Uma pergunta"],
+      "certa": 0,
+      "explicacao": "Sem o ?, o tipo não aceita null."
+    },
+    {
+      "pergunta": "Quanto vale nome?.length ?: 0 quando nome é null?",
+      "opcoes": ["null", "0", "Erro"],
+      "certa": 1,
+      "explicacao": "O Elvis (?:) entra quando a esquerda é null."
+    }
+  ],
+  "kotlin/funcoes-e-colecoes": [
+    {
+      "pergunta": "O que é \"it\" dentro de numeros.filter { it > 2 }?",
+      "opcoes": ["Uma palavra reservada sem uso", "O parâmetro único da lambda (cada número)", "O índice"],
+      "certa": 1,
+      "explicacao": "Com um parâmetro só, não precisa dar nome."
+    },
+    {
+      "pergunta": "O que é uma função de extensão?",
+      "opcoes": [
+        "Uma função muito longa",
+        "Uma função que pode ser chamada como método de um tipo existente",
+        "Um plugin"
+      ],
+      "certa": 1,
+      "explicacao": "fun String.iniciais() permite \"texto\".iniciais()."
+    },
+    {
+      "pergunta": "listOf cria uma lista...",
+      "opcoes": ["Mutável", "Imutável", "Vazia"],
+      "certa": 1,
+      "explicacao": "Para alterar, use mutableListOf."
+    }
+  ],
+  "kotlin/pratica-boletim": [
+    {
+      "pergunta": "O que mapValues faz?",
+      "opcoes": ["Troca chaves por valores", "Cria um mapa novo com os valores transformados", "Ordena o mapa"],
+      "certa": 1,
+      "explicacao": "As chaves continuam as mesmas."
+    }
+  ],
+  "kotlin/classes": [
+    {
+      "pergunta": "O que uma data class ganha automaticamente?",
+      "opcoes": ["Acesso ao banco", "equals, hashCode, toString e copy", "Uma tela"],
+      "certa": 1,
+      "explicacao": "Tudo derivado das propriedades do construtor."
+    },
+    {
+      "pergunta": "Por que o when sobre uma sealed interface não precisa de else?",
+      "opcoes": ["O compilador conhece todos os subtipos possíveis", "É um erro do Kotlin", "Porque else é proibido"],
+      "certa": 0,
+      "explicacao": "E avisa quando surge um caso novo não tratado."
+    },
+    {
+      "pergunta": "O que faz require(valor > 0)?",
+      "opcoes": ["Pede o valor ao usuário", "Lança exceção se a condição for falsa", "Converte para positivo"],
+      "certa": 1,
+      "explicacao": "Checa pré-condições de forma curta."
+    }
+  ],
+  "kotlin/coroutines": [
+    {
+      "pergunta": "Onde uma função suspend pode ser chamada?",
+      "opcoes": ["Em qualquer lugar", "Dentro de outra suspend ou de uma coroutine", "Só no main"],
+      "certa": 1,
+      "explicacao": "É preciso um contexto que saiba pausar e retomar."
+    },
+    {
+      "pergunta": "Duas chamadas com async de 1s e 1,5s, depois await nas duas, levam cerca de...",
+      "opcoes": ["2,5 s", "1,5 s", "1 s"],
+      "certa": 1,
+      "explicacao": "Rodam em paralelo; o total é o da mais lenta."
+    },
+    {
+      "pergunta": "Qual a diferença entre um Flow e uma função suspend?",
+      "opcoes": ["Nenhuma", "suspend devolve um valor; Flow emite vários ao longo do tempo", "Flow é síncrono"],
+      "certa": 1,
+      "explicacao": "collect recebe cada valor emitido."
+    }
+  ],
+  "kotlin/pratica-pedidos": [
+    {
+      "pergunta": "Para que serve return@flow?",
+      "opcoes": ["Reiniciar o fluxo", "Sair do bloco flow { } e encerrar a emissão", "Devolver um valor ao main"],
+      "certa": 1,
+      "explicacao": "É um return com rótulo, para sair só da lambda."
+    }
+  ],
+  "kotlin/jetpack-compose": [
+    {
+      "pergunta": "O que acontece quando um estado lido por um @Composable muda?",
+      "opcoes": ["Nada", "O Compose redesenha as partes que dependem dele", "O app reinicia"],
+      "certa": 1,
+      "explicacao": "É a recomposição."
+    },
+    {
+      "pergunta": "Por que usar remember?",
+      "opcoes": ["Para salvar no disco", "Para o valor sobreviver às recomposições", "Para lembrar a senha"],
+      "certa": 1,
+      "explicacao": "Sem remember, o valor voltaria ao inicial a cada redesenho."
+    },
+    {
+      "pergunta": "Qual a vantagem de LazyColumn sobre Column numa lista grande?",
+      "opcoes": ["Fica mais bonita", "Só cria os itens visíveis na tela", "Ordena sozinha"],
+      "certa": 1,
+      "explicacao": "Column criaria todos de uma vez."
+    }
+  ],
+  "kotlin/viewmodel-rede-room": [
+    {
+      "pergunta": "Por que guardar o estado no ViewModel e não no @Composable?",
+      "opcoes": [
+        "Por estética",
+        "O ViewModel sobrevive à rotação da tela e separa a lógica da interface",
+        "O Compose não aceita estado"
+      ],
+      "certa": 1,
+      "explicacao": "A tela só desenha o estado que recebe."
+    },
+    {
+      "pergunta": "O que falta no app se toda chamada de rede falha mesmo com internet?",
+      "opcoes": ["A permissão INTERNET no manifesto", "Um Flow", "O Room"],
+      "certa": 0,
+      "explicacao": "Sem ela, o Android bloqueia o acesso."
+    },
+    {
+      "pergunta": "Qual a vantagem de um DAO do Room que devolve Flow?",
+      "opcoes": ["É mais rápido", "A lista é emitida de novo a cada mudança na tabela", "Funciona sem banco"],
+      "certa": 1,
+      "explicacao": "A interface acompanha o banco automaticamente."
+    }
+  ],
+  "kotlin/pratica-app-tarefas": [
+    {
+      "pergunta": "Qual a diferença entre remember e rememberSaveable?",
+      "opcoes": [
+        "Nenhuma",
+        "rememberSaveable também sobrevive à rotação e à recriação da Activity",
+        "remember salva no banco"
+      ],
+      "certa": 1,
+      "explicacao": "O Saveable guarda o valor no estado salvo da Activity."
+    }
+  ],
+  "flutter/dart-basico": [
+    {
+      "pergunta": "Qual a diferença entre final e const?",
+      "opcoes": [
+        "Nenhuma",
+        "final é definido uma vez ao rodar; const precisa ser conhecido na compilação",
+        "const pode mudar"
+      ],
+      "certa": 1,
+      "explicacao": "DateTime.now() pode ser final, mas não const."
+    },
+    {
+      "pergunta": "O que faz telefone ?? 'sem telefone'?",
+      "opcoes": ["Compara os dois", "Usa o texto da direita se telefone for null", "Junta os textos"],
+      "certa": 1,
+      "explicacao": "?? é o operador de valor padrão para null."
+    },
+    {
+      "pergunta": "Como se passa um parâmetro nomeado em Dart?",
+      "opcoes": ["f(percentual = 25)", "f(percentual: 25)", "f(--percentual 25)"],
+      "certa": 1,
+      "explicacao": "Nome, dois-pontos e valor."
+    }
+  ],
+  "flutter/colecoes-e-classes": [
+    {
+      "pergunta": "O que notas.where((n) => n >= 7) faz?",
+      "opcoes": ["Ordena", "Filtra os elementos que passam na condição", "Soma"],
+      "certa": 1,
+      "explicacao": "Devolve um Iterable; .toList() vira lista."
+    },
+    {
+      "pergunta": "O que required faz num parâmetro nomeado?",
+      "opcoes": ["Torna obrigatório informar", "Dá um valor padrão", "Torna privado"],
+      "certa": 0,
+      "explicacao": "Sem ele, o parâmetro nomeado precisa de padrão ou ser anulável."
+    },
+    {
+      "pergunta": "O que uma função async devolve?",
+      "opcoes": ["O valor direto", "Um Future com o valor", "Nada"],
+      "certa": 1,
+      "explicacao": "Quem chama usa await para pegar o valor."
+    }
+  ],
+  "flutter/pratica-carrinho-dart": [
+    {
+      "pergunta": "O que o _ no começo de _itens significa em Dart?",
+      "opcoes": ["Variável temporária", "Privado à biblioteca (arquivo)", "Constante"],
+      "certa": 1,
+      "explicacao": "Dart não tem a palavra private: usa o sublinhado."
+    }
+  ],
+  "flutter/widgets-e-layout": [
+    {
+      "pergunta": "Qual widget põe filhos lado a lado?",
+      "opcoes": ["Column", "Row", "Stack"],
+      "certa": 1,
+      "explicacao": "Column empilha; Stack sobrepõe."
+    },
+    {
+      "pergunta": "Para que serve Expanded dentro de um Row?",
+      "opcoes": ["Aumentar a fonte", "Fazer o filho ocupar o espaço que sobra", "Rolar a tela"],
+      "certa": 1,
+      "explicacao": "É a solução mais comum para overflow horizontal."
+    },
+    {
+      "pergunta": "O que o hot reload faz?",
+      "opcoes": ["Reinstala o app", "Aplica a mudança no código sem reiniciar o app", "Apaga os dados"],
+      "certa": 1,
+      "explicacao": "O estado atual é mantido."
+    }
+  ],
+  "flutter/estado-e-navegacao": [
+    {
+      "pergunta": "O que acontece se você mudar uma variável do State sem setState?",
+      "opcoes": ["A tela atualiza", "A tela não é reconstruída", "O app fecha"],
+      "certa": 1,
+      "explicacao": "setState é o aviso para reconstruir."
+    },
+    {
+      "pergunta": "Como desabilitar um botão?",
+      "opcoes": ["enabled: false", "onPressed: null", "visible: false"],
+      "certa": 1,
+      "explicacao": "Sem função de clique, o botão fica desabilitado."
+    },
+    {
+      "pergunta": "Como uma tela devolve um valor para a anterior?",
+      "opcoes": ["Navigator.pop(valor)", "return valor", "Uma variável global"],
+      "certa": 0,
+      "explicacao": "Quem fez push recebe o valor no await."
+    }
+  ],
+  "flutter/pratica-app-reserva": [
+    {
+      "pergunta": "Por que conferir context.mounted depois de um await?",
+      "opcoes": ["Por estilo", "A tela pode ter sido fechada enquanto esperava", "Para recarregar o app"],
+      "certa": 1,
+      "explicacao": "Usar o context de uma tela que já saiu causa erro."
+    }
+  ],
+  "flutter/http-e-estado": [
+    {
+      "pergunta": "Por que não criar o Future dentro do build num FutureBuilder?",
+      "opcoes": [
+        "Dá erro de compilação",
+        "Cada reconstrução faria uma nova requisição",
+        "O Future não funciona no build"
+      ],
+      "certa": 1,
+      "explicacao": "Crie no initState ou use um provider."
+    },
+    {
+      "pergunta": "Qual a diferença entre ref.watch e ref.read?",
+      "opcoes": ["Nenhuma", "watch reconstrói quando o valor muda; read só lê uma vez", "read é mais lento"],
+      "certa": 1,
+      "explicacao": "Use watch no build e read em eventos."
+    },
+    {
+      "pergunta": "Por que state = [...state, p] em vez de state.add(p)?",
+      "opcoes": ["É mais curto", "O Riverpod detecta mudança quando o estado é um objeto novo", "add não existe"],
+      "certa": 1,
+      "explicacao": "Alterar a lista existente não avisa ninguém."
+    }
+  ],
+  "flutter/testes-e-publicacao": [
+    {
+      "pergunta": "Num teste de widget, para que serve tester.pump()?",
+      "opcoes": ["Encher o app de dados", "Reconstruir a tela depois de uma mudança de estado", "Fechar o app"],
+      "certa": 1,
+      "explicacao": "Sem pump, a tela ainda mostra o estado antigo."
+    },
+    {
+      "pergunta": "Qual formato o Google Play pede?",
+      "opcoes": [".apk", ".aab (App Bundle)", ".exe"],
+      "certa": 1,
+      "explicacao": "O Play gera os APKs otimizados para cada aparelho a partir do bundle."
+    },
+    {
+      "pergunta": "O que acontece se você perder a chave de assinatura do app Android?",
+      "opcoes": ["Nada", "Fica difícil ou impossível publicar atualizações do mesmo app", "O app some da loja"],
+      "certa": 1,
+      "explicacao": "Com o Play App Signing, há recuperação, mas dá trabalho. Guarde bem."
+    }
+  ],
+  "flutter/pratica-app-cotacoes": [
+    {
+      "pergunta": "O que o RefreshIndicator espera em onRefresh?",
+      "opcoes": ["Um número", "Uma função que devolve um Future, para saber quando parar a animação", "Um widget"],
+      "certa": 1,
+      "explicacao": "O indicador some quando o Future termina."
     }
   ],
   "git/o-que-e-git": [
@@ -4173,6 +5425,166 @@
       "opcoes": ["workflow_dispatch", "workflow_call", "repository_dispatch"],
       "certa": 1,
       "explicacao": "O chamador usa uses: dono/repo/.github/workflows/arquivo.yml@ref."
+    }
+  ],
+  "bash/primeiros-comandos": [
+    {
+      "pergunta": "Qual comando lista também os arquivos ocultos?",
+      "opcoes": ["ls -h", "ls -a", "ls --hidden-only"],
+      "certa": 1,
+      "explicacao": "O -a mostra os que começam com ponto; -l dá os detalhes."
+    },
+    {
+      "pergunta": "Como renomear um arquivo no Bash?",
+      "opcoes": ["rename", "mv antigo novo", "cp -r"],
+      "certa": 1,
+      "explicacao": "Mover para outro nome na mesma pasta é renomear."
+    },
+    {
+      "pergunta": "O que rm faz com o arquivo?",
+      "opcoes": ["Manda para a lixeira", "Apaga de vez", "Esconde"],
+      "certa": 1,
+      "explicacao": "Não há lixeira no terminal."
+    }
+  ],
+  "bash/pipes-e-redirecionamento": [
+    {
+      "pergunta": "Qual a diferença entre > e >>?",
+      "opcoes": ["Nenhuma", "> substitui o arquivo; >> acrescenta no fim", ">> apaga o arquivo"],
+      "certa": 1,
+      "explicacao": "Cuidado: > zera o arquivo antes de escrever."
+    },
+    {
+      "pergunta": "Por que sort vem antes de uniq -c?",
+      "opcoes": [
+        "Por estética",
+        "uniq só junta linhas iguais que estão seguidas",
+        "uniq exige ordem alfabética para não dar erro"
+      ],
+      "certa": 1,
+      "explicacao": "Ordenar coloca as iguais lado a lado."
+    },
+    {
+      "pergunta": "Como acompanhar um log que está sendo escrito?",
+      "opcoes": ["cat -live", "tail -f arquivo.log", "head -w"],
+      "certa": 1,
+      "explicacao": "Ctrl+C para sair."
+    }
+  ],
+  "bash/pratica-analisar-log": [
+    {
+      "pergunta": "O que grep -c faz?",
+      "opcoes": ["Colore o resultado", "Conta as linhas que casam", "Copia as linhas"],
+      "certa": 1,
+      "explicacao": "É o mesmo que grep | wc -l, numa etapa só."
+    }
+  ],
+  "bash/scripts-e-variaveis": [
+    {
+      "pergunta": "O que está errado em nome = \"Ana\"?",
+      "opcoes": ["Nada", "Não pode ter espaço em volta do =", "Faltou o $"],
+      "certa": 1,
+      "explicacao": "Com espaços, o Bash tenta rodar um comando chamado \"nome\"."
+    },
+    {
+      "pergunta": "O que faz set -e?",
+      "opcoes": ["Mostra cada comando", "Para o script no primeiro comando que falhar", "Ativa cores"],
+      "certa": 1,
+      "explicacao": "Sem ele, o script segue em frente depois de um erro."
+    },
+    {
+      "pergunta": "Por que escrever \"$arquivo\" com aspas?",
+      "opcoes": ["Por estilo", "Para nomes com espaço não virarem vários argumentos", "Para o texto sair em negrito"],
+      "certa": 1,
+      "explicacao": "É a fonte de bugs mais comum em scripts."
+    }
+  ],
+  "bash/lacos-funcoes-permissoes": [
+    {
+      "pergunta": "Qual código de saída significa sucesso?",
+      "opcoes": ["1", "0", "-1"],
+      "certa": 1,
+      "explicacao": "Qualquer valor diferente de 0 é falha."
+    },
+    {
+      "pergunta": "O que \"${arq%.*}\" devolve para \"foto.jpg\"?",
+      "opcoes": ["jpg", "foto", "foto.jpg"],
+      "certa": 1,
+      "explicacao": "% tira o menor final que casa com .*"
+    },
+    {
+      "pergunta": "O que significa chmod 640?",
+      "opcoes": ["Todos leem e escrevem", "Dono lê e escreve, grupo lê, outros nada", "Só o root acessa"],
+      "certa": 1,
+      "explicacao": "6 = 4+2 (ler+escrever), 4 = ler, 0 = nada."
+    }
+  ],
+  "bash/pratica-organizar-fotos": [
+    {
+      "pergunta": "Para que serve shopt -s nullglob no script?",
+      "opcoes": [
+        "Apagar arquivos vazios",
+        "Fazer um curinga sem resultado virar lista vazia, em vez do texto literal",
+        "Ignorar erros"
+      ],
+      "certa": 1,
+      "explicacao": "Sem ele, o laço rodaria uma vez com \"*.png\"."
+    }
+  ],
+  "bash/ssh-processos-cron": [
+    {
+      "pergunta": "Qual chave SSH vai para o servidor?",
+      "opcoes": ["A privada", "A pública (.pub)", "As duas"],
+      "certa": 1,
+      "explicacao": "A privada fica só com você."
+    },
+    {
+      "pergunta": "O que significa 0 3 * * * no cron?",
+      "opcoes": ["A cada 3 minutos", "Todo dia às 3h00", "Dia 3 de cada mês"],
+      "certa": 1,
+      "explicacao": "Minuto 0, hora 3, qualquer dia, mês e dia da semana."
+    },
+    {
+      "pergunta": "Por que um script funciona no terminal e falha no cron?",
+      "opcoes": [
+        "O cron é mais lento",
+        "O cron tem um ambiente mínimo (PATH curto, sem .bashrc)",
+        "O cron não roda Bash"
+      ],
+      "certa": 1,
+      "explicacao": "Caminhos absolutos resolvem a maioria dos casos."
+    }
+  ],
+  "bash/sed-awk-jq": [
+    {
+      "pergunta": "O que faz sed -i?",
+      "opcoes": ["Ignora maiúsculas", "Altera o próprio arquivo", "Mostra as linhas numeradas"],
+      "certa": 1,
+      "explicacao": "Sem -i, o sed só mostra o resultado."
+    },
+    {
+      "pergunta": "No awk, quando roda o bloco END?",
+      "opcoes": ["Em cada linha", "Depois da última linha", "Antes da primeira"],
+      "certa": 1,
+      "explicacao": "BEGIN roda antes; END, depois."
+    },
+    {
+      "pergunta": "Para que serve o -r do jq?",
+      "opcoes": ["Ler recursivamente", "Devolver texto sem aspas", "Ordenar"],
+      "certa": 1,
+      "explicacao": "Saída \"crua\", pronta para usar em variáveis."
+    }
+  ],
+  "bash/pratica-monitor-site": [
+    {
+      "pergunta": "Por que cd \"$(dirname \"$0\")\" no começo?",
+      "opcoes": [
+        "Para o script achar sites.txt mesmo rodando pelo cron, de outra pasta",
+        "Para voltar à pasta pessoal",
+        "É obrigatório no Bash"
+      ],
+      "certa": 0,
+      "explicacao": "$0 é o caminho do próprio script."
     }
   ],
   "powershell/primeiros-comandos": [
@@ -5183,6 +6595,182 @@
       "explicacao": "O painel acompanha os dados em vez de depender de manutenção manual."
     }
   ],
+  "vba/primeira-macro": [
+    {
+      "pergunta": "Em que formato salvar uma pasta com macros?",
+      "opcoes": [".xlsx", ".xlsm", ".csv"],
+      "certa": 1,
+      "explicacao": "O .xlsx não guarda código VBA."
+    },
+    {
+      "pergunta": "Qual atalho abre o editor do VBA?",
+      "opcoes": ["Ctrl+F11", "Alt+F11", "F5"],
+      "certa": 1,
+      "explicacao": "F5 roda a macro onde está o cursor."
+    },
+    {
+      "pergunta": "Dá para desfazer com Ctrl+Z o que uma macro fez?",
+      "opcoes": ["Sim", "Não", "Só se for formatação"],
+      "certa": 1,
+      "explicacao": "Por isso teste em cópias."
+    }
+  ],
+  "vba/celulas-variaveis-lacos": [
+    {
+      "pergunta": "Para que serve Option Explicit?",
+      "opcoes": [
+        "Deixa a macro mais rápida",
+        "Obriga declarar variáveis, pegando erros de digitação",
+        "Mostra mensagens de erro"
+      ],
+      "certa": 1,
+      "explicacao": "Sem ele, um nome errado vira uma variável nova vazia."
+    },
+    {
+      "pergunta": "Como achar a última linha preenchida da coluna A?",
+      "opcoes": ["Range(\"A1048576\").Row", "Cells(Rows.Count, \"A\").End(xlUp).Row", "Range(\"A:A\").Count"],
+      "certa": 1,
+      "explicacao": "É o Ctrl+↑ a partir do fim da planilha."
+    },
+    {
+      "pergunta": "Quando usar Set?",
+      "opcoes": ["Para guardar objetos (planilhas, intervalos)", "Para qualquer variável", "Para números"],
+      "certa": 0,
+      "explicacao": "Textos e números se atribuem direto; objetos, com Set."
+    }
+  ],
+  "vba/pratica-formatar-relatorio": [
+    {
+      "pergunta": "Por que usar a última linha calculada em vez de \"D2:D6\"?",
+      "opcoes": [
+        "Fica mais bonito",
+        "Para a macro funcionar com qualquer quantidade de dados",
+        "O VBA não aceita endereços fixos"
+      ],
+      "certa": 1,
+      "explicacao": "O relatório do mês que vem terá outro tamanho."
+    }
+  ],
+  "vba/planilhas-e-arquivos": [
+    {
+      "pergunta": "Qual a diferença entre ThisWorkbook e ActiveWorkbook?",
+      "opcoes": [
+        "Nenhuma",
+        "ThisWorkbook é onde está o código; ActiveWorkbook é a pasta em foco",
+        "ActiveWorkbook é sempre a primeira aberta"
+      ],
+      "certa": 1,
+      "explicacao": "Com vários arquivos abertos, isso faz toda a diferença."
+    },
+    {
+      "pergunta": "Como pegar o próximo arquivo com Dir?",
+      "opcoes": ["Dir(pasta) de novo", "Dir() sem argumentos", "Next arquivo"],
+      "certa": 1,
+      "explicacao": "Sem argumentos, Dir continua a busca anterior."
+    },
+    {
+      "pergunta": "Qual o jeito mais rápido de copiar valores?",
+      "opcoes": ["Copy e PasteSpecial", "destino.Value = origem.Value", "Célula por célula num laço"],
+      "certa": 1,
+      "explicacao": "Atribuir o Value de um intervalo inteiro não usa a área de transferência."
+    }
+  ],
+  "vba/funcoes-e-erros": [
+    {
+      "pergunta": "Como uma Function devolve o resultado?",
+      "opcoes": ["Com return", "Atribuindo ao nome da função", "Com MsgBox"],
+      "certa": 1,
+      "explicacao": "NomeDaFuncao = valor."
+    },
+    {
+      "pergunta": "Por que ler um intervalo para um array?",
+      "opcoes": [
+        "É muito mais rápido que acessar célula por célula",
+        "Para apagar os dados",
+        "Arrays ocupam menos disco"
+      ],
+      "certa": 0,
+      "explicacao": "Cada acesso a uma célula passa pelo Excel; o array fica na memória."
+    },
+    {
+      "pergunta": "Qual o risco de On Error Resume Next no topo da macro?",
+      "opcoes": ["Nenhum", "Esconder todos os erros", "Travar o Excel"],
+      "certa": 1,
+      "explicacao": "A macro segue em frente com dados errados."
+    }
+  ],
+  "vba/pratica-consolidar-lojas": [
+    {
+      "pergunta": "O que faz Cells(proxima, \"A\").Resize(linhas, 1)?",
+      "opcoes": [
+        "Muda a largura da coluna",
+        "Cria um intervalo com \"linhas\" linhas a partir daquela célula",
+        "Apaga as linhas"
+      ],
+      "certa": 1,
+      "explicacao": "Resize define o tamanho do intervalo a partir do canto."
+    }
+  ],
+  "vba/eventos-e-userform": [
+    {
+      "pergunta": "Por que desligar EnableEvents dentro do Worksheet_Change?",
+      "opcoes": [
+        "Para ficar mais rápido",
+        "Para a alteração feita pela macro não disparar o evento de novo, em loop",
+        "Para salvar o arquivo"
+      ],
+      "certa": 1,
+      "explicacao": "Escrever numa célula dentro do Change dispara outro Change."
+    },
+    {
+      "pergunta": "Onde fica o código do Workbook_Open?",
+      "opcoes": ["Num módulo comum", "Em EstaPasta_de_trabalho", "No UserForm"],
+      "certa": 1,
+      "explicacao": "Eventos da pasta ficam no módulo da pasta; eventos de planilha, no da planilha."
+    },
+    {
+      "pergunta": "Como impedir o salvamento no Workbook_BeforeSave?",
+      "opcoes": ["Exit Sub", "Cancel = True", "End"],
+      "certa": 1,
+      "explicacao": "O parâmetro Cancel cancela o evento."
+    }
+  ],
+  "vba/outlook-e-boas-praticas": [
+    {
+      "pergunta": "Por que usar .Display antes de .Send?",
+      "opcoes": [".Send não existe", "Para conferir o e-mail antes de mandar de verdade", "Para anexar arquivos"],
+      "certa": 1,
+      "explicacao": "Teste com .Display; troque por .Send quando estiver certo."
+    },
+    {
+      "pergunta": "O que é a ligação tardia (CreateObject)?",
+      "opcoes": [
+        "Criar o objeto sem marcar a referência da biblioteca",
+        "Um erro de conexão",
+        "Abrir o Outlook mais tarde"
+      ],
+      "certa": 0,
+      "explicacao": "Funciona em mais versões do Office, sem autocompletar."
+    },
+    {
+      "pergunta": "Qual a vantagem de usar Tabelas (ListObjects) no VBA?",
+      "opcoes": ["Ficam coloridas", "O intervalo cresce sozinho com os dados", "São mais rápidas que arrays"],
+      "certa": 1,
+      "explicacao": "DataBodyRange sempre cobre todas as linhas da tabela."
+    }
+  ],
+  "vba/pratica-relatorios-por-vendedor": [
+    {
+      "pergunta": "Por que LookAt:=xlWhole no Find?",
+      "opcoes": [
+        "Para buscar em todas as abas",
+        "Para exigir que a célula seja exatamente igual ao texto",
+        "Para ignorar maiúsculas"
+      ],
+      "certa": 1,
+      "explicacao": "Sem ele, a busca aceita trechos (xlPart)."
+    }
+  ],
   "power-query/o-que-e-power-query": [
     {
       "pergunta": "O que acontece com o arquivo original quando você limpa os dados no Power Query?",
@@ -5413,6 +7001,158 @@
       "opcoes": ["Só se não é feriado", "Que não é fim de semana e não é feriado", "Só se não é domingo"],
       "certa": 1,
       "explicacao": "As duas condições juntas, com and."
+    }
+  ],
+  "linguagem-m/valores-e-let": [
+    {
+      "pergunta": "O que o in define numa expressão let?",
+      "opcoes": ["A primeira etapa", "O valor que a consulta devolve", "Um comentário"],
+      "certa": 1,
+      "explicacao": "Normalmente é a última etapa, mas pode ser qualquer uma."
+    },
+    {
+      "pergunta": "Qual o resultado de \"Total: \" & 10 em M?",
+      "opcoes": ["\"Total: 10\"", "Erro: o M não converte número em texto sozinho", "10"],
+      "certa": 1,
+      "explicacao": "Use \"Total: \" & Text.From(10)."
+    },
+    {
+      "pergunta": "Como se escreve uma etapa chamada Linhas Filtradas?",
+      "opcoes": ["Linhas Filtradas", "#\"Linhas Filtradas\"", "[Linhas Filtradas]"],
+      "certa": 1,
+      "explicacao": "Nomes com espaço ou caracteres especiais usam #\"...\"."
+    }
+  ],
+  "linguagem-m/listas-registros-tabelas": [
+    {
+      "pergunta": "Qual a diferença entre {1, 2} e [a = 1, b = 2]?",
+      "opcoes": ["Nenhuma", "O primeiro é uma lista; o segundo, um registro", "O primeiro é uma tabela"],
+      "certa": 1,
+      "explicacao": "Chaves: lista. Colchetes: registro."
+    },
+    {
+      "pergunta": "O que Quartos[Diaria] devolve?",
+      "opcoes": ["A primeira diária", "Uma lista com todas as diárias", "Um registro"],
+      "certa": 1,
+      "explicacao": "Tabela[Coluna] é uma lista."
+    },
+    {
+      "pergunta": "Para que serve o ? em Lista{5}?",
+      "opcoes": ["Devolver null em vez de erro quando o item não existe", "Ordenar a lista", "Perguntar ao usuário"],
+      "certa": 0,
+      "explicacao": "Também funciona em campos: Registro[Campo]?."
+    }
+  ],
+  "linguagem-m/pratica-tabela-na-mao": [
+    {
+      "pergunta": "O que o último argumento de Table.AddColumn(..., type text) faz?",
+      "opcoes": ["Converte a tabela inteira", "Define o tipo da coluna nova", "Nada"],
+      "certa": 1,
+      "explicacao": "Sem ele, a coluna fica com tipo \"any\" (ABC123)."
+    }
+  ],
+  "linguagem-m/funcoes-e-each": [
+    {
+      "pergunta": "O que each [Valor] * 2 significa?",
+      "opcoes": ["Multiplicar a coluna inteira de uma vez", "Uma função (_) => _[Valor] * 2", "Um laço for"],
+      "certa": 1,
+      "explicacao": "each é açúcar sintático para uma função de um parâmetro."
+    },
+    {
+      "pergunta": "Por que List.Transform(lista, Text.Proper) funciona sem each?",
+      "opcoes": ["Por sorte", "Text.Proper já é uma função de um argumento", "Não funciona"],
+      "certa": 1,
+      "explicacao": "Funções são valores e podem ser passadas direto."
+    },
+    {
+      "pergunta": "Quando trocar each por (nome) => ...?",
+      "opcoes": ["Nunca", "Quando há funções dentro de funções e o _ ficaria ambíguo", "Sempre"],
+      "certa": 1,
+      "explicacao": "Nomes deixam claro quem é quem."
+    }
+  ],
+  "linguagem-m/transformar-sem-botoes": [
+    {
+      "pergunta": "Qual a vantagem de usar Table.ColumnsOfType em vez de listar as colunas?",
+      "opcoes": ["Nenhuma", "A consulta continua funcionando quando colunas novas aparecem", "É obrigatório"],
+      "certa": 1,
+      "explicacao": "Código que não depende de nomes fixos é mais robusto."
+    },
+    {
+      "pergunta": "Dentro de uma agregação do Table.Group, o que é _?",
+      "opcoes": ["A tabela inteira", "A subtabela das linhas daquele grupo", "A primeira linha"],
+      "certa": 1,
+      "explicacao": "Por isso [Valor] ali é a lista dos valores do grupo."
+    },
+    {
+      "pergunta": "Quanto dá List.Accumulate({1, 2, 3}, 10, (s, x) => s + x)?",
+      "opcoes": ["6", "16", "10"],
+      "certa": 1,
+      "explicacao": "Começa em 10 e soma cada item."
+    }
+  ],
+  "linguagem-m/pratica-de-para": [
+    {
+      "pergunta": "Por que usar Table.Buffer na tabela DePara?",
+      "opcoes": ["Para ordenar", "Para ela ficar na memória e não ser relida a cada linha", "Para converter tipos"],
+      "certa": 1,
+      "explicacao": "Útil em tabelas pequenas consultadas muitas vezes."
+    }
+  ],
+  "linguagem-m/erros-e-tipos": [
+    {
+      "pergunta": "O que try ... otherwise null faz?",
+      "opcoes": ["Ignora a etapa", "Devolve o valor, ou null se a expressão der erro", "Para a consulta"],
+      "certa": 1,
+      "explicacao": "Sem otherwise, try devolve um registro com HasError."
+    },
+    {
+      "pergunta": "Por que passar a cultura \"pt-BR\" ao converter tipos?",
+      "opcoes": [
+        "Para traduzir os nomes",
+        "Para números e datas serem lidos no formato brasileiro em qualquer computador",
+        "Para acelerar"
+      ],
+      "certa": 1,
+      "explicacao": "Sem cultura, vale a do sistema onde a consulta roda."
+    },
+    {
+      "pergunta": "Para que serve error Error.Record(...)?",
+      "opcoes": ["Esconder erros", "Lançar um erro próprio com mensagem clara", "Registrar num log"],
+      "certa": 1,
+      "explicacao": "Melhor um erro claro cedo do que dados errados depois."
+    }
+  ],
+  "linguagem-m/dobragem-e-desempenho": [
+    {
+      "pergunta": "Como saber se uma etapa ainda está dobrando para a fonte?",
+      "opcoes": ["Pelo nome da etapa", "\"Exibir Consulta Nativa\" disponível no menu da etapa", "Pela cor do ícone"],
+      "certa": 1,
+      "explicacao": "Se a opção ficar cinza, a dobragem parou antes."
+    },
+    {
+      "pergunta": "Onde colocar etapas que quebram a dobragem?",
+      "opcoes": ["No começo", "O mais tarde possível, depois das que dobram", "Não importa"],
+      "certa": 1,
+      "explicacao": "Assim os filtros ainda rodam na fonte."
+    },
+    {
+      "pergunta": "Por que usar Table.ColumnNames(Fonte{0}[Data]) ao expandir?",
+      "opcoes": ["Para a consulta não depender de nomes fixos de colunas", "Para ordenar", "É mais rápido"],
+      "certa": 0,
+      "explicacao": "Colunas novas nos arquivos entram sozinhas."
+    }
+  ],
+  "linguagem-m/pratica-importador-robusto": [
+    {
+      "pergunta": "O que MissingField.UseNull faz no Table.SelectColumns?",
+      "opcoes": [
+        "Apaga colunas vazias",
+        "Cria com nulos as colunas que não existem, em vez de dar erro",
+        "Troca nulos por zero"
+      ],
+      "certa": 1,
+      "explicacao": "Também existe MissingField.Ignore, que simplesmente pula."
     }
   ],
   "power-bi/o-que-e-power-bi": [
@@ -6185,6 +7925,158 @@
       ],
       "certa": 1,
       "explicacao": "Cada DataFrame do script vira uma tabela no modelo."
+    }
+  ],
+  "r/primeiros-passos": [
+    {
+      "pergunta": "Qual o índice do primeiro elemento de um vetor em R?",
+      "opcoes": ["0", "1", "-1"],
+      "certa": 1,
+      "explicacao": "R começa a contar do 1."
+    },
+    {
+      "pergunta": "O que vendas * 1.1 faz com um vetor de 5 valores?",
+      "opcoes": ["Dá erro", "Multiplica cada um dos 5 valores", "Multiplica só o primeiro"],
+      "certa": 1,
+      "explicacao": "As operações em R são vetorizadas."
+    },
+    {
+      "pergunta": "Qual a diferença entre install.packages e library?",
+      "opcoes": ["Nenhuma", "install baixa uma vez; library carrega em cada sessão", "library baixa da internet"],
+      "certa": 1,
+      "explicacao": "Instala uma vez, carrega sempre que for usar."
+    }
+  ],
+  "r/data-frames": [
+    {
+      "pergunta": "Qual verbo do dplyr escolhe linhas?",
+      "opcoes": ["select", "filter", "mutate"],
+      "certa": 1,
+      "explicacao": "filter escolhe linhas; select, colunas."
+    },
+    {
+      "pergunta": "O que o pipe |> faz?",
+      "opcoes": ["Divide valores", "Passa o resultado da esquerda para a função da direita", "Cria um gráfico"],
+      "certa": 1,
+      "explicacao": "x |> f(y) é o mesmo que f(x, y)."
+    },
+    {
+      "pergunta": "Quanto dá sum(c(10, NA, 5))?",
+      "opcoes": ["15", "NA", "0"],
+      "certa": 1,
+      "explicacao": "Com na.rm = TRUE, daria 15."
+    }
+  ],
+  "r/pratica-vendas": [
+    {
+      "pergunta": "O que sum(is.na(x)) devolve?",
+      "opcoes": ["A soma dos valores", "Quantos valores ausentes há em x", "Erro"],
+      "certa": 1,
+      "explicacao": "TRUE vale 1 e FALSE vale 0 na soma."
+    }
+  ],
+  "r/ggplot2": [
+    {
+      "pergunta": "O que vai dentro do aes()?",
+      "opcoes": ["Cores fixas", "O mapeamento de colunas para eixos, cor, tamanho", "O título"],
+      "certa": 1,
+      "explicacao": "aes liga dados a propriedades visuais."
+    },
+    {
+      "pergunta": "Como ordenar barras pelo valor?",
+      "opcoes": ["sort()", "reorder(categoria, valor) no eixo", "arrange() resolve sozinho"],
+      "certa": 1,
+      "explicacao": "O ggplot usa a ordem dos níveis do fator, que reorder ajusta."
+    },
+    {
+      "pergunta": "Para que serve facet_wrap?",
+      "opcoes": ["Salvar o gráfico", "Um gráfico pequeno para cada categoria", "Girar o gráfico"],
+      "certa": 1,
+      "explicacao": "São os \"small multiples\"."
+    }
+  ],
+  "r/tidyr-e-joins": [
+    {
+      "pergunta": "Uma tabela com um mês em cada coluna vira \"tidy\" com...",
+      "opcoes": ["pivot_wider", "pivot_longer", "left_join"],
+      "certa": 1,
+      "explicacao": "As colunas de mês viram uma coluna \"mes\" e outra de valores."
+    },
+    {
+      "pergunta": "Qual join mantém todas as linhas da tabela da esquerda?",
+      "opcoes": ["inner_join", "left_join", "anti_join"],
+      "certa": 1,
+      "explicacao": "Sem correspondência, as colunas novas ficam NA."
+    },
+    {
+      "pergunta": "Para que serve anti_join?",
+      "opcoes": [
+        "Achar as linhas da esquerda sem correspondência na direita",
+        "Apagar a tabela",
+        "Juntar ao contrário"
+      ],
+      "certa": 0,
+      "explicacao": "Ótimo para descobrir cadastros faltando."
+    }
+  ],
+  "r/pratica-gastos-pessoais": [
+    {
+      "pergunta": "O que significa pivot_longer(-descricao, ...)?",
+      "opcoes": ["Apagar a coluna descricao", "Pivotar todas as colunas, menos descricao", "Ordenar ao contrário"],
+      "certa": 1,
+      "explicacao": "O sinal de menos exclui a coluna da seleção."
+    }
+  ],
+  "r/funcoes-e-iteracao": [
+    {
+      "pergunta": "Qual a diferença entre map e map_dbl?",
+      "opcoes": ["Nenhuma", "map devolve lista; map_dbl, vetor de números", "map_dbl é mais lento"],
+      "certa": 1,
+      "explicacao": "As variantes _dbl, _chr, _lgl garantem o tipo do resultado."
+    },
+    {
+      "pergunta": "O que \\(x) x + 1 significa?",
+      "opcoes": ["Uma função anônima que soma 1", "Uma divisão", "Um comentário"],
+      "certa": 0,
+      "explicacao": "É o atalho para function(x) x + 1, desde o R 4.1."
+    },
+    {
+      "pergunta": "Para que serve across?",
+      "opcoes": ["Juntar tabelas", "Aplicar a mesma função a várias colunas", "Cruzar dois gráficos"],
+      "certa": 1,
+      "explicacao": "Evita repetir a mesma conta coluna por coluna."
+    }
+  ],
+  "r/modelos-e-quarto": [
+    {
+      "pergunta": "Um p-valor de 0,01 num teste A/B indica...",
+      "opcoes": ["Que a diferença é grande", "Que dificilmente a diferença é só acaso", "Que o teste falhou"],
+      "certa": 1,
+      "explicacao": "O tamanho da diferença se lê no intervalo de confiança."
+    },
+    {
+      "pergunta": "Um coeficiente positivo numa regressão prova que X causa Y?",
+      "opcoes": ["Sim", "Não, indica associação", "Só se o R² for alto"],
+      "certa": 1,
+      "explicacao": "Causa exige experimento ou um desenho de estudo específico."
+    },
+    {
+      "pergunta": "Qual a vantagem de um relatório em Quarto?",
+      "opcoes": ["É mais bonito que Word", "Os números e gráficos são recalculados ao renderizar", "Não precisa de R"],
+      "certa": 1,
+      "explicacao": "Relatório reprodutível: sem copiar e colar números."
+    }
+  ],
+  "r/pratica-teste-ab": [
+    {
+      "pergunta": "Para que serve set.seed(42) numa simulação?",
+      "opcoes": [
+        "Deixar os números mais aleatórios",
+        "Fazer os números \"aleatórios\" saírem iguais toda vez",
+        "Acelerar o R"
+      ],
+      "certa": 1,
+      "explicacao": "Reprodutibilidade: quem rodar de novo vê o mesmo resultado."
     }
   ],
   "estatistica/media-mediana-moda": [

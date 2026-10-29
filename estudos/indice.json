@@ -1815,6 +1815,85 @@
       ]
     },
     {
+      "id": "postgresql",
+      "titulo": "PostgreSQL",
+      "sigla": "PG",
+      "itens": [
+        {
+          "id": "postgresql/instalar-e-psql",
+          "titulo": "Instalar e usar o psql",
+          "resumo": "Docker ou instalador, conectar, bancos, esquemas e os comandos de barra.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 9
+        },
+        {
+          "id": "postgresql/tabelas-e-tipos",
+          "titulo": "Tabelas, tipos e restrições",
+          "resumo": "identity, text, numeric, timestamptz, chaves, CHECK, UNIQUE e daterange.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 13
+        },
+        {
+          "id": "postgresql/pratica-modelar-pousada",
+          "titulo": "Prática: modelar e popular o banco",
+          "resumo": "Criar as tabelas, inserir dados e testar as restrições.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 20
+        },
+        {
+          "id": "postgresql/indices-e-explain",
+          "titulo": "Índices e EXPLAIN",
+          "resumo": "Quando criar índice, B-tree, índice composto, parcial e ler o plano.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 14
+        },
+        {
+          "id": "postgresql/transacoes-e-concorrencia",
+          "titulo": "Transações e concorrência",
+          "resumo": "BEGIN, COMMIT, ROLLBACK, isolamento, SELECT FOR UPDATE e restrição de exclusão.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 14
+        },
+        {
+          "id": "postgresql/pratica-relatorios",
+          "titulo": "Prática: relatórios com CTE e janelas",
+          "resumo": "Ocupação por mês, ranking de hóspedes e generate_series.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 30
+        },
+        {
+          "id": "postgresql/jsonb-e-busca",
+          "titulo": "JSONB e busca textual",
+          "resumo": "Guardar documentos, consultar campos, índice GIN e full-text em português.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 14
+        },
+        {
+          "id": "postgresql/funcoes-permissoes-operacao",
+          "titulo": "Funções, permissões e operação",
+          "resumo": "PL/pgSQL, gatilhos, views, papéis, RLS, backup e conexões.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 15
+        },
+        {
+          "id": "postgresql/pratica-auditoria",
+          "titulo": "Prática: auditoria e acesso restrito",
+          "resumo": "Gatilho que registra mudanças, papel só de leitura e backup testado.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 35
+        }
+      ]
+    },
+    {
       "id": "python",
       "titulo": "Python",
       "sigla": "Py",
@@ -1922,6 +2001,559 @@
           "tipo": "desafio",
           "nivel": "Avançado",
           "minutos": 25
+        }
+      ]
+    },
+    {
+      "id": "php",
+      "titulo": "PHP",
+      "sigla": "PHP",
+      "itens": [
+        {
+          "id": "php/primeiro-script",
+          "titulo": "PHP no servidor",
+          "resumo": "Como o PHP gera HTML, o servidor embutido e a sintaxe básica.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 9
+        },
+        {
+          "id": "php/arrays-e-funcoes",
+          "titulo": "Arrays, laços e funções",
+          "resumo": "Listas, arrays associativos, foreach, funções e tipos.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 12
+        },
+        {
+          "id": "php/pratica-tabela-de-precos",
+          "titulo": "Prática: tabela de preços de uma pousada",
+          "resumo": "Gerar uma página a partir de um array e calcular estadias.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 20
+        },
+        {
+          "id": "php/formularios-e-sessoes",
+          "titulo": "Formulários, validação e sessões",
+          "resumo": "$_POST, $_GET, validar entrada, redirecionar e lembrar o usuário.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 13
+        },
+        {
+          "id": "php/pdo-e-composer",
+          "titulo": "Banco com PDO e o Composer",
+          "resumo": "Conectar, consultas preparadas, transações e pacotes.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 13
+        },
+        {
+          "id": "php/pratica-livro-de-reservas",
+          "titulo": "Prática: livro de reservas",
+          "resumo": "Formulário, validação e listagem com PDO e SQLite.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 30
+        },
+        {
+          "id": "php/oop-moderno",
+          "titulo": "Classes, namespaces e PHP 8",
+          "resumo": "Promoção de construtor, enums, readonly, match, autoload PSR-4 e PHPUnit.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 13
+        },
+        {
+          "id": "php/laravel-e-wordpress",
+          "titulo": "Laravel e WordPress",
+          "resumo": "Rotas, Eloquent e Blade no Laravel; temas, hooks e plugins no WordPress.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 14
+        },
+        {
+          "id": "php/pratica-api-json",
+          "titulo": "Prática: uma API JSON sem framework",
+          "resumo": "Roteamento simples, JSON de entrada e saída e códigos HTTP.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 30
+        }
+      ]
+    },
+    {
+      "id": "csharp",
+      "titulo": "C# e .NET",
+      "sigla": "C#",
+      "itens": [
+        {
+          "id": "csharp/primeiro-programa",
+          "titulo": "O primeiro programa",
+          "resumo": "SDK do .NET, dotnet new, Console e a estrutura de um projeto.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 9
+        },
+        {
+          "id": "csharp/tipos-e-controle",
+          "titulo": "Tipos, if, switch e laços",
+          "resumo": "int, decimal, string, bool, var, conversões e repetições.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 12
+        },
+        {
+          "id": "csharp/pratica-caixa",
+          "titulo": "Prática: caixa de uma lojinha",
+          "resumo": "Um programa de console que soma itens e calcula troco.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 20
+        },
+        {
+          "id": "csharp/classes-e-records",
+          "titulo": "Classes, propriedades e records",
+          "resumo": "Modelar dados com classes, construtores, métodos, interfaces e records.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 13
+        },
+        {
+          "id": "csharp/colecoes-e-linq",
+          "titulo": "Listas, dicionários e LINQ",
+          "resumo": "List, Dictionary e consultas com Where, Select, GroupBy e OrderBy.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 13
+        },
+        {
+          "id": "csharp/pratica-relatorio-vendas",
+          "titulo": "Prática: relatório de vendas de um CSV",
+          "resumo": "Ler um arquivo, transformar em records e resumir com LINQ.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 25
+        },
+        {
+          "id": "csharp/async-e-api",
+          "titulo": "async/await e uma API mínima",
+          "resumo": "Tarefas assíncronas, HttpClient e endpoints com ASP.NET Core.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 14
+        },
+        {
+          "id": "csharp/ef-core-e-testes",
+          "titulo": "Entity Framework Core e testes",
+          "resumo": "Banco de dados com classes, migrations, injeção de dependência e xUnit.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 14
+        },
+        {
+          "id": "csharp/pratica-api-tarefas",
+          "titulo": "Prática: API de tarefas com banco",
+          "resumo": "CRUD completo com Minimal API, EF Core e SQLite.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 35
+        }
+      ]
+    },
+    {
+      "id": "java",
+      "titulo": "Java",
+      "sigla": "Jv",
+      "itens": [
+        {
+          "id": "java/primeiro-programa",
+          "titulo": "O primeiro programa",
+          "resumo": "Instalar o JDK, a classe com main, compilar e rodar.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 9
+        },
+        {
+          "id": "java/tipos-e-controle",
+          "titulo": "Tipos, decisões e métodos",
+          "resumo": "Tipos primitivos, String, var, if, switch, laços, Scanner e métodos.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 13
+        },
+        {
+          "id": "java/pratica-adivinhacao",
+          "titulo": "Prática: jogo de adivinhação",
+          "resumo": "Números aleatórios, laço, validação de entrada e contagem de tentativas.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 20
+        },
+        {
+          "id": "java/classes-e-interfaces",
+          "titulo": "Classes, herança e interfaces",
+          "resumo": "Encapsulamento, construtores, records, herança, interfaces e polimorfismo.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 14
+        },
+        {
+          "id": "java/colecoes-e-streams",
+          "titulo": "Coleções, streams e Optional",
+          "resumo": "List, Map, Set, lambdas, stream, filter, map, collect e groupingBy.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 14
+        },
+        {
+          "id": "java/pratica-biblioteca",
+          "titulo": "Prática: sistema de biblioteca",
+          "resumo": "Modelar livros e empréstimos e responder perguntas com streams.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 30
+        },
+        {
+          "id": "java/maven-e-testes",
+          "titulo": "Maven, exceções e JUnit",
+          "resumo": "Estrutura de projeto, dependências, exceções verificadas e testes.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 13
+        },
+        {
+          "id": "java/spring-boot",
+          "titulo": "API com Spring Boot e JPA",
+          "resumo": "Controllers, injeção de dependência, repositórios e validação.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 15
+        },
+        {
+          "id": "java/pratica-api-reservas",
+          "titulo": "Prática: API de reservas",
+          "resumo": "Spring Boot com regra de negócio, erros tratados e testes.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 40
+        }
+      ]
+    },
+    {
+      "id": "go",
+      "titulo": "Go",
+      "sigla": "Go",
+      "itens": [
+        {
+          "id": "go/primeiro-programa",
+          "titulo": "O primeiro programa",
+          "resumo": "Instalar, módulos, package main, fmt e variáveis.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 9
+        },
+        {
+          "id": "go/controle-funcoes-erros",
+          "titulo": "Controle, funções e erros",
+          "resumo": "if, for, switch, múltiplos retornos e o padrão if err != nil.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 12
+        },
+        {
+          "id": "go/pratica-conversor",
+          "titulo": "Prática: conversor na linha de comando",
+          "resumo": "Ler argumentos, validar e converter temperaturas e moedas.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 20
+        },
+        {
+          "id": "go/slices-maps-structs",
+          "titulo": "Slices, maps e structs",
+          "resumo": "Coleções, tipos próprios, métodos e ponteiros.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 13
+        },
+        {
+          "id": "go/json-e-arquivos",
+          "titulo": "JSON, arquivos e testes",
+          "resumo": "encoding/json, tags, ler e gravar arquivos e go test.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 13
+        },
+        {
+          "id": "go/pratica-tarefas-cli",
+          "titulo": "Prática: lista de tarefas no terminal",
+          "resumo": "Subcomandos, structs e persistência num arquivo JSON.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 30
+        },
+        {
+          "id": "go/goroutines-channels",
+          "titulo": "Goroutines e channels",
+          "resumo": "go, WaitGroup, channels, select e Mutex.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 14
+        },
+        {
+          "id": "go/servidor-http",
+          "titulo": "Servidor HTTP e context",
+          "resumo": "net/http, rotas com método, JSON, middleware e cancelamento.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 14
+        },
+        {
+          "id": "go/pratica-verificador-links",
+          "titulo": "Prática: verificador de links concorrente",
+          "resumo": "Checar muitas URLs em paralelo, com limite de workers e timeout.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 35
+        }
+      ]
+    },
+    {
+      "id": "rust",
+      "titulo": "Rust",
+      "sigla": "Rs",
+      "itens": [
+        {
+          "id": "rust/primeiro-programa",
+          "titulo": "Cargo e o primeiro programa",
+          "resumo": "rustup, cargo new, variáveis imutáveis, tipos e macros.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 10
+        },
+        {
+          "id": "rust/controle-e-funcoes",
+          "titulo": "Expressões, controle e funções",
+          "resumo": "if como expressão, loop, while, for, match e funções.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 12
+        },
+        {
+          "id": "rust/pratica-fizzbuzz-primos",
+          "titulo": "Prática: números com regras",
+          "resumo": "Funções puras, laços e match em problemas clássicos.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 20
+        },
+        {
+          "id": "rust/ownership",
+          "titulo": "Ownership e empréstimos",
+          "resumo": "Dono, mover, clonar, referências & e &mut, String e &str.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 15
+        },
+        {
+          "id": "rust/structs-enums-erros",
+          "titulo": "Structs, enums, Option e Result",
+          "resumo": "Modelar dados, impl, enums com dados, ausência sem null e erros com ?.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 14
+        },
+        {
+          "id": "rust/pratica-estoque",
+          "titulo": "Prática: controle de estoque",
+          "resumo": "Structs, enums de erro, HashMap e Result.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 30
+        },
+        {
+          "id": "rust/traits-e-iteradores",
+          "titulo": "Traits, genéricos e iteradores",
+          "resumo": "Comportamento compartilhado, limites de tipo e cadeias de iteradores.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 14
+        },
+        {
+          "id": "rust/crates-async-testes",
+          "titulo": "Crates, async e testes",
+          "resumo": "Cargo.toml, serde, clap, tokio, axum e cargo test.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 14
+        },
+        {
+          "id": "rust/pratica-cli-csv",
+          "titulo": "Prática: resumir um CSV na linha de comando",
+          "resumo": "clap para argumentos, leitura de arquivo, erros com ? e testes.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 35
+        }
+      ]
+    },
+    {
+      "id": "kotlin",
+      "titulo": "Kotlin e Android",
+      "sigla": "Kt",
+      "itens": [
+        {
+          "id": "kotlin/primeiros-passos",
+          "titulo": "val, var, tipos e nulos",
+          "resumo": "O primeiro programa, inferência de tipos, templates e segurança contra null.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 10
+        },
+        {
+          "id": "kotlin/funcoes-e-colecoes",
+          "titulo": "when, funções e coleções",
+          "resumo": "if e when como expressão, funções, listas, mapas e operações funcionais.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 12
+        },
+        {
+          "id": "kotlin/pratica-boletim",
+          "titulo": "Prática: boletim da turma",
+          "resumo": "Médias, situação de cada aluno e estatísticas com coleções.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 20
+        },
+        {
+          "id": "kotlin/classes",
+          "titulo": "Classes, data e sealed classes",
+          "resumo": "Construtores primários, data class, object, enum e estados com sealed.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 13
+        },
+        {
+          "id": "kotlin/coroutines",
+          "titulo": "Coroutines e Flow",
+          "resumo": "suspend, launch, async, delay e fluxos de dados.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 14
+        },
+        {
+          "id": "kotlin/pratica-pedidos",
+          "titulo": "Prática: acompanhar um pedido",
+          "resumo": "Sealed classes e Flow simulando o status de uma entrega.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 25
+        },
+        {
+          "id": "kotlin/jetpack-compose",
+          "titulo": "Telas com Jetpack Compose",
+          "resumo": "Android Studio, funções @Composable, estado, listas e Material 3.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 14
+        },
+        {
+          "id": "kotlin/viewmodel-rede-room",
+          "titulo": "ViewModel, rede e banco local",
+          "resumo": "Arquitetura recomendada, StateFlow, Retrofit e Room.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 15
+        },
+        {
+          "id": "kotlin/pratica-app-tarefas",
+          "titulo": "Prática: app de tarefas",
+          "resumo": "Compose, ViewModel e Room num app completo.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 45
+        }
+      ]
+    },
+    {
+      "id": "flutter",
+      "titulo": "Dart e Flutter",
+      "sigla": "Fl",
+      "itens": [
+        {
+          "id": "flutter/dart-basico",
+          "titulo": "Dart: variáveis, nulos e funções",
+          "resumo": "var, final, const, tipos, null safety, interpolação e funções.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 10
+        },
+        {
+          "id": "flutter/colecoes-e-classes",
+          "titulo": "Coleções, classes e async",
+          "resumo": "List, Map, métodos funcionais, classes, construtores e Future.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 13
+        },
+        {
+          "id": "flutter/pratica-carrinho-dart",
+          "titulo": "Prática: carrinho de compras em Dart",
+          "resumo": "Classes, coleções e regras de desconto, sem interface gráfica.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 20
+        },
+        {
+          "id": "flutter/widgets-e-layout",
+          "titulo": "Widgets e layout",
+          "resumo": "Instalar, flutter create, StatelessWidget, Column, Row, Container e listas.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 14
+        },
+        {
+          "id": "flutter/estado-e-navegacao",
+          "titulo": "Estado, formulários e navegação",
+          "resumo": "StatefulWidget, setState, TextField, Navigator e passar dados entre telas.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 14
+        },
+        {
+          "id": "flutter/pratica-app-reserva",
+          "titulo": "Prática: tela de reserva",
+          "resumo": "Lista de quartos, tela de detalhe com formulário e confirmação.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 35
+        },
+        {
+          "id": "flutter/http-e-estado",
+          "titulo": "APIs e gerência de estado",
+          "resumo": "Pacote http, FutureBuilder, JSON e estado compartilhado com Riverpod.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 15
+        },
+        {
+          "id": "flutter/testes-e-publicacao",
+          "titulo": "Dados locais, testes e publicação",
+          "resumo": "shared_preferences, testes de widget, ícone, build e lojas.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 13
+        },
+        {
+          "id": "flutter/pratica-app-cotacoes",
+          "titulo": "Prática: app de cotações",
+          "resumo": "Buscar uma API pública, atualizar puxando a tela e lembrar a moeda favorita.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 40
         }
       ]
     },
@@ -2175,6 +2807,85 @@
           "tipo": "desafio",
           "nivel": "Avançado",
           "minutos": 20
+        }
+      ]
+    },
+    {
+      "id": "bash",
+      "titulo": "Bash e terminal Linux",
+      "sigla": "sh",
+      "itens": [
+        {
+          "id": "bash/primeiros-comandos",
+          "titulo": "Navegar e mexer em arquivos",
+          "resumo": "pwd, ls, cd, mkdir, cp, mv, rm, caminhos e a ajuda.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 9
+        },
+        {
+          "id": "bash/pipes-e-redirecionamento",
+          "titulo": "Pipes, redirecionamento e busca",
+          "resumo": "|, >, >>, grep, wc, sort, uniq, head, tail e find.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 12
+        },
+        {
+          "id": "bash/pratica-analisar-log",
+          "titulo": "Prática: analisar um log de acesso",
+          "resumo": "Responder perguntas sobre um log só com pipes.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 15
+        },
+        {
+          "id": "bash/scripts-e-variaveis",
+          "titulo": "Scripts, variáveis e condições",
+          "resumo": "Shebang, chmod, variáveis, aspas, argumentos, if e test.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 13
+        },
+        {
+          "id": "bash/lacos-funcoes-permissoes",
+          "titulo": "Laços, funções e permissões",
+          "resumo": "for, while read, funções, códigos de saída e chmod.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 13
+        },
+        {
+          "id": "bash/pratica-organizar-fotos",
+          "titulo": "Prática: organizar fotos por data",
+          "resumo": "Um script que move arquivos para pastas ano/mês, com modo de simulação.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 25
+        },
+        {
+          "id": "bash/ssh-processos-cron",
+          "titulo": "SSH, processos e cron",
+          "resumo": "Acessar servidores, chaves, ps, kill, systemctl, variáveis de ambiente e agendamento.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 14
+        },
+        {
+          "id": "bash/sed-awk-jq",
+          "titulo": "sed, awk e jq",
+          "resumo": "Editar texto em lote, somar colunas e processar JSON no terminal.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 13
+        },
+        {
+          "id": "bash/pratica-monitor-site",
+          "titulo": "Prática: monitor de sites com alerta",
+          "resumo": "Checar uma lista de URLs, registrar tempos e alertar falhas pelo cron.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 30
         }
       ]
     },
@@ -2630,6 +3341,85 @@
       ]
     },
     {
+      "id": "vba",
+      "titulo": "VBA",
+      "sigla": "VBA",
+      "itens": [
+        {
+          "id": "vba/primeira-macro",
+          "titulo": "O editor e a primeira macro",
+          "resumo": "Guia Desenvolvedor, gravar macro, Alt+F11, módulos e salvar como .xlsm.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 9
+        },
+        {
+          "id": "vba/celulas-variaveis-lacos",
+          "titulo": "Células, variáveis e laços",
+          "resumo": "Range, Cells, Dim, If, For e achar a última linha.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 12
+        },
+        {
+          "id": "vba/pratica-formatar-relatorio",
+          "titulo": "Prática: formatar um relatório",
+          "resumo": "Cabeçalho, moeda, cores condicionais e total com um clique.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 20
+        },
+        {
+          "id": "vba/planilhas-e-arquivos",
+          "titulo": "Várias planilhas e arquivos",
+          "resumo": "Percorrer abas, criar e copiar planilhas, abrir arquivos de uma pasta.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 13
+        },
+        {
+          "id": "vba/funcoes-e-erros",
+          "titulo": "Funções próprias, arrays e erros",
+          "resumo": "Function como fórmula da planilha, arrays em memória e On Error.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 13
+        },
+        {
+          "id": "vba/pratica-consolidar-lojas",
+          "titulo": "Prática: consolidar arquivos de lojas",
+          "resumo": "Juntar numa aba só os dados de todos os arquivos de uma pasta.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 30
+        },
+        {
+          "id": "vba/eventos-e-userform",
+          "titulo": "Eventos e formulários",
+          "resumo": "Macros que rodam sozinhas e janelas de cadastro com UserForm.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 13
+        },
+        {
+          "id": "vba/outlook-e-boas-praticas",
+          "titulo": "Outlook, PDF e boas práticas",
+          "resumo": "Exportar PDF, enviar e-mails, dicionários e organizar o código.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 13
+        },
+        {
+          "id": "vba/pratica-relatorios-por-vendedor",
+          "titulo": "Prática: um PDF por vendedor",
+          "resumo": "Filtrar, gerar um PDF para cada vendedor e preparar os e-mails.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 35
+        }
+      ]
+    },
+    {
       "id": "power-query",
       "titulo": "Power Query",
       "sigla": "PQ",
@@ -2729,6 +3519,85 @@
           "tipo": "aula",
           "nivel": "Avançado",
           "minutos": 25
+        }
+      ]
+    },
+    {
+      "id": "linguagem-m",
+      "titulo": "Linguagem M",
+      "sigla": "M",
+      "itens": [
+        {
+          "id": "linguagem-m/valores-e-let",
+          "titulo": "Valores, tipos e let",
+          "resumo": "Como uma consulta M é avaliada, os tipos primitivos, operadores e if.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 10
+        },
+        {
+          "id": "linguagem-m/listas-registros-tabelas",
+          "titulo": "Listas, registros e tabelas",
+          "resumo": "{ }, [ ], acessar itens e campos, e como uma tabela é feita dos dois.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 13
+        },
+        {
+          "id": "linguagem-m/pratica-tabela-na-mao",
+          "titulo": "Prática: uma tabela escrita à mão",
+          "resumo": "Montar uma tabela em M, com tipos, sem nenhum arquivo de origem.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 20
+        },
+        {
+          "id": "linguagem-m/funcoes-e-each",
+          "titulo": "Funções, each e _",
+          "resumo": "(x) =>, parâmetros opcionais, each como atalho e funções como valores.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 13
+        },
+        {
+          "id": "linguagem-m/transformar-sem-botoes",
+          "titulo": "Transformar listas e tabelas",
+          "resumo": "List.Accumulate, List.Generate, Table.TransformColumns, Table.Group e renomear em massa.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 15
+        },
+        {
+          "id": "linguagem-m/pratica-de-para",
+          "titulo": "Prática: padronizar com uma tabela de/para",
+          "resumo": "Uma função que limpa qualquer coluna usando uma tabela de correções.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 30
+        },
+        {
+          "id": "linguagem-m/erros-e-tipos",
+          "titulo": "Erros, tipos e documentação",
+          "resumo": "try otherwise, try catch, error, tipos de tabela e funções documentadas.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 14
+        },
+        {
+          "id": "linguagem-m/dobragem-e-desempenho",
+          "titulo": "Dobragem, desempenho e consultas dinâmicas",
+          "resumo": "Query folding na prática, Value.NativeQuery, Table.Buffer e Expression.Evaluate.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 14
+        },
+        {
+          "id": "linguagem-m/pratica-importador-robusto",
+          "titulo": "Prática: importador de pasta à prova de bagunça",
+          "resumo": "Ler vários arquivos com colunas diferentes, validar e separar os erros.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 40
         }
       ]
     },
@@ -3093,6 +3962,85 @@
           "tipo": "desafio",
           "nivel": "Avançado",
           "minutos": 25
+        }
+      ]
+    },
+    {
+      "id": "r",
+      "titulo": "R para dados",
+      "sigla": "R",
+      "itens": [
+        {
+          "id": "r/primeiros-passos",
+          "titulo": "R, RStudio e vetores",
+          "resumo": "Instalar, o console, atribuição, vetores e funções.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 10
+        },
+        {
+          "id": "r/data-frames",
+          "titulo": "Data frames e o dplyr",
+          "resumo": "Ler CSV, filter, select, mutate, arrange, summarise e o pipe.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 13
+        },
+        {
+          "id": "r/pratica-vendas",
+          "titulo": "Prática: resumo de vendas",
+          "resumo": "Responder perguntas de negócio com o dplyr.",
+          "tipo": "aula",
+          "nivel": "Iniciante",
+          "minutos": 20
+        },
+        {
+          "id": "r/ggplot2",
+          "titulo": "Gráficos com ggplot2",
+          "resumo": "A gramática dos gráficos: dados, estética, geometria, facetas e temas.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 14
+        },
+        {
+          "id": "r/tidyr-e-joins",
+          "titulo": "Arrumar dados e juntar tabelas",
+          "resumo": "pivot_longer, pivot_wider, separate, joins, datas e textos.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 13
+        },
+        {
+          "id": "r/pratica-gastos-pessoais",
+          "titulo": "Prática: painel de gastos pessoais",
+          "resumo": "Arrumar um extrato largo, juntar categorias e fazer dois gráficos.",
+          "tipo": "aula",
+          "nivel": "Intermediário",
+          "minutos": 30
+        },
+        {
+          "id": "r/funcoes-e-iteracao",
+          "titulo": "Funções e iteração com purrr",
+          "resumo": "Escrever funções, map, ler vários arquivos e across.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 13
+        },
+        {
+          "id": "r/modelos-e-quarto",
+          "titulo": "Testes, regressão e Quarto",
+          "resumo": "t.test, lm, interpretar coeficientes e gerar relatórios em HTML e PDF.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 14
+        },
+        {
+          "id": "r/pratica-teste-ab",
+          "titulo": "Prática: relatório de um teste A/B",
+          "resumo": "Simular dados, testar, visualizar e montar o relatório em Quarto.",
+          "tipo": "aula",
+          "nivel": "Avançado",
+          "minutos": 35
         }
       ]
     },

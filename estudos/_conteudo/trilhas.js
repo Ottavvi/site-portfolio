@@ -22,12 +22,23 @@ module.exports = [
   require('./apis-http'),
   require('./ia-agentes'),
   require('./sqlite'),
+  require('./postgresql'),
   require('./python'),
+  require('./php'),
+  require('./csharp'),
+  require('./java'),
+  require('./go'),
+  require('./rust'),
+
+  // ---------- Apps e mobile ----------
+  require('./kotlin'),
+  require('./flutter'),
 
   // ---------- Qualidade e entrega ----------
   require('./git'),
   require('./playwright'),
   require('./github-actions'),
+  require('./bash'),
   require('./powershell'),
   require('./lgpd'),
   require('./seguranca-web'),
@@ -35,10 +46,13 @@ module.exports = [
 
   // ---------- Dados e BI ----------
   require('./excel'),
+  require('./vba'),
   require('./power-query'),
+  require('./linguagem-m'),
   require('./power-bi'),
   require('./dax'),
   require('./sql-analise'),
   require('./pandas'),
+  require('./r'),
   require('./estatistica')
 ];
