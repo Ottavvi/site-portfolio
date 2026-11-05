@@ -1,10 +1,10 @@
 // Ferramentas do agente contábil: as mesmas para o agente local e para o modo Claude.
 import * as C from './contabil.js';
-import { aliquotaEfetiva, ANEXOS, FATOR_R_MINIMO, MEI } from './impostos.js';
+import { aliquotaEfetiva, ANEXOS, FATOR_R_MINIMO, LIMITE_SIMPLES, MEI, SUBLIMITE_ICMS_ISS } from './impostos.js';
 import { obrigacoes } from './obrigacoes.js';
 import { OPERACOES } from './plano.js';
 import { reclassificar } from './estado.js';
-import { hojeISO, mesAnterior, mesDe, normalizar, somar } from './util.js';
+import { dinheiro, hojeISO, mesAnterior, mesDe, normalizar, somar } from './util.js';
 
 const arred = v => Math.round(v * 100) / 100;
 const pct = v => Math.round(v * 10000) / 100;
@@ -48,6 +48,43 @@ function periodo({ mes, ano, de, ate } = {}) {
   if (ano) return { ...C.periodoDoAno(ano), rotulo: `em ${ano}` };
   const m = mes || ultimoFechado();
   return { ...C.periodoDoMes(m), rotulo: `em ${m.slice(5)}/${m.slice(0, 4)}`, mes: m };
+}
+
+const A_CLASSIFICAR = new Set(['despesa-a-classificar', 'receita-a-classificar']);
+const nomeProprio = texto => texto.replace(/\b\p{L}/gu, letra => letra.toUpperCase());
+// Nome do cliente ou fornecedor sem as palavras do banco ("TED RECEBIDA ACADEMIA FORCA" -> "Academia Forca")
+const nomeDoParceiro = descricao =>
+  nomeProprio(
+    normalizar(descricao)
+      .replace(/\b(recebid[oa]s?|enviad[oa]s?|transf\w*|ted|doc|pix|pagamento|pagto|boleto|credito|debito)\b/g, ' ')
+      .replace(/[0-9*#/\\.:,-]+/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .split(' ')
+      .slice(0, 3)
+      .join(' ') || normalizar(descricao)
+  );
+
+// Os 12 meses fechados mais recentes
+function ultimos12Meses() {
+  const fim = ultimoFechado();
+  return { de: `${mesAnterior(fim, 11)}-01`, ate: C.fimDoMes(fim), rotulo: 'nos últimos 12 meses' };
+}
+
+// Médias por mês dos últimos meses fechados, separando o que varia com a receita (DAS e custo dos serviços)
+// do que é fixo (pessoal, administrativas, comerciais e financeiras)
+function mediaMensal(estado, quantos = 3) {
+  const meses = C.mesesFechados(estado).slice(-Math.min(Math.max(quantos, 1), 12));
+  if (!meses.length) return null;
+  const d = C.dre(estado, { de: `${meses[0]}-01`, ate: C.fimDoMes(meses.at(-1)) });
+  const n = meses.length;
+  return {
+    meses,
+    receita: d.receitaBruta / n,
+    custos: d.custos / n,
+    fixas: (d.receitaBruta - d.deducoes - d.custos - d.resultado) / n,
+    variaveisPct: d.receitaBruta ? (d.deducoes + d.custos) / d.receitaBruta : 0
+  };
 }
 
 export const FERRAMENTAS = [
@@ -256,7 +293,7 @@ export const FERRAMENTAS = [
       return {
         mes,
         fator_r_pct: pct(a.fatorR),
-        minimo_pct: FATOR_R_MINIMO * 100,
+        minimo_pct: pct(FATOR_R_MINIMO),
         anexo_atual: a.anexo,
         folha_12_meses: arred(a.folha12),
         receita_12_meses: arred(a.rbt12),
@@ -413,6 +450,390 @@ export const FERRAMENTAS = [
         movimentos_alterados: r.alterados,
         desfazer: { ferramenta: 'reclassificar', entrada: { id: m.id, conta: r.antes } }
       };
+    }
+  },
+  // ---------- Gestão: panorama, comparações, clientes, limites e decisões ----------
+  {
+    name: 'visao_geral',
+    description:
+      'Panorama da empresa: resultado do último mês fechado comparado ao anterior, saldo no banco, próximo DAS, Fator R, movimentos sem conta e próximos vencimentos. Bom ponto de partida para "como está a empresa?".',
+    input_schema: { type: 'object', properties: {} },
+    executar(estado) {
+      const mes = ultimoFechado();
+      const d = C.dre(estado, C.periodoDoMes(mes));
+      const dAnt = C.dre(estado, C.periodoDoMes(mesAnterior(mes)));
+      const ap = C.apuracao(estado, mes);
+      const atual = estado.empresa.regime === 'mei' ? null : C.apuracao(estado, C.mesAtual());
+      return {
+        ultimo_mes_fechado: mes,
+        receita: arred(d.receitaBruta),
+        lucro: arred(d.resultado),
+        margem_pct: pct(d.margem),
+        mes_anterior: { mes: mesAnterior(mes), receita: arred(dAnt.receitaBruta), lucro: arred(dAnt.resultado) },
+        variacao_da_receita_pct: dAnt.receitaBruta ? pct(d.receitaBruta / dAnt.receitaBruta - 1) : null,
+        saldo_no_banco_hoje: arred(C.saldoBanco(estado)),
+        proximo_das: { competencia: mes, valor: ap.das, vencimento: `${mesAnterior(mes, -1)}-20` },
+        fator_r_pct: atual && estado.empresa.fatorR ? pct(atual.fatorR) : null,
+        anexo_do_mes_atual: atual?.anexo || null,
+        movimentos_sem_conta: estado.movimentos.filter(m => A_CLASSIFICAR.has(m.conta)).length,
+        proximos_vencimentos: obrigacoes(estado, 20)
+          .slice(0, 4)
+          .map(o => ({ data: o.data, obrigacao: o.nome, valor: o.valor ? arred(o.valor) : null }))
+      };
+    }
+  },
+  {
+    name: 'comparar_periodos',
+    description:
+      'Compara a DRE de dois períodos (meses AAAA-MM ou anos AAAA): receita, DAS, custos, despesas, lucro e margem, e as contas que mais mudaram.',
+    input_schema: {
+      type: 'object',
+      properties: {
+        a: { type: 'string', description: 'Período base: AAAA-MM ou AAAA.' },
+        b: { type: 'string', description: 'Período comparado: AAAA-MM ou AAAA.' }
+      },
+      required: ['a', 'b']
+    },
+    executar(estado, { a, b }) {
+      const per = x => {
+        const s = String(x);
+        if (/^\d{4}$/.test(s)) return { ...C.periodoDoAno(Number(s)), rotulo: s };
+        if (/^\d{4}-\d{2}$/.test(s)) return { ...C.periodoDoMes(s), rotulo: s };
+        return null;
+      };
+      const pa = per(a);
+      const pb = per(b);
+      if (!pa || !pb) return { erro: 'Use períodos no formato AAAA-MM (mês) ou AAAA (ano).' };
+      const da = C.dre(estado, pa);
+      const db = C.dre(estado, pb);
+      const linha = d => ({
+        receita: arred(d.receitaBruta),
+        das: arred(d.deducoes),
+        custos: arred(d.custos),
+        despesas_operacionais: arred(d.despesasOperacionais),
+        lucro: arred(d.resultado),
+        margem_pct: pct(d.margem)
+      });
+      const porConta = d => new Map(d.linhas.flatMap(l => l.detalhe || []).map(x => [x.conta.id, x]));
+      const ma = porConta(da);
+      const mb = porConta(db);
+      const mudancas = [...new Set([...ma.keys(), ...mb.keys()])]
+        .map(idConta => {
+          const c = (ma.get(idConta) || mb.get(idConta)).conta;
+          const va = ma.get(idConta)?.valor || 0;
+          const vb = mb.get(idConta)?.valor || 0;
+          return { conta: `${c.codigo} ${c.nome}`, valor_a: arred(va), valor_b: arred(vb), diferenca: arred(vb - va) };
+        })
+        .filter(x => x.diferenca)
+        .sort((x, y) => Math.abs(y.diferenca) - Math.abs(x.diferenca))
+        .slice(0, 6);
+      return {
+        periodo_a: pa.rotulo,
+        periodo_b: pb.rotulo,
+        a: linha(da),
+        b: linha(db),
+        contas_que_mais_mudaram: mudancas
+      };
+    }
+  },
+  {
+    name: 'clientes_e_fornecedores',
+    description:
+      'Ranking de clientes (quem mais pagou à empresa) ou de fornecedores (com quem a empresa mais gastou, sem folha, impostos e lucros), com a participação de cada um. Mostra a concentração: quanto da receita depende do maior cliente. Padrão: últimos 12 meses fechados.',
+    input_schema: {
+      type: 'object',
+      properties: {
+        tipo: { type: 'string', enum: ['clientes', 'fornecedores'] },
+        mes: { type: 'string', description: 'Mês AAAA-MM (opcional).' },
+        ano: { type: 'integer' },
+        limite: { type: 'integer', minimum: 1, maximum: 30 }
+      }
+    },
+    executar(estado, { tipo = 'clientes', mes, ano, limite = 10 } = {}) {
+      const p = mes || ano ? periodo({ mes, ano }) : ultimos12Meses();
+      const deFornecedor = new Set(
+        estado.plano
+          .filter(c => ['custo', 'administrativa', 'comercial'].includes(c.dre) && c.id !== 'depreciacao')
+          .map(c => c.id)
+      );
+      const filtro =
+        tipo === 'fornecedores'
+          ? m => deFornecedor.has(m.conta)
+          : m => m.conta === 'receita-servicos' || m.conta === 'receita-a-classificar';
+      const grupos = new Map();
+      for (const m of estado.movimentos) {
+        if (m.data < p.de || m.data > p.ate || !filtro(m)) continue;
+        const nome = nomeDoParceiro(m.descricao);
+        // Agrupa pelas duas primeiras palavras: "Clinica Viva" e "Clinica Viva Bem" são o mesmo cliente
+        const chave = nome.split(' ').slice(0, 2).join(' ');
+        const g = grupos.get(chave) || { nome: '', total: 0, movimentos: 0, ultimo: m.data, conta: m.conta };
+        if (nome.length > g.nome.length) g.nome = nome;
+        g.total += Math.abs(m.valor);
+        g.movimentos += 1;
+        if (m.data > g.ultimo) g.ultimo = m.data;
+        grupos.set(chave, g);
+      }
+      const lista = [...grupos.values()].sort((x, y) => y.total - x.total);
+      const total = somar(lista, g => g.total);
+      const fatia = n => (total ? pct(somar(lista.slice(0, n), g => g.total) / total) : 0);
+      return {
+        tipo,
+        periodo: p.rotulo,
+        total: arred(total),
+        quantidade: lista.length,
+        participacao_do_maior_pct: fatia(1),
+        participacao_dos_3_maiores_pct: fatia(3),
+        lista: lista.slice(0, Math.min(Math.max(limite, 1), 30)).map(g => ({
+          nome: g.nome,
+          total: arred(g.total),
+          participacao_pct: total ? pct(g.total / total) : 0,
+          movimentos: g.movimentos,
+          ultimo_movimento: g.ultimo,
+          ...(tipo === 'fornecedores' ? { conta: estado.plano.find(c => c.id === g.conta)?.nome } : {})
+        }))
+      };
+    }
+  },
+  {
+    name: 'impostos_pagos',
+    description:
+      'Quanto a empresa pagou de impostos num ano (ou intervalo): DAS apurado mês a mês (por competência), encargos da folha (FGTS e INSS), alíquota média e carga sobre a receita. Mostra também quanto a mais saiu por meses no Anexo V.',
+    input_schema: {
+      type: 'object',
+      properties: { ano: { type: 'integer' }, de: { type: 'string' }, ate: { type: 'string' } }
+    },
+    executar(estado, { ano, de, ate } = {}) {
+      const p = de && ate ? periodo({ de, ate }) : periodo({ ano: ano || Number(hojeISO().slice(0, 4)) });
+      const meses = C.mesesFechados(estado).filter(m => m >= p.de.slice(0, 7) && m <= p.ate.slice(0, 7));
+      const porMes = meses.map(m => {
+        const a = C.apuracao(estado, m);
+        return {
+          mes: m,
+          receita: arred(a.receita),
+          das: a.das,
+          anexo: a.anexo || 'MEI',
+          extra_por_estar_no_anexo_v: a.anexo === 'V' && a.alternativa ? arred(a.das - a.alternativa.das) : 0
+        };
+      });
+      const receita = somar(porMes, x => x.receita);
+      const das = somar(porMes, x => x.das);
+      const encargos = -somar(
+        estado.movimentos.filter(m => m.conta === 'encargos' && m.data >= p.de && m.data <= p.ate),
+        m => m.valor
+      );
+      return {
+        periodo: p.rotulo,
+        meses_apurados: porMes.length,
+        receita: arred(receita),
+        das_total: arred(das),
+        aliquota_media_do_das_pct: receita ? pct(das / receita) : 0,
+        encargos_da_folha_pagos: arred(encargos),
+        carga_total_sobre_a_receita_pct: receita ? pct((das + encargos) / receita) : 0,
+        meses_no_anexo_v: porMes.filter(x => x.anexo === 'V').length,
+        das_a_mais_por_meses_no_anexo_v: arred(somar(porMes, x => x.extra_por_estar_no_anexo_v)),
+        por_mes: porMes,
+        observacao:
+          'DAS por competência (o do mês é pago no dia 20 do mês seguinte). No Simples, o INSS patronal está dentro do DAS (exceto no Anexo IV).'
+      };
+    }
+  },
+  {
+    name: 'limite_do_simples',
+    description:
+      'Faturamento do ano, projeção até dezembro e a folga até o sublimite de R$ 3,6 milhões (ISS/ICMS fora do DAS) e o limite de R$ 4,8 milhões do Simples Nacional, com as regras de desenquadramento.',
+    input_schema: { type: 'object', properties: {} },
+    executar(estado) {
+      if (estado.empresa.regime === 'mei') return { aviso: 'A empresa é MEI: use situacao_mei para o limite do MEI.' };
+      const ano = Number(hojeISO().slice(0, 4));
+      const receitaDoAno = somar(
+        estado.movimentos.filter(m => m.conta === 'receita-servicos' && m.data.startsWith(String(ano))),
+        m => m.valor
+      );
+      const fechados = C.mesesFechados(estado).filter(m => m.startsWith(String(ano)));
+      const receitaFechados = somar(fechados, m => C.receitaDoMes(estado, m));
+      const projecao = fechados.length ? (receitaFechados / fechados.length) * 12 : receitaDoAno;
+      return {
+        ano,
+        faturamento_no_ano_ate_hoje: arred(receitaDoAno),
+        projecao_ate_dezembro: arred(projecao),
+        rbt12_atual: arred(C.apuracao(estado, C.mesAtual()).rbt12),
+        sublimite_iss_icms: SUBLIMITE_ICMS_ISS,
+        limite_do_simples: LIMITE_SIMPLES,
+        uso_do_limite_pct: pct(projecao / LIMITE_SIMPLES),
+        folga_ate_o_sublimite: arred(SUBLIMITE_ICMS_ISS - projecao),
+        folga_ate_o_limite: arred(LIMITE_SIMPLES - projecao),
+        regras:
+          'O limite vale para a receita do ano-calendário. Passando de R$ 3,6 milhões, ISS e ICMS saem do DAS a partir do ano seguinte (ou já no mês seguinte, se passar mais de 20%). Passando de R$ 4,8 milhões, a empresa é excluída do Simples a partir do ano seguinte; se passar mais de 20% (R$ 5,76 milhões), a exclusão vale já a partir do mês seguinte ao excesso. Confirme com a contabilidade.'
+      };
+    }
+  },
+  {
+    name: 'ponto_de_equilibrio',
+    description:
+      'Faturamento mínimo por mês para não ter prejuízo, pela média dos últimos meses fechados: margem de contribuição (receita menos DAS e custo dos serviços), despesas fixas e margem de segurança.',
+    input_schema: { type: 'object', properties: { meses: { type: 'integer', minimum: 1, maximum: 12 } } },
+    executar(estado, { meses = 3 } = {}) {
+      const m = mediaMensal(estado, meses);
+      if (!m) return { erro: 'Ainda não há meses fechados para calcular.' };
+      const margem = 1 - m.variaveisPct;
+      const pe = margem > 0 ? m.fixas / margem : null;
+      return {
+        meses_considerados: m.meses,
+        receita_media_mensal: arred(m.receita),
+        custos_variaveis_pct: pct(m.variaveisPct),
+        margem_de_contribuicao_pct: pct(margem),
+        despesas_fixas_por_mes: arred(m.fixas),
+        ponto_de_equilibrio_mensal: pe == null ? null : arred(pe),
+        margem_de_seguranca_pct: pe && m.receita ? pct((m.receita - pe) / m.receita) : null,
+        observacao:
+          'Considera como variáveis o DAS e o custo dos serviços (terceiros, nuvem); pessoal, administrativas, comerciais e financeiras como fixas. A alíquota do DAS muda com a faixa e o anexo.'
+      };
+    }
+  },
+  {
+    name: 'simular_contratacao',
+    description:
+      'Estima o custo mensal de contratar funcionários CLT (salário, 13º, férias com 1/3, FGTS e, quando houver, INSS patronal) e o efeito da nova folha no Fator R e no DAS.',
+    input_schema: {
+      type: 'object',
+      properties: {
+        salario_mensal: { type: 'number', description: 'Salário bruto mensal de cada pessoa, em reais.' },
+        quantidade: { type: 'integer', minimum: 1, maximum: 50 }
+      },
+      required: ['salario_mensal']
+    },
+    executar(estado, { salario_mensal, quantidade = 1 }) {
+      if (!(salario_mensal > 0)) return { erro: 'Informe o salário mensal.' };
+      const e = estado.empresa;
+      const mei = e.regime === 'mei';
+      const salarios = salario_mensal * quantidade;
+      const decimo = salarios / 12;
+      const ferias = (salarios / 12) * (4 / 3);
+      const base = salarios + decimo + ferias;
+      const fgts = base * 0.08;
+      // MEI paga 3% de INSS patronal; no Simples só o Anexo IV paga o INSS patronal fora do DAS (cerca de 20% + RAT)
+      const inss = mei ? base * 0.03 : e.anexo === 'IV' ? base * 0.22 : 0;
+      const custo = base + fgts + inss;
+      let efeito = null;
+      if (!mei && e.fatorR) {
+        const a = C.apuracao(estado, C.mesAtual());
+        if (a.rbt12) {
+          const fatorDepois = (a.folha12 + custo * 12) / a.rbt12;
+          const anexoDepois = fatorDepois >= FATOR_R_MINIMO ? 'III' : 'V';
+          const receitaMedia = a.rbt12 / 12;
+          const dasHoje = receitaMedia * aliquotaEfetiva(a.anexo, a.rbt12).efetiva;
+          const dasDepois = receitaMedia * aliquotaEfetiva(anexoDepois, a.rbt12).efetiva;
+          efeito = {
+            fator_r_hoje_pct: pct(a.fatorR),
+            fator_r_depois_de_12_meses_pct: pct(fatorDepois),
+            anexo_hoje: a.anexo,
+            anexo_depois: anexoDepois,
+            das_mensal_medio_hoje: arred(dasHoje),
+            das_mensal_medio_depois: arred(dasDepois),
+            economia_de_das_por_mes: arred(dasHoje - dasDepois)
+          };
+        }
+      }
+      return {
+        salario_mensal,
+        quantidade,
+        custo_mensal_total: arred(custo),
+        custo_por_real_de_salario: arred(custo / salarios),
+        composicao: {
+          salarios: arred(salarios),
+          provisao_13o: arred(decimo),
+          provisao_ferias_com_terco: arred(ferias),
+          fgts: arred(fgts),
+          inss_patronal: arred(inss)
+        },
+        efeito_no_simples: efeito,
+        custo_liquido_por_mes: arred(custo - (efeito?.economia_de_das_por_mes || 0)),
+        observacao: `Estimativa sem vale-transporte, refeição, plano de saúde e outros benefícios. ${mei ? 'O MEI pode ter um empregado, com salário mínimo ou o piso da categoria.' : 'Nos Anexos III e V o INSS patronal já está no DAS.'} O Fator R melhora aos poucos: a folha nova entra na média dos 12 meses mês a mês.`
+      };
+    }
+  },
+  {
+    name: 'distribuicao_de_lucros',
+    description:
+      'Quanto a empresa já distribuiu de lucros no ano, quanto ainda há de lucro acumulado para distribuir e quanto cabe no caixa hoje, guardando o DAS a recolher e um mês de despesas. Inclui as regras de tributação de dividendos.',
+    input_schema: { type: 'object', properties: { ano: { type: 'integer' } } },
+    executar(estado, { ano = Number(hojeISO().slice(0, 4)) } = {}) {
+      const b = C.balanco(estado, hojeISO());
+      const linhaPL = inicio => b.pl.find(l => l.rotulo.startsWith(inicio))?.valor || 0;
+      const lucroAcumulado = linhaPL('Lucros acumulados') + linhaPL('Resultado de');
+      const jaDistribuido = -linhaPL('(−) Lucros');
+      const disponivel = lucroAcumulado - jaDistribuido;
+      const doAno = estado.movimentos.filter(m => m.conta === 'distribuicao' && m.data.startsWith(String(ano)));
+      const porMes = {};
+      for (const m of doAno) porMes[mesDe(m.data)] = (porMes[mesDe(m.data)] || 0) + Math.abs(m.valor);
+      const maior = Object.entries(porMes).sort((x, y) => y[1] - x[1])[0];
+      const media = mediaMensal(estado, 3);
+      const umMes = media ? media.fixas + media.custos : 0;
+      const dasARecolher = b.passivo.find(l => l.rotulo.startsWith('Simples'))?.valor || 0;
+      const saldo = C.saldoBanco(estado);
+      const cabeNoCaixa = Math.max(saldo - dasARecolher - umMes, 0);
+      return {
+        ano,
+        lucro_acumulado_ate_hoje: arred(lucroAcumulado),
+        ja_distribuido_no_total: arred(jaDistribuido),
+        distribuido_no_ano: arred(somar(Object.values(porMes))),
+        disponivel_pelo_lucro: arred(disponivel),
+        saldo_no_banco: arred(saldo),
+        reserva_sugerida: { das_a_recolher: arred(dasARecolher), um_mes_de_custos_e_despesas: arred(umMes) },
+        cabe_no_caixa: arred(cabeNoCaixa),
+        da_para_distribuir_hoje: arred(Math.max(Math.min(disponivel, cabeNoCaixa), 0)),
+        maior_distribuicao_mensal_no_ano: maior ? { mes: maior[0], valor: arred(maior[1]) } : null,
+        regras:
+          'Lucro distribuído ao sócio é isento de IR quando a contabilidade comprova o lucro. Desde 2026 (Lei 15.270/2025), se a empresa paga mais de R$ 50 mil num mês à mesma pessoa física, há retenção de 10% de IR sobre o valor pago no mês. Confirme valores e datas com a contabilidade.'
+      };
+    }
+  },
+  {
+    name: 'fechamento_do_mes',
+    description:
+      'Checklist de fechamento de um mês: extrato classificado, balancete fechando, DAS apurado e pago, folha e pró-labore lançados e as obrigações da competência que ainda vão vencer.',
+    input_schema: { type: 'object', properties: { mes: MES } },
+    executar(estado, { mes = ultimoFechado() } = {}) {
+      const itens = [];
+      const item = (nome, situacao, detalhe) => itens.push({ item: nome, situacao, detalhe });
+      const doMes = estado.movimentos.filter(m => mesDe(m.data) === mes);
+      const semConta = doMes.filter(m => A_CLASSIFICAR.has(m.conta));
+      if (!doMes.length) item('Extrato do mês importado', 'pendente', 'Nenhum movimento neste mês.');
+      else
+        item(
+          'Movimentos classificados',
+          semConta.length ? 'pendente' : 'ok',
+          semConta.length
+            ? `${semConta.length} de ${doMes.length} movimentos ainda sem conta.`
+            : `${doMes.length} movimentos, todos com conta.`
+        );
+      const bal = C.balancete(estado, { ate: C.fimDoMes(mes) });
+      const fecha = Math.abs(bal.totalDebitos - bal.totalCreditos) < 0.01;
+      item(
+        'Balancete fechando',
+        fecha ? 'ok' : 'pendente',
+        fecha ? 'Débitos iguais aos créditos.' : 'Débitos e créditos diferentes.'
+      );
+      const ap = C.apuracao(estado, mes);
+      const vencimento = `${mesAnterior(mes, -1)}-20`;
+      const pago = estado.movimentos.some(m => mesDe(m.data) === mesAnterior(mes, -1) && m.conta === 'das-a-recolher');
+      item(
+        `DAS de ${mes.slice(5)}/${mes.slice(0, 4)}`,
+        pago ? 'ok' : hojeISO() <= vencimento ? 'a vencer' : 'pendente',
+        `${dinheiro(ap.das)}, vence em ${vencimento.slice(8)}/${vencimento.slice(5, 7)}${pago ? ' (pago)' : ''}.`
+      );
+      for (const [idConta, nome] of [
+        ['salarios', 'Salários'],
+        ['prolabore', 'Pró-labore']
+      ]) {
+        if (!estado.movimentos.some(m => m.conta === idConta)) continue;
+        const noMes = doMes.some(m => m.conta === idConta);
+        item(nome, noMes ? 'ok' : 'pendente', noMes ? 'Lançado no mês.' : 'Nenhum pagamento neste mês.');
+      }
+      const competencia = `${mes.slice(5)}/${mes.slice(0, 4)}`;
+      for (const o of obrigacoes(estado, 75).filter(o => o.nome.includes(competencia) && !/^DAS/.test(o.nome)))
+        item(o.nome, 'a vencer', `Vence em ${o.data.slice(8)}/${o.data.slice(5, 7)}.`);
+      return { mes, pendentes: itens.filter(i => i.situacao === 'pendente').length, itens };
     }
   }
 ];

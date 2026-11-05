@@ -1,6 +1,6 @@
 // Liga tudo: navegação entre telas, o painel do agente e o tema (Agente Contábil).
 import { responder, EXEMPLOS } from './agente-local.js';
-import { perguntarAoClaude } from './agente-claude.js';
+import { markdownSimples, perguntarAoClaude } from './agente-claude.js';
 import { aoMudar, estado, mudou } from './estado.js';
 import { ferramenta } from './ferramentas.js';
 import * as telas from './telas.js';
@@ -117,21 +117,29 @@ async function perguntar(texto) {
     conversa.append(pensando);
     conversa.scrollTop = conversa.scrollHeight;
     try {
-      const r = await perguntarAoClaude(estado, texto, {
-        aoUsarFerramenta: nome => (pensando.textContent = `Consultando: ${nome.replace(/_/g, ' ')}…`)
-      });
-      resposta = {
-        autor: 'agente',
-        texto: r.texto,
-        html:
-          r.html +
-          r.desfazer
-            .map(
-              d =>
-                `<button type="button" class="btn-texto" data-desfazer='${html(JSON.stringify(d))}'>Desfazer</button>`
-            )
-            .join(' ')
+      const status = textoStatus => {
+        pensando.classList.add('pensando');
+        pensando.textContent = textoStatus;
+        conversa.scrollTop = conversa.scrollHeight;
       };
+      const r = await perguntarAoClaude(estado, texto, {
+        aoPensar: () => status('Pensando…'),
+        aoUsarFerramenta: nome => status(`Consultando: ${nome.replace(/_/g, ' ')}…`),
+        // O texto aparece enquanto o modelo escreve
+        aoEscrever: parcial => {
+          pensando.classList.remove('pensando');
+          pensando.innerHTML = markdownSimples(parcial);
+          conversa.scrollTop = conversa.scrollHeight;
+        }
+      });
+      // Um botão desfaz todas as mudanças da resposta, da última para a primeira
+      const desfazer = r.desfazer.length
+        ? ` <button type="button" class="btn-texto" data-desfazer='${html(JSON.stringify([...r.desfazer].reverse()))}'>Desfazer</button>`
+        : '';
+      const consultas = r.usadas.length
+        ? `<p class="recibo-nota">Consultei: ${r.usadas.map(n => html(n.replace(/_/g, ' '))).join(', ')}.</p>`
+        : '';
+      resposta = { autor: 'agente', texto: r.texto, html: r.html + consultas + desfazer };
     } catch (erro) {
       resposta = {
         autor: 'agente',
@@ -177,16 +185,19 @@ document.addEventListener('click', e => {
   }
   const desfazer = e.target.closest('[data-desfazer]');
   if (desfazer) {
-    const { ferramenta: nome, entrada } = JSON.parse(desfazer.dataset.desfazer);
-    ferramenta(nome)?.executar(estado, entrada);
+    // O agente local guarda um desfazer só; o modo Claude, uma lista (já na ordem de desfazer)
+    const lista = [JSON.parse(desfazer.dataset.desfazer)].flat();
+    for (const { ferramenta: nome, entrada } of lista) ferramenta(nome)?.executar(estado, entrada);
+    const mensagem = desfazer.closest('.msg');
     desfazer.replaceWith(
       Object.assign(document.createElement('span'), {
         className: 'recibo-nota',
         textContent: 'Desfeito.'
       })
     );
-    const ultima = estado.conversa.at(-1);
-    if (ultima) ultima.html = conversa.lastElementChild.innerHTML;
+    // Guarda o "Desfeito." na mensagem certa, mesmo que não seja a última
+    const indice = [...conversa.children].indexOf(mensagem);
+    if (estado.conversa[indice]) estado.conversa[indice].html = mensagem.innerHTML;
     mudou();
   }
 });

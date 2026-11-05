@@ -11,6 +11,7 @@ import {
   hojeISO,
   html,
   indiceDoMes,
+  limparPergunta,
   mesAnterior,
   mesDe,
   mesPorExtenso,
@@ -43,7 +44,18 @@ const corCat = (estado, idCat) => estado.categorias.find(c => c.id === idCat)?.c
 // ---------- Entendendo a pergunta ----------
 const SINONIMOS = {
   mercado: ['mercado', 'supermercado', 'feira', 'hortifruti', 'atacarejo'],
-  alimentacao: ['comer fora', 'restaurante', 'delivery', 'ifood', 'lanche', 'comida', 'padaria', 'pizza', 'cafe'],
+  alimentacao: [
+    'comer fora',
+    'alimentacao',
+    'restaurante',
+    'delivery',
+    'ifood',
+    'lanche',
+    'comida',
+    'padaria',
+    'pizza',
+    'cafe'
+  ],
   transporte: ['transporte', 'uber', 'corrida', 'gasolina', 'combustivel', 'posto', 'carro', 'onibus'],
   contas: [
     'luz',
@@ -108,7 +120,17 @@ export function extrairPeriodo(t) {
       ate: somarDias(hoje, -7),
       rotulo: 'na semana passada'
     };
+  if (/mes retrasado/.test(t)) return { mes: mesAnterior(atual, 2) };
   if (/(mes passado|ultimo mes|mes anterior)/.test(t)) return { mes: mesAnterior(atual) };
+  if (/ano passado/.test(t)) {
+    const ano = Number(hoje.slice(0, 4)) - 1;
+    return { de: `${ano}-01-01`, ate: `${ano}-12-31`, rotulo: `em ${ano}` };
+  }
+  const d = t.match(/ultimos?\s+(\d+|sete|quinze|trinta)\s+dias/);
+  if (d) {
+    const n = { sete: 7, quinze: 15, trinta: 30 }[d[1]] || Number(d[1]);
+    return { de: somarDias(hoje, -(n - 1)), ate: hoje, rotulo: `nos últimos ${n} dias` };
+  }
   if (/(este|esse|neste|nesse|deste|desse) mes|mes atual|no mes\b/.test(t)) return { mes: atual };
   let m = t.match(/ultimos?\s+(\d+|dois|tres|quatro|seis|doze)\s+mes/);
   if (m) {
@@ -156,9 +178,7 @@ function extrairBusca(estado, t) {
 }
 
 // ---------- Respostas ----------
-function respostaQuantoGastei(estado, t, periodo) {
-  const categoria = extrairCategoria(estado, t);
-  const busca = categoria ? null : extrairBusca(estado, t);
+function respostaQuantoGastei(estado, { categoria, busca, periodo }) {
   const per = periodo || { mes: A.mesAtual() };
   const r = ferramenta('buscar_transacoes').executar(estado, {
     ...per,
@@ -231,7 +251,32 @@ function respostaEntradas(estado, periodo) {
   );
 }
 
+// Resumo de um intervalo que não é um mês fechado ("últimos 15 dias", "ano passado")
+function respostaResumoIntervalo(estado, per) {
+  const saidas = A.filtrar(estado, { ...per, tipo: 'saida' });
+  const entradas = somar(A.filtrar(estado, { ...per, tipo: 'entrada' }), tr => tr.valor);
+  const gasto = Math.abs(somar(saidas, tr => tr.valor));
+  if (!saidas.length && !entradas) return p(`Não achei lançamentos ${html(per.rotulo)}.`);
+  const porCat = {};
+  for (const tr of saidas) porCat[tr.categoria] = (porCat[tr.categoria] || 0) + Math.abs(tr.valor);
+  const resultado = entradas - gasto;
+  return (
+    p(
+      `${html(per.rotulo.charAt(0).toUpperCase() + per.rotulo.slice(1))}, entraram ${forte(entradas)} e saíram ${forte(gasto)}: ${resultado >= 0 ? `sobraram ${forte(resultado)}` : `faltaram ${forte(-resultado)}`}.`
+    ) +
+    recibo({
+      titulo: 'Para onde foi',
+      linhas: Object.entries(porCat)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 6)
+        .map(([c, v]) => [nomeCat(estado, c), v, corCat(estado, c)]),
+      total: ['Gastos', gasto]
+    })
+  );
+}
+
 function respostaResumo(estado, periodo) {
+  if (periodo && !periodo.mes) return respostaResumoIntervalo(estado, periodo);
   const mes = periodo?.mes || A.mesAtual();
   const r = ferramenta('resumo_do_mes').executar(estado, { mes });
   const corrente = mes === A.mesAtual();
@@ -304,10 +349,8 @@ function respostaPrevisao(estado, t) {
   );
 }
 
-function respostaPossoGastar(estado, t) {
-  const valor = extrairValor(t);
+function respostaPossoGastar(estado, { valor, categoria }) {
   if (!valor) return p('Quanto você quer gastar? Por exemplo: "posso gastar R$ 600 em roupa?"');
-  const categoria = extrairCategoria(estado, t);
   const r = ferramenta('posso_gastar').executar(estado, {
     valor,
     categoria: categoria?.nome
@@ -320,8 +363,8 @@ function respostaPossoGastar(estado, t) {
   const motivos = [];
   motivos.push(
     r.menor_saldo_depois_do_gasto < 0
-      ? `Com esse gasto o saldo ficaria em ${forte(r.menor_saldo_depois_do_gasto)} perto de ${dataCurta(r.data_do_menor_saldo)}.`
-      : `Mesmo com esse gasto, o menor saldo previsto nas próximas semanas fica em ${forte(r.menor_saldo_depois_do_gasto)} (${dataCurta(r.data_do_menor_saldo)}).`
+      ? `Gastando ${forte(valor)}, o saldo ficaria em ${forte(r.menor_saldo_depois_do_gasto)} perto de ${dataCurta(r.data_do_menor_saldo)}.`
+      : `Mesmo gastando ${forte(valor)}, o menor saldo previsto nas próximas semanas fica em ${forte(r.menor_saldo_depois_do_gasto)} (${dataCurta(r.data_do_menor_saldo)}).`
   );
   if (r.folga_no_orcamento_da_categoria != null) {
     motivos.push(
@@ -434,16 +477,61 @@ function respostaMetas(estado) {
   );
 }
 
-function respostaMaiores(estado, periodo) {
+// "cria uma meta de 5 mil para viagem até dezembro de 2027", "quero juntar R$ 3.000 em 10 meses"
+function extrairPrazo(t) {
+  const hoje = hojeISO();
+  const fimDoMes = (ano, indice) => new Date(ano, indice + 1, 0).toLocaleDateString('sv-SE');
+  if (/fim do ano|final do ano/.test(t)) return `${hoje.slice(0, 4)}-12-31`;
+  let m = t.match(/(?:em|daqui a|daqui)\s+(\d+)\s+(mes|meses|ano|anos)\b/);
+  if (m) return somarMeses(hoje, Number(m[1]) * (m[2].startsWith('ano') ? 12 : 1));
+  m = t.match(
+    /\bate\s+(?:o fim de |o final de )?(janeiro|fevereiro|marco|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\b(?:\s+de)?\s*(\d{4})?/
+  );
+  if (m) {
+    const indice = indiceDoMes(m[1]);
+    let ano = m[2] ? Number(m[2]) : Number(hoje.slice(0, 4));
+    if (!m[2] && fimDoMes(ano, indice) <= hoje) ano += 1;
+    return fimDoMes(ano, indice);
+  }
+  m = t.match(/\bate\s+(20\d{2})\b/);
+  if (m) return `${m[1]}-12-31`;
+  return null;
+}
+
+function respostaCriarMeta(estado, t) {
+  const prazo = extrairPrazo(t);
+  // O valor é procurado sem o trecho do prazo, para "dezembro de 2027" não virar R$ 2.027
+  const alvo = extrairValor(t.replace(/\s(ate|daqui a|daqui|em \d+ (mes|meses|ano|anos))\s.*$/, ' '));
+  const nomeAchado = t.match(
+    /\b(?:para|pra)\s+(?:a |o |uma |um |minha |meu )?([a-z][a-z ]{2,40}?)(?=\s+(?:ate|em|daqui|de r|com)\b|\s*$)/
+  );
+  const nome = nomeAchado ? nomeAchado[1].trim().replace(/^./, c => c.toUpperCase()) : 'Nova meta';
+  if (!alvo || !prazo)
+    return p(
+      'Para criar uma meta, diga o valor e o prazo. Por exemplo: "cria uma meta de R$ 5 mil para viagem até dezembro de 2027" ou "quero juntar 3 mil em 10 meses".'
+    );
+  const r = ferramenta('criar_meta').executar(estado, { nome, alvo, prazo });
+  if (r.erro) return p(html(r.erro));
+  const meta = A.metas(estado).find(m => m.id === r.meta.id);
+  return (
+    p(
+      `Pronto: criei a meta ${forte(nome)} de ${forte(alvo)} até ${html(dataLonga(prazo))}. Para chegar lá, separe ${forte(meta.porMes)} por mês${meta.cabe ? ', o que cabe na sua sobra média.' : ', mais do que tem sobrado por mês: talvez valha alongar o prazo.'}`
+    ) + `<button type="button" class="btn-texto" data-desfazer='${html(JSON.stringify(r.desfazer))}'>Desfazer</button>`
+  );
+}
+
+function respostaMaiores(estado, periodo, categoria) {
   const per = periodo || { mes: A.mesAtual() };
   const r = ferramenta('buscar_transacoes').executar(estado, {
     ...per,
+    categoria: categoria?.nome,
     tipo: 'saida',
     ordenar_por_valor: true
   });
-  if (!r.quantidade) return p(`Não achei gastos ${html(rotuloPeriodo(per))}.`);
+  const com = categoria ? ` com ${html(categoria.nome.toLowerCase())}` : '';
+  if (!r.quantidade) return p(`Não achei gastos${com} ${html(rotuloPeriodo(per))}.`);
   return (
-    p(`Os maiores gastos ${html(rotuloPeriodo(per))}:`) +
+    p(`Os maiores gastos${com} ${html(rotuloPeriodo(per))}:`) +
     recibo({
       linhas: r.transacoes
         .slice(0, 8)
@@ -533,50 +621,139 @@ export const EXEMPLOS = [
   'Compara este mês com o mês passado',
   'Quais foram os maiores gastos do mês?',
   'Como estão minhas metas?',
-  'Muda o orçamento de mercado para 750'
+  'Muda o orçamento de mercado para 750',
+  'Cria uma meta de R$ 5 mil para viagem até dezembro de 2027'
 ];
 
-function respostaAjuda() {
+function respostaAjuda(entendeu = true) {
   return (
-    p('Eu leio o seu extrato e respondo com os números. Experimente perguntar:') +
+    p(
+      entendeu
+        ? 'Eu leio o seu extrato e respondo com os números. Experimente perguntar:'
+        : 'Não entendi bem essa pergunta. Tente com outras palavras, ou escolha uma destas:'
+    ) +
     `<ul class="resposta-lista">${EXEMPLOS.map(e => `<li><button type="button" class="btn-texto" data-pergunta="${html(e)}">${html(e)}</button></li>`).join('')}</ul>`
   );
 }
 
 // ---------- Ponto de entrada ----------
+// Palavras que o agente conhece: erros de digitação perto delas são corrigidos ("qnto gastei com mercdo")
+const VOCABULARIO = `quanto gastei gastos gasto gastar paguei despesa despesas posso comprar orcamento orcamentos limite
+assinatura assinaturas recorrente recorrentes mensalidade streaming fixas meta metas objetivo reserva juntar guardar poupar
+previsao sobrar faltar negativo vermelho proximos compara comparar diferenca economizar economia cortar reduzir dica dicas
+maiores maior recebi entrou ganhei entradas renda saldo resumo situacao panorama balanco semana passado retrasado ultimos
+janeiro fevereiro marco abril maio junho julho agosto setembro outubro novembro dezembro hoje ontem`.split(/\s+/);
+
+function vocabulario(estado) {
+  const v = new Set(VOCABULARIO);
+  for (const c of estado.categorias) for (const w of normalizar(c.nome).split(/\s+/)) if (w.length >= 4) v.add(w);
+  for (const lista of Object.values(SINONIMOS)) for (const w of lista) if (!w.includes(' ')) v.add(w);
+  return v;
+}
+
+// A ordem importa: a primeira regra que bater decide o que a pessoa quer
+const INTENCOES = [
+  [
+    'criarMeta',
+    t =>
+      /\b(cri[ae]r?|nova|novo|quero|preciso|vou)\b.*\b(meta|juntar|guardar|poupar)\b|meta nova/.test(t) &&
+      extrairValor(t)
+  ],
+  [
+    'possoGastar',
+    t => /(posso|da pra|da para|consigo|cabe)\s+(gastar|comprar|pagar|torrar)|posso (fazer|comprar)/.test(t)
+  ],
+  ['orcamentos', t => /orcamento|limite/.test(t)],
+  ['recorrentes', t => /assinatura|recorrent|todo mes|contas fixas|gastos fixos|mensalidade|streaming/.test(t)],
+  ['metas', t => /meta|objetivo|reserva|juntar|poupar para/.test(t)],
+  [
+    'previsao',
+    t =>
+      /(previs|vai sobrar|sobrar no fim|fim do mes|proximos (dias|meses)|vai faltar|ficar negativ|no vermelho|aguentar)/.test(
+        t
+      )
+  ],
+  ['comparar', t => /compar|diferenca entre|versus| vs /.test(t)],
+  ['dicas', t => /econom|cortar|reduzir|dica|onde (estou )?gast(o|ando) (muito|demais)/.test(t)],
+  ['maiores', t => /maior(es)? (gasto|compra|despesa)|mais car|onde mais gastei|gastei mais/.test(t)],
+  ['entradas', t => /quanto (recebi|entrou|ganhei|faturei)|entradas|minha renda/.test(t)],
+  ['saldo', t => /saldo|quanto (eu )?tenho|tenho na conta/.test(t)],
+  ['gastos', t => /quanto|gastei|gasto|paguei|despesa/.test(t)],
+  ['resumo', t => /resumo|como (esta|estou|to|anda|foi|ficou)|situacao|panorama|balanco/.test(t)],
+  ['ajuda', t => /ajuda|o que (voce )?(sabe|faz|consegue)|como (funciona|usar)/.test(t)]
+];
+
+// Memória curta da conversa: a última pergunta entendida, para continuações como "e em agosto?",
+// "e com transporte?" ou, depois de "posso gastar 600 em roupa?", só "e 300?"
+let ultima = null;
+const CONTINUAVEIS = new Set(['quantoGastei', 'resumo', 'entradas', 'maiores', 'possoGastar']);
+
 export function responder(estado, pergunta) {
-  const t = ` ${normalizar(pergunta).replace(/[?!.]/g, ' ')} `.replace(/\s+/g, ' ');
+  const t = limparPergunta(pergunta, vocabulario(estado));
   if (!estado.transacoes.length)
     return p(
       'Ainda não tenho nenhum extrato. Importe um arquivo CSV ou OFX do seu banco na tela Importar, ou carregue os dados de exemplo.'
     );
-  const periodo = extrairPeriodo(t);
+  const ctx = {
+    periodo: extrairPeriodo(t),
+    categoria: extrairCategoria(estado, t),
+    busca: null,
+    valor: extrairValor(t)
+  };
+  if (!ctx.categoria) ctx.busca = extrairBusca(estado, t);
+  // Depois de "posso gastar 600?", um número solto ("e 300?") já é o novo valor
+  const numeroSolto = t.match(/^ (?:e )?(?:r\$ ?)?(\d[\d.]*(?:,\d{1,2})?)( mil)? $/);
+  if (!ctx.valor && numeroSolto && ultima?.intencao === 'possoGastar')
+    ctx.valor = Number(numeroSolto[1].replace(/\./g, '').replace(',', '.')) * (numeroSolto[2] ? 1000 : 1);
+  let intencao = INTENCOES.find(([, regra]) => regra(t))?.[0];
+  if (intencao === 'gastos') intencao = ctx.categoria || ctx.busca ? 'quantoGastei' : 'resumo';
+  if (!intencao && ctx.categoria && ctx.periodo) intencao = 'quantoGastei';
 
-  if (/(posso|da pra|da para|consigo|cabe)\s+(gastar|comprar|pagar|torrar)|posso (fazer|comprar)/.test(t))
-    return respostaPossoGastar(estado, t);
-  if (/orcamento|limite/.test(t)) return respostaOrcamentos(estado, t);
-  if (/assinatura|recorrent|todo mes|contas fixas|gastos fixos|mensalidade|streaming/.test(t))
-    return respostaRecorrentes(estado, t);
-  if (/meta|objetivo|reserva|juntar|poupar para/.test(t)) return respostaMetas(estado);
+  // Continuação: sem intenção própria (ou "e ..." repetindo a mesma), mas com período, categoria ou valor novo
+  const comecaComE = /^ e /.test(t);
+  const temNovidade = ctx.periodo || ctx.categoria || ctx.busca || ctx.valor;
   if (
-    /(previs|vai sobrar|sobrar no fim|fim do mes|proximos (dias|meses)|vai faltar|ficar negativ|no vermelho|aguentar)/.test(
-      t
-    )
-  )
-    return respostaPrevisao(estado, t);
-  if (/compar|diferenca entre|versus| vs /.test(t)) return respostaComparar(estado, t);
-  if (/econom|cortar|reduzir|dica|onde (estou )?gast(o|ando) (muito|demais)/.test(t)) return respostaDicas(estado);
-  if (/maior(es)? (gasto|compra|despesa)|mais car|onde mais gastei|gastei mais/.test(t))
-    return respostaMaiores(estado, periodo);
-  if (/(quanto|qto) (recebi|entrou|ganhei|faturei)|entradas|minha renda|quanto ganhei/.test(t))
-    return respostaEntradas(estado, periodo);
-  if (/saldo|quanto (eu )?tenho|tenho na conta/.test(t)) return respostaSaldo(estado);
-  if (/quanto|gastei|gasto|paguei|despesa/.test(t)) {
-    if (extrairCategoria(estado, t) || extrairBusca(estado, t)) return respostaQuantoGastei(estado, t, periodo);
-    return respostaResumo(estado, periodo);
+    ultima &&
+    CONTINUAVEIS.has(ultima.intencao) &&
+    ((!intencao && temNovidade) || (comecaComE && intencao === ultima.intencao))
+  ) {
+    intencao ||= ultima.intencao === 'resumo' && (ctx.categoria || ctx.busca) ? 'quantoGastei' : ultima.intencao;
+    ctx.periodo ||= ultima.periodo;
+    if (!ctx.categoria && !ctx.busca) [ctx.categoria, ctx.busca] = [ultima.categoria, ultima.busca];
+    ctx.valor ||= ultima.valor;
   }
-  if (/resumo|como (esta|estou|to|anda|foi|ficou)|situacao|panorama|balanco/.test(t))
-    return respostaResumo(estado, periodo);
-  if (extrairCategoria(estado, t) && periodo) return respostaQuantoGastei(estado, t, periodo);
-  return respostaAjuda();
+  ultima = CONTINUAVEIS.has(intencao) ? { intencao, ...ctx } : null;
+
+  switch (intencao) {
+    case 'criarMeta':
+      return respostaCriarMeta(estado, t);
+    case 'possoGastar':
+      return respostaPossoGastar(estado, ctx);
+    case 'orcamentos':
+      return respostaOrcamentos(estado, t);
+    case 'recorrentes':
+      return respostaRecorrentes(estado, t);
+    case 'metas':
+      return respostaMetas(estado);
+    case 'previsao':
+      return respostaPrevisao(estado, t);
+    case 'comparar':
+      return respostaComparar(estado, t);
+    case 'dicas':
+      return respostaDicas(estado);
+    case 'maiores':
+      return respostaMaiores(estado, ctx.periodo, ctx.categoria);
+    case 'entradas':
+      return respostaEntradas(estado, ctx.periodo);
+    case 'saldo':
+      return respostaSaldo(estado);
+    case 'quantoGastei':
+      return respostaQuantoGastei(estado, ctx);
+    case 'resumo':
+      return respostaResumo(estado, ctx.periodo);
+    case 'ajuda':
+      return respostaAjuda();
+    default:
+      return respostaAjuda(false);
+  }
 }

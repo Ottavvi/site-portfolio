@@ -40,10 +40,10 @@ orçamento e criar meta (com botão de desfazer).
 
 - **Local** (padrão): `js/agente-local.js` reconhece a intenção da pergunta, o período ("mês passado", "em
   agosto", "últimos 3 meses"), a categoria (inclusive sinônimos como "uber" e "luz") e valores ("2 mil"), chama as
-  ferramentas e monta a resposta. Funciona sem internet e sem chave.
+  ferramentas e monta a resposta. Funciona sem internet e sem chave. Entende continuações ("e em agosto?", "e com transporte?", "e 300?" depois de um "posso gastar"), corrige erros de digitação e abreviações ("qnto gastei com mercdo"), aceita "últimos 15 dias", "ano passado" e "mês retrasado", e cria metas pelo chat ("cria uma meta de R$ 5 mil para viagem até dezembro de 2027").
 - **Claude** (opcional, em Ajustes): com uma chave da API da Anthropic, a pergunta vai para o Claude junto com a
   lista de ferramentas. O modelo escolhe o que consultar, o app executa aqui no navegador e devolve só o resultado
-  daquela consulta (`js/agente-claude.js`). O extrato inteiro nunca sai do computador.
+  daquela consulta (`js/agente-claude.js`). O extrato inteiro nunca sai do computador. A resposta aparece enquanto é escrita (streaming), o começo de cada pedido fica em cache na API (fica mais barato a partir da segunda consulta), erros passageiros (rede, sobrecarga) são tentados de novo sozinhos, e no Sonnet e no Opus uma recusa por engano do filtro de segurança é refeita pela própria API noutro modelo. Cada resposta mostra quais consultas foram feitas, e um botão desfaz todas as mudanças dela.
 
 Os números aparecem como "recibos" (notinhas de caixa) no chat.
 

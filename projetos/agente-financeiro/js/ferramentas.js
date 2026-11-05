@@ -298,7 +298,19 @@ export const FERRAMENTAS = [
       const meta = { id: id(), nome, alvo, guardado, prazo };
       estado.metas.push(meta);
       mudou();
-      return { feito: true, meta };
+      return { feito: true, meta, desfazer: { ferramenta: 'remover_meta', entrada: { id: meta.id } } };
+    }
+  },
+  {
+    // Só para o botão de desfazer: não é oferecida ao modelo
+    name: 'remover_meta',
+    interna: true,
+    muda: true,
+    executar(estado, { id }) {
+      const antes = estado.metas.length;
+      estado.metas = estado.metas.filter(m => m.id !== id);
+      mudou();
+      return { feito: estado.metas.length < antes };
     }
   }
 ];

@@ -54,12 +54,12 @@ ferramenta de estudo e acompanhamento: decisões fiscais devem ser confirmadas c
 
 As mesmas ferramentas (`js/ferramentas.js`) servem aos dois modos: DRE, evolução mensal, balancete, balanço, razão,
 busca de movimentos, apuração do Simples, Fator R (com simulação de pró-labore), simulação de DAS, situação do MEI,
-obrigações, plano de contas, como lançar, movimentos a classificar e reclassificar (com desfazer).
+obrigações, plano de contas, como lançar, movimentos a classificar e reclassificar (com desfazer). Para decisões de gestão: visão geral da empresa, comparação entre meses ou anos, ranking de clientes e fornecedores (com a concentração no maior cliente), impostos pagos no ano, folga até o limite do Simples, ponto de equilíbrio, custo de contratar um funcionário (com o efeito no Fator R e no DAS), quanto dá para distribuir de lucro e o checklist de fechamento do mês. O agente local também explica os termos ("o que é RBT12?").
 
 - **Local** (padrão): `js/agente-local.js` entende a pergunta, o período e a conta citada, e responde com tabelas
-  no estilo livro e razonetes (contas em T) para explicar débito e crédito.
+  no estilo livro e razonetes (contas em T) para explicar débito e crédito. Entende continuações ("e em agosto?", "e no ano passado?", "e com marketing?") e corrige erros de digitação e abreviações ("qnto vou pagar de DAS", "mostra o balancte").
 - **Claude** (opcional, em Empresa e ajustes): com uma chave da API da Anthropic, o Claude escolhe as ferramentas,
-  o app executa aqui e devolve só o resultado de cada consulta (`js/agente-claude.js`).
+  o app executa aqui e devolve só o resultado de cada consulta (`js/agente-claude.js`). A resposta aparece enquanto é escrita (streaming), o começo de cada pedido fica em cache na API (fica mais barato a partir da segunda consulta), erros passageiros (rede, sobrecarga) são tentados de novo sozinhos, e no Sonnet e no Opus uma recusa por engano do filtro de segurança é refeita pela própria API noutro modelo. Cada resposta mostra quais consultas foram feitas, e um botão desfaz todas as mudanças dela.
 
 ## Power BI
 
